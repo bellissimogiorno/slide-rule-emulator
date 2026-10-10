@@ -1,0 +1,283 @@
+import { makeTempDerived } from "#catalog/factories.js";
+import { ENERGY_PEAK_CM, PHOTON_PEAK_CM, PHOTON_PEAK_U, PHOTON_TOTAL_CM, PHYSICS, RADIATION_C2, STEFAN_CM } from "#core/physics.js";
+const radiationScales = {
+    BB_T: {
+        id: "BB_T",
+        label: "T",
+        type: "temperature",
+        min: 100,
+        max: 10000,
+        tickMode: "temperature",
+        unit: "K",
+        formula: "temperature",
+        description: "Absolute temperature from 100 K to 10,000 K.",
+        family: "Blackbody radiation"
+    },
+    BB_TC: {
+        id: "BB_TC",
+        label: "tC",
+        type: "temperatureC",
+        min: -173.15,
+        max: 9726.85,
+        tickMode: "temperature",
+        unit: "°C",
+        formula: "T−273.15",
+        description: "Celsius temperature aligned with Kelvin.",
+        family: "Blackbody radiation"
+    },
+    BB_TF: {
+        id: "BB_TF",
+        label: "tF",
+        type: "temperatureF",
+        min: -279.67,
+        max: 17540.33,
+        tickMode: "temperature",
+        unit: "°F",
+        formula: "1.8T−459.67",
+        description: "Fahrenheit temperature aligned with Kelvin.",
+        family: "Blackbody radiation"
+    },
+    BB_H_TOTAL: makeTempDerived("BB_H_TOTAL", "H₀–∞", "power", STEFAN_CM, 4, "W cm⁻²", "Total blackbody radiant exitance σT⁴."),
+    BB_H_PEAK: makeTempDerived("BB_H_PEAK", "Hλm", "power", ENERGY_PEAK_CM, 5, "W cm⁻² µm⁻¹", "Approximate peak spectral radiant exitance, proportional to T⁵."),
+    BB_Q_TOTAL: makeTempDerived("BB_Q_TOTAL", "Q₀–∞", "power", PHOTON_TOTAL_CM, 3, "photons cm⁻² s⁻¹", "Total photon exitance, proportional to T³."),
+    BB_Q_PEAK: makeTempDerived("BB_Q_PEAK", "Qλm", "power", PHOTON_PEAK_CM, 4, "photons cm⁻² s⁻¹ µm⁻¹", "Approximate peak spectral photon exitance, proportional to T⁴."),
+    BB_NOISE: makeTempDerived("BB_NOISE", "Vn/√RΔf", "sqrt", Math.sqrt(4 * 1.380649e-23), 0.5, "V/√(Ω Hz)", "Johnson-noise voltage density sqrt(4kT)."),
+    BB_EPEAK: makeTempDerived("BB_EPEAK", "Eλm", "linear", PHOTON_PEAK_U * PHYSICS.k / PHYSICS.e, 1, "eV", "Photon energy at the photon-spectrum peak, approximately 3.92069 kT."),
+    BB_LAMBDA1_E: {
+        id: "BB_LAMBDA1_E",
+        label: "λ₁",
+        type: "bbWavelength",
+        min: 0.3,
+        max: 30,
+        tickMode: "log",
+        unit: "µm",
+        formula: "short λ",
+        description: "Model 17 energy-side short-wavelength branch.",
+        family: "Blackbody radiation"
+    },
+    BB_LAMBDA2_E: {
+        id: "BB_LAMBDA2_E",
+        label: "λ₂",
+        type: "bbWavelength",
+        min: 30,
+        max: 3000,
+        tickMode: "log",
+        unit: "µm",
+        formula: "long λ",
+        tone: "red",
+        description: "Model 17 energy-side long-wavelength branch.",
+        family: "Blackbody radiation"
+    },
+    BB_NU1_E: {
+        id: "BB_NU1_E",
+        label: "ν₁",
+        type: "bbWavenumber",
+        min: 10000 / 30,
+        max: 10000 / 0.3,
+        tickMode: "log",
+        unit: "cm⁻¹",
+        formula: "10⁴/λ₁",
+        description: "Energy-side high-wavenumber branch, exactly reciprocal to λ1.",
+        family: "Blackbody radiation"
+    },
+    BB_NU2_E: {
+        id: "BB_NU2_E",
+        label: "ν₂",
+        type: "bbWavenumber",
+        min: 10000 / 3000,
+        max: 10000 / 30,
+        tickMode: "log",
+        unit: "cm⁻¹",
+        formula: "10⁴/λ₂",
+        tone: "red",
+        description: "Energy-side low-wavenumber branch, exactly reciprocal to λ2.",
+        family: "Blackbody radiation"
+    },
+    BB_LAMBDA1_Q: {
+        id: "BB_LAMBDA1_Q",
+        label: "λ₁",
+        type: "bbWavelength",
+        min: 0.4,
+        max: 40,
+        tickMode: "log",
+        unit: "µm",
+        formula: "short λ",
+        description: "Model 17 photon-side short-wavelength branch.",
+        family: "Blackbody radiation"
+    },
+    BB_LAMBDA2_Q: {
+        id: "BB_LAMBDA2_Q",
+        label: "λ₂",
+        type: "bbWavelength",
+        min: 40,
+        max: 4000,
+        tickMode: "log",
+        unit: "µm",
+        formula: "long λ",
+        tone: "red",
+        description: "Model 17 photon-side long-wavelength branch.",
+        family: "Blackbody radiation"
+    },
+    BB_NU1_Q: {
+        id: "BB_NU1_Q",
+        label: "ν₁",
+        type: "bbWavenumber",
+        min: 10000 / 40,
+        max: 10000 / 0.4,
+        tickMode: "log",
+        unit: "cm⁻¹",
+        formula: "10⁴/λ₁",
+        description: "Photon-side high-wavenumber branch, exactly reciprocal to λ1.",
+        family: "Blackbody radiation"
+    },
+    BB_NU2_Q: {
+        id: "BB_NU2_Q",
+        label: "ν₂",
+        type: "bbWavenumber",
+        min: 10000 / 4000,
+        max: 10000 / 40,
+        tickMode: "log",
+        unit: "cm⁻¹",
+        formula: "10⁴/λ₂",
+        tone: "red",
+        description: "Photon-side low-wavenumber branch, exactly reciprocal to λ2.",
+        family: "Blackbody radiation"
+    },
+    BB_H_SPEC1: {
+        id: "BB_H_SPEC1",
+        label: "Hλ₁/Hλm",
+        type: "bbCurve",
+        curve: "energySpectral",
+        u0: RADIATION_C2 / 30000,
+        tickMode: "bbCurve",
+        description: "Normalised spectral-energy branch for λ1.",
+        family: "Blackbody radiation"
+    },
+    BB_H_SPEC2: {
+        id: "BB_H_SPEC2",
+        label: "Hλ₂/Hλm",
+        type: "bbCurve",
+        curve: "energySpectral",
+        u0: RADIATION_C2 / 3000000,
+        tickMode: "bbCurve",
+        tone: "red",
+        description: "Normalised spectral-energy branch for λ2.",
+        family: "Blackbody radiation"
+    },
+    BB_Q_SPEC1: {
+        id: "BB_Q_SPEC1",
+        label: "Qλ₁/Qλm",
+        type: "bbCurve",
+        curve: "photonSpectral",
+        u0: RADIATION_C2 / 40000,
+        tickMode: "bbCurve",
+        description: "Normalised spectral-photon branch for λ1.",
+        family: "Blackbody radiation"
+    },
+    BB_Q_SPEC2: {
+        id: "BB_Q_SPEC2",
+        label: "Qλ₂/Qλm",
+        type: "bbCurve",
+        curve: "photonSpectral",
+        u0: RADIATION_C2 / 4000000,
+        tickMode: "bbCurve",
+        tone: "red",
+        description: "Normalised spectral-photon branch for λ2.",
+        family: "Blackbody radiation"
+    },
+    BB_H_BAND1: {
+        id: "BB_H_BAND1",
+        label: "H₀–λ₁/H₀–∞",
+        type: "bbCurve",
+        curve: "energyShort",
+        u0: RADIATION_C2 / 30000,
+        tickMode: "bbCurve",
+        description: "Short-wavelength cumulative energy fraction.",
+        family: "Blackbody radiation"
+    },
+    BB_H_BAND2: {
+        id: "BB_H_BAND2",
+        label: "Hλ₂–∞/H₀–∞",
+        type: "bbCurve",
+        curve: "energyLong",
+        u0: RADIATION_C2 / 3000000,
+        tickMode: "bbCurve",
+        tone: "red",
+        description: "Long-wavelength cumulative energy fraction.",
+        family: "Blackbody radiation"
+    },
+    BB_Q_BAND1: {
+        id: "BB_Q_BAND1",
+        label: "Q₀–λ₁/Q₀–∞",
+        type: "bbCurve",
+        curve: "photonShort",
+        u0: RADIATION_C2 / 40000,
+        tickMode: "bbCurve",
+        description: "Short-wavelength cumulative photon fraction.",
+        family: "Blackbody radiation"
+    },
+    BB_Q_BAND2: {
+        id: "BB_Q_BAND2",
+        label: "Qλ₂–∞/Q₀–∞",
+        type: "bbCurve",
+        curve: "photonLong",
+        u0: RADIATION_C2 / 4000000,
+        tickMode: "bbCurve",
+        tone: "red",
+        description: "Long-wavelength cumulative photon fraction.",
+        family: "Blackbody radiation"
+    },
+    BB_HM: {
+        id: "BB_HM",
+        label: "M(Hλm)",
+        type: "log",
+        min: 1,
+        max: 10,
+        gauges: [{
+                value: Math.sqrt(10),
+                label: "T"
+            }],
+        anchor: "T",
+        anchorPos: 0.5,
+        formula: "peak multiplier",
+        description: "Peak spectral-energy mantissa multiplier and T alignment index.",
+        family: "Blackbody radiation"
+    },
+    BB_HT: {
+        id: "BB_HT",
+        label: "M(H₀∞)",
+        type: "log",
+        min: 1,
+        max: 10,
+        formula: "total multiplier",
+        description: "Total-energy mantissa multiplier.",
+        family: "Blackbody radiation"
+    },
+    BB_QM: {
+        id: "BB_QM",
+        label: "M(Qλm)",
+        type: "log",
+        min: 1,
+        max: 10,
+        gauges: [{
+                value: Math.sqrt(10),
+                label: "T"
+            }],
+        anchor: "T",
+        anchorPos: 0.5,
+        formula: "peak multiplier",
+        description: "Peak spectral-photon mantissa multiplier and T alignment index.",
+        family: "Blackbody radiation"
+    },
+    BB_QT: {
+        id: "BB_QT",
+        label: "M(Q₀∞)",
+        type: "log",
+        min: 1,
+        max: 10,
+        formula: "total multiplier",
+        description: "Total-photon mantissa multiplier.",
+        family: "Blackbody radiation"
+    }
+};
+export { radiationScales };

@@ -1,0 +1,10 @@
+/* Preserve every graduation, but reserve the numeral band for the ticks that
+   actually carry a selected label. This also keeps the dense end of LL rows
+   from becoming a fence of equally tall, unlabelled bars. */
+body[data-compact-scales="true"] .tick.unlabelled-major:is(.major,.index,.gauge) {
+    height: var(--submajor-tick);
+}
+
+body[data-compact-scales="true"] .syncro-tick.unlabelled-major:is(.major,.index,.gauge) {
+    height: calc(2 * var(--submajor-tick));
+}

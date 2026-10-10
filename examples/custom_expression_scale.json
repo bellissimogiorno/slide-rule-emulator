@@ -1,0 +1,64 @@
+{
+  "activeSide": "front",
+  "presetId": "custom",
+  "theme": "faber",
+  "density": "classic",
+  "modelLabel": "Custom powers demonstrator",
+  "instrumentNote": "Example of an expression scale and a built-in root scale.",
+  "showFormulas": true,
+  "compactScales": true,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [
+    {
+      "id": "X4",
+      "label": "x⁴",
+      "type": "expression",
+      "min": 1,
+      "max": 10000,
+      "pos": "Math.log10(x) / 4",
+      "value": "Math.pow(10, 4 * p)",
+      "tickMode": "log",
+      "formula": "x⁴",
+      "description": "Four-decade fourth-power scale.",
+      "family": "Custom",
+      "compactLabels": true
+    }
+  ],
+  "sides": {
+    "front": {
+      "name": "Powers",
+      "topStator": [
+        "X4",
+        "K",
+        "A"
+      ],
+      "slide": [
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "R1",
+        "R2"
+      ]
+    },
+    "back": {
+      "name": "Logarithms",
+      "topStator": [
+        "LL01",
+        "LL02",
+        "LL03"
+      ],
+      "slide": [
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "LL1",
+        "LL2",
+        "LL3"
+      ]
+    }
+  }
+}

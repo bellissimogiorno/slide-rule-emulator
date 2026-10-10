@@ -1,0 +1,123 @@
+/* Instrument materials and bands. No theme changes the tick geometry. */
+body[data-theme="faber"] {
+    --paper: #fbfbf5;
+    --paper2: #fffffb;
+}
+
+body[data-theme="faber"] .rule-shell {
+    background: linear-gradient(#e1e4da, #ccd1c5);
+}
+
+body[data-theme="faber"] .tone-green .tick-pane, body[data-theme="faber"] .tone-green .scale-name {
+    background: var(--green-band);
+}
+
+body[data-theme="faber"] .tone-blue .tick-pane, body[data-theme="faber"] .tone-blue .scale-name {
+    background: var(--blue-band);
+}
+
+body[data-theme="pickett-es"] {
+    --paper: #fff2b3;
+    --paper2: #fff5bd;
+    --accent: #9b2730;
+}
+
+body[data-theme="pickett-es"] .rule-shell {
+    background: #c8b46f;
+    border-color: #756737;
+}
+
+body[data-theme="pickett-es"] .rule-shell::before, body[data-theme="pickett-es"] .rule-shell::after,
+body[data-theme="pickett-white"] .rule-shell::before, body[data-theme="pickett-white"] .rule-shell::after {
+    background: #2c302c;
+}
+
+body[data-theme="pickett-white"] {
+    --paper: #fffef7;
+    --paper2: #fff;
+}
+
+body[data-theme="thornton"] {
+    --paper: #f8f2dc;
+    --paper2: #fffae8;
+    --accent: #34634f;
+}
+
+body[data-theme="thornton"] .rule-shell {
+    background: linear-gradient(#8da58c, #547651);
+    border-color: #3d5e42;
+}
+
+body[data-theme="thornton"] .rail.slide-rail {
+    border-color: #5c785e;
+}
+
+body[data-theme="thornton"] .rule-shell::before, body[data-theme="thornton"] .rule-shell::after {
+    background: #43634b;
+}
+
+body[data-theme="ke"] {
+    --paper: #faf6e7;
+    --paper2: #fffcef;
+    --accent: #902c35;
+}
+
+body[data-theme="ke"] .rule-shell {
+    background: linear-gradient(#e6e2d4, #bab7ad);
+}
+
+body[data-theme="ke"] .rule-shell::before, body[data-theme="ke"] .rule-shell::after {
+    background: #383e3b;
+}
+
+body[data-theme="blackbody"] {
+    --paper: #fcfcf7;
+    --paper2: #fff;
+    --accent: #a82430;
+}
+
+body[data-theme="blackbody"] .rule-shell {
+    background: #c9cecb;
+}
+
+body[data-theme="blackbody"] .rule-shell::before, body[data-theme="blackbody"] .rule-shell::after {
+    background: #303532;
+}
+
+body[data-theme="blackbody-wood"] {
+    --paper: #f3ecd3;
+    --paper2: #fcf5dd;
+    --accent: #833e2d;
+}
+
+body[data-theme="blackbody-wood"] .rule-shell {
+    background: repeating-linear-gradient(90deg, #623e24 0, #775133 10px, #623e24 18px);
+    border-color: #432918;
+}
+
+body[data-theme="blackbody-wood"] .rule-shell::before, body[data-theme="blackbody-wood"] .rule-shell::after {
+    background: #4c301d;
+}
+
+body[data-theme="blackbody-wood"] .model-badge, body[data-theme="blackbody-wood"] .rule-top-note {
+    color: #fff2d6;
+}
+
+body[data-theme="blackbody-wood"] .rail.slide-rail {
+    border-color: #785438;
+}
+
+body[data-theme="flying-fish"] {
+    --paper: #fcfcf3;
+    --paper2: #fffffa;
+    --accent: #982b31;
+}
+
+body[data-theme="flying-fish"] .rule-shell {
+    background: linear-gradient(#dddcd3, #b7b7af);
+}
+
+body[data-theme="flying-fish"] .rule-shell::before,
+body[data-theme="flying-fish"] .rule-shell::after {
+    background: #262c2d;
+}

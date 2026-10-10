@@ -1,0 +1,4 @@
+# Pinned optional test dependencies. None is required to build or run the app.
+playwright==1.57.0
+Pillow==12.3.0
+jsonschema==4.26.0

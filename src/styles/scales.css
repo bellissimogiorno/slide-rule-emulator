@@ -1,0 +1,262 @@
+/* Densities vary numeral size and gutters together. Never shrink an individual
+   crowded number: select fewer labels instead. */
+body[data-density="pickett"] {
+    --row-h: 25px;
+    --compact-row-h: 22px;
+    --number-size: 10.5px;
+    --label-w: 50px;
+    --legend-w: 68px;
+    --pair-h: 46px;
+    --compact-pair-h: 35px;
+}
+
+body[data-density="faber"] {
+    --row-h: 27px;
+    --compact-row-h: 23px;
+    --label-w: 58px;
+    --legend-w: 96px;
+}
+
+body[data-density="blackbody"] {
+    --row-h: 28px;
+    --compact-row-h: 24px;
+    --number-size: 10.5px;
+    --label-w: 106px;
+    --legend-w: 112px;
+    --compact-pair-h: 36px;
+}
+
+body[data-density="classic"] {
+    --row-h: 27px;
+    --compact-row-h: 23px;
+    --label-w: 64px;
+    --legend-w: 90px;
+}
+
+body[data-density="comfortable"] {
+    --row-h: 33px;
+    --compact-row-h: 29px;
+    --number-size: 13px;
+    --name-size: 12px;
+    --label-w: 84px;
+    --legend-w: 116px;
+    --pair-h: 54px;
+    --compact-pair-h: 44px;
+}
+
+.scale-row {
+    --fine-tick: 2.5px;
+    --minor-tick: 3.5px;
+    --mid-tick: 5px;
+    --submajor-tick: 7px;
+    --major-tick: 9px;
+    --index-tick: 11px;
+    --label-offset: 12px;
+    --compact-offset: 7.8px;
+    height: var(--row-h);
+    display: grid;
+    grid-template-columns: var(--label-w) minmax(0, 1fr) var(--legend-w);
+    position: relative;
+    overflow: hidden;
+    color: var(--scale-ink);
+    font-family: var(--engraving-font);
+}
+
+.scale-row + .scale-row {
+    border-top: 1px solid #363e3710;
+}
+
+.scale-name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+    padding: 0 7px;
+    overflow: hidden;
+    font-size: var(--name-size);
+    font-weight: 600;
+    line-height: 1.1;
+    background: #ffffff30;
+    border-right: 1px solid #343c342b;
+    z-index: 2;
+    white-space: nowrap;
+}
+
+.scale-name small {
+    font-size: 8.5px;
+    font-weight: 400;
+    margin-top: 2px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.scale-legend {
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    overflow: hidden;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
+    background: var(--paper2);
+    border-left: 1px solid #343c342b;
+    z-index: 2;
+}
+
+.legend-formula {
+    display: none;
+}
+
+body[data-formulas="true"] .legend-formula {
+    display: block;
+}
+
+body[data-formulas="true"] .legend-name {
+    display: none;
+}
+
+.syncro-scale-name, .syncro-legend, .dual-legend {
+    display: grid;
+    align-content: center;
+    gap: 5px;
+    line-height: 1;
+}
+
+.syncro-legend, .dual-legend {
+    font-size: 9px;
+}
+
+.negative {
+    color: var(--inverse-ink);
+}
+
+.tick-pane {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.tick-mover, .tick-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+}
+
+.tick-layer {
+    overflow: hidden;
+}
+
+.baseline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 0;
+    border-top: 1px solid currentColor;
+    opacity: .65;
+}
+
+.tick {
+    position: absolute;
+    width: 0;
+    border-left: 1px solid currentColor;
+    transform: translateX(-.5px);
+}
+
+.axis-bottom .baseline, .axis-bottom .tick {
+    bottom: 1px;
+}
+
+.axis-top .baseline, .axis-top .tick {
+    top: 1px;
+}
+
+.tick.micro {
+    height: var(--fine-tick);
+    border-left-color: color-mix(in srgb, currentColor 60%, transparent);
+}
+
+.tick.minor {
+    height: var(--minor-tick);
+    border-left-color: color-mix(in srgb, currentColor 75%, transparent);
+}
+
+.tick.mid {
+    height: var(--mid-tick);
+}
+
+.tick.submajor {
+    height: var(--submajor-tick);
+}
+
+.tick.major {
+    height: var(--major-tick);
+}
+
+.tick.index {
+    height: var(--index-tick);
+}
+
+.tick.gauge {
+    height: var(--major-tick);
+    border-left-color: #215784;
+}
+
+.tick-label, .syncro-number {
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+    color: inherit;
+    font: 500 var(--number-size)/1 var(--engraving-font);
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums lining-nums;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.axis-bottom .tick-label {
+    bottom: var(--label-offset);
+}
+
+.axis-top .tick-label {
+    top: var(--label-offset);
+}
+
+.tick-label.edge-left, .syncro-number.edge-left {
+    transform: none;
+}
+
+.tick-label.edge-right, .syncro-number.edge-right {
+    transform: translateX(-100%);
+}
+
+.tick-label.gauge-label {
+    color: #215784;
+}
+
+.label-hidden {
+    visibility: hidden !important;
+}
+
+.scale-row.tone-red {
+    color: var(--inverse-ink);
+}
+
+.scale-end-label {
+    display: none;
+}
+
+.scale-anchor {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--inverse-ink);
+}
+
+/* Chemical gauge symbols encode the decimal decade, as on the Hemmi Ch rows.
+   Their complete mass remains available in a tooltip and nearest-mark readout. */
+.mass-underlined { text-decoration: underline; text-underline-offset: 2px; }
+.mass-overlined { text-decoration: overline; }
+.tick-label[title] { pointer-events: auto; }

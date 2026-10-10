@@ -1,0 +1,73 @@
+{
+  "activeSide": "back",
+  "viewMode": "both",
+  "presetId": "hemmi257",
+  "theme": "ke",
+  "density": "classic",
+  "modelLabel": "HEMMI 257 - chemical engineering study",
+  "instrumentNote": "Choose Both sides for cross-face calculations. Chemical scales use modern data; the F(t) gas fits are not the original Hemmi calibrations.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [
+    {
+      "id": "X2",
+      "label": "X2",
+      "type": "expression",
+      "min": 1,
+      "max": 100,
+      "pos": "Math.log10(x) / 2",
+      "value": "Math.pow(10, 2 * p)",
+      "tickMode": "log",
+      "formula": "x²",
+      "description": "Example custom square scale made from expressions.",
+      "family": "Custom"
+    }
+  ],
+  "sides": {
+    "front": {
+      "name": "Front - general calculation",
+      "topStator": [
+        "L",
+        "A",
+        "DF"
+      ],
+      "slide": [
+        "CF",
+        "CIF",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "LL3",
+        "LL2",
+        "LL1"
+      ]
+    },
+    "back": {
+      "name": "Back - chemical engineering",
+      "note": "Ch: underline x1, plain x10, overline x100 on D. M1/M2 settings must use the same decade; Xw and X are fractions, not percentages. F(t): air left, CO2 right; modern ideal-gas model. See Chemical scales help for procedures and limits.",
+      "topStator": [
+        "CHEM_CH_AM",
+        "CHEM_CH_NZ",
+        "CHEM_M1_XW"
+      ],
+      "slide": [
+        "CHEM_M2_X",
+        "CHEM_TF",
+        "CHEM_TC",
+        "CHEM_TK",
+        "CHEM_F"
+      ],
+      "bottomStator": [
+        "CHEM_P_KG",
+        "CHEM_P_MMHG_ATM",
+        "CHEM_P_VAC_PSI",
+        "CHEM_TW"
+      ]
+    }
+  }
+}

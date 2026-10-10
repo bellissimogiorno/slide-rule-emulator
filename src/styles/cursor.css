@@ -1,0 +1,42 @@
+/* The single hairline is calibrated to the scale coordinate. The old fixed-
+   pixel auxiliary lines were decorative, not valid conversion hairlines. */
+.cursor {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 34px;
+    transform: translateX(-50%);
+    z-index: 10;
+    cursor: ew-resize;
+    touch-action: none;
+}
+
+.cursor::before {
+    content: "";
+    position: absolute;
+    inset: 1px 1px;
+    border: 1px solid #4c769759;
+    border-radius: 4px;
+    background: #c8dbed08;
+}
+
+.cursor::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 1px;
+    bottom: 1px;
+    border-left: 1px solid #b11b27;
+    transform: translateX(-.5px);
+}
+
+.empty-scale {
+    display: grid;
+    grid-template-columns: var(--label-w) 1fr;
+    height: 27px;
+    font-size: 12px;
+}
+
+.empty-scale > :last-child {
+    padding: 5px 10px;
+}

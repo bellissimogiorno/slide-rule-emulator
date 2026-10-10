@@ -1,0 +1,78 @@
+/* Compact mode uses the space beside long ticks. Medium and short ticks stop
+   below the numeral band; the layout solver avoids all other long ticks. */
+body[data-compact-scales="true"] .scale-row:not(.no-compact-labels) {
+    --major-tick: 16px;
+    --index-tick: 18px;
+    height: var(--compact-row-h);
+}
+
+body[data-compact-scales="true"] .scale-row.dual-scale:not(.no-compact-labels),
+body[data-compact-scales="true"] .scale-row.syncro-scale:not(.no-compact-labels) {
+    --compact-offset: 5.8px;
+    --submajor-tick: 5px;
+    --major-tick: 13px;
+    --index-tick: 15px;
+    height: var(--compact-pair-h);
+}
+
+body[data-compact-scales="true"][data-density="comfortable"] .scale-row:not(.no-compact-labels) {
+    --compact-offset: 8px;
+    --major-tick: 19px;
+    --index-tick: 21px;
+}
+
+body[data-compact-scales="true"] .compact-right {
+    transform: translateX(1.6px) !important;
+}
+
+body[data-compact-scales="true"] .compact-left {
+    transform: translateX(calc(-100% - 1.6px)) !important;
+}
+
+body[data-compact-scales="true"] .compact-split {
+    width: 0;
+    height: 1em;
+    transform: none !important;
+}
+
+.compact-part {
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+}
+
+.compact-part-left {
+    right: 1.6px;
+}
+
+.compact-part-right {
+    left: 1.6px;
+}
+
+body[data-compact-scales="true"] .axis-bottom:not(.dual-scale) .tick-label:is(.compact-right, .compact-left, .compact-split) {
+    top: auto;
+    bottom: var(--compact-offset);
+}
+
+body[data-compact-scales="true"] .dual-scale .tick-layer.upper .tick-label:is(.compact-right, .compact-left, .compact-split) {
+    top: auto;
+    bottom: calc(50% + var(--compact-offset));
+}
+
+body[data-compact-scales="true"] .axis-top:not(.dual-scale) .tick-label:is(.compact-right, .compact-left, .compact-split) {
+    top: var(--compact-offset);
+    bottom: auto;
+}
+
+body[data-compact-scales="true"] .dual-scale .tick-layer.lower .tick-label:is(.compact-right, .compact-left, .compact-split) {
+    top: calc(50% + var(--compact-offset));
+    bottom: auto;
+}
+
+body[data-compact-scales="true"] .syncro-number.positive:is(.compact-right, .compact-left, .compact-split) {
+    bottom: calc(50% + var(--compact-offset));
+}
+
+body[data-compact-scales="true"] .syncro-number.negative:is(.compact-right, .compact-left, .compact-split) {
+    top: calc(50% + var(--compact-offset));
+}

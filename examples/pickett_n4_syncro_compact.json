@@ -1,0 +1,63 @@
+{
+  "activeSide": "back",
+  "presetId": "pickettN4",
+  "theme": "pickett-es",
+  "density": "pickett",
+  "modelLabel": "Pickett N4 · Vector-type log-log duplex",
+  "instrumentNote": "These are genuine Pickett Syncro rows: each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
+  "showFormulas": false,
+  "compactScales": true,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "Root / trigonometric face",
+      "topStator": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "DF"
+      ],
+      "slide": [
+        "CF",
+        "CIF",
+        "T1",
+        "T2",
+        "ST",
+        "S_COS",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "DI",
+        "R1",
+        "R2"
+      ]
+    },
+    "back": {
+      "name": "Syncro combined LL+/− / hyperbolic face",
+      "topStator": [
+        "PLL1",
+        "PLL2",
+        "DFM"
+      ],
+      "slide": [
+        "CFM",
+        "TH",
+        "SH1",
+        "SH2",
+        "LN",
+        "L",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "PLL3",
+        "PLL4"
+      ]
+    }
+  }
+}

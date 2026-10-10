@@ -1,0 +1,92 @@
+/* Two independently graduated layers meet at a common row centre. */
+.scale-row.dual-scale, .scale-row.syncro-scale {
+    height: var(--pair-h);
+}
+
+.dual-scale .tick-layer.upper .baseline, .dual-scale .tick-layer.upper .tick {
+    top: auto;
+    bottom: 50%;
+}
+
+.dual-scale .tick-layer.lower .baseline, .dual-scale .tick-layer.lower .tick {
+    top: 50%;
+    bottom: auto;
+}
+
+.dual-scale .tick-layer.upper .tick-label {
+    top: auto;
+    bottom: calc(50% + var(--label-offset));
+}
+
+.dual-scale .tick-layer.lower .tick-label {
+    top: calc(50% + var(--label-offset));
+    bottom: auto;
+}
+
+.ink-neutral {
+    color: var(--scale-ink);
+}
+
+.ink-red {
+    color: var(--inverse-ink);
+}
+
+.ink-blue {
+    color: #215784;
+}
+
+.ink-green {
+    color: #245c43;
+}
+
+/* Shared Pickett graduations are a single physical tick, not two baselines. */
+.syncro-baseline {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid currentColor;
+    opacity: .65;
+}
+
+.syncro-tick {
+    position: absolute;
+    top: 50%;
+    width: 0;
+    border-left: 1px solid currentColor;
+    transform: translate(-.5px, -50%);
+}
+
+.syncro-tick.micro {
+    height: calc(2 * var(--fine-tick));
+    border-color: color-mix(in srgb, currentColor 60%, transparent);
+}
+
+.syncro-tick.minor {
+    height: calc(2 * var(--minor-tick));
+}
+
+.syncro-tick.mid {
+    height: calc(2 * var(--mid-tick));
+}
+
+.syncro-tick.submajor {
+    height: calc(2 * var(--submajor-tick));
+}
+
+.syncro-tick.major, .syncro-tick.gauge {
+    height: calc(2 * var(--major-tick));
+}
+
+.syncro-tick.index {
+    height: calc(2 * var(--index-tick));
+}
+
+.syncro-number.positive {
+    bottom: calc(50% + var(--label-offset));
+}
+
+.syncro-number.negative {
+    top: calc(50% + var(--label-offset));
+    color: var(--inverse-ink);
+}

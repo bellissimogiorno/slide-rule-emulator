@@ -1,0 +1,37 @@
+{
+  "activeSide": "front",
+  "presetId": "custom",
+  "theme": "neutral",
+  "density": "classic",
+  "modelLabel": "Minimal C/D teaching rule",
+  "instrumentNote": "A deliberately small layout for multiplication and division practice.",
+  "showFormulas": true,
+  "compactScales": true,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "C/D face",
+      "topStator": [],
+      "slide": [
+        "C"
+      ],
+      "bottomStator": [
+        "D"
+      ]
+    },
+    "back": {
+      "name": "Reciprocal face",
+      "topStator": [
+        "DI"
+      ],
+      "slide": [
+        "CI"
+      ],
+      "bottomStator": [
+        "D"
+      ]
+    }
+  }
+}

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <!-- LICENCE_NOTICE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Programmable Classic Duplex Slide Rule Emulator — v{{VERSION}}</title>
+  <!-- STYLE_BUNDLE -->
+</head>
+<body>
+  <noscript><p>This emulator needs JavaScript. No information is sent to a server.</p></noscript>
+  <header>
+    <div>
+      <h1>Programmable classic duplex slide rule</h1>
+      <div class="subtitle">Historically inspired duplex instruments with programmable scale order, compact root banks, true shared-tick Pickett log-log graduations, and optional Versalog/Pickett-style right-and-split numeral packing.</div>
+    </div>
+    <div class="header-actions">
+      <button id="flipButton" class="primary">Flip side</button>
+      <button id="focusButton" aria-pressed="false">Focus rule</button>
+      <button id="resetButton">Reset view</button>
+      <button id="saveHtmlButton">Save standalone copy</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="workbench" class="workbench" aria-label="Slide rule emulator">
+      <div class="toolbar">
+        <div class="cluster">
+          <label class="field">Side
+            <select id="sideSelect" aria-label="Visible side or both sides"></select>
+          </label>
+          <label class="field">Slide
+            <input id="slideRange" type="range" min="-90" max="90" step="0.01" value="0" />
+            <span id="slideText" class="kbd">0.000</span>
+          </label>
+        </div>
+        <div class="cluster">
+          <label class="field">Cursor
+            <input id="cursorRange" type="range" min="0" max="1000" step="0.1" value="500" />
+            <span id="cursorText" class="kbd">0.500</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="view-controls">
+        <label class="field">Magnification
+          <select id="magnificationSelect" aria-label="Magnification"><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
+        </label>
+        <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
+        <span class="hint">Arrow keys: cursor. Shift + arrows: slide. Alt: fine adjustment. Scroll sideways on narrow screens.</span>
+      </div>
+      <div id="appStatus" class="app-status" role="status" hidden></div>
+      <button id="recoveryButton" hidden>Download recovered programme</button>
+      <div id="ruleViewport" class="rule-viewport" tabindex="0" aria-label="Scrollable slide rule">
+      <div class="rule-shell">
+        <div id="modelBadge" class="model-badge">Scientific duplex</div>
+        <div id="ruleTopNote" class="rule-top-note">front</div>
+        <div id="ruleCanvas" class="rule-canvas" tabindex="0" aria-label="Interactive slide rule canvas"></div>
+      </div>
+      </div>
+      <div id="instrumentNote" class="instrument-note"></div>
+      <div id="readout" class="readout" aria-live="polite"></div>
+    </section>
+
+    <aside class="side-panel" aria-label="Programming controls">
+      <div class="panel-section">
+        <div class="panel-heading">
+          <h2 id="scaleLayout" tabindex="-1">Scale layout</h2>
+          <a class="button-like" href="#workbench">Back to rule &uarr;</a>
+        </div>
+        <div class="hint">Use the controls below for quick changes. Use the JSON editor for programmable custom scales and saved layouts.</div>
+        <div class="preset-row">
+          <label class="field">Layout preset
+            <select id="presetSelect" aria-label="Layout preset"></select>
+          </label>
+          <button id="loadPresetButton">Load preset</button>
+        </div>
+        <div id="presetDescription" class="hint" style="margin-top:7px"></div>
+        <div class="appearance-grid">
+          <label class="field">Instrument style
+            <select id="themeSelect" aria-label="Instrument style"></select>
+          </label>
+          <label class="field">Scale spacing
+            <select id="densitySelect" aria-label="Scale spacing"></select>
+          </label>
+          <label class="check-field"><input id="formulaToggle" type="checkbox" /> Show self-documenting formula captions</label>
+          <label class="check-field" title="Pack numerals beside major ticks, or split suitable multi-digit numerals around a tick, in the manner of compact Pickett and Versalog engraving."><input id="compactScaleToggle" type="checkbox" /> Compact scale numbering (right / split)</label>
+        </div>
+        <label id="editSideField" class="field" hidden>Edit face
+          <select id="editSideSelect" aria-label="Face to edit"></select>
+        </label>
+        <div id="railEditors"></div>
+      </div>
+
+      <div class="panel-tools">
+      <details open>
+        <summary>Programme JSON</summary>
+        <p class="hint">Custom expressions use a restricted mathematical language; they cannot execute JavaScript. Arithmetic, powers, parentheses and approved Math functions are supported. For an expression scale, <span class="kbd">pos</span> receives <span class="kbd">x</span> and returns 0..1; <span class="kbd">value</span> receives <span class="kbd">p</span> and returns the scale value. Built-in programmable types also include <span class="kbd">root</span>, <span class="kbd">loglog</span>, <span class="kbd">foldedLog</span>, <span class="kbd">foldedInverse</span>, trigonometric and hyperbolic mappings, and <span class="kbd">pythagorean</span>.</p>
+        <textarea id="jsonEditor" spellcheck="false" aria-label="Slide rule programme JSON"></textarea>
+        <div class="mini-actions">
+          <button id="applyJsonButton" class="primary">Apply JSON</button>
+          <button id="syncJsonButton">Sync from current layout</button>
+          <button id="exportJsonButton">Export JSON</button>
+          <button id="importJsonButton" type="button">Import JSON</button>
+          <input id="importJsonFile" type="file" accept="application/json,.json" hidden />
+        </div>
+        <div id="jsonStatus" class="status" role="status"></div>
+      </details>
+
+      <details>
+        <summary>Chemical scales (Hemmi 257 / Flying Fish 1017)</summary>
+        <p class="hint">Load <strong>Hemmi 257</strong> for its chemical back, or <strong>Flying Fish 1017</strong> for its chemical front. Choose Both sides for cross-face work. These are different presets, with their own scientific faces and photographed row arrangements. The calibrations are modern educational models, not a photographic or certified historical reproduction.</p>
+        <p class="hint"><strong>Ch A-M / N-Z:</strong> 52 element and 18 group/reference marks align with fixed D on the scientific face. Underlined symbols use D &times; 1, plain symbols D &times; 10, overlined symbols D &times; 100. Hover a visible symbol for its value. Readouts identify the nearest mark; they do not interpolate an atomic weight. Representative CIAAW 2024 values are used; Ra[226] is explicitly a mass-number convention.</p>
+        <p class="hint"><strong>M1 / Xw and M2 / X (Flying Fish: Mz / Xz and M / X):</strong> each row packs a mass setting on its left and a fraction scale on its right. Align M2 with M1, keeping the same decimal rescaling for both. For a 20% by mass ammonium-sulphate solution, align M2 = 1.8 under M1 = 13.21, set the cursor to Xw = 0.2, and read X &asymp; 0.033. Xw and X are fractions, not percentages. Density substitution gives volume fractions only under the additive-volume assumption.</p>
+        <p class="hint"><strong>Temperature:</strong> T F and T C (plus T K on the Hemmi) convert a common 100-1000 K range. They share the slide: conversion between them works at any slide setting. Reset the slide to align them with C/D on the other face.</p>
+        <p class="hint"><strong>Pressure:</strong> the common six-decade coordinate covers 0.001-1000 kgf/cm&sup2; absolute. The paired row reads mmHg absolute below one atmosphere and atm above it. The additional Hemmi row reads inHg vacuum below one atmosphere and psi gauge above it. Gauge/vacuum zero uses 101325 Pa, not the ambient pressure at your location. Boundary values of the two segments refer to the same absolute pressure.</p>
+        <p class="hint"><strong>tw:</strong> read equilibrium temperature against the fixed pressure rows, independently of the slide. IAPWS correlations cover ice below the triple point and liquid-water/steam above it, from -20 &deg;C to the critical point at 373.946 &deg;C. No steam saturation state exists above that endpoint.</p>
+        <p class="hint"><strong>F(t):</strong> air is on the left, CO2 on the right. Align the initial gas temperature on F(t) to the initial absolute pressure on P; move the cursor to the final pressure and read the final temperature on the same gas segment. These are reversible, fixed-composition ideal-gas calculations using NIST heat-capacity fits, not compressor-design or real-gas predictions. Air means 79% N2 / 21% O2, valid here from 200-1000 K; CO2 covers 298.15-900 K. An off-scale result is not extrapolated.</p>
+      </details>
+
+      <details>
+        <summary>Flying Fish 1017 notes</summary>
+        <p class="hint">The chemical face includes the near-unity LnI&minus;2 and Ln&minus;2 ranges omitted from the Hemmi layout. The back has LnI&minus;1, LnI0, LnI1, A1; moving lg, T/cot, S/cos, CI, C; and fixed D, Ln1, Ln0, Ln&minus;1. Ln and LnI are exponential log-log scales, not the ordinary logarithm.</p>
+        <p class="hint">The shared chemical functions use the same documented modern mass, pressure, water and ideal-gas models as the Hemmi study. They do not claim identical historical engraving. Original scale extensions, the full historical symbol repertoire and unverified gauge constants are not reproduced. See docs/FLYING_FISH_1017.md in the source package for the photographic evidence and exact mapping convention.</p>
+      </details>
+
+      <details>
+        <summary>Built-in scale library</summary>
+        <div id="libraryList" class="library-list"></div>
+      </details>
+
+      <details>
+        <summary>How to use it</summary>
+        <p class="hint">Drag the middle slide to set the alignment. Drag the glass cursor to read all scales at the hairline. On a classic multiplication setup, align C 1 over a D number, then read products by moving the cursor to another C number and reading D.</p>
+        <p class="hint">Choose Both sides to see the faces together. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored.</p>
+        <p class="hint"><strong>Full-width workspace:</strong> the instrument always comes first, across the available page width. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
+        <p class="hint"><strong>Expanded roots:</strong> write the radicand as <span class="kbd">N = m × 10^k</span>, with 1 &le; m &lt; 10. For an n-th root, choose branch <span class="kbd">(k mod n) + 1</span>, put the cursor at m on D, and read the root mantissa on that branch. Example: 32 = 3.2 × 10^1, so 5R2 reads 2 over D = 3.2. A, K, and x⁵ provide the corresponding power scales.</p>
+        <p class="hint"><strong>Log-log:</strong> LL0 through LL4 cover values above 1; LL00 through LL04 cover values below 1. Pickett paired and Syncro LL± rows use one shared graduation: the black number is above one and the red number immediately below it is its exact reciprocal. The N3 rows are natural-exponential; the N4 rows use Pickett's base-10 geometry.</p>
+        <p class="hint"><strong>Compact scale numbering:</strong> primary numerals are tucked beside their long ticks. When a label cannot fit cleanly to the right, suitable multi-digit labels are divided around the tick. Turn the option off to restore centred-above-tick numbering. A custom scale can opt out with <span class="kbd">"compactLabels": false</span>.</p>
+        <p class="hint"><strong>Trig and hyperbolic:</strong> S, COS, T1, T2, ST, and P cover circular functions. SH1, SH2, TH, H1, H2, and CH provide split hyperbolic-function ranges. Load the Trigonometric or Hyperbolic preset for a less crowded working face.</p>
+      </details>
+      </div>
+    </aside>
+  </main>
+
+  <div class="footer-note">Version {{VERSION}}. This local, self-contained emulator uses ideal mathematical graduations. Historical presets reproduce scale order and visual conventions; specialist faces are educational rather than certified metrology instruments.</div>
+
+  <script id="embedded-program" type="application/json">null</script>
+  <!-- MODULE_BUNDLE -->
+</body>
+</html>

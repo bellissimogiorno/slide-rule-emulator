@@ -1,0 +1,80 @@
+{
+  "activeSide": "front",
+  "viewMode": "single",
+  "presetId": "faber283n",
+  "theme": "faber",
+  "density": "faber",
+  "modelLabel": "A.W. Faber-Castell 2/83N Novo-Duplex",
+  "instrumentNote": "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [
+    {
+      "id": "X2",
+      "label": "X2",
+      "type": "expression",
+      "min": 1,
+      "max": 100,
+      "pos": "Math.log10(x) / 2",
+      "value": "Math.pow(10, 2 * p)",
+      "tickMode": "log",
+      "formula": "x²",
+      "description": "Example custom square scale made from expressions.",
+      "family": "Custom"
+    }
+  ],
+  "sides": {
+    "front": {
+      "name": "Front · trigonometric / folded",
+      "topStator": [
+        "T1",
+        "T2",
+        "K",
+        "A",
+        "DF"
+      ],
+      "slide": [
+        "CF",
+        "B",
+        "CIF",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "DI",
+        "S",
+        "ST",
+        "P"
+      ]
+    },
+    "back": {
+      "name": "Back · W roots / log-log",
+      "topStator": [
+        "LL03",
+        "LL02",
+        "LL01",
+        "LL00",
+        "W2"
+      ],
+      "slide": [
+        "W2P",
+        "CI",
+        "L",
+        "C",
+        "W1P"
+      ],
+      "bottomStator": [
+        "W1",
+        "D",
+        "LL0",
+        "LL1",
+        "LL2",
+        "LL3"
+      ]
+    }
+  }
+}

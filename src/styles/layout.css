@@ -1,0 +1,98 @@
+/* Instrument-first layout. Do not introduce a desktop sidebar here: even a
+   370px editor takes useful precision away from a 1600-1920px slide rule.
+   Only the editor's own contents use responsive columns, below the instrument. */
+main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    padding: 0 28px 24px;
+    align-items: start;
+}
+
+.side-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.panel-tools {
+    min-width: 0;
+}
+
+.panel-tools > details:first-child {
+    margin-top: 0;
+}
+
+.panel-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.panel-heading h2 {
+    margin: 0;
+}
+
+a.button-like {
+    display: inline-block;
+    text-decoration: none;
+}
+
+#workbench, #scaleLayout {
+    scroll-margin-top: 16px;
+}
+
+body.focus-mode .side-panel {
+    display: none;
+}
+
+/* Avoid a dead jump target while controls are hidden. */
+body.focus-mode a[href="#scaleLayout"] {
+    display: none;
+}
+
+@media (max-width: 1500px) {
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .header-actions {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 760px) {
+    header {
+        padding: 18px 12px;
+    }
+    main {
+        padding: 0 8px 18px;
+        gap: 12px;
+    }
+    .workbench, .side-panel {
+        padding: 10px;
+    }
+    .side-panel {
+        display: block;
+    }
+    .panel-tools {
+        margin-top: 18px;
+    }
+    .toolbar {
+        gap: 9px;
+    }
+    .view-controls .hint {
+        text-align: left;
+    }
+    #sideSelect {
+        max-width: 260px;
+    }
+    .readout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

@@ -1,0 +1,570 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Programmable slide rule programme (v3.2.2)",
+  "type": "object",
+  "required": [
+    "sides"
+  ],
+  "properties": {
+    "activeSide": {
+      "type": "string"
+    },
+    "presetId": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "faber",
+        "pickett-es",
+        "pickett-white",
+        "thornton",
+        "ke",
+        "blackbody",
+        "blackbody-wood",
+        "flying-fish",
+        "neutral"
+      ]
+    },
+    "density": {
+      "type": "string",
+      "enum": [
+        "pickett",
+        "blackbody",
+        "faber",
+        "classic",
+        "comfortable"
+      ]
+    },
+    "modelLabel": {
+      "type": "string"
+    },
+    "instrumentNote": {
+      "type": "string"
+    },
+    "showFormulas": {
+      "type": "boolean"
+    },
+    "compactScales": {
+      "type": "boolean"
+    },
+    "slideOffset": {
+      "type": "number",
+      "minimum": -0.9,
+      "maximum": 0.9
+    },
+    "cursor": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "customScales": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+            "not": {
+              "enum": [
+                "constructor",
+                "prototype",
+                "__proto__"
+              ]
+            }
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "log",
+              "inverseLog",
+              "expression",
+              "foldedLog",
+              "foldedInverse",
+              "root",
+              "linear",
+              "reverseLinear",
+              "sin",
+              "cos",
+              "tan",
+              "tan2",
+              "smallAngle",
+              "pythagorean",
+              "sinhLow",
+              "sinhHigh",
+              "tanh",
+              "hypotenuseLow",
+              "hypotenuseHigh",
+              "acosh",
+              "correction",
+              "loglog",
+              "loglog10",
+              "syncroLogLog",
+              "temperature",
+              "temperatureC",
+              "temperatureF",
+              "tempDerived",
+              "bbWavelength",
+              "bbWavenumber",
+              "bbCurve",
+              "composite",
+              "segmented",
+              "waterVapor",
+              "gasEntropy"
+            ]
+          },
+          "compactLabels": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          },
+          "family": {
+            "type": "string"
+          },
+          "formula": {
+            "type": "string"
+          },
+          "pos": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 32
+          },
+          "branch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 31
+          },
+          "decade": {
+            "type": "number",
+            "minimum": -8,
+            "maximum": 1
+          },
+          "sign": {
+            "type": "number",
+            "enum": [
+              -1,
+              1
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "minorDivisions": {
+            "type": "integer",
+            "minimum": 2,
+            "maximum": 100
+          },
+          "majorStep": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "axis": {
+            "type": "string",
+            "enum": [
+              "top",
+              "bottom"
+            ]
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "neutral",
+              "red",
+              "blue",
+              "green"
+            ]
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          },
+          "pMin": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "pMax": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "layers": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "scale"
+                  ],
+                  "properties": {
+                    "scale": {
+                      "type": "string"
+                    },
+                    "caption": {
+                      "type": "string"
+                    },
+                    "tone": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "red",
+                        "blue",
+                        "green"
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "ticks": {
+            "type": "array",
+            "maxItems": 2000,
+            "items": {
+              "type": "object",
+              "required": [
+                "value"
+              ],
+              "properties": {
+                "value": {
+                  "type": "number"
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "micro",
+                    "minor",
+                    "mid",
+                    "submajor",
+                    "major",
+                    "index",
+                    "gauge"
+                  ]
+                },
+                "positiveLabel": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "negativeLabel": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 240
+                },
+                "mass": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "decade": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2
+                  ]
+                }
+              }
+            }
+          },
+          "gauges": {
+            "type": "array",
+            "maxItems": 2000,
+            "items": {
+              "type": "object",
+              "required": [
+                "value"
+              ],
+              "properties": {
+                "value": {
+                  "type": "number"
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "micro",
+                    "minor",
+                    "mid",
+                    "submajor",
+                    "major",
+                    "index",
+                    "gauge"
+                  ]
+                },
+                "positiveLabel": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "negativeLabel": {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                "title": {
+                  "type": "string",
+                  "maxLength": 240
+                },
+                "mass": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "decade": {
+                  "type": "integer",
+                  "enum": [
+                    0,
+                    1,
+                    2
+                  ]
+                }
+              }
+            }
+          },
+          "tickMode": {
+            "type": "string",
+            "enum": [
+              "log",
+              "folded",
+              "root",
+              "linear",
+              "sin",
+              "cos",
+              "tan",
+              "tan2",
+              "smallAngle",
+              "pythagorean",
+              "mapped",
+              "loglog",
+              "loglog10",
+              "syncroLogLog",
+              "temperature",
+              "bbCurve",
+              "reverseLinear",
+              "tempDerived"
+            ]
+          },
+          "coeff": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "power": {
+            "type": "number"
+          },
+          "fold": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "u0": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minTemperature": {
+            "type": "number",
+            "const": 100
+          },
+          "maxTemperature": {
+            "type": "number",
+            "const": 10000
+          },
+          "labelPacking": {
+            "enum": [
+              "centred",
+              "auto"
+            ]
+          },
+          "logBase": {
+            "enum": [
+              "e",
+              "10",
+              10
+            ]
+          },
+          "relation": {
+            "enum": [
+              "power",
+              "linear",
+              "sqrt",
+              "inverse"
+            ]
+          },
+          "curve": {
+            "enum": [
+              "energySpectral",
+              "photonSpectral",
+              "energyShort",
+              "energyLong",
+              "photonShort",
+              "photonLong"
+            ]
+          },
+          "correction": {
+            "enum": [
+              "sd",
+              "td",
+              "isd",
+              "itd"
+            ]
+          },
+          "compactLabel": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "startLabel": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "endLabel": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "foldLabel": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "positiveCaption": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "negativeCaption": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "anchor": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "anchorPos": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "gas": {
+            "enum": [
+              "air",
+              "co2"
+            ]
+          },
+          "origin": {
+            "type": "number"
+          },
+          "referenceOnly": {
+            "type": "boolean"
+          },
+          "refineTicks": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      },
+      "maxItems": 128
+    },
+    "sides": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "topStator",
+          "slide",
+          "bottomStator"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "topStator": {
+            "$ref": "#/$defs/scaleIdArray"
+          },
+          "slide": {
+            "$ref": "#/$defs/scaleIdArray"
+          },
+          "bottomStator": {
+            "$ref": "#/$defs/scaleIdArray"
+          }
+        },
+        "additionalProperties": true
+      },
+      "maxProperties": 8,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+        "not": {
+          "enum": [
+            "constructor",
+            "prototype",
+            "__proto__"
+          ]
+        }
+      }
+    },
+    "magnification": {
+      "type": "number",
+      "enum": [
+        1,
+        1.25,
+        1.5,
+        2
+      ]
+    },
+    "viewMode": {
+      "type": "string",
+      "enum": [
+        "single",
+        "both"
+      ],
+      "description": "Show one selected face or all faces together. activeSide still selects the layout editor."
+    }
+  },
+  "$defs": {
+    "scaleIdArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "maxItems": 40
+    }
+  },
+  "additionalProperties": true,
+  "description": "Structural editor assistance. src/model/validation.js is authoritative for references, strategy compatibility, resource limits and numerical validation; JSON Schema alone cannot validate mathematics."
+}

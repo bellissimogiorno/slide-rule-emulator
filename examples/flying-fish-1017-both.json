@@ -1,0 +1,62 @@
+{
+  "activeSide": "front",
+  "viewMode": "both",
+  "presetId": "flyingFish1017",
+  "theme": "flying-fish",
+  "density": "classic",
+  "modelLabel": "FLYING FISH 1017 - chemical engineering study",
+  "instrumentNote": "Flying Fish 1017: chemical front, scientific back. Photographed row arrangement; modern chemistry and gas models, not a certified historical calibration. Both sides keeps their cursor and slide linked.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "Front - chemical engineering",
+      "note": "Mz/Xz is fixed; M/X moves. Xz is mass fraction and X mole fraction. Pressure is absolute: kgf/cm2 and mmHg/atm. F(t) uses modern air/CO2 models. The outer LnI-2/Ln-2 rows are near-unity exponentials, not linear logarithms.",
+      "topStator": [
+        "FF_LNI_M2",
+        "CHEM_CH_AM",
+        "CHEM_CH_NZ",
+        "FF_MZ_XZ"
+      ],
+      "slide": [
+        "FF_M_X",
+        "CHEM_TF",
+        "CHEM_TC",
+        "CHEM_F"
+      ],
+      "bottomStator": [
+        "FF_P_KG",
+        "CHEM_P_MMHG_ATM",
+        "CHEM_TW",
+        "FF_LN_M2"
+      ]
+    },
+    "back": {
+      "name": "Back - scientific calculation",
+      "note": "Ln and LnI are natural-exponential log-log scales (positive and reciprocal), despite the different scale names. The lg row is the linear base-10 logarithm. Normalised 0-1 rule length; original end extensions and specialist gauge marks are not transcribed.",
+      "topStator": [
+        "FF_LNI_M1",
+        "FF_LNI_0",
+        "FF_LNI_1",
+        "FF_A1"
+      ],
+      "slide": [
+        "FF_LG",
+        "FF_T_COT",
+        "S_COS",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "FF_LN_1",
+        "FF_LN_0",
+        "FF_LN_M1"
+      ]
+    }
+  }
+}

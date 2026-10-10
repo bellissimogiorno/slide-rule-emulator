@@ -1,0 +1,215 @@
+/* Readouts and programme editor remain ordinary, zoom-independent UI. */
+.readout {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
+    gap: 7px;
+}
+
+.readout-card {
+    min-width: 0;
+    border: 1px solid #dce3e7;
+    border-radius: 8px;
+    padding: 9px;
+    background: #fcfdfe;
+    overflow-wrap: anywhere;
+}
+
+.readout-card .scale-id {
+    font-weight: 650;
+    font-size: 13px;
+}
+
+.readout-card .rail-name {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: 5px;
+}
+
+.readout-card .value {
+    margin-top: 4px;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+
+.readout-card .multi {
+    display: grid;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.readout-card.outside {
+    color: #6b747b;
+    background: #f5f7f8;
+}
+
+.panel-section + .panel-section {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #d5dde3;
+}
+
+h2 {
+    margin: 0 0 8px;
+    font-size: 17px;
+}
+
+.hint, .status {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+.status {
+    min-height: 18px;
+    margin-top: 8px;
+    color: #2d6548;
+}
+
+.status.error {
+    color: #a21e2e;
+}
+
+.preset-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: end;
+    margin-top: 12px;
+}
+
+.preset-row .field, .appearance-grid .field {
+    display: grid;
+    gap: 5px;
+}
+
+.preset-row select, .appearance-grid select {
+    width: 100%;
+}
+
+.appearance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.check-field {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+.check-field input {
+    accent-color: var(--accent);
+}
+
+.rail-editor {
+    margin-top: 15px;
+}
+
+.rail-editor-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 650;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.scale-control-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.scale-control-row select {
+    min-width: 0;
+    width: 100%;
+    font-size: 12px;
+}
+
+.scale-control-row button {
+    padding: 5px 7px;
+    font-size: 11px;
+}
+
+details {
+    margin-top: 14px;
+    border: 1px solid #d6dfe5;
+    border-radius: 10px;
+    padding: 11px;
+}
+
+summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+textarea {
+    width: 100%;
+    min-height: 290px;
+    resize: vertical;
+    border: 1px solid #374952;
+    border-radius: 7px;
+    padding: 10px;
+    color: #edf4f8;
+    background: #17242d;
+    font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.mini-actions {
+    margin-top: 8px;
+}
+
+.library-list {
+    max-height: 360px;
+    overflow-y: auto;
+    margin-top: 10px;
+    display: grid;
+    gap: 6px;
+}
+
+.library-item {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid #e0e6e9;
+    border-radius: 6px;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.library-item em {
+    display: block;
+    margin-top: 3px;
+    font-style: normal;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.kbd {
+    font: 11px ui-monospace, monospace;
+    background: #f0f3f5;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.footer-note {
+    padding: 8px 28px 26px;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--muted);
+}
