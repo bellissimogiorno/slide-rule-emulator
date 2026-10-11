@@ -2,7 +2,7 @@
 
 ## Design constraints
 
-A single offline HTML remains the user-facing deliverable, but it is not the maintainable source. The maintainable source consists of forty-six native ES modules and nine focused stylesheets. There is no framework, service worker, fetch-based module loader, dynamic JavaScript compiler or runtime package dependency.
+A single offline HTML remains the user-facing deliverable, but it is not the maintainable source. The maintainable source consists of forty-eight native ES modules and ten focused stylesheets. There is no framework, service worker, fetch-based module loader, dynamic JavaScript compiler or runtime package dependency.
 
 Dependencies point inward:
 
@@ -38,7 +38,7 @@ Unapplied editor text is a separate draft. Normal UI updates do not overwrite it
 
 Source imports use `#core/...`, `#model/...` and similar specifiers. Node resolves them through `package.json`'s `imports` map. `tools/build.mjs` resolves the same identifiers in the browser by embedding each source module exactly once as a base64 data URL in a native import map. Module code is not transpiled or minified. A sourceURL comment gives DevTools recognisable filenames.
 
-CSS is assembled in explicit dependency order: base, scales, paired, compact, cursor, themes, controls, layout, graduations. `src/index.html` provides three build markers (licence, styles and modules). The generated `index.html`, `docs/index.html` and `dist/index.html` are byte-identical: no timestamp, machine path, network result or dependency resolution enters the build. Each publishing root also has an empty `.nojekyll` marker. The build test verifies module bytes; `--check` rejects missing or stale applications and markers. The root and docs copies support branch-based Pages publication without redirects; the workflow publishes only `dist/`. Source modules remain the single editable implementation.
+CSS is assembled in explicit dependency order: base, scales, paired, compact, root-stacks, cursor, themes, controls, layout, graduations. `src/index.html` provides three build markers (licence, styles and modules). The generated `index.html`, `docs/index.html` and `dist/index.html` are byte-identical: no timestamp, machine path, network result or dependency resolution enters the build. Each publishing root also has an empty `.nojekyll` marker. The build test verifies module bytes; `--check` rejects missing or stale applications and markers. The root and docs copies support branch-based Pages publication without redirects; the workflow publishes only `dist/`. Source modules remain the single editable implementation.
 
 This trades a somewhat larger HTML file for zero build dependencies and real module boundaries. It requires browsers with import-map support and permits data-URL JavaScript. A host's restrictive Content Security Policy can block it; do not weaken an existing security policy blindly. For such a host, a future external-module build is preferable. No external-module deployment is presently shipped or claimed tested.
 
@@ -50,6 +50,7 @@ This trades a somewhat larger HTML file for zero build dependencies and real mod
 | New mapping | `core/mappings.js`, `core/scale-types.js` | mathematics + domain validation |
 | Graduation density | `core/ticks/` | coverage + numerical placement + visual matrix |
 | Historical scale order | `catalog/presets/historical.js` | preset references + both-face screenshots |
+| Pickett back-to-back roots | `ui/root-stack.js`, `styles/root-stacks.css` | root-bank structure + branch coordinates + browser geometry |
 | Compact numbering | `ui/labels.js`, `styles/compact.css` | overlap/tick-crossing negative controls |
 | Import/storage/export | `model/`, `ui/files.js` | invalid atomicity, recovery, repeated export |
 | UI controls | `ui/application.js`, `src/index.html` | keyboard and pointer integration |
@@ -78,3 +79,9 @@ needed for this responsive behaviour.
 mappings, adding the 1017's named ranges and compact T/cot and mass/fraction rows.
 It does not duplicate the chemical physics. Sources and intentionally unmodelled
 historical details are in FLYING_FISH_1017.md.
+
+## Root-bank presentation
+
+`rootStack` is a layout, not a scalar mapping. Two square-root or three cube-root children must cover consecutive branches, in order, at full scale length. They retain ordinary `root` mappings and independent tick sets. The last two branches meet one shared spine; a cube bank also has an unruled upper branch. `ui/root-stack.js` renders this structure using the ordinary escaped markup from `ui/tick-markup.js`. One `.root-stack-track` moves all branches together on the slide. `labels.js` processes each `.root-branch` independently, so labels in different vertical bands do not incorrectly suppress each other. The readout includes all children, not just the first two.
+
+Do not implement a root bank using `syncroLogLog`: root-branch round numbers do not in general coincide. See [source evidence and mathematics](PICKETT_ROOTS.md).

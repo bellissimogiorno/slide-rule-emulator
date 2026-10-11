@@ -58,17 +58,41 @@ Composite rows contain one or two layer references, for example:
 
 ```json
 {
-  "id": "ROOT_PAIR",
-  "label": "Roots",
+  "id": "TRIG_PAIR",
+  "label": "Sine / cosine",
   "type": "composite",
   "layers": [
-    {"scale": "R1", "tone": "neutral"},
-    {"scale": "R2", "tone": "red"}
+    {"scale": "S", "tone": "neutral"},
+    {"scale": "COS", "tone": "red"}
   ]
 }
 ```
 
 Nested composites and shared log-log rows inside composites are rejected. A `syncroLogLog` definition already owns its shared positive/reciprocal geometry.
+
+## Back-to-back root banks
+
+Use `PICKETT_SQRT` or `PICKETT_CBRT` as a single rail entry. To customise the names or colours, define a `rootStack`:
+
+```json
+{
+  "id": "MY_ROOT_BANK",
+  "label": "Square roots",
+  "type": "rootStack",
+  "layers": [
+    {"scale": "PICKETT_R1", "caption": "Upper", "tone": "neutral"},
+    {"scale": "PICKETT_R2", "caption": "Lower", "tone": "neutral"}
+  ]
+}
+```
+
+Import `examples/custom_root_banks.json` for a complete editable two- and three-branch example.
+
+A bank needs two children of order 2 or three of order 3. Child branches must be consecutive from zero and occupy the complete scale length. A three-child bank has an unruled first branch, then a shared-line pair. Nested layouts, mixed orders, repeated/out-of-order branches and partial ranges are rejected. Define any custom numerical ticks on the individual child scales, not on the parent bank. Parent mapping or tick parameters are rejected rather than silently ignored.
+
+A layer's explicit `tone` takes precedence over the bank's `tone`; otherwise black is used. All historical root branches increase to the right. `compactLabels: false` on the bank or any child opts the bank out of compact numbering. A bank may be placed on any rail: all its children move as a unit on the slide, and the readout includes all branches. Ordinary `composite` rows still have at most two independent subrows and are not this historical root construction.
+
+The generic `R1`/`R2`/`Q1`/`Q2`/`Q3` entries remain separate and independently customisable; the dedicated Pickett component IDs prevent an unrelated legacy override from breaking a preset. For sources, mathematical relationships and limits, see [Pickett roots](PICKETT_ROOTS.md).
 
 ## Add a built-in family or mapping
 

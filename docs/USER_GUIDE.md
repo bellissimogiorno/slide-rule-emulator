@@ -25,3 +25,11 @@ The Side menu includes **Both sides**. Faces appear one above the other, upright
 Load **Hemmi 257 - Chemical engineering** for the Hemmi chemical face, and expand **Chemical scales (Hemmi 257)** in the application for operating instructions. The [chemical guide](CHEMICAL_SCALES.md) gives the actual units, working examples and modern-calibration limitations. Import `examples/hemmi257-both-sides.json` to open the preset directly in the linked view.
 
 Choose **Flying Fish 1017 - Chemical engineering** for its distinct chemical/scientific arrangement. The [Flying Fish guide](FLYING_FISH_1017.md) explains the paired mass/fraction rows, log-log ranges and calibration limits. Import `examples/flying-fish-1017-both.json` to open both faces directly.
+
+## Pickett square and cube roots
+
+Load **Pickett N3-T / N3-ES** or **Pickett N4-T / N4-ES**, then select Front or Both sides. The two square-root branches meet one common line; the cube-root bank has an unruled upper branch and a back-to-back middle/lower pair. Both ordinary and compact numbering retain this arrangement. The readout lists every branch. The independent generic roots and Faber-Castell W scales retain their own layouts.
+
+For example, set D to 6.4: the cube-root bank reads approximately 1.85664, 4 and 8.61774, for radicands 6.4, 64 and 640 respectively. Decimal exponents still need to be tracked. See the [root guide](PICKETT_ROOTS.md) for fractional radicands and branch-selection rules.
+
+Previously saved layouts are not overwritten during an application update. Export custom work first, then use **Load preset** to adopt the current Pickett layout. The library also offers **PICKETT_SQRT** and **PICKETT_CBRT** to add to a custom layout.

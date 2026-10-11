@@ -12,7 +12,7 @@ import { close, programme } from './helpers.js';
 for (const [id, def] of Object.entries(BUILTIN_SCALES)) {
     test(`catalogue ${id}: valid definition, finite mappings and correctly positioned ticks`, () => {
         validateProgram(programme(def));
-        if (['composite', 'segmented'].includes(def.type))
+        if (['composite', 'segmented', 'rootStack'].includes(def.type))
             return;
         const rt = makeRuntimeScale(def);
         for (let i = 0; i <= 128; i++) {

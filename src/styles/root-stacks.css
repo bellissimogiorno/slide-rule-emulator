@@ -1,0 +1,116 @@
+/* Pickett root banks: one unruled upper branch (cube only), then two branches
+   graduated back-to-back from one physical spine. Do not mirror the x-axis or
+   substitute reciprocal-log-log ticks: each branch has its own root mapping. */
+.scale-row.root-stack {
+    --root-single-h: 0px;
+    --root-pair-h: var(--pair-h);
+    height: calc(var(--root-single-h) + var(--root-pair-h));
+}
+
+.scale-row.root-stack-3 {
+    --root-single-h: var(--row-h);
+}
+
+.root-stack .root-single {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--root-single-h);
+}
+
+.root-stack .root-pair {
+    position: absolute;
+    top: var(--root-single-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.root-branch {
+    position: absolute;
+    inset: 0;
+}
+
+.root-spine {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1px solid currentColor;
+    opacity: .65;
+}
+
+.root-stack .root-single .tick {
+    top: auto;
+    bottom: 1px;
+}
+
+.root-stack .root-single .tick-label,
+.root-stack .root-single .root-gutter-label {
+    top: auto;
+    bottom: var(--label-offset);
+}
+
+.root-stack .root-pair .root-upper .tick {
+    top: auto;
+    bottom: 50%;
+}
+
+.root-stack .root-pair .root-lower .tick {
+    top: 50%;
+    bottom: auto;
+}
+
+.root-stack .root-pair .root-upper .tick-label,
+.root-stack .root-pair .root-gutter-label.root-upper {
+    top: auto;
+    bottom: calc(50% + var(--label-offset));
+}
+
+.root-stack .root-pair .root-lower .tick-label,
+.root-stack .root-pair .root-gutter-label.root-lower {
+    top: calc(50% + var(--label-offset));
+    bottom: auto;
+}
+
+.root-stack-legend { position: relative; }
+.root-stack-gutter { position: absolute; inset: 0 6px; }
+.root-gutter-label { position: absolute; left: 0; line-height: 1; }
+.root-stack-legend .root-gutter-label { font-size: 9px; }
+
+body[data-compact-scales="true"] .scale-row.root-stack:not(.no-compact-labels) {
+    --root-pair-h: var(--compact-pair-h);
+    height: calc(var(--root-single-h) + var(--root-pair-h));
+}
+
+body[data-compact-scales="true"] .scale-row.root-stack-3:not(.no-compact-labels) {
+    --root-single-h: var(--compact-row-h);
+}
+
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-pair {
+    --compact-offset: 5.8px;
+    --submajor-tick: 5px;
+    --major-tick: 13px;
+    --index-tick: 15px;
+}
+
+/* Compact labels share the long-tick band. The normal packing solver retains
+   each branch's own marks and shortens unlabelled tall ticks, independently. */
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-single .tick-label,
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-single .root-gutter-label {
+    top: auto;
+    bottom: var(--compact-offset);
+}
+
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-pair .root-upper .tick-label,
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-pair .root-gutter-label.root-upper {
+    top: auto;
+    bottom: calc(50% + var(--compact-offset));
+}
+
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-pair .root-lower .tick-label,
+body[data-compact-scales="true"] .root-stack:not(.no-compact-labels) .root-pair .root-gutter-label.root-lower {
+    top: calc(50% + var(--compact-offset));
+    bottom: auto;
+}

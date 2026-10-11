@@ -12,7 +12,7 @@
   <header>
     <div>
       <h1>Programmable classic duplex slide rule</h1>
-      <div class="subtitle">Historically inspired duplex instruments with programmable scale order, compact root banks, true shared-tick Pickett log-log graduations, and optional Versalog/Pickett-style right-and-split numeral packing.</div>
+      <div class="subtitle">Historically inspired duplex instruments with programmable scale order, back-to-back Pickett root banks, true shared-tick Pickett log-log graduations, and optional Versalog/Pickett-style right-and-split numeral packing.</div>
     </div>
     <div class="header-actions">
       <button id="flipButton" class="primary">Flip side</button>
@@ -105,6 +105,13 @@
           <input id="importJsonFile" type="file" accept="application/json,.json" hidden />
         </div>
         <div id="jsonStatus" class="status" role="status"></div>
+      </details>
+
+      <details>
+        <summary>Pickett square and cube roots</summary>
+        <p class="hint">Load <strong>Pickett N3</strong> or <strong>N4</strong> and select Front or Both sides. The square-root branches meet one common line. The cube-root bank has an unruled upper branch and a back-to-back middle/lower pair. Both number modes use this construction. Previously saved layouts are retained; use <strong>Load preset</strong> to adopt the current arrangement.</p>
+        <p class="hint">At D = 6.4, the cube-root branches read about 1.85664, 4 and 8.61774, for 6.4, 64 and 640 respectively. For a positive number N = m &times; 10<sup>k</sup>, with 1 &le; m &lt; 10, set D to m. For an order-n root, choose branch 1 plus the nonnegative remainder of k divided by n, then multiply its reading by 10<sup>floor(k/n)</sup>. This works for negative exponents too. The gutter digit-count reminders apply to positive integers.</p>
+        <p class="hint">The root branches have independently positioned round-number graduations; they are not reciprocal log-log pairs. All branches increase to the right and use black ink. In the library, <strong>PICKETT_SQRT</strong> and <strong>PICKETT_CBRT</strong> add complete movable banks; the generic roots, fifth roots and Faber-Castell W scales remain independent.</p>
       </details>
 
       <details>

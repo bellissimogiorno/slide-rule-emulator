@@ -8,7 +8,7 @@ function optimizeScaleLabels(ruleCanvas, compact) {
         });
     };
     ruleCanvas.querySelectorAll(".unlabelled-major").forEach(tick => tick.classList.remove("unlabelled-major"));
-    ruleCanvas.querySelectorAll(".tick-mover").forEach(group => {
+    ruleCanvas.querySelectorAll(".tick-mover:not(.root-stack-track), .root-branch").forEach(group => {
         const useCompact = compact && !group.closest(".no-compact-labels");
         if (useCompact)
             demote(group, optimizeCompactLabelLine(group, ".tick-label", 2.0), ".tick");

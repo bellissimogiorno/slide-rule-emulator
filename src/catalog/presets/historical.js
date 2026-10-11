@@ -80,13 +80,13 @@ export const historicalPresets = {
         density: "pickett",
         showFormulas: false,
         description: "Catalogued N3 arrangement: two full-length square-root and three cube-root branches on one face, with paired natural-exponential LL0+/− through LL3+/− rows on the other.",
-        instrumentNote: "On the log-log face, each black e^(+kD) reading and its red reciprocal e^(−kD) are printed against the same graduation. The root bank uses only five narrow rows for two square-root and three cube-root branches.",
+        instrumentNote: "On the log-log face, each black e^(+kD) reading and its red reciprocal e^(−kD) are printed against the same graduation. The square-root branches share a back-to-back line; the cube-root bank has an unruled upper branch and a shared middle/lower line.",
         sides: {
             front: {
                 name: "Root / trigonometric face",
-                topStator: ["R1", "R2", "K", "A"],
+                topStator: ["PICKETT_SQRT", "K", "A"],
                 slide: ["B", "ST", "S", "T1", "T2", "CI", "C"],
-                bottomStator: ["D", "DI", "Q1", "Q2", "Q3"]
+                bottomStator: ["D", "DI", "PICKETT_CBRT"]
             },
             back: {
                 name: "Combined LL+/− log-log face",
@@ -104,13 +104,13 @@ export const historicalPresets = {
         density: "pickett",
         showFormulas: false,
         description: "Catalogued N4 arrangement: compact cube- and square-root banks, paired S/Cos and tangent graduations, plus Pickett syncro log-log and hyperbolic scales.",
-        instrumentNote: "These are genuine Pickett Syncro rows: each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
+        instrumentNote: "The root face uses Pickett back-to-back root banks. On the Syncro face, each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
         sides: {
             front: {
                 name: "Root / trigonometric face",
-                topStator: ["Q1", "Q2", "Q3", "DF"],
+                topStator: ["PICKETT_CBRT", "DF"],
                 slide: ["CF", "CIF", "T1", "T2", "ST", "S_COS", "CI", "C"],
-                bottomStator: ["D", "DI", "R1", "R2"]
+                bottomStator: ["D", "DI", "PICKETT_SQRT"]
             },
             back: {
                 name: "Syncro combined LL+/− / hyperbolic face",

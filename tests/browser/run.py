@@ -20,6 +20,7 @@ import traceback
 from playwright.sync_api import sync_playwright
 from features import run_features
 from workspace_features import run_workspace_features
+from pickett_roots import run_pickett_roots
 ROOT = Path(__file__).resolve().parents[2]
 GEOMETRY = Path(__file__).with_name('geometry.js').read_text(encoding='utf-8')
 STORAGE_SHIM = "(() => { const values = new Map();\nObject.defineProperty(window, 'localStorage', { configurable: true, value: {\ngetItem: key => values.get(key) ?? null, setItem: (key,value) => values.set(key,String(value)),\nremoveItem: key => values.delete(key), clear: () => values.clear(),\nkey: i => [...values.keys()][i] ?? null, get length() { return values.size; }\n} }); })();"
@@ -253,6 +254,8 @@ def main():
                          args.visual, args.output, report, GEOMETRY)
             run_workspace_features(lambda: page, state, apply, settle, check, load, download,
                                    args.visual, args.output, report, GEOMETRY)
+            run_pickett_roots(lambda: page, state, apply, settle, check, load, download,
+                              args.visual, args.output, report, GEOMETRY)
             load()
             presets = page.evaluate("async()=> (await import('#catalog/presets.js')).PRESETS")
             baseline = state()

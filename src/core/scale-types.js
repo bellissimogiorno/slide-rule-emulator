@@ -13,7 +13,7 @@ export const DEFAULT_TICK_MODES = Object.freeze({
     temperature: 'temperature', temperatureC: 'temperature', temperatureF: 'temperature',
     tempDerived: 'temperature', bbWavelength: 'log', bbWavenumber: 'log', bbCurve: 'bbCurve'
 });
-export const SCALE_TYPES = Object.freeze([...Object.keys(DEFAULT_TICK_MODES), 'composite', 'segmented']);
+export const SCALE_TYPES = Object.freeze([...Object.keys(DEFAULT_TICK_MODES), 'composite', 'segmented', 'rootStack']);
 export const TICK_MODES = Object.freeze([...new Set(Object.values(DEFAULT_TICK_MODES)), 'reverseLinear', 'tempDerived']);
 export const INK_TONES = Object.freeze(['neutral', 'red', 'blue', 'green']);
 export const RAILS = Object.freeze(['topStator', 'slide', 'bottomStator']);

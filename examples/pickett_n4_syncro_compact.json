@@ -4,7 +4,7 @@
   "theme": "pickett-es",
   "density": "pickett",
   "modelLabel": "Pickett N4 · Vector-type log-log duplex",
-  "instrumentNote": "These are genuine Pickett Syncro rows: each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
+  "instrumentNote": "The root face uses Pickett back-to-back root banks. On the Syncro face, each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
   "showFormulas": false,
   "compactScales": true,
   "slideOffset": 0,
@@ -14,9 +14,7 @@
     "front": {
       "name": "Root / trigonometric face",
       "topStator": [
-        "Q1",
-        "Q2",
-        "Q3",
+        "PICKETT_CBRT",
         "DF"
       ],
       "slide": [
@@ -32,8 +30,7 @@
       "bottomStator": [
         "D",
         "DI",
-        "R1",
-        "R2"
+        "PICKETT_SQRT"
       ]
     },
     "back": {

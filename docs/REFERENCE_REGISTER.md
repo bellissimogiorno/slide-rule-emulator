@@ -14,6 +14,8 @@ Sources for instrument layouts, mathematical relationships and implementation de
 - Smithsonian, *Pickett Manual for Dual Base Log Log Slide Rules* — https://www.si.edu/object/pickett-manual-dual-base-log-log-slide-rules%3Anmah_904697
 - Pickett 1968 catalogue scan — https://sliderulemuseum.com/Manuals/Pickett_1968_SlideRuleCatalog_ScanDonatedByStevenDecker.pdf
 
+The exact back-to-back root construction, manual page pointers and primary specimen photographs are documented in [PICKETT_ROOTS.md](PICKETT_ROOTS.md). The root branches retain independent numerical tick coordinates, unlike reciprocal log-log pairs.
+
 ## Thornton AA010
 
 - AA010/P221 instruction scan — https://www.rekeninstrumenten.nl/Sliderule-Simulator-or-Emulator/react_resources/PIC_Thornton/AA010_full.pdf

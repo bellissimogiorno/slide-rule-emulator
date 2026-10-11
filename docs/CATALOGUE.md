@@ -81,6 +81,13 @@ Aliases and composites are counted as definitions, not distinct mathematical fun
 | `FF_MZ_XZ` | Mz / Xz | segmented | Flying Fish 1017 | Flying Fish fixed mass setting followed by mass fraction. Modern binary-odds calibration shared with the Hemmi study. |
 | `FF_M_X` | M / X | segmented | Flying Fish 1017 | Flying Fish moving mass setting followed by mole fraction. Both masses must use the same decade. |
 | `FF_P_KG` | P kgf/cm² | expression | Flying Fish 1017 | Pressure conversion on the common six-decade absolute-pressure coordinate. Gauge and vacuum references use one standard atmosphere. |
+| `PICKETT_R1` | √₁ | root | Pickett back-to-back roots | Pickett square-root branch 1. |
+| `PICKETT_R2` | √₂ | root | Pickett back-to-back roots | Pickett square-root branch 2. |
+| `PICKETT_Q1` | ∛₁ | root | Pickett back-to-back roots | Pickett cube-root branch 1. |
+| `PICKETT_Q2` | ∛₂ | root | Pickett back-to-back roots | Pickett cube-root branch 2. |
+| `PICKETT_Q3` | ∛₃ | root | Pickett back-to-back roots | Pickett cube-root branch 3. |
+| `PICKETT_SQRT` | Square roots | rootStack | Pickett back-to-back roots | Pickett double-length square root: upper and lower branches meet back-to-back on one shared line. Their round-number graduations remain independently positioned. |
+| `PICKETT_CBRT` | Cube roots | rootStack | Pickett back-to-back roots | Pickett triple-length cube root: an unruled upper branch followed by a back-to-back middle/lower pair sharing one line. All three branches increase left to right. |
 | `A` | A | log | Powers and roots | Fixed two-decade square scale; read squares from D and square roots to D. |
 | `B` | B | log | Powers and roots | Sliding two-decade square scale; read squares from C and square roots to C. |
 | `AI` | AI | inverseLog | Powers and roots | Inverted two-decade A scale for reciprocal squares. |

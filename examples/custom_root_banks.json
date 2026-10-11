@@ -1,0 +1,39 @@
+{
+  "activeSide": "front",
+  "viewMode": "single",
+  "presetId": "custom",
+  "theme": "pickett-es",
+  "density": "pickett",
+  "modelLabel": "Custom back-to-back root banks",
+  "instrumentNote": "A programming example, not a historical preset. Set D to a mantissa and read both square-root and all three cube-root branches. Track the decimal exponent separately.",
+  "compactScales": true,
+  "showFormulas": true,
+  "magnification": 1,
+  "cursor": 0.8061799739838872,
+  "slideOffset": 0,
+  "customScales": [
+    {
+      "id": "MY_SQUARE_ROOTS",
+      "label": "Square roots",
+      "type": "rootStack",
+      "layers": [
+        {"scale": "PICKETT_R1", "caption": "Upper", "tone": "neutral"},
+        {"scale": "PICKETT_R2", "caption": "Lower", "tone": "neutral"}
+      ]
+    },
+    {
+      "id": "MY_CUBE_ROOTS",
+      "label": "Cube roots",
+      "type": "rootStack",
+      "layers": ["PICKETT_Q1", "PICKETT_Q2", "PICKETT_Q3"]
+    }
+  ],
+  "sides": {
+    "front": {
+      "name": "Root-bank programming example",
+      "topStator": ["MY_SQUARE_ROOTS"],
+      "slide": ["C"],
+      "bottomStator": ["D", "MY_CUBE_ROOTS"]
+    }
+  }
+}

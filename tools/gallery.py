@@ -41,7 +41,7 @@ for path in sorted((QA / 'features').glob('*.png')):
     name = html.escape(path.stem)
     extra.append(f'<figure><a href="features/{path.name}"><img loading="lazy" src="features/{path.name}" alt="{name}"></a><figcaption>{name}</figcaption></figure>')
 sections.append('<section><h2>Linked faces and responsive views</h2>' + ''.join(extra) + '</section>')
-for folder, title in [('workspace', 'Instrument-first workspace')]:
+for folder, title in [('workspace', 'Instrument-first workspace'), ('pickett-roots', 'Pickett back-to-back root banks')]:
     items = []
     for path in sorted((QA / folder).glob('*.png')):
         name = html.escape(path.stem)

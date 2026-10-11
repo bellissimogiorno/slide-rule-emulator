@@ -179,13 +179,12 @@
     "density": "pickett",
     "showFormulas": false,
     "description": "Catalogued N3 arrangement: two full-length square-root and three cube-root branches on one face, with paired natural-exponential LL0+/− through LL3+/− rows on the other.",
-    "instrumentNote": "On the log-log face, each black e^(+kD) reading and its red reciprocal e^(−kD) are printed against the same graduation. The root bank uses only five narrow rows for two square-root and three cube-root branches.",
+    "instrumentNote": "On the log-log face, each black e^(+kD) reading and its red reciprocal e^(−kD) are printed against the same graduation. The square-root branches share a back-to-back line; the cube-root bank has an unruled upper branch and a shared middle/lower line.",
     "sides": {
       "front": {
         "name": "Root / trigonometric face",
         "topStator": [
-          "R1",
-          "R2",
+          "PICKETT_SQRT",
           "K",
           "A"
         ],
@@ -201,9 +200,7 @@
         "bottomStator": [
           "D",
           "DI",
-          "Q1",
-          "Q2",
-          "Q3"
+          "PICKETT_CBRT"
         ]
       },
       "back": {
@@ -237,14 +234,12 @@
     "density": "pickett",
     "showFormulas": false,
     "description": "Catalogued N4 arrangement: compact cube- and square-root banks, paired S/Cos and tangent graduations, plus Pickett syncro log-log and hyperbolic scales.",
-    "instrumentNote": "These are genuine Pickett Syncro rows: each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
+    "instrumentNote": "The root face uses Pickett back-to-back root banks. On the Syncro face, each black 10^(+kD) value and its red reciprocal 10^(−kD) share one physical tick. DF/M and CF/M fold at ln(10), so the same LL rows also work in base e.",
     "sides": {
       "front": {
         "name": "Root / trigonometric face",
         "topStator": [
-          "Q1",
-          "Q2",
-          "Q3",
+          "PICKETT_CBRT",
           "DF"
         ],
         "slide": [
@@ -260,8 +255,7 @@
         "bottomStator": [
           "D",
           "DI",
-          "R1",
-          "R2"
+          "PICKETT_SQRT"
         ]
       },
       "back": {

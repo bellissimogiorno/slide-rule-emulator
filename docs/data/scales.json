@@ -11562,6 +11562,118 @@
     "formula": "absolute P",
     "description": "Pressure conversion on the common six-decade absolute-pressure coordinate. Gauge and vacuum references use one standard atmosphere."
   },
+  "PICKETT_R1": {
+    "id": "PICKETT_R1",
+    "label": "√₁",
+    "type": "root",
+    "order": 2,
+    "branch": 0,
+    "min": 1,
+    "max": 3.1622776601683795,
+    "tickMode": "root",
+    "formula": "√x · branch 1",
+    "description": "Pickett square-root branch 1.",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral"
+  },
+  "PICKETT_R2": {
+    "id": "PICKETT_R2",
+    "label": "√₂",
+    "type": "root",
+    "order": 2,
+    "branch": 1,
+    "min": 3.1622776601683795,
+    "max": 10,
+    "tickMode": "root",
+    "formula": "√x · branch 2",
+    "description": "Pickett square-root branch 2.",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral"
+  },
+  "PICKETT_Q1": {
+    "id": "PICKETT_Q1",
+    "label": "∛₁",
+    "type": "root",
+    "order": 3,
+    "branch": 0,
+    "min": 1,
+    "max": 2.154434690031884,
+    "tickMode": "root",
+    "formula": "∛x · branch 1",
+    "description": "Pickett cube-root branch 1.",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral"
+  },
+  "PICKETT_Q2": {
+    "id": "PICKETT_Q2",
+    "label": "∛₂",
+    "type": "root",
+    "order": 3,
+    "branch": 1,
+    "min": 2.154434690031884,
+    "max": 4.641588833612778,
+    "tickMode": "root",
+    "formula": "∛x · branch 2",
+    "description": "Pickett cube-root branch 2.",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral"
+  },
+  "PICKETT_Q3": {
+    "id": "PICKETT_Q3",
+    "label": "∛₃",
+    "type": "root",
+    "order": 3,
+    "branch": 2,
+    "min": 4.641588833612778,
+    "max": 10,
+    "tickMode": "root",
+    "formula": "∛x · branch 3",
+    "description": "Pickett cube-root branch 3.",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral"
+  },
+  "PICKETT_SQRT": {
+    "id": "PICKETT_SQRT",
+    "label": "Square roots",
+    "type": "rootStack",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral",
+    "layers": [
+      {
+        "scale": "PICKETT_R1",
+        "caption": "√₁"
+      },
+      {
+        "scale": "PICKETT_R2",
+        "caption": "√₂"
+      }
+    ],
+    "formula": "sqrt(D), sqrt(10D)",
+    "description": "Pickett double-length square root: upper and lower branches meet back-to-back on one shared line. Their round-number graduations remain independently positioned."
+  },
+  "PICKETT_CBRT": {
+    "id": "PICKETT_CBRT",
+    "label": "Cube roots",
+    "type": "rootStack",
+    "family": "Pickett back-to-back roots",
+    "tone": "neutral",
+    "layers": [
+      {
+        "scale": "PICKETT_Q1",
+        "caption": "∛₁"
+      },
+      {
+        "scale": "PICKETT_Q2",
+        "caption": "∛₂"
+      },
+      {
+        "scale": "PICKETT_Q3",
+        "caption": "∛₃"
+      }
+    ],
+    "formula": "cbrt(D), cbrt(10D), cbrt(100D)",
+    "description": "Pickett triple-length cube root: an unruled upper branch followed by a back-to-back middle/lower pair sharing one line. All three branches increase left to right."
+  },
   "A": {
     "id": "A",
     "label": "A",

@@ -32,7 +32,20 @@ def main():
         errors = list(validator.iter_errors(programme))
         if errors:
             raise SystemExit(name + ': ' + '; '.join(error.message for error in errors))
+    # Structural cardinality is separate from semantic root order/references.
+    # In particular, permitting three root branches must not permit three
+    # generic composite subrows or overlapping horizontal segments.
+    cases = [('rootStack', 2, True), ('rootStack', 3, True),
+             ('rootStack', 1, False), ('rootStack', 4, False),
+             ('composite', 2, True), ('composite', 3, False),
+             ('segmented', 2, True), ('segmented', 3, False)]
+    for kind, count, expected in cases:
+        sample = {'customScales': [{'id': 'X', 'type': kind, 'layers': ['R1'] * count}],
+                  'sides': {'front': {'topStator': [], 'slide': [], 'bottomStator': ['X']}}}
+        if validator.is_valid(sample) != expected:
+            raise SystemExit(f'Schema cardinality mismatch: {kind}, {count} layers')
     print(f'Schema is valid; {len(programmes)} default/preset/example programmes pass structurally.')
+    print(f'{len(cases)} positive/negative layout-cardinality controls pass.')
     print('Mathematical domains and mapping compatibility are tested separately by the runtime validator.')
 
 

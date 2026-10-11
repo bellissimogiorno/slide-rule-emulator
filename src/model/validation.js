@@ -161,18 +161,26 @@ function validateScaleFields(definition) {
         fail('referenceOnly must be boolean.');
     if (d.refineTicks !== undefined && typeof d.refineTicks !== 'boolean')
         fail('refineTicks must be boolean.');
-    if (d.referenceOnly && (['composite', 'segmented', 'syncroLogLog'].includes(d.type) || !Array.isArray(d.ticks) || !d.ticks.length ||
+    if (d.referenceOnly && (['composite', 'segmented', 'rootStack', 'syncroLogLog'].includes(d.type) || !Array.isArray(d.ticks) || !d.ticks.length ||
         d.ticks.some(tick => !Number.isFinite(tick.mass) || !(tick.mass > 0) || !tick.label)))
         fail('A reference-only scale needs labelled manual ticks with positive masses.');
-    if (d.layers !== undefined && !['composite', 'segmented'].includes(d.type))
-        fail('Only composite or segmented scales may have layers.');
+    if (d.layers !== undefined && !['composite', 'segmented', 'rootStack'].includes(d.type))
+        fail('Only composite, segmented or rootStack scales may have layers.');
     if (['composite', 'segmented'].includes(d.type) && (!Array.isArray(d.layers) || d.layers.length < 1 || d.layers.length > 2))
         fail('A composite needs one or two layers.');
+    if (d.type === 'rootStack') {
+        if (!Array.isArray(d.layers) || ![2, 3].includes(d.layers.length))
+            fail('A rootStack needs two square-root or three cube-root branches.');
+        // A rootStack is presentation, not an additional scalar mapping. Reject
+        // ignored calibration/ticks rather than accepting misleading settings.
+        for (const key of [...NUMBER_FIELDS, 'pos', 'value', 'tickMode', 'ticks', 'gauges', 'anchor', 'refineTicks', 'referenceOnly'])
+            if (d[key] !== undefined) fail('rootStack: set ' + key + ' on its child scales instead.');
+    }
     validateTickInputs(d);
 }
 function validateRuntime(definition) {
     const d = definition;
-    if (['composite', 'segmented'].includes(d.type))
+    if (['composite', 'segmented', 'rootStack'].includes(d.type))
         return;
     assertTickStrategy(d);
     const rt = makeRuntimeScale(d);
@@ -244,15 +252,16 @@ function validateRuntime(definition) {
 }
 function validateComposites(library) {
     for (const d of Object.values(library)) {
-        if (!['composite', 'segmented'].includes(d.type))
+        if (!['composite', 'segmented', 'rootStack'].includes(d.type))
             continue;
-        if (!Array.isArray(d.layers) || d.layers.length < 1 || d.layers.length > 2)
-            fail(d.id + ': expected one or two child scales.');
+        const rootStack = d.type === 'rootStack';
+        if (!Array.isArray(d.layers) || (rootStack ? ![2, 3].includes(d.layers.length) : d.layers.length < 1 || d.layers.length > 2))
+            fail(d.id + ': incorrect number of child scales.');
         for (const layer of d.layers) {
             const id = typeof layer === 'string' ? layer : layer?.scale;
             if (!identifier(id) || !Object.hasOwn(library, id))
                 fail(d.id + ': missing layer ' + id);
-            if (['composite', 'segmented', 'syncroLogLog'].includes(library[id].type))
+            if (['composite', 'segmented', 'rootStack', 'syncroLogLog'].includes(library[id].type))
                 fail(d.id + ': a composite layer must be an ordinary single-line scale.');
             if (typeof layer !== 'string') {
                 if (!object(layer))
@@ -262,6 +271,16 @@ function validateComposites(library) {
                 if (layer.tone !== undefined && !INK_TONES.includes(layer.tone))
                     fail(d.id + ': unknown layer tone.');
             }
+        }
+        if (rootStack) {
+            d.layers.forEach((layer, branch) => {
+                const child = library[typeof layer === 'string' ? layer : layer.scale];
+                if (child.type !== 'root' || child.order !== d.layers.length || child.branch !== branch)
+                    fail(d.id + ': rootStack children must be consecutive branches of the same square or cube root, in increasing order.');
+                const rt = makeRuntimeScale(child);
+                if (rt.pMin !== 0 || rt.pMax !== 1)
+                    fail(d.id + ': rootStack children must span the full scale length.');
+            });
         }
         if (d.type === 'segmented' && d.layers.length === 2) {
             const intervals = d.layers.map(layer => makeRuntimeScale(library[typeof layer === 'string' ? layer : layer.scale]))

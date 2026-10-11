@@ -12,6 +12,8 @@ Coverage includes scale/reference consistency, independent mathematical identiti
 
 `chemical.test.js` checks mixture fractions, unit conversion, reference symbols, saturation points and numerical integration of Cp/T. `flying-fish.test.js` checks scale inventories, exponential ranges, complementary angles, alignment and shared calibrations. `view.test.js` checks linked-face state and persistence, including programmes that omit the optional view setting.
 
+`pickett-roots.test.js` checks the photographed root-bank order, one shared spine, independently positioned branch graduations, all three cube-root readouts, positive/fractional worked examples and custom-bank validation. It also ensures generic-root overrides do not change the dedicated Pickett components. `tests/browser/pickett_roots.py` adds native/DOM runner checks for spine/tick junctions, linked motion, export/import and visual geometry in both numbering modes. A duplicate-spine injection verifies that a purely stacked regression is detected.
+
 ### Catalogue snapshots and floating-point portability
 
 The committed JSON catalogue is compared with the runtime catalogue using

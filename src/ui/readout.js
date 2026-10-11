@@ -53,7 +53,7 @@ function renderReadout(state, scaleLibrary) {
             if (Array.isArray(def.layers) && def.layers.length) {
                 let outsideAny = false;
                 let insideCount = 0;
-                const values = def.layers.slice(0, 2).map(layerSpec => {
+                const values = def.layers.map(layerSpec => {
                     const spec = typeof layerSpec === "string" ? { scale: layerSpec } : layerSpec;
                     const layerDef = scaleLibrary[spec.scale];
                     if (!layerDef)

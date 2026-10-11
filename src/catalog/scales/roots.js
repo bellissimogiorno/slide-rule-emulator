@@ -1,5 +1,31 @@
 import { makePowerScale, makeRootScale } from "#catalog/factories.js";
+// Dedicated components keep legacy custom R1/R2/Q1/Q2/Q3 overrides independent
+// of these historically constrained stacks.
+function pickettRoot(id, label, order, branch) {
+    return { ...makeRootScale(id, label, order, branch, `Pickett ${order === 2 ? 'square' : 'cube'}-root branch ${branch + 1}.`),
+        family: "Pickett back-to-back roots", tone: "neutral" };
+}
 const rootsScales = {
+    PICKETT_R1: pickettRoot("PICKETT_R1", "\u221a\u2081", 2, 0),
+    PICKETT_R2: pickettRoot("PICKETT_R2", "\u221a\u2082", 2, 1),
+    PICKETT_Q1: pickettRoot("PICKETT_Q1", "\u221b\u2081", 3, 0),
+    PICKETT_Q2: pickettRoot("PICKETT_Q2", "\u221b\u2082", 3, 1),
+    PICKETT_Q3: pickettRoot("PICKETT_Q3", "\u221b\u2083", 3, 2),
+    PICKETT_SQRT: {
+        id: "PICKETT_SQRT", label: "Square roots", type: "rootStack",
+        family: "Pickett back-to-back roots", tone: "neutral",
+        layers: [{ scale: "PICKETT_R1", caption: "\u221a\u2081" }, { scale: "PICKETT_R2", caption: "\u221a\u2082" }],
+        formula: "sqrt(D), sqrt(10D)",
+        description: "Pickett double-length square root: upper and lower branches meet back-to-back on one shared line. Their round-number graduations remain independently positioned."
+    },
+    PICKETT_CBRT: {
+        id: "PICKETT_CBRT", label: "Cube roots", type: "rootStack",
+        family: "Pickett back-to-back roots", tone: "neutral",
+        layers: [{ scale: "PICKETT_Q1", caption: "\u221b\u2081" }, { scale: "PICKETT_Q2", caption: "\u221b\u2082" }, { scale: "PICKETT_Q3", caption: "\u221b\u2083" }],
+        formula: "cbrt(D), cbrt(10D), cbrt(100D)",
+        description: "Pickett triple-length cube root: an unruled upper branch followed by a back-to-back middle/lower pair sharing one line. All three branches increase left to right."
+    },
+
     A: Object.assign(makePowerScale("A", "A", 2, "Fixed two-decade square scale; read squares from D and square roots to D."), { tone: "blue" }),
     B: Object.assign(makePowerScale("B", "B", 2, "Sliding two-decade square scale; read squares from C and square roots to C."), { tone: "blue" }),
     AI: {
