@@ -121,16 +121,11 @@ button:disabled {
     min-width: 0;
 }
 
-.toolbar, .toolbar .cluster, .view-controls {
+.view-controls {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 12px;
-}
-
-.toolbar {
-    justify-content: space-between;
-    margin-bottom: 10px;
 }
 
 .view-controls {
@@ -169,11 +164,6 @@ select, input[type="number"], input[type="text"] {
 
 #sideSelect {
     max-width: min(360px, 65vw);
-}
-
-input[type="range"] {
-    width: min(230px, 32vw);
-    accent-color: var(--accent);
 }
 
 .app-status {

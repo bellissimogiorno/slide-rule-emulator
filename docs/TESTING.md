@@ -14,6 +14,12 @@ Coverage includes scale/reference consistency, independent mathematical identiti
 
 `pickett-roots.test.js` checks the photographed root-bank order, one shared spine, independently positioned branch graduations, all three cube-root readouts, positive/fractional worked examples and custom-bank validation. It also ensures generic-root overrides do not change the dedicated Pickett components. `tests/browser/pickett_roots.py` adds native/DOM runner checks for spine/tick junctions, linked motion, export/import and visual geometry in both numbering modes. A duplicate-spine injection verifies that a purely stacked regression is detected.
 
+### Motion and keyboard controls
+
+`tests/unit/motion.test.js` checks all offered steps and modifiers, endpoint clamping, off-grid precision, key filtering and visible position descriptions. `tests/browser/motion_controls.py` is part of both browser runner modes: it presses actual keys and drags actual grips, rather than assuming that dispatching an input event proves keyboard usability. Checks cover Tab order, one update per key, selecting the last dragged part, S/C, Shift compatibility, six-decimal feedback, nudge buttons, viewport focus, editor isolation, repeated very-fine movement, exports and nine responsive widths. Forced-colour rendering and focus are also exercised. A synthetic event is used only where invoking an operating-system shortcut or composition would be unsafe or misleading.
+
+The screenshots include the control strip and complete Faber, Pickett and Flying Fish views after keyboard movement. Keyboard increments are tested at more than one magnification. Browser test success is not a screen-reader or touch-device conformance claim.
+
 ### Catalogue snapshots and floating-point portability
 
 The committed JSON catalogue is compared with the runtime catalogue using

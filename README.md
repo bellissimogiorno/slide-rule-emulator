@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.6**
+**Version 3.2.7**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -57,7 +57,7 @@ The scale library contains **200 definitions**, including aliases and composite 
 
 Choose **Both sides** to display linked front and back faces. Either face controls the same slide and cursor; **Edit face** selects the layout being edited. The instrument gets the full available width, with the scale editor below it. Compact numbering places numerals alongside or around major ticks. Magnification runs from 100% to 200%; narrow screens scroll the instrument instead of squeezing the graduations.
 
-Drag the slide or cursor, use the position controls, or focus the rule and use the arrow keys. Hold Shift with an arrow to move the slide. The digital cursor readout shows the corresponding scale values. UK English is used throughout the interface and documentation.
+The neighbouring **Slide** and **Cursor** controls use a ridged slide grip and a glass-style hairline grip. Tab to either grip and use the arrow keys; choose **Fine** or **Very fine** for precise positioning, or hold Alt for a tenfold finer step. On the rule, **S** selects the slide and **C** selects the cursor for arrow-key movement. The part last dragged is selected automatically; Shift plus an arrow on the rule also moves the slide. The digital cursor readout shows the corresponding scale values. UK English is used throughout the interface and documentation.
 
 See the [user guide](docs/USER_GUIDE.md), [scale catalogue](docs/CATALOGUE.md), [Hemmi chemical guide](docs/CHEMICAL_SCALES.md) and [Flying Fish guide](docs/FLYING_FISH_1017.md).
 

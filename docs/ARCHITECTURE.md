@@ -85,3 +85,13 @@ historical details are in FLYING_FISH_1017.md.
 `rootStack` is a layout, not a scalar mapping. Two square-root or three cube-root children must cover consecutive branches, in order, at full scale length. They retain ordinary `root` mappings and independent tick sets. The last two branches meet one shared spine; a cube bank also has an unruled upper branch. `ui/root-stack.js` renders this structure using the ordinary escaped markup from `ui/tick-markup.js`. One `.root-stack-track` moves all branches together on the slide. `labels.js` processes each `.root-branch` independently, so labels in different vertical bands do not incorrectly suppress each other. The readout includes all children, not just the first two.
 
 Do not implement a root bank using `syncroLogLog`: root-branch round numbers do not in general coincide. See [source evidence and mathematics](PICKETT_ROOTS.md).
+
+## Motion controls and focus
+
+`ui/motion.js` is a DOM-independent policy module for step sizes, key commands, bounds and six-decimal position descriptions. Coordinates are always normalised scale lengths, not viewport pixels. Ordinary arithmetic is retained when nudging an off-grid imported position; display formatting never rounds the live state.
+
+`ui/application.js` delegates one keyboard listener from the workbench. It accepts keys only from the position cards or the rule viewport, leaving editors and unrelated native controls alone. Focused range inputs select their own target. On the instrument, the last selected/dragged part receives arrows; S/C change that session selection. Shift on the instrument retains the slide shortcut. Recognised motion keys prevent the native range default so there is no duplicate step. All listeners use the application's existing abortable lifetime.
+
+The range inputs retain native range semantics and visible labels. Their legacy UI values (slide times 100; cursor times 1000) are converted only at the DOM boundary, and `aria-valuetext` supplies actual scale-length descriptions. `step="any"` avoids snapping arbitrary saved coordinates to a browser-imposed grid. Explicit keyboard handling and nudge buttons define all offered increments. `styles/motion.css` owns the two neighbouring grip cards and separate Chromium/WebKit and Firefox pseudo-elements, with a forced-colour fallback. Do not add a new pointer implementation for these native inputs.
+
+Precision and selected part are transient controls, not programme fields. This preserves the programme schema and prevents a layout import from changing how a user is currently nudging. Cursor-glass drags retain the initial mouse-to-hairline offset; stator clicks still set an absolute hairline coordinate. Motion updates transforms and readouts without rebuilding graduations.

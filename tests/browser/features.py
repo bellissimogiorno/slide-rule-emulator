@@ -64,7 +64,7 @@ def run_features(get_page, state, apply, settle, check, load, download,
         assert abs(state()['cursor'] - .7) < .001
         linked()
         p.locator('#ruleCanvas').focus(); p.keyboard.press('ArrowLeft'); settle()
-        assert abs(state()['cursor'] - .698) < .001
+        assert abs(state()['cursor'] - .699) < .001
         p.locator('#slideRange').evaluate("el=>{el.value='-12.5';el.dispatchEvent(new Event('input',{bubbles:true}));}")
         settle()
         assert state()['slideOffset'] == -.125

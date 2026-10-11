@@ -25,37 +25,59 @@
   <main>
     <section id="workbench" class="workbench" aria-label="Slide rule emulator">
       <div class="toolbar">
-        <div class="cluster">
-          <label class="field">Side
-            <select id="sideSelect" aria-label="Visible side or both sides"></select>
-          </label>
-          <label class="field">Slide
-            <input id="slideRange" type="range" min="-90" max="90" step="0.01" value="0" />
-            <span id="slideText" class="kbd">0.000</span>
-          </label>
+        <div class="motion-controls" role="group" aria-label="Slide and cursor position controls">
+          <div class="position-control" data-motion="slideOffset">
+            <div class="position-heading">
+              <label for="slideRange">Slide</label>
+              <output id="slideText" for="slideRange" title="Slide offset in scale lengths">+0.000000</output>
+            </div>
+            <div class="position-track">
+              <button type="button" class="nudge" data-nudge="-1" aria-label="Nudge slide left" title="Move slide left one keyboard step">&#x2039;</button>
+              <input id="slideRange" class="motion-range slide-grip" type="range" min="-90" max="90" step="any" value="0" aria-describedby="motionHelp" />
+              <button type="button" class="nudge" data-nudge="1" aria-label="Nudge slide right" title="Move slide right one keyboard step">&#x203A;</button>
+            </div>
+          </div>
+          <div class="position-control" data-motion="cursor">
+            <div class="position-heading">
+              <label for="cursorRange">Cursor</label>
+              <output id="cursorText" for="cursorRange" title="Cursor position in scale lengths from the left index">0.500000</output>
+            </div>
+            <div class="position-track">
+              <button type="button" class="nudge" data-nudge="-1" aria-label="Nudge cursor left" title="Move cursor left one keyboard step">&#x2039;</button>
+              <input id="cursorRange" class="motion-range cursor-grip" type="range" min="0" max="1000" step="any" value="500" aria-describedby="motionHelp" />
+              <button type="button" class="nudge" data-nudge="1" aria-label="Nudge cursor right" title="Move cursor right one keyboard step">&#x203A;</button>
+            </div>
+          </div>
         </div>
-        <div class="cluster">
-          <label class="field">Cursor
-            <input id="cursorRange" type="range" min="0" max="1000" step="0.1" value="500" />
-            <span id="cursorText" class="kbd">0.500</span>
+        <div class="motion-settings">
+          <label class="field">Keyboard step
+            <select id="motionStep" aria-label="Keyboard and nudge step">
+              <option value="0.001">Normal &middot; 0.001</option>
+              <option value="0.0001">Fine &middot; 0.0001</option>
+              <option value="0.00001">Very fine &middot; 0.00001</option>
+            </select>
           </label>
+          <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span>
         </div>
       </div>
-
+      <p id="motionHelp" class="hint motion-help">Tab to either grip, then use &larr; / &rarr;. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects slide; C selects cursor. Positions and steps are in scale lengths.</p>
       <div class="view-controls">
+        <label class="field">Side
+          <select id="sideSelect" aria-label="Visible side or both sides"></select>
+        </label>
         <label class="field">Magnification
           <select id="magnificationSelect" aria-label="Magnification"><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
         </label>
         <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
-        <span class="hint">Arrow keys: cursor. Shift + arrows: slide. Alt: fine adjustment. Scroll sideways on narrow screens.</span>
+        <span class="hint">Scroll sideways on narrow screens.</span>
       </div>
       <div id="appStatus" class="app-status" role="status" hidden></div>
       <button id="recoveryButton" hidden>Download recovered programme</button>
-      <div id="ruleViewport" class="rule-viewport" tabindex="0" aria-label="Scrollable slide rule">
+      <div id="ruleViewport" class="rule-viewport" tabindex="0" aria-label="Scrollable slide rule" aria-describedby="motionHelp">
       <div class="rule-shell">
         <div id="modelBadge" class="model-badge">Scientific duplex</div>
         <div id="ruleTopNote" class="rule-top-note">front</div>
-        <div id="ruleCanvas" class="rule-canvas" tabindex="0" aria-label="Interactive slide rule canvas"></div>
+        <div id="ruleCanvas" class="rule-canvas" tabindex="0" aria-label="Interactive slide rule canvas" aria-describedby="motionHelp"></div>
       </div>
       </div>
       <div id="instrumentNote" class="instrument-note"></div>
@@ -105,6 +127,13 @@
           <input id="importJsonFile" type="file" accept="application/json,.json" hidden />
         </div>
         <div id="jsonStatus" class="status" role="status"></div>
+      </details>
+
+      <details>
+        <summary>Keyboard and fine positioning</summary>
+        <p class="hint">Tab or click into the Slide or Cursor grip, then use Left/Right (or Down/Up) to move that control. Choose <strong>Fine</strong> or <strong>Very fine</strong> in Keyboard step to make precise adjustments without a modifier key. Alt divides the selected step by ten; Page Up/Down uses ten steps. Home/End selects the limits. The small arrow buttons use the same step.</p>
+        <p class="hint">With the instrument focused, <strong>S</strong> selects the slide and <strong>C</strong> selects the cursor. Arrows then move the selected part; clicking or dragging a part selects it too. Shift plus an arrow on the rule temporarily moves the slide. On a focused grip, arrows always control that grip. Keyboard shortcuts leave the JSON editor and menus alone.</p>
+        <p class="hint">Normal, Fine and Very fine mean 0.001, 0.0001 and 0.00001 of the graduated length. Alt plus Very fine reaches 0.000001. The six-decimal position displays show these changes even when movement is less than a screen pixel. These are positional fractions, not scale readings. Exact positions are saved without display rounding; the step setting is session-only.</p>
       </details>
 
       <details>

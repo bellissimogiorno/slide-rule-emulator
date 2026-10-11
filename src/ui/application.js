@@ -1,3 +1,4 @@
+import { motionStep, motionKeyCommand, movedPosition, positionText, positionDescription } from "#ui/motion.js";
 import { loadProgramme, saveProgramme } from "#model/storage.js";
 import { standaloneHtml, downloadBlob as saveBlob } from "#ui/files.js";
 import { DENSITIES, THEMES } from "#catalog/appearance.js";
@@ -35,10 +36,15 @@ function createApplication(document) {
     let dragFace = null;
     let dragStartX = 0;
     let dragStartOffset = 0;
+    let dragStartCursor = 0;
+    let keyboardTarget = "cursor";
     let dragPointerId = null;
     let syncJsonSoon = false;
     let scalePolishFrame = 0;
     const dom = {
+        workbench: document.getElementById("workbench"),
+        motionStep: document.getElementById("motionStep"),
+        motionTarget: document.getElementById("motionTarget"),
         sideSelect: document.getElementById("sideSelect"),
         editSideField: document.getElementById("editSideField"),
         editSideSelect: document.getElementById("editSideSelect"),
@@ -78,6 +84,7 @@ function createApplication(document) {
     };
     function init() {
         normalizeState(state);
+        dom.motionStep.value = "0.001";
         bindEvents();
         render();
         if (startupMessage)
@@ -106,7 +113,26 @@ function createApplication(document) {
         listen(dom.recoveryButton, "click", () => {
             downloadBlob(new Blob([recoveryData], { type: "application/json" }), "slide-rule-recovered-state.json");
         });
-        listen(dom.ruleCanvas, "keydown", onRuleKeyDown);
+        // Delegate once: both native grips and both instrument focus stops work.
+        // Form controls outside the motion cards retain their own shortcuts.
+        listen(dom.workbench, "keydown", onMotionKeyDown);
+        listen(dom.workbench, "focusin", event => {
+            const card = event.target.closest?.(".position-control");
+            if (card) selectMotionTarget(card.dataset.motion);
+        });
+        dom.workbench.querySelectorAll("[data-nudge]").forEach(button => {
+            listen(button, "click", event => {
+                const field = button.closest(".position-control").dataset.motion;
+                selectMotionTarget(field);
+                movePosition(field, { delta: Number(button.dataset.nudge) * motionStep(dom.motionStep.value, event.altKey) });
+            });
+        });
+        // Explicit focus also covers browsers that do not focus a range on drag.
+        for (const grip of [dom.slideRange, dom.cursorRange]) {
+            listen(grip, "pointerdown", event => {
+                if (event.isPrimary !== false && event.button === 0) grip.focus({ preventScroll: true });
+            });
+        }
         listen(window, "pagehide", flushState);
         listen(document, "visibilitychange", () => {
             if (document.hidden)
@@ -136,6 +162,7 @@ function createApplication(document) {
             const focused = document.body.classList.toggle("focus-mode");
             dom.focusButton.textContent = focused ? "Show controls" : "Focus rule";
             dom.focusButton.setAttribute("aria-pressed", String(focused));
+            if (focused) dom.ruleCanvas.focus({ preventScroll: true });
             scheduleResize();
         });
         listen(dom.resetButton, "click", () => {
@@ -147,16 +174,12 @@ function createApplication(document) {
         });
         listen(dom.saveHtmlButton, "click", saveStandaloneCopy);
         listen(dom.slideRange, "input", () => {
-            state.slideOffset = Number(dom.slideRange.value) / 100;
-            scheduleMotion();
-            saveState();
-            requestJsonSync();
+            selectMotionTarget("slideOffset");
+            movePosition("slideOffset", { position: Number(dom.slideRange.value) / 100 });
         });
         listen(dom.cursorRange, "input", () => {
-            state.cursor = Number(dom.cursorRange.value) / 1000;
-            saveState();
-            scheduleMotion();
-            requestJsonSync();
+            selectMotionTarget("cursor");
+            movePosition("cursor", { position: Number(dom.cursorRange.value) / 1000 });
         });
         listen(dom.ruleCanvas, "pointerdown", onPointerDown);
         listen(window, "pointermove", onPointerMove);
@@ -266,19 +289,40 @@ function createApplication(document) {
             }
         });
     }
-    function onRuleKeyDown(event) {
-        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key))
-            return;
-        const field = event.shiftKey ? "slideOffset" : "cursor";
-        const step = event.altKey ? 0.0001 : 0.002;
-        const lo = field === "cursor" ? 0 : -0.9;
-        const hi = field === "cursor" ? 1 : 0.9;
-        state[field] = event.key === "Home" ? lo : event.key === "End" ? hi
-            : clamp(state[field] + (event.key === "ArrowRight" ? step : -step), lo, hi);
+    function selectMotionTarget(field) {
+        keyboardTarget = field;
+        dom.workbench.querySelectorAll(".position-control").forEach(card => {
+            card.classList.toggle("is-selected", card.dataset.motion === field);
+        });
+        const description = "On rule: " + (field === "cursor" ? "cursor" : "slide") + " selected";
+        if (dom.motionTarget.textContent !== description) dom.motionTarget.textContent = description;
+    }
+    function movePosition(field, command) {
+        state[field] = movedPosition(state[field], field, command);
         scheduleMotion();
         saveState();
         requestJsonSync();
-        event.preventDefault();
+    }
+    function onMotionKeyDown(event) {
+        const target = event.target;
+        const card = target.closest?.(".position-control");
+        const onRule = target.closest?.("#ruleViewport");
+        if (!card && !onRule) return;
+        // Do not steal browser/OS shortcuts or an input method's composition.
+        if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey) return;
+        if (onRule && !event.altKey && !event.shiftKey && ["s", "c"].includes(event.key.toLowerCase())) {
+            selectMotionTarget(event.key.toLowerCase() === "s" ? "slideOffset" : "cursor");
+            event.preventDefault();
+            return;
+        }
+        const command = motionKeyCommand(event, dom.motionStep.value);
+        if (!command || dragMode) return;
+        // A focused grip always controls itself. Shift on the rule preserves
+        // the original slide shortcut; otherwise use the last selected part.
+        const field = card ? card.dataset.motion : event.shiftKey ? "slideOffset" : keyboardTarget;
+        if (card) selectMotionTarget(field);
+        movePosition(field, command);
+        event.preventDefault(); // prevent a second, browser-native range step
     }
     function render() {
         scaleLibrary = buildLibrary(state);
@@ -413,8 +457,11 @@ function createApplication(document) {
     function updatePositionControls() {
         dom.slideRange.value = String(state.slideOffset * 100);
         dom.cursorRange.value = String(state.cursor * 1000);
-        dom.slideText.textContent = state.slideOffset.toFixed(3);
-        dom.cursorText.textContent = state.cursor.toFixed(3);
+        dom.slideText.textContent = positionText(state.slideOffset, "slideOffset");
+        dom.cursorText.textContent = positionText(state.cursor, "cursor");
+        dom.slideRange.setAttribute("aria-valuetext", positionDescription(state.slideOffset, "slideOffset"));
+        dom.cursorRange.setAttribute("aria-valuetext", positionDescription(state.cursor, "cursor"));
+        selectMotionTarget(keyboardTarget);
     }
     function renderRailEditors() {
         const side = state.sides[state.activeSide];
@@ -514,10 +561,15 @@ function createApplication(document) {
         dragPointerId = event.pointerId;
         if (onCursor || !onSlide) {
             dragMode = "cursor";
-            updateCursorFromClientX(event.clientX);
+            selectMotionTarget("cursor");
+            // Grabbing the glass away from its hairline must not move it.
+            // Clicking a stator still deliberately places the hairline there.
+            if (!onCursor) updateCursorFromClientX(event.clientX);
+            dragStartCursor = state.cursor;
         }
         else {
             dragMode = "slide";
+            selectMotionTarget("slideOffset");
             dom.ruleCanvas.classList.add("is-dragging");
             const slideRail = dragFace?.querySelector(".slide-rail");
             if (slideRail)
@@ -533,7 +585,9 @@ function createApplication(document) {
         if (dragPointerId !== null && event.pointerId !== dragPointerId)
             return;
         if (dragMode === "cursor") {
-            updateCursorFromClientX(event.clientX);
+            const geometry = getScaleGeometry(dragFace);
+            state.cursor = clamp(dragStartCursor + (event.clientX - dragStartX) / Math.max(1, geometry.screenWidth), 0, 1);
+            scheduleMotion();
         }
         else if (dragMode === "slide") {
             const geometry = getScaleGeometry(dragFace);

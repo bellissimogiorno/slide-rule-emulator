@@ -85,3 +85,8 @@ catalogue captions are recorded individually in [FLYING_FISH_1017.md](FLYING_FIS
 The actual scientific and chemical faces were inspected. No manufacturer 1017
 manual was obtained; the modern chemical equations remain those documented in
 CHEMICAL_SCALES.md, rather than an unsupported historical-calibration claim.
+
+## Keyboard interaction references
+
+- W3C WAI-ARIA Authoring Practices, [Slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/): arrow keys, endpoints, optional larger page-key steps and accessible value descriptions. Native range inputs are retained in this project; this reference does not constitute a conformance certification.
+- W3C, [Understanding character key shortcuts](https://www.w3.org/WAI/WCAG22/Understanding/character-key-shortcuts.html): S/C are enabled only while the instrument has focus, not while editing or dictating elsewhere on the page.
