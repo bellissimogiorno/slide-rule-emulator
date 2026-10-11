@@ -12,6 +12,8 @@ import { BUILTIN_SCALES } from '../src/catalog/scales.js';
 import { validateProgram, parseProgramText } from '../src/model/validation.js';
 const packageInfo = JSON.parse(await readFile(join(ROOT, 'package.json'), 'utf8'));
 assert.equal(APP_VERSION, packageInfo.version, 'Version disagreement');
+assert.equal(await readFile(join(ROOT, 'VERSION'), 'utf8'), packageInfo.version + '\n',
+    'VERSION must match package.json and contain a single LF-terminated line');
 const files = await sourceFiles();
 const graph = new Map();
 for (const file of files) {

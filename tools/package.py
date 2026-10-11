@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = ('src', 'tools', 'tests', 'examples', 'schema', 'docs', 'dist', '.github')
 FILES = (
     'README.md', 'CONTRIBUTING.md', 'SECURITY.md', 'LICENSE', 'LICENSING.md',
-    'package.json', 'package-lock.json', 'requirements-dev.txt',
+    'VERSION', 'package.json', 'package-lock.json', 'requirements-dev.txt',
     '.editorconfig', '.gitattributes', '.gitignore',
 )
 EXCLUDED_PARTS = {'__pycache__', 'node_modules', '.venv', '.git', 'local', 'ci'}
@@ -72,10 +72,10 @@ def main():
     subprocess.run([node, '--test', *unit_files], cwd=ROOT, check=True)
     subprocess.run([node, 'tools/build.mjs', '--check'], cwd=ROOT, check=True)
     version = json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))['version']
-    folder = 'slide-rule-emulator-v' + version
+    folder = 'slide-rule-emulator'
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    target = output / (folder + '-github.zip')
+    target = output / f'slide-rule-emulator-v{version}-github.zip'
     entries = [(name, path.read_bytes()) for name, path in repository_files()]
     manifest = ''.join(hashlib.sha256(data).hexdigest() + '  ' + name + '\n' for name, data in entries)
     temporary = target.with_suffix('.zip.tmp')

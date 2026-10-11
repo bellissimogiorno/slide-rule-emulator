@@ -26,7 +26,7 @@ The workflow follows [GitHub's custom workflow documentation](https://docs.githu
 
 ## Prepare a release
 
-1. Check that `package.json`, `package-lock.json` and `src/version.js` agree. Do not change the persistent storage key merely to match a release number.
+1. Check that `VERSION`, `package.json`, `package-lock.json` and `src/version.js` agree. `VERSION` contains only the version number and a final newline; `npm run check` verifies it against `package.json`. Do not change the persistent storage key merely to match a release number.
 2. Update current documentation and run `npm run catalogue` after catalogue changes.
 3. Run `npm run build`, then `npm run verify`. Commit the generated `dist/index.html` with the source.
 4. Run native browser checks and review screenshots for UI changes. Record unavailable environments rather than implying a pass.
