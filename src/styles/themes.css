@@ -19,7 +19,6 @@ body[data-theme="faber"] .tone-blue .tick-pane, body[data-theme="faber"] .tone-b
 body[data-theme="pickett-es"] {
     --paper: #fff2b3;
     --paper2: #fff5bd;
-    --accent: #9b2730;
 }
 
 body[data-theme="pickett-es"] .rule-shell {
@@ -40,7 +39,6 @@ body[data-theme="pickett-white"] {
 body[data-theme="thornton"] {
     --paper: #f8f2dc;
     --paper2: #fffae8;
-    --accent: #34634f;
 }
 
 body[data-theme="thornton"] .rule-shell {
@@ -59,7 +57,6 @@ body[data-theme="thornton"] .rule-shell::before, body[data-theme="thornton"] .ru
 body[data-theme="ke"] {
     --paper: #faf6e7;
     --paper2: #fffcef;
-    --accent: #902c35;
 }
 
 body[data-theme="ke"] .rule-shell {
@@ -73,7 +70,6 @@ body[data-theme="ke"] .rule-shell::before, body[data-theme="ke"] .rule-shell::af
 body[data-theme="blackbody"] {
     --paper: #fcfcf7;
     --paper2: #fff;
-    --accent: #a82430;
 }
 
 body[data-theme="blackbody"] .rule-shell {
@@ -87,7 +83,6 @@ body[data-theme="blackbody"] .rule-shell::before, body[data-theme="blackbody"] .
 body[data-theme="blackbody-wood"] {
     --paper: #f3ecd3;
     --paper2: #fcf5dd;
-    --accent: #833e2d;
 }
 
 body[data-theme="blackbody-wood"] .rule-shell {
@@ -110,7 +105,6 @@ body[data-theme="blackbody-wood"] .rail.slide-rail {
 body[data-theme="flying-fish"] {
     --paper: #fcfcf3;
     --paper2: #fffffa;
-    --accent: #982b31;
 }
 
 body[data-theme="flying-fish"] .rule-shell {

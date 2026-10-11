@@ -1,4 +1,11 @@
-import { motionStep, motionKeyCommand, movedPosition, positionText, positionDescription } from "#ui/motion.js";
+import { createScaleHistory } from "#model/scale-history.js";
+import { moveScale } from "#model/scale-order.js";
+import { railEditorMarkup, refreshEditorPositions } from "#ui/rail-editor.js";
+import { createRailReorder } from "#ui/rail-reorder.js";
+import { createLoupe } from "#ui/loupe.js";
+import { createStepControls } from "#ui/step-controls.js";
+import { bindPageThemes } from "#ui/page-theme.js";
+import { motionStep, motionStepShortcut, motionKeyCommand, movedPosition, positionText, positionDescription } from "#ui/motion.js";
 import { loadProgramme, saveProgramme } from "#model/storage.js";
 import { standaloneHtml, downloadBlob as saveBlob } from "#ui/files.js";
 import { DENSITIES, THEMES } from "#catalog/appearance.js";
@@ -7,7 +14,7 @@ import { PRESETS } from "#catalog/presets.js";
 import { clamp } from "#core/numbers.js";
 import { buildLibrary, deepClone, exportableState, mergeState, normalizeState } from "#model/program.js";
 import { validateProgram } from "#model/validation.js";
-import { escapeHtml, railLabel, scaleSort, titleCase } from "#ui/html.js";
+import { escapeHtml, scaleSort, titleCase, railLabel } from "#ui/html.js";
 import { optimizeScaleLabels } from "#ui/labels.js";
 import { visibleSideKeys } from "#model/view.js";
 import { renderReadout } from "#ui/readout.js";
@@ -38,12 +45,18 @@ function createApplication(document) {
     let dragStartOffset = 0;
     let dragStartCursor = 0;
     let keyboardTarget = "cursor";
+    let lastMotionFocus = null;
+    let stepControls;
+    let loupe;
+    let railReorder;
+    const scaleHistory = createScaleHistory();
     let dragPointerId = null;
     let syncJsonSoon = false;
     let scalePolishFrame = 0;
     const dom = {
         workbench: document.getElementById("workbench"),
         motionStep: document.getElementById("motionStep"),
+        loupeButton: document.getElementById("loupeButton"),
         motionTarget: document.getElementById("motionTarget"),
         sideSelect: document.getElementById("sideSelect"),
         editSideField: document.getElementById("editSideField"),
@@ -53,6 +66,7 @@ function createApplication(document) {
         appStatus: document.getElementById("appStatus"),
         recoveryButton: document.getElementById("recoveryButton"),
         flipButton: document.getElementById("flipButton"),
+        bothSidesButton: document.getElementById("bothSidesButton"),
         focusButton: document.getElementById("focusButton"),
         resetButton: document.getElementById("resetButton"),
         saveHtmlButton: document.getElementById("saveHtmlButton"),
@@ -73,6 +87,7 @@ function createApplication(document) {
         formulaToggle: document.getElementById("formulaToggle"),
         compactScaleToggle: document.getElementById("compactScaleToggle"),
         railEditors: document.getElementById("railEditors"),
+        reorderStatus: document.getElementById("reorderStatus"),
         jsonEditor: document.getElementById("jsonEditor"),
         jsonStatus: document.getElementById("jsonStatus"),
         applyJsonButton: document.getElementById("applyJsonButton"),
@@ -84,8 +99,25 @@ function createApplication(document) {
     };
     function init() {
         normalizeState(state);
-        dom.motionStep.value = "0.001";
+        stepControls = createStepControls({
+            element: dom.motionStep, signal: lifetime.signal,
+            returnTarget: () => lastMotionFocus?.isConnected ? lastMotionFocus : dom.ruleCanvas,
+            onChange: () => { if (stepControls) selectMotionTarget(keyboardTarget); }
+        });
+        bindPageThemes(document, {
+            signal: lifetime.signal,
+            onStorageFailure: () => showAppStatus("Page theme changed for this session. Browser preferences cannot be saved; a standalone copy retains the chosen page theme.")
+        });
         bindEvents();
+        railReorder = createRailReorder({
+            root: dom.railEditors, status: dom.reorderStatus, onMove: moveEditorScale,
+            refresh: () => refreshEditorPositions(dom.railEditors), signal: lifetime.signal
+        });
+        loupe = createLoupe({
+            document, canvas: dom.ruleCanvas, button: dom.loupeButton,
+            signal: lifetime.signal,
+            returnTarget: () => lastMotionFocus?.isConnected ? lastMotionFocus : dom.ruleCanvas
+        });
         render();
         if (startupMessage)
             showAppStatus(startupMessage);
@@ -119,12 +151,14 @@ function createApplication(document) {
         listen(dom.workbench, "focusin", event => {
             const card = event.target.closest?.(".position-control");
             if (card) selectMotionTarget(card.dataset.motion);
+            if (card || event.target === dom.ruleCanvas || event.target === dom.ruleViewport)
+                lastMotionFocus = event.target;
         });
         dom.workbench.querySelectorAll("[data-nudge]").forEach(button => {
             listen(button, "click", event => {
                 const field = button.closest(".position-control").dataset.motion;
                 selectMotionTarget(field);
-                movePosition(field, { delta: Number(button.dataset.nudge) * motionStep(dom.motionStep.value, event.altKey) });
+                movePosition(field, { delta: Number(button.dataset.nudge) * motionStep(stepControls.value, event.altKey) });
             });
         });
         // Explicit focus also covers browsers that do not focus a range on drag.
@@ -150,6 +184,11 @@ function createApplication(document) {
             saveState();
             renderRailEditors();
             requestJsonSync();
+        });
+        listen(dom.bothSidesButton, "click", () => {
+            state.viewMode = state.viewMode === "both" ? "single" : "both";
+            saveState();
+            render();
         });
         listen(dom.flipButton, "click", () => {
             const keys = Object.keys(state.sides);
@@ -218,6 +257,17 @@ function createApplication(document) {
         });
         listen(dom.railEditors, "change", onRailEditorChange);
         listen(dom.railEditors, "click", onRailEditorClick);
+        listen(dom.railEditors, "keydown", event => {
+            // Scope undo to the scale lists; text editors and native selects
+            // retain their own editing/navigation shortcuts.
+            if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey
+                && !event.isComposing && event.key.toLowerCase() === "z"
+                && !event.target.closest("input, textarea, select, [contenteditable]")
+                && scaleHistory.size) {
+                event.preventDefault();
+                undoScaleEdit();
+            }
+        });
         listen(dom.applyJsonButton, "click", applyJsonProgram);
         listen(dom.syncJsonButton, "click", () => {
             if (jsonDirty && !window.confirm("Replace the unapplied JSON draft with the current layout?"))
@@ -294,7 +344,7 @@ function createApplication(document) {
         dom.workbench.querySelectorAll(".position-control").forEach(card => {
             card.classList.toggle("is-selected", card.dataset.motion === field);
         });
-        const description = "On rule: " + (field === "cursor" ? "cursor" : "slide") + " selected";
+        const description = "On rule: " + (field === "cursor" ? "cursor" : "slide") + " selected; step " + stepControls.value;
         if (dom.motionTarget.textContent !== description) dom.motionTarget.textContent = description;
     }
     function movePosition(field, command) {
@@ -310,12 +360,28 @@ function createApplication(document) {
         if (!card && !onRule) return;
         // Do not steal browser/OS shortcuts or an input method's composition.
         if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey) return;
+        if (!event.altKey && !event.shiftKey && event.key.toLowerCase() === "m") {
+            if (!event.repeat) loupe.toggle();
+            event.preventDefault();
+            return;
+        }
+        if (event.key === "Escape" && loupe.enabled) {
+            loupe.setEnabled(false);
+            event.preventDefault();
+            return;
+        }
         if (onRule && !event.altKey && !event.shiftKey && ["s", "c"].includes(event.key.toLowerCase())) {
             selectMotionTarget(event.key.toLowerCase() === "s" ? "slideOffset" : "cursor");
             event.preventDefault();
             return;
         }
-        const command = motionKeyCommand(event, dom.motionStep.value);
+        const step = motionStepShortcut(event);
+        if (step !== null) {
+            stepControls.select(step);
+            event.preventDefault();
+            return;
+        }
+        const command = motionKeyCommand(event, stepControls.value);
         if (!command || dragMode) return;
         // A focused grip always controls itself. Shift on the rule preserves
         // the original slide shortcut; otherwise use the last selected part.
@@ -360,7 +426,13 @@ function createApplication(document) {
         }).join("");
         dom.sideSelect.innerHTML = options + '<option value="">Both sides</option>';
         dom.sideSelect.value = state.viewMode === "both" ? "" : state.activeSide;
-        dom.flipButton.disabled = state.viewMode === "both" || Object.keys(state.sides).length < 2;
+        const both = state.viewMode === "both";
+        const oneFace = Object.keys(state.sides).length < 2;
+        dom.bothSidesButton.setAttribute("aria-pressed", String(both));
+        dom.bothSidesButton.disabled = oneFace && !both;
+        dom.bothSidesButton.title = both ? "Return to the face selected for editing"
+            : oneFace ? "This programme has only one face" : "Show both faces with linked slide and cursor";
+        dom.flipButton.disabled = both || oneFace;
         dom.flipButton.title = state.viewMode === "both" ? "Both sides are already visible" : "Show the other face";
         dom.editSideField.hidden = state.viewMode !== "both";
         dom.editSideSelect.innerHTML = options;
@@ -391,6 +463,8 @@ function createApplication(document) {
         const preset = PRESETS[id];
         if (!preset)
             return;
+        scaleHistory.clear();
+        dom.reorderStatus.textContent = "";
         state.sides = deepClone(preset.sides);
         state.activeSide = Object.keys(state.sides)[0] || "front";
         state.presetId = id;
@@ -430,6 +504,7 @@ function createApplication(document) {
         }).join("");
         updateSlideTransform();
         updateCursorPosition();
+        loupe.refresh({ structure: true });
         scheduleScalePolish();
     }
     function scheduleScalePolish() {
@@ -438,6 +513,7 @@ function createApplication(document) {
         scalePolishFrame = requestAnimationFrame(() => {
             scalePolishFrame = 0;
             optimizeScaleLabels(dom.ruleCanvas, state.compactScales);
+            loupe.refresh({ structure: true });
             updateCursorPosition();
         });
     }
@@ -453,6 +529,7 @@ function createApplication(document) {
             const geometry = getScaleGeometry(face);
             face.querySelector(".cursor").style.left = `${(geometry.left + clamp(state.cursor, 0, 1) * geometry.width).toFixed(3)}px`;
         });
+        loupe.refresh();
     }
     function updatePositionControls() {
         dom.slideRange.value = String(state.slideOffset * 100);
@@ -464,28 +541,55 @@ function createApplication(document) {
         selectMotionTarget(keyboardTarget);
     }
     function renderRailEditors() {
-        const side = state.sides[state.activeSide];
-        const rails = ["topStator", "slide", "bottomStator"];
-        dom.railEditors.innerHTML = rails.map(rail => {
-            const rows = (side[rail] || []).map((id, idx) => renderScaleControlRow(rail, id, idx)).join("");
-            return `<div class="rail-editor" data-rail="${rail}">
-      <div class="rail-editor-title"><span>${railLabel(rail)}</span><button data-action="add" data-rail="${rail}">Add scale</button></div>
-      ${rows || `<div class="hint">No scales selected.</div>`}
-    </div>`;
-        }).join("");
+        railReorder.cancel(false);
+        dom.railEditors.innerHTML = railEditorMarkup(state.sides[state.activeSide], scaleLibrary);
+        refreshEditorPositions(dom.railEditors);
+        refreshUndoButtons();
     }
-    function renderScaleControlRow(rail, id, idx) {
-        const options = Object.keys(scaleLibrary).sort(scaleSort).map(scaleId => {
-            const def = scaleLibrary[scaleId];
-            const label = `${scaleId} - ${def.description || def.label || "scale"}`;
-            return `<option value="${escapeHtml(scaleId)}" ${scaleId === id ? "selected" : ""}>${escapeHtml(label)}</option>`;
-        }).join("");
-        return `<div class="scale-control-row" data-rail="${rail}" data-index="${idx}">
-    <select aria-label="Scale at position ${idx + 1}">${options}</select>
-    <button title="Move up" data-action="up">Up</button>
-    <button title="Move down" data-action="down">Down</button>
-    <button title="Remove" data-action="remove" class="danger">X</button>
-  </div>`;
+    function refreshUndoButtons() {
+        for (const button of dom.railEditors.querySelectorAll('[data-action="undo"]')) {
+            button.disabled = scaleHistory.size === 0;
+            const label = scaleHistory.size ? `Undo: ${scaleHistory.description}` : "No scale edits to undo";
+            button.setAttribute("aria-label", label);
+            button.title = scaleHistory.size ? `${label}. Ctrl+Z or Command+Z in the scale lists.` : label;
+        }
+    }
+    function undoScaleEdit(buttonRail = null) {
+        railReorder.cancel(false);
+        const restored = scaleHistory.undo(state);
+        if (!restored) return;
+        state = restored.state;
+        saveState();
+        render();
+        const { rail, index } = restored.focus;
+        const list = [...dom.railEditors.querySelectorAll(".rail-row-list")].find(el => el.dataset.rail === rail);
+        const rows = list ? [...list.querySelectorAll(".scale-control-row")] : [];
+        const row = rows[Math.min(index, rows.length - 1)];
+        const undoButton = buttonRail && [...dom.railEditors.querySelectorAll('[data-action="undo"]')]
+            .find(el => el.dataset.rail === buttonRail);
+        const addButton = [...dom.railEditors.querySelectorAll('[data-action="add"]')].find(el => el.dataset.rail === rail);
+        const focus = undoButton && !undoButton.disabled ? undoButton : row?.querySelector(".scale-grip") || addButton;
+        focus?.focus({ preventScroll: true });
+        dom.reorderStatus.textContent = `Undone: ${restored.description}. ${scaleHistory.size ? "Undo is available for earlier scale edits." : "No more scale edits to undo."}`;
+    }
+    function moveEditorScale(from, to) {
+        try {
+            const side = state.sides[state.activeSide];
+            const next = moveScale(side, from, to);
+            if (next === side) return true;
+            scaleHistory.remember(state, `Move ${side[from.rail][from.index]} to ${railLabel(to.rail)}`, from);
+            state.sides[state.activeSide] = next;
+            state.presetId = "custom";
+            saveState();
+            renderRuleAndReadout(false);
+            renderPresetSelect();
+            syncJsonEditor();
+            refreshUndoButtons();
+            return true;
+        } catch (error) {
+            showAppStatus(error.message);
+            return false;
+        }
     }
     function renderLibraryList() {
         const items = Object.keys(scaleLibrary).sort(scaleSort).map(id => {
@@ -502,44 +606,62 @@ function createApplication(document) {
             return;
         const rail = row.dataset.rail;
         const idx = Number(row.dataset.index);
+        const old = state.sides[state.activeSide][rail][idx];
+        if (old === event.target.value) return;
+        scaleHistory.remember(state, `Replace ${old} with ${event.target.value}`, { rail, index: idx });
         state.sides[state.activeSide][rail][idx] = event.target.value;
+        refreshEditorPositions(dom.railEditors);
         state.presetId = "custom";
         saveState();
         renderRuleAndReadout(false);
         renderPresetSelect();
         syncJsonEditor();
+        refreshUndoButtons();
+        dom.reorderStatus.textContent = `${old} replaced with ${event.target.value}. Undo is available.`;
     }
     function onRailEditorClick(event) {
         const button = event.target.closest("button[data-action]");
-        if (!button)
-            return;
+        if (!button || button.disabled) return;
         const action = button.dataset.action;
+        if (action === "undo") { undoScaleEdit(button.dataset.rail); return; }
+        if (!["add", "remove"].includes(action)) return;
         const row = button.closest(".scale-control-row");
         const rail = button.dataset.rail || row?.dataset.rail;
-        if (!rail)
-            return;
+        if (!rail) return;
         const arr = state.sides[state.activeSide][rail];
-        const idx = row ? Number(row.dataset.index) : -1;
+        const idx = row ? Number(row.dataset.index) : arr.length;
+        let message;
         if (action === "add") {
             const totalRows = Object.values(state.sides).reduce((n, side) => n + ["topStator", "slide", "bottomStator"].reduce((m, key) => m + side[key].length, 0), 0);
             if (arr.length >= 40 || totalRows >= 320) {
                 showAppStatus("The programme limit is 40 rows per rail and 320 rows in total.");
                 return;
             }
-            arr.push(defaultScaleForRail(rail));
-        }
-        else if (action === "remove" && idx >= 0) {
+            const id = defaultScaleForRail(rail);
+            scaleHistory.remember(state, `Add ${id} to ${railLabel(rail)}`, { rail, index: idx });
+            arr.push(id);
+            message = `${id} added. Undo is available.`;
+        } else {
+            if (!Number.isInteger(idx) || idx < 0 || idx >= arr.length) return;
+            const id = arr[idx];
+            scaleHistory.remember(state, `Remove ${id} from ${railLabel(rail)}`, { rail, index: idx });
             arr.splice(idx, 1);
-        }
-        else if (action === "up" && idx > 0) {
-            [arr[idx - 1], arr[idx]] = [arr[idx], arr[idx - 1]];
-        }
-        else if (action === "down" && idx >= 0 && idx < arr.length - 1) {
-            [arr[idx + 1], arr[idx]] = [arr[idx], arr[idx + 1]];
+            message = `${id} removed from ${railLabel(rail)}. Use Undo to restore it.`;
         }
         state.presetId = "custom";
         saveState();
-        render();
+        // The library is unchanged: update the face and lists without rebuilding
+        // every library description or losing an unapplied JSON draft.
+        renderRuleAndReadout(false);
+        renderRailEditors();
+        renderPresetSelect();
+        syncJsonEditor();
+        dom.reorderStatus.textContent = message;
+        const list = [...dom.railEditors.querySelectorAll(".rail-row-list")].find(el => el.dataset.rail === rail);
+        const focus = action === "remove"
+            ? [...dom.railEditors.querySelectorAll('[data-action="undo"]')].find(el => el.dataset.rail === rail)
+            : list?.querySelectorAll("select")[idx];
+        focus?.focus({ preventScroll: true });
     }
     function defaultScaleForRail(rail) {
         if (rail === "slide")
@@ -686,6 +808,9 @@ function createApplication(document) {
                 render();
                 throw error;
             }
+            scaleHistory.clear();
+            refreshUndoButtons();
+            dom.reorderStatus.textContent = "";
             jsonDirty = false;
             syncJsonEditor(true);
             saveState();
@@ -748,6 +873,8 @@ function createApplication(document) {
             destroyed = true;
             flushState();
             lifetime.abort();
+            scaleHistory.clear();
+            loupe.destroy();
             resizeObserver?.disconnect();
             for (const frame of [motionFrame, resizeFrame, scalePolishFrame])
                 window.cancelAnimationFrame(frame);

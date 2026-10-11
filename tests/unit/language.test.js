@@ -30,7 +30,7 @@ function checkCatalogueProse(value, location = 'catalogue') {
 
 test('application template declares UK English and consistent programme terminology', async () => {
     const template = await readFile(join(ROOT, 'src/index.html'), 'utf8');
-    assert.match(template, /<html lang="en-GB">/);
+    assert.match(template, /<html\b[^>]*\blang="en-GB"[^>]*>/);
     assert.match(template, /<summary>Programme JSON<\/summary>/);
     assert.doesNotMatch(template, /<summary>Program JSON<\/summary>/);
     // Remove markup so machine names such as embedded-program stay out of prose checks.
@@ -52,10 +52,10 @@ test('committed catalogue data matches the current UK-English runtime catalogue'
 
 test('standalone build retains UK language and compatible standard CSS and seed identifiers', async () => {
     const html = await buildHtml();
-    assert.match(html, /<html lang="en-GB">/);
+    assert.match(html, /<html\b[^>]*\blang="en-GB"[^>]*>/);
     assert.match(html, /<summary>Programme JSON<\/summary>/);
     assert.match(html, /overscroll-behavior-x:\s*contain/);
     assert.match(html, /id="embedded-program"/);
-    assert.match(html, /color-scheme:\s*light/);
+    assert.match(html, /color-scheme:\s*var\(--ui-scheme\)/);
     assert.doesNotMatch(html, /colour-scheme:/);
 });

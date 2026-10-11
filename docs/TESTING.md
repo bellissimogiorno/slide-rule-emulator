@@ -115,3 +115,41 @@ CI uses Ubuntu 24.04, core checks on Node 22 and 24, and native Chromium checks 
 Review actual workflow results; a workflow file alone is not evidence of execution. No repository secrets are required. A local diagnostic using another Playwright version or a system Chromium is not a successful test of the pinned toolchain. See [maintenance](MAINTENANCE.md) for the installed versions and update process.
 
 Before distributing an archive, run the core suite and relevant browser checks, verify its complete SHA-256 manifest, extract it into a fresh directory and rerun `npm run verify`. All three rebuilt `index.html` copies and their `.nojekyll` markers must match byte for byte. Report the tests actually performed and any unavailable environments.
+
+
+### Page themes and focus-preserving step selection
+
+`tests/unit/interface.test.js` tests step shortcuts, button activation, focus preservation, listener cleanup, invalid preference handling, denied storage and palette contrast. `tests/browser/interface_features.py` exercises actual pointer clicks, Tab/Enter/Space, immediate arrows, all four steps, preference storage and standalone defaults, theme isolation, enlarged fonts and responsive layouts. It compares instrument screenshots across the three page themes and retains current-run screenshots outside release archives. The native Pages test also checks page-theme reload persistence. Explicit DOM mode uses its storage substitute and cannot establish native reload behaviour.
+
+### Four-detent selector and pointer loupe
+
+`tests/unit/loupe.test.js` tests screen-space alignment, square dimensions, preserved reading width, short-viewport sizing, viewport-edge placement and instrument-zoom composition without a browser. `tests/unit/interface.test.js` tests all four exact steps, detent boundaries, pointer cancellation, capture release and focus return.
+
+`tests/browser/loupe_features.py` exercises real selector drags at all motion focus stops, live cursor and slide drags through the lens, keyboard updates with a stationary pointer, scoped M/Escape shortcuts, source-to-copy tick/cursor geometry, both faces, page themes, instrument zoom, horizontal scrolling, viewport resizing, exports and cleanup. Lens dimensions and all four rounded corners are checked, including short viewports. Lens geometry is compared with independently measured source tick rectangles, not merely with the transform produced by the implementation. The tests run in the selected native or explicit diagnostic DOM mode; mode limitations remain in the report.
+
+For a shorter interface-focused run, use `python tests/browser/run.py --mode native --suite controls --visual`. It retains the core browser checks and exercises the motion, theme and loupe groups, but omits the specialist preset groups and the full engraving matrix. The default remains `--suite all`; CI does not use the shortened profile.
+
+## Compact readings and editor ordering
+
+`readout.test.js` checks grouped headings, escaping, complete paired/root values, units, off-scale reporting and full-size text. `scale-order.test.js` covers immutable ordering, duplicate occurrences, all catalogue presets, empty/full rails and invalid indices. The browser `editor_features.py` uses actual mouse presses and browser-emulated touch events to check previews, drop/cancel, focus, arrow buttons, keyboard order, edge scrolling, reduced motion, exports and application cleanup. It also checks every preset in both-face view at five viewport widths and three page themes for omitted readings, small text, clipping and page overflow. These focused layout checks use the live application's rendered readouts and complete production CSS in a static browser fixture, first checked against the live readout height. This avoids regenerating unchanged instrument graduations hundreds of times; full-application interaction, viewport and instrument-rendering checks remain separate.
+
+Run that focused suite (with native navigation required) using:
+
+```sh
+python tests/browser/run.py --mode native --suite editor --visual --output qa/editor
+```
+
+`--mode dom` is an explicit diagnostic alternative in restricted environments, not evidence of native navigation or native persistence. The default `--suite all` includes the editor checks as well as the instrument and loupe tests.
+
+
+## Header, compact controls, undo and loupe inactivity
+
+`editor-history.test.js` tests all four cross-rail boundary directions, empty and full destinations, immutable bounded history, duplicate occurrences, restored face selection, and preservation of unrelated view/motion fields. `inactivity.test.js` uses a controlled clock for the exact four-second boundary, repeated input, key holds, switch-off and disposal.
+
+`tests/browser/editor_polish.py` checks the Both sides shortcut and Side menu synchronisation, exports, cross-rail arrow activation, pointer-drag undo, repeated undo of each editor action, delayed restoration, preserved motion/theme/drafts, scope of Ctrl+Z, invalid/valid imports, preset replacement and fresh-export history. It measures attached editor controls and header wrapping at eleven widths in three page themes. Loupe checks inspect actual opacity and transitions after real waits, immediate key/pointer wake, held keys, reduced motion and explicit switch-off.
+
+```sh
+python tests/browser/run.py --mode native --suite polish --visual --output qa/polish
+```
+
+These checks are also included in the default full browser suite. The explicit `--mode dom` diagnostic mode does not establish native navigation, native persistence or cross-browser correctness.

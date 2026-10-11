@@ -1,101 +1,96 @@
+/** Digital readings use the same mappings and precision as the instrument.
+ * Rail headings are shared; compact inline cards never hide or truncate values.
+ */
 import { formatValue } from "#core/format.js";
 import { makeRuntimeScale } from "#core/mappings.js";
 import { clamp } from "#core/numbers.js";
 import { escapeHtml, railLabel } from "#ui/html.js";
-function renderReadout(state, scaleLibrary) {
-    if (state.viewMode === "both") {
-        return Object.entries(state.sides).map(([key, side]) =>
-            `<div class="readout-side-heading">${escapeHtml(side.name || key)}</div>` +
-            renderReadout({ ...state, activeSide: key, viewMode: "single" }, scaleLibrary)).join("");
-    }
-    const side = state.sides[state.activeSide];
-    const cards = [];
-    for (const rail of ["topStator", "slide", "bottomStator"]) {
-        const isSlide = rail === "slide";
-        for (const id of side[rail]) {
-            const def = scaleLibrary[id];
-            if (!def)
-                continue;
-            const readoutLabel = def.compactLabel || def.label || id;
-            const p = isSlide ? state.cursor - state.slideOffset : state.cursor;
-            if (def.type === "syncroLogLog") {
-                const rt = makeRuntimeScale(def);
-                const pMin = Number.isFinite(rt.pMin) ? rt.pMin : 0;
-                const pMax = Number.isFinite(rt.pMax) ? rt.pMax : 1;
-                const outside = p < pMin - 1e-10 || p > pMax + 1e-10;
-                let positiveText = "off scale";
-                let negativeText = "off scale";
-                if (!outside) {
-                    try {
-                        const positiveValue = rt.value(clamp(p, pMin, pMax));
-                        positiveText = formatValue(positiveValue, def);
-                        negativeText = formatValue(1 / positiveValue, def);
-                    }
-                    catch (err) {
-                        positiveText = negativeText = "error";
-                    }
-                }
-                cards.push(`<div class="readout-card ${outside ? "outside" : ""}"><div><span class="scale-id">${escapeHtml(readoutLabel)}</span><span class="rail-name">${railLabel(rail)}</span></div><div class="value multi"><span>+: ${escapeHtml(positiveText)}</span><span>−: ${escapeHtml(negativeText)}</span></div></div>`);
-                continue;
-            }
-            if (def.referenceOnly) {
-                const rt = makeRuntimeScale(def);
-                let nearest, distance = Infinity;
-                for (const mark of def.ticks) {
-                    const delta = Math.abs(rt.pos(mark.value) - p);
-                    if (delta < distance) { nearest = mark; distance = delta; }
-                }
-                const text = nearest && p >= rt.pMin - 1e-10 && p <= rt.pMax + 1e-10
-                    ? `Nearest: ${nearest.label} = ${nearest.mass}` : "off scale";
-                cards.push(`<div class="readout-card"><div><span class="scale-id">${escapeHtml(readoutLabel)}</span><span class="rail-name">${railLabel(rail)}</span></div><div class="value">${escapeHtml(text)}</div></div>`);
-                continue;
-            }
-            if (Array.isArray(def.layers) && def.layers.length) {
-                let outsideAny = false;
-                let insideCount = 0;
-                const values = def.layers.map(layerSpec => {
-                    const spec = typeof layerSpec === "string" ? { scale: layerSpec } : layerSpec;
-                    const layerDef = scaleLibrary[spec.scale];
-                    if (!layerDef)
-                        return `<span>missing</span>`;
-                    const rt = makeRuntimeScale(layerDef);
-                    const pMin = Number.isFinite(rt.pMin) ? rt.pMin : 0;
-                    const pMax = Number.isFinite(rt.pMax) ? rt.pMax : 1;
-                    const outside = p < pMin - 1e-10 || p > pMax + 1e-10;
-                    outsideAny ||= outside;
-                    if (outside && def.type === "segmented") return "";
-                    if (!outside) insideCount++;
-                    let valueText = "off scale";
-                    if (!outside) {
-                        try {
-                            valueText = formatValue(rt.value(clamp(p, pMin, pMax)), layerDef);
-                        }
-                        catch (err) {
-                            valueText = "error";
-                        }
-                    }
-                    return `<span>${escapeHtml(spec.caption || layerDef.label || spec.scale)}: ${escapeHtml(valueText)}</span>`;
-                }).join("");
-                if (def.type === "segmented") outsideAny = insideCount === 0;
-                cards.push(`<div class="readout-card ${outsideAny ? "outside" : ""}"><div><span class="scale-id">${escapeHtml(readoutLabel)}</span><span class="rail-name">${railLabel(rail)}</span></div><div class="value multi">${values || "off scale"}</div></div>`);
-                continue;
-            }
-            const rt = makeRuntimeScale(def);
-            const pMin = Number.isFinite(rt.pMin) ? rt.pMin : 0;
-            const pMax = Number.isFinite(rt.pMax) ? rt.pMax : 1;
-            const outside = p < pMin - 1e-10 || p > pMax + 1e-10;
-            let valueText = "off scale";
-            if (!outside) {
-                try {
-                    valueText = formatValue(rt.value(clamp(p, pMin, pMax)), def);
-                }
-                catch (err) {
-                    valueText = "error";
-                }
-            }
-            cards.push(`<div class="readout-card ${outside ? "outside" : ""}"><div><span class="scale-id">${escapeHtml(readoutLabel)}</span><span class="rail-name">${railLabel(rail)}</span></div><div class="value">${escapeHtml(valueText)}</div></div>`);
-        }
-    }
-    return cards.join("") || `<div class="readout-card"><div class="value">No scales on this side.</div></div>`;
+import { visibleSideKeys } from "#model/view.js";
+
+const RAILS = ["topStator", "slide", "bottomStator"];
+
+function positionOnScale(def, p) {
+    const rt = makeRuntimeScale(def);
+    const min = Number.isFinite(rt.pMin) ? rt.pMin : 0;
+    const max = Number.isFinite(rt.pMax) ? rt.pMax : 1;
+    return { rt, outside: p < min - 1e-10 || p > max + 1e-10, p: clamp(p, min, max) };
 }
-export { renderReadout };
+
+function singleReading(def, p) {
+    const point = positionOnScale(def, p);
+    if (point.outside) return { outside: true, text: "off scale" };
+    try {
+        return { outside: false, text: formatValue(point.rt.value(point.p), def) };
+    } catch {
+        return { outside: false, text: "error" };
+    }
+}
+
+function readings(def, p, library) {
+    if (def.type === "syncroLogLog") {
+        const point = positionOnScale(def, p);
+        let positive = "off scale", negative = "off scale";
+        if (!point.outside) {
+            try {
+                const value = point.rt.value(point.p);
+                positive = formatValue(value, def);
+                negative = formatValue(1 / value, def);
+            } catch {
+                positive = negative = "error";
+            }
+        }
+        return { outside: point.outside, multi: true, texts: [`+: ${positive}`, `\u2212: ${negative}`] };
+    }
+    if (def.referenceOnly) {
+        const point = positionOnScale(def, p);
+        let nearest, distance = Infinity;
+        for (const mark of def.ticks) {
+            const delta = Math.abs(point.rt.pos(mark.value) - p);
+            if (delta < distance) { nearest = mark; distance = delta; }
+        }
+        const text = nearest && !point.outside ? `Nearest: ${nearest.label} = ${nearest.mass}` : "off scale";
+        return { outside: point.outside, texts: [text] };
+    }
+    if (Array.isArray(def.layers) && def.layers.length) {
+        let outsideAny = false, insideCount = 0;
+        const texts = [];
+        for (const layer of def.layers) {
+            const spec = typeof layer === "string" ? { scale: layer } : layer;
+            const child = library[spec.scale];
+            if (!child) { texts.push("missing"); continue; }
+            const reading = singleReading(child, p);
+            outsideAny ||= reading.outside;
+            if (reading.outside && def.type === "segmented") continue;
+            if (!reading.outside) insideCount++;
+            texts.push(`${spec.caption || child.label || spec.scale}: ${reading.text}`);
+        }
+        return { outside: def.type === "segmented" ? insideCount === 0 : outsideAny,
+            multi: true, texts: texts.length ? texts : ["off scale"] };
+    }
+    const reading = singleReading(def, p);
+    return { outside: reading.outside, texts: [reading.text] };
+}
+
+function renderCard(id, def, p, library) {
+    const value = readings(def, p, library);
+    const label = def.compactLabel || def.label || id;
+    const classes = ["readout-card", value.outside ? "outside" : "", def.referenceOnly ? "is-reference" : ""].filter(Boolean).join(" ");
+    const text = value.multi
+        ? value.texts.map(part => `<span>${escapeHtml(part)}</span>`).join("")
+        : escapeHtml(value.texts[0]);
+    return `<div class="${classes}" data-readout-scale="${escapeHtml(id)}"><span class="scale-id">${escapeHtml(label)}</span><div class="value${value.multi ? " multi" : ""}">${text}</div></div>`;
+}
+
+export function renderReadout(state, library) {
+    return visibleSideKeys(state).map(key => {
+        const side = state.sides[key];
+        const groups = RAILS.map(rail => {
+            const p = rail === "slide" ? state.cursor - state.slideOffset : state.cursor;
+            const cards = side[rail].filter(id => library[id]).map(id => renderCard(id, library[id], p, library)).join("");
+            if (!cards) return "";
+            return `<section class="readout-rail" data-readout-rail="${rail}" aria-label="${railLabel(rail)}"><h4 class="rail-name">${railLabel(rail)}</h4><div class="readout-cards">${cards}</div></section>`;
+        }).join("");
+        const title = state.viewMode === "both" ? `<h3 class="readout-side-heading">${escapeHtml(side.name || key)}</h3>` : "";
+        return `<div class="readout-face" data-readout-side="${escapeHtml(key)}">${title}${groups || '<div class="readout-empty">No scales on this side.</div>'}</div>`;
+    }).join("");
+}

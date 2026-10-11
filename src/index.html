@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-page-theme="light">
 <head>
   <meta charset="utf-8" />
   <!-- LICENCE_NOTICE -->
@@ -14,11 +14,24 @@
       <h1>Programmable classic duplex slide rule</h1>
       <div class="subtitle">Historically inspired duplex instruments with programmable scale order, back-to-back Pickett root banks, true shared-tick Pickett log-log graduations, and optional Versalog/Pickett-style right-and-split numeral packing.</div>
     </div>
+    <div class="header-tools">
     <div class="header-actions">
-      <button id="flipButton" class="primary">Flip side</button>
+      <div class="face-actions" role="group" aria-label="Face display">
+        <button id="flipButton" type="button" class="primary">Flip side</button>
+        <button id="bothSidesButton" type="button" aria-pressed="false" aria-controls="ruleCanvas">Both sides</button>
+      </div>
       <button id="focusButton" aria-pressed="false">Focus rule</button>
       <button id="resetButton">Reset view</button>
       <button id="saveHtmlButton">Save standalone copy</button>
+    </div>
+    <div id="pageThemes" class="page-themes" role="group" aria-label="Page theme">
+      <span class="field">Page theme</span>
+      <div class="theme-buttons">
+        <button type="button" data-page-theme="light" aria-pressed="true">Light</button>
+        <button type="button" data-page-theme="dark" aria-pressed="false">Dark</button>
+        <button type="button" data-page-theme="solarised" aria-pressed="false" title="Warm paper and teal page colours">Solarised</button>
+      </div>
+    </div>
     </div>
   </header>
 
@@ -50,17 +63,22 @@
           </div>
         </div>
         <div class="motion-settings">
-          <label class="field">Keyboard step
-            <select id="motionStep" aria-label="Keyboard and nudge step">
-              <option value="0.001">Normal &middot; 0.001</option>
-              <option value="0.0001">Fine &middot; 0.0001</option>
-              <option value="0.00001">Very fine &middot; 0.00001</option>
-            </select>
-          </label>
+          <div id="motionStep" class="step-control" role="group" aria-labelledby="motionStepLabel" aria-describedby="stepHelp">
+            <div id="motionStepLabel" class="field">Keyboard step</div>
+            <div class="step-switch" style="--step-index:1">
+              <span class="step-rail" aria-hidden="true"></span>
+              <span class="step-grip" aria-hidden="true"></span>
+              <button class="step-stop" type="button" data-step="0.005" aria-pressed="false" aria-keyshortcuts="1"><span><kbd>1</kbd> Faster</span><small>0.005</small></button>
+              <button class="step-stop" type="button" data-step="0.001" aria-pressed="true" aria-keyshortcuts="2"><span><kbd>2</kbd> Normal</span><small>0.001</small></button>
+              <button class="step-stop" type="button" data-step="0.0005" aria-pressed="false" aria-keyshortcuts="3"><span><kbd>3</kbd> Fine</span><small>0.0005</small></button>
+              <button class="step-stop" type="button" data-step="0.0001" aria-pressed="false" aria-keyshortcuts="4"><span><kbd>4</kbd> Very fine</span><small>0.0001</small></button>
+            </div>
+            <span id="stepHelp" class="visually-hidden">Click a stop or drag the grip; only four settings are possible. Motion focus is retained. Tab to a setting and press Enter or Space to select it and return to the instrument. Keys 1 to 4 change step while the rule or a motion grip has focus.</span>
+          </div>
           <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span>
         </div>
       </div>
-      <p id="motionHelp" class="hint motion-help">Tab to either grip, then use &larr; / &rarr;. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects slide; C selects cursor. Positions and steps are in scale lengths.</p>
+      <p id="motionHelp" class="hint motion-help">Tab to either grip, then use &larr; / &rarr;. Click a step stop or drag its grip without losing control, or press 1&ndash;4. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects slide; C selects cursor. Positions and steps are in scale lengths.</p>
       <div class="view-controls">
         <label class="field">Side
           <select id="sideSelect" aria-label="Visible side or both sides"></select>
@@ -68,9 +86,11 @@
         <label class="field">Magnification
           <select id="magnificationSelect" aria-label="Magnification"><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
         </label>
+        <button id="loupeButton" type="button" aria-pressed="false" aria-describedby="loupeHelp" title="Magnify the rule and cursor beneath the pointer (M); Escape switches off">2.5&times; loupe</button>
         <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
         <span class="hint">Scroll sideways on narrow screens.</span>
       </div>
+      <span id="loupeHelp" class="visually-hidden">Switch on, then hover over the rule or cursor for a live 2.5 times magnified view. The lens fades after four seconds of inactivity; pointer movement or a keypress restores it immediately. Dragging and keyboard movement remain available. M toggles the loupe when a motion control or the rule has focus; Escape switches it off.</span>
       <div id="appStatus" class="app-status" role="status" hidden></div>
       <button id="recoveryButton" hidden>Download recovered programme</button>
       <div id="ruleViewport" class="rule-viewport" tabindex="0" aria-label="Scrollable slide rule" aria-describedby="motionHelp">
@@ -111,7 +131,9 @@
         <label id="editSideField" class="field" hidden>Edit face
           <select id="editSideSelect" aria-label="Face to edit"></select>
         </label>
+        <p id="reorderHelp" class="hint">Drag a scale by its dotted grip to reorder it or move it to another rail. The stacked arrows and grip up/down keys move one place, crossing to the adjacent rail at its end. Left/right changes rail; Home/End goes to an end; Escape cancels a drag. Undo beside Add scale reverses up to 100 scale edits, including removals, until a preset/programme is loaded or the page is reloaded. Ctrl/Command+Z works on editor grips and buttons.</p>
         <div id="railEditors"></div>
+        <div id="reorderStatus" class="visually-hidden" role="status" aria-live="polite"></div>
       </div>
 
       <div class="panel-tools">
@@ -130,10 +152,20 @@
       </details>
 
       <details>
+        <summary>Pointer magnifying loupe</summary>
+        <p class="hint">Enable <strong>2.5&times; loupe</strong> above the rule, then move the mouse or hovering pen over either face. The lens enlarges the actual graduations and cursor together, including during a drag or keyboard nudge. It does not change the scale coordinates, the page magnification or the keyboard step. After four seconds without pointer movement or a keypress, the lens fades out; move the pointer or press a key to restore it immediately. Holding a key keeps it visible. The lens also hides when the pointer leaves the rule. Press <strong>M</strong> over a focused motion control or rule to toggle it; <strong>Escape</strong> switches it off. Touch devices without hover can use the ordinary Magnification selector instead.</p>
+      </details>
+
+      <details>
         <summary>Keyboard and fine positioning</summary>
-        <p class="hint">Tab or click into the Slide or Cursor grip, then use Left/Right (or Down/Up) to move that control. Choose <strong>Fine</strong> or <strong>Very fine</strong> in Keyboard step to make precise adjustments without a modifier key. Alt divides the selected step by ten; Page Up/Down uses ten steps. Home/End selects the limits. The small arrow buttons use the same step.</p>
+        <p class="hint">Tab or click into the Slide or Cursor grip, then use Left/Right (or Down/Up) to move that control. Choose a <strong>Keyboard step</strong> slider stop without losing motion focus. Keys <strong>1</strong>, <strong>2</strong>, <strong>3</strong> and <strong>4</strong> select Faster (0.005), Normal (0.001), Fine (0.0005) and Very fine (0.0001) while the rule or a grip is focused. Tab and Enter/Space also activate each button and return you to your last motion control. Alt divides the selected step by ten; Page Up/Down uses ten steps. Home/End selects the limits. The small arrow buttons use the same step.</p>
         <p class="hint">With the instrument focused, <strong>S</strong> selects the slide and <strong>C</strong> selects the cursor. Arrows then move the selected part; clicking or dragging a part selects it too. Shift plus an arrow on the rule temporarily moves the slide. On a focused grip, arrows always control that grip. Keyboard shortcuts leave the JSON editor and menus alone.</p>
-        <p class="hint">Normal, Fine and Very fine mean 0.001, 0.0001 and 0.00001 of the graduated length. Alt plus Very fine reaches 0.000001. The six-decimal position displays show these changes even when movement is less than a screen pixel. These are positional fractions, not scale readings. Exact positions are saved without display rounding; the step setting is session-only.</p>
+        <p class="hint">Faster, Normal, Fine and Very fine mean 0.005, 0.001, 0.0005 and 0.0001 of the graduated length. Alt plus Very fine reaches 0.00001. The six-decimal position displays show these changes even when movement is less than a screen pixel. These are positional fractions, not scale readings. Exact positions are saved without display rounding; the step setting is session-only.</p>
+      </details>
+
+      <details>
+        <summary>Page appearance</summary>
+        <p class="hint">The Light, Dark and Solarised buttons at the top change the page, controls, readouts and editor, not the instrument. Instrument style in Scale layout remains independent. Page theme is remembered in this browser when storage is available and included as the default in a saved standalone copy; it is not part of Programme JSON.</p>
       </details>
 
       <details>
@@ -168,7 +200,7 @@
       <details>
         <summary>How to use it</summary>
         <p class="hint">Drag the middle slide to set the alignment. Drag the glass cursor to read all scales at the hairline. On a classic multiplication setup, align C 1 over a D number, then read products by moving the cursor to another C number and reading D.</p>
-        <p class="hint">Choose Both sides to see the faces together. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored.</p>
+        <p class="hint">Use the Both sides button next to Flip side, or the Side menu, to see the faces together. The highlighted Both sides button returns to the selected editing face when clicked again. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored.</p>
         <p class="hint"><strong>Full-width workspace:</strong> the instrument always comes first, across the available page width. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
         <p class="hint"><strong>Expanded roots:</strong> write the radicand as <span class="kbd">N = m × 10^k</span>, with 1 &le; m &lt; 10. For an n-th root, choose branch <span class="kbd">(k mod n) + 1</span>, put the cursor at m on D, and read the root mantissa on that branch. Example: 32 = 3.2 × 10^1, so 5R2 reads 2 over D = 3.2. A, K, and x⁵ provide the corresponding power scales.</p>
         <p class="hint"><strong>Log-log:</strong> LL0 through LL4 cover values above 1; LL00 through LL04 cover values below 1. Pickett paired and Syncro LL± rows use one shared graduation: the black number is above one and the red number immediately below it is its exact reciprocal. The N3 rows are natural-exponential; the N4 rows use Pickett's base-10 geometry.</p>

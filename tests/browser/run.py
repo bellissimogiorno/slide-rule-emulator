@@ -18,10 +18,14 @@ import threading
 import time
 import traceback
 from playwright.sync_api import sync_playwright
+from editor_features import run_editor_features
+from editor_polish import run_editor_polish
 from features import run_features
 from workspace_features import run_workspace_features
 from pickett_roots import run_pickett_roots
 from motion_controls import run_motion_controls
+from interface_features import run_interface_features
+from loupe_features import run_loupe_features
 ROOT = Path(__file__).resolve().parents[2]
 GEOMETRY = Path(__file__).with_name('geometry.js').read_text(encoding='utf-8')
 STORAGE_SHIM = "(() => { const values = new Map();\nObject.defineProperty(window, 'localStorage', { configurable: true, value: {\ngetItem: key => values.get(key) ?? null, setItem: (key,value) => values.set(key,String(value)),\nremoveItem: key => values.delete(key), clear: () => values.clear(),\nkey: i => [...values.keys()][i] ?? null, get length() { return values.size; }\n} }); })();"
@@ -35,13 +39,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=['native', 'dom'], default='native')
     parser.add_argument('--visual', action='store_true')
+    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish'], default='all',
+                        help='all checks (default), controls, readout/editor, or header/undo/idle checks')
     parser.add_argument('--executable', default=os.environ.get('CHROMIUM_EXECUTABLE'))
     parser.add_argument('--output', type=Path, default=ROOT / 'qa')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     html = (ROOT / 'dist/index.html').read_text(encoding='utf-8')
     licence_notice = '<!--\n' + (ROOT / 'LICENSE').read_text(encoding='utf-8').rstrip() + '\n-->'
-    report = {'mode': args.mode, 'python': platform.python_version(), 'platform': platform.platform(), 'playwright': importlib.metadata.version('playwright'), 'functional': [], 'rendering': [], 'errors': [], 'limitations': ['Opaque-origin DOM execution; native navigation and native persistence are NOT tested.'] if args.mode == 'dom' else []}
+    report = {'mode': args.mode, 'suite': args.suite, 'python': platform.python_version(), 'platform': platform.platform(), 'playwright': importlib.metadata.version('playwright'), 'functional': [], 'rendering': [], 'errors': [], 'limitations': ['Opaque-origin DOM execution; native navigation and native persistence are NOT tested.'] if args.mode == 'dom' else []}
     server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(QuietHandler, directory=str(ROOT / 'dist')))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -251,14 +257,26 @@ def main():
                 assert download('#recoveryButton') == 'corrupt-data'
             check('corrupt saved programme remains downloadable', recovery)
             load()
-            run_features(lambda: page, state, apply, settle, check, load, download,
-                         args.visual, args.output, report, GEOMETRY)
-            run_workspace_features(lambda: page, state, apply, settle, check, load, download,
+            if args.suite == 'all':
+                run_features(lambda: page, state, apply, settle, check, load, download,
+                             args.visual, args.output, report, GEOMETRY)
+                run_workspace_features(lambda: page, state, apply, settle, check, load, download,
+                                       args.visual, args.output, report, GEOMETRY)
+                run_pickett_roots(lambda: page, state, apply, settle, check, load, download,
+                                  args.visual, args.output, report, GEOMETRY)
+            if args.suite in ('all', 'polish'):
+                run_editor_polish(lambda: page, state, apply, settle, check, load, download,
+                                  args.visual, args.output, report, GEOMETRY)
+            if args.suite in ('all', 'editor'):
+                run_editor_features(lambda: page, state, apply, settle, check, load, download,
+                                    args.visual, args.output, report, GEOMETRY)
+            if args.suite in ('all', 'controls'):
+                run_motion_controls(lambda: page, state, apply, settle, check, load, download,
+                                    args.visual, args.output, report, GEOMETRY)
+                run_interface_features(lambda: page, state, apply, settle, check, load, download,
+                                       args.visual, args.output, report, GEOMETRY)
+                run_loupe_features(lambda: page, state, apply, settle, check, load, download,
                                    args.visual, args.output, report, GEOMETRY)
-            run_pickett_roots(lambda: page, state, apply, settle, check, load, download,
-                              args.visual, args.output, report, GEOMETRY)
-            run_motion_controls(lambda: page, state, apply, settle, check, load, download,
-                                args.visual, args.output, report, GEOMETRY)
             load()
             presets = page.evaluate("async()=> (await import('#catalog/presets.js')).PRESETS")
             baseline = state()
@@ -268,7 +286,7 @@ def main():
                 assert page.evaluate(GEOMETRY)['collisions'], 'detector failed deliberate overlap'
                 page.locator('#injected-overlap').evaluate('el=>el.remove()')
             check('geometry detector negative control', geometry_control)
-            if args.visual:
+            if args.visual and args.suite == 'all':
                 shots = args.output / 'screenshots'
                 shots.mkdir(exist_ok=True)
                 for width in (1100, 1280, 1600, 2048):

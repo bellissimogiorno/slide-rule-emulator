@@ -2,14 +2,17 @@
 export function standaloneHtml(document, programme) {
     const clone = document.documentElement.cloneNode(true);
     clone.removeAttribute('data-app-ready');
+    for (const node of clone.querySelectorAll('[data-runtime-only]')) node.remove();
+    clone.querySelector('#loupeButton')?.setAttribute('aria-pressed', 'false');
     const seed = clone.querySelector('#embedded-program');
     if (!seed)
         throw new Error('Missing embedded-program block. Rebuild the application.');
     // HTML recognises closing script tags before it parses JSON.
     seed.textContent = JSON.stringify(programme, null, 2).replace(/</g, '\\u003c');
-    for (const selector of ['#ruleCanvas', '#readout', '#railEditors', '#libraryList', '#jsonEditor', '#appStatus', '#jsonStatus']) {
+    for (const selector of ['#ruleCanvas', '#readout', '#railEditors', '#libraryList', '#jsonEditor', '#appStatus', '#jsonStatus', '#reorderStatus']) {
         clone.querySelector(selector).textContent = '';
     }
+    clone.querySelector('#railEditors').classList.remove('is-reordering');
     clone.querySelector('body').classList.remove('focus-mode');
     clone.querySelector('#focusButton').textContent = 'Focus rule';
     clone.querySelector('#focusButton').setAttribute('aria-pressed', 'false');

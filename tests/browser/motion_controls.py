@@ -20,7 +20,7 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
 
     def reset(**changes):
         apply({**original, 'cursor': .5, 'slideOffset': 0, **changes})
-        get_page().locator('#motionStep').select_option('0.001')
+        get_page().locator('#motionStep [data-step="0.001"]').click()
         settle()
 
     def focused_grips():
@@ -54,8 +54,8 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
         p = get_page()
         p.evaluate('window.motionTick = document.querySelector(".tick")')
         for selector, field in [('#slideRange', 'slideOffset'), ('#cursorRange', 'cursor')]:
-            for choice in ['0.001', '0.0001', '0.00001']:
-                p.locator('#motionStep').select_option(choice)
+            for choice in ['0.005', '0.001', '0.0005', '0.0001']:
+                p.locator(f'#motionStep [data-step="{choice}"]').click()
                 p.locator(selector).focus()
                 before = state()[field]
                 text_id = '#slideText' if field == 'slideOffset' else '#cursorText'
@@ -72,7 +72,7 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
             for _ in range(30):
                 p.keyboard.press('ArrowRight')
             p.keyboard.up('Alt'); settle()
-            close(state()[field], before + .00003)
+            close(state()[field], before + .0003)
         assert p.evaluate('window.motionTick === document.querySelector(".tick")'), 'nudge rebuilt graduations'
     check('motion: every fine step is visible and repeated keys retain off-grid precision', fine_steps)
 
@@ -90,16 +90,16 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
             before = state()[field]
             p.keyboard.press('Alt+ArrowLeft'); settle()
             close(state()[field], before - .0001)
-            p.locator('#motionStep').select_option('0.00001')
+            p.locator('#motionStep [data-step="0.0001"]').click()
             card = p.locator(f'.position-control[data-motion="{field}"]')
             for direction in [-1, 1]:
                 before = state()[field]
                 card.locator(f'[data-nudge="{direction}"]').click(); settle()
-                close(state()[field], before + direction * .00001)
+                close(state()[field], before + direction * .0001)
             before = state()[field]
             card.locator('[data-nudge="1"]').focus()
             p.keyboard.press('Enter'); settle()
-            close(state()[field], before + .00001)
+            close(state()[field], before + .0001)
     check('motion: real grip drags take focus; pointer and keyboard nudge buttons agree', pointer_grips_and_buttons)
 
     def rule_selection():
@@ -152,7 +152,7 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
             p.keyboard.press(key)
         settle()
         assert state() == before, 'editor shortcut moved the instrument'
-        p.locator('#motionStep').focus(); p.keyboard.press('ArrowDown'); settle()
+        p.locator('#motionStep button').first.focus(); p.keyboard.press('ArrowDown'); settle()
         assert state() == before, 'precision selection moved the instrument'
         p.locator('#sideSelect').focus(); p.keyboard.press('ArrowDown'); settle()
         close(state()['slideOffset'], before['slideOffset']); close(state()['cursor'], before['cursor'])
@@ -172,11 +172,11 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
         p = get_page()
         for zoom in ['1', '2']:
             p.locator('#magnificationSelect').select_option(zoom)
-            p.locator('#motionStep').select_option('0.00001')
+            p.locator('#motionStep [data-step="0.0001"]').click()
             p.locator('#cursorRange').focus()
             before = state()['cursor']
             p.keyboard.press('Alt+ArrowRight'); settle()
-            close(state()['cursor'], before + .000001)
+            close(state()['cursor'], before + .00001)
         before = state()
         assert json.loads(download('#exportJsonButton')) == before
         p.evaluate("window.dispatchEvent(new Event('pagehide'))")
@@ -184,7 +184,7 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
         close(stored['cursor'], before['cursor'])
         load(download('#saveHtmlButton'))
         assert state() == before
-        assert get_page().locator('#motionStep').input_value() == '0.001'
+        assert get_page().locator('#motionStep [aria-pressed="true"]').get_attribute('data-step') == '0.001'
         get_page().locator('#cursorRange').focus()
         get_page().keyboard.press('Alt+ArrowLeft'); settle()
         close(state()['cursor'], before['cursor'] - .0001)
@@ -226,7 +226,7 @@ def run_motion_controls(get_page, state, apply, settle, check, load, download,
             p.locator('#sideSelect').select_option('')
             settle()
             for field, selector in [('slideOffset', '#slideRange'), ('cursor', '#cursorRange')]:
-                p.locator('#motionStep').select_option('0.0001')
+                p.locator('#motionStep [data-step="0.0001"]').click()
                 p.locator(selector).focus(); p.keyboard.press('ArrowRight'); settle()
                 geometry = p.evaluate(geometry_source)
                 failures = {k:v for k,v in geometry.items() if k in ['collisions','tickCrossings','clipped','smallLabels','emptyRows','bodyOverflow'] and v}

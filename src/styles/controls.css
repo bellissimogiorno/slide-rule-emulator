@@ -1,52 +1,8 @@
-/* Readouts and programme editor remain ordinary, zoom-independent UI. */
-.readout {
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
-    gap: 7px;
-}
-
-.readout-card {
-    min-width: 0;
-    border: 1px solid #dce3e7;
-    border-radius: 8px;
-    padding: 9px;
-    background: #fcfdfe;
-    overflow-wrap: anywhere;
-}
-
-.readout-card .scale-id {
-    font-weight: 650;
-    font-size: 13px;
-}
-
-.readout-card .rail-name {
-    font-size: 10px;
-    color: var(--muted);
-    margin-left: 5px;
-}
-
-.readout-card .value {
-    margin-top: 4px;
-    font-size: 15px;
-    font-variant-numeric: tabular-nums;
-}
-
-.readout-card .multi {
-    display: grid;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.readout-card.outside {
-    color: #6b747b;
-    background: #f5f7f8;
-}
-
+/* Programme editor controls; readout layout lives in readout.css. */
 .panel-section + .panel-section {
     margin-top: 14px;
     padding-top: 14px;
-    border-top: 1px solid #d5dde3;
+    border-top: 1px solid var(--ui-divider);
 }
 
 h2 {
@@ -55,19 +11,19 @@ h2 {
 }
 
 .hint, .status {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
-    color: var(--muted);
+    color: var(--ui-muted);
 }
 
 .status {
     min-height: 18px;
     margin-top: 8px;
-    color: #2d6548;
+    color: var(--ui-success);
 }
 
 .status.error {
-    color: #a21e2e;
+    color: var(--ui-danger);
 }
 
 .preset-row {
@@ -99,13 +55,13 @@ h2 {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.4;
-    color: var(--muted);
+    color: var(--ui-muted);
 }
 
 .check-field input {
-    accent-color: var(--accent);
+    accent-color: var(--ui-accent);
 }
 
 .rail-editor {
@@ -117,8 +73,8 @@ h2 {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    font-size: 11px;
-    color: var(--muted);
+    font-size: 12px;
+    color: var(--ui-muted);
     font-weight: 650;
     text-transform: uppercase;
     margin-bottom: 6px;
@@ -126,25 +82,20 @@ h2 {
 
 .scale-control-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto auto;
-    gap: 5px;
+    grid-template-columns: 24px minmax(0, 1fr) 24px 24px;
+    gap: 0;
     margin-bottom: 5px;
 }
 
 .scale-control-row select {
     min-width: 0;
     width: 100%;
-    font-size: 12px;
-}
-
-.scale-control-row button {
-    padding: 5px 7px;
-    font-size: 11px;
+    font-size: 13px;
 }
 
 details {
     margin-top: 14px;
-    border: 1px solid #d6dfe5;
+    border: 1px solid var(--ui-divider);
     border-radius: 10px;
     padding: 11px;
 }
@@ -159,12 +110,12 @@ textarea {
     width: 100%;
     min-height: 290px;
     resize: vertical;
-    border: 1px solid #374952;
+    border: 1px solid var(--ui-border);
     border-radius: 7px;
     padding: 10px;
-    color: #edf4f8;
-    background: #17242d;
-    font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+    color: var(--ui-ink);
+    background: var(--ui-code);
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 
 .mini-actions {
@@ -184,9 +135,9 @@ textarea {
     grid-template-columns: 78px 1fr;
     gap: 8px;
     padding: 8px;
-    border: 1px solid #e0e6e9;
+    border: 1px solid var(--ui-divider);
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 13px;
     overflow-wrap: anywhere;
 }
 
@@ -194,22 +145,22 @@ textarea {
     display: block;
     margin-top: 3px;
     font-style: normal;
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--ui-muted);
 }
 
 .kbd {
-    font: 11px ui-monospace, monospace;
-    background: #f0f3f5;
+    font: 12px ui-monospace, monospace;
+    background: var(--ui-code);
     border-radius: 4px;
     padding: 2px 4px;
 }
 
 .footer-note {
     padding: 8px 28px 26px;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
     text-align: center;
-    color: var(--muted);
+    color: var(--ui-muted);
 }

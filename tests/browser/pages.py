@@ -56,9 +56,11 @@ def check_entry(browser, url, html, output, label):
                 const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
                 return saved && saved.cursor === 0.375 && saved.viewMode === 'both';
             }""")
+            page.locator('#pageThemes [data-page-theme="dark"]').click()
             page.reload()
             page.wait_for_function('document.documentElement.dataset.appReady === "true"')
             saved = page.evaluate("async()=> (await import('#main.js')).application.getProgram()")
+            assert page.locator('html').get_attribute('data-page-theme') == 'dark'
             assert saved['viewMode'] == 'both' and saved['cursor'] == 0.375
             assert page.locator('.rule-face').count() == 2
             assert not errors, errors

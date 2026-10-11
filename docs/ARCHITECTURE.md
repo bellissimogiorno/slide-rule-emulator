@@ -2,7 +2,7 @@
 
 ## Design constraints
 
-A single offline HTML remains the user-facing deliverable, but it is not the maintainable source. The maintainable source consists of forty-eight native ES modules and ten focused stylesheets. There is no framework, service worker, fetch-based module loader, dynamic JavaScript compiler or runtime package dependency.
+A single offline HTML remains the user-facing deliverable, but it is not the maintainable source. The maintainable source consists of native ES modules and focused stylesheets. There is no framework, service worker, fetch-based module loader, dynamic JavaScript compiler or runtime package dependency.
 
 Dependencies point inward:
 
@@ -38,7 +38,7 @@ Unapplied editor text is a separate draft. Normal UI updates do not overwrite it
 
 Source imports use `#core/...`, `#model/...` and similar specifiers. Node resolves them through `package.json`'s `imports` map. `tools/build.mjs` resolves the same identifiers in the browser by embedding each source module exactly once as a base64 data URL in a native import map. Module code is not transpiled or minified. A sourceURL comment gives DevTools recognisable filenames.
 
-CSS is assembled in explicit dependency order: base, scales, paired, compact, root-stacks, cursor, themes, controls, layout, graduations. `src/index.html` provides three build markers (licence, styles and modules). The generated `index.html`, `docs/index.html` and `dist/index.html` are byte-identical: no timestamp, machine path, network result or dependency resolution enters the build. Each publishing root also has an empty `.nojekyll` marker. The build test verifies module bytes; `--check` rejects missing or stale applications and markers. The root and docs copies support branch-based Pages publication without redirects; the workflow publishes only `dist/`. Source modules remain the single editable implementation.
+CSS is assembled in explicit dependency order: page-themes, base, scales, paired, compact, root-stacks, cursor, themes, controls, readout, reorder, motion, loupe, layout, graduations. `src/index.html` provides three build markers (licence, styles and modules). The generated `index.html`, `docs/index.html` and `dist/index.html` are byte-identical: no timestamp, machine path, network result or dependency resolution enters the build. Each publishing root also has an empty `.nojekyll` marker. The build test verifies module bytes; `--check` rejects missing or stale applications and markers. The root and docs copies support branch-based Pages publication without redirects; the workflow publishes only `dist/`. Source modules remain the single editable implementation.
 
 This trades a somewhat larger HTML file for zero build dependencies and real module boundaries. It requires browsers with import-map support and permits data-URL JavaScript. A host's restrictive Content Security Policy can block it; do not weaken an existing security policy blindly. For such a host, a future external-module build is preferable. No external-module deployment is presently shipped or claimed tested.
 
@@ -95,3 +95,39 @@ Do not implement a root bank using `syncroLogLog`: root-branch round numbers do 
 The range inputs retain native range semantics and visible labels. Their legacy UI values (slide times 100; cursor times 1000) are converted only at the DOM boundary, and `aria-valuetext` supplies actual scale-length descriptions. `step="any"` avoids snapping arbitrary saved coordinates to a browser-imposed grid. Explicit keyboard handling and nudge buttons define all offered increments. `styles/motion.css` owns the two neighbouring grip cards and separate Chromium/WebKit and Firefox pseudo-elements, with a forced-colour fallback. Do not add a new pointer implementation for these native inputs.
 
 Precision and selected part are transient controls, not programme fields. This preserves the programme schema and prevents a layout import from changing how a user is currently nudging. Cursor-glass drags retain the initial mouse-to-hairline offset; stator clicks still set an absolute hairline coordinate. Motion updates transforms and readouts without rebuilding graduations.
+
+
+## Page preferences and precision buttons
+
+`ui/step-controls.js` owns the precision buttons and their pressed states. Primary pointer-down cancels only the button's default focus transfer. Click activation selects a whitelisted step and returns to the last motion focus stop (without refocusing an already focused stop). Native buttons remain in the Tab sequence; Enter/Space returns to motion. `motionStepShortcut` in `ui/motion.js` provides scoped 1-4 keys; it excludes system modifiers, composition and already consumed events. Selecting a step never calls a position update or rounds a saved coordinate.
+
+`ui/page-theme.js` owns a separate browser preference under `slide-rule-page-theme-v1`. It validates both stored values and the HTML fallback, handles unavailable storage, and never changes the instrument programme. A configured copy carries the `data-page-theme` HTML attribute. A valid local preference wins over that embedded default. All theme and precision listeners share the application's abort signal.
+
+`styles/page-themes.css` defines only `--ui-*` tokens. Instrument paper, ink and geometry remain in their own styles, with an explicit light colour scheme on the physical rule. UI code does not filter, invert or recolour the instrument. New page themes should preserve this boundary and pass theme-isolation, contrast and responsive tests.
+
+## Precision selector and pointer loupe
+
+`ui/step-controls.js` owns the four-detent selector, whose values are declared once in `ui/motion.js`. The shared grip is decorative; four native buttons expose the discrete choices. Pointer capture allows dragging across detents without a focus transfer. Enter/Space activation returns to the most recent motion focus stop. Selector changes never mutate the mathematical programme.
+
+`ui/loupe-geometry.js` is pure, independently tested screen-space geometry. `ui/loupe.js` owns a single transient, inert overlay attached to the document body. It copies only the hovered face, removes IDs and focus/label references, and marks the result `aria-hidden`. The overlay and all its descendants use `pointer-events: none`; real-page hit testing therefore works during pointer capture as well as ordinary hovering.
+
+The application registers its motion handler before the loupe handler so a frame applies source movement before copying transforms. Full rendering and the label-polishing pass invalidate the copy; position changes merely refresh it. The mapping is `screen point + 2.5 * (source pixel - screen point)`, independently of page scrolling and instrument zoom. Cleanup cancels animation frames, releases the copied nodes, removes the overlay and aborts listeners. Configured export strips elements marked `data-runtime-only` and resets the loupe button.
+
+## Reading layout and scale ordering
+
+`ui/readout.js` formats readings through the core mappings, then groups compact name/value fields by face and rail. `styles/readout.css` uses content-sized wrapping groups rather than a grid of equally large cards. No value is hidden or truncated, and the layout is independent of instrument magnification. A composite still reports every branch; a segmented row reports only its in-domain segment.
+
+`model/scale-order.js` applies an immutable, occurrence-based move. The destination index is measured after removing the source row. It checks rail bounds and the 40-row limit; using indices rather than IDs preserves distinct occurrences of the same scale.
+
+`ui/rail-editor.js` owns markup and accessible position labels. `ui/rail-reorder.js` handles grip gestures, filled-arrow activation, keyboard moves, scrolling and focus. A drag creates an inert, runtime-only visual copy and insertion marker; it does not reorder the DOM rows or touch the programme until drop. This keeps empty-rail targets stable and makes cancellation genuinely non-mutating. Committed moves keep the same editor nodes, animate their changed positions for 180 ms and refresh all indices, accessible names and endpoint buttons. Reduced-motion preferences suppress the animation. All listeners, pointer capture, visual copies and animation frames are removed on cancellation or destruction. Unapplied JSON drafts are never overwritten by these edits.
+
+
+## Header state, scale undo and inactivity
+
+The Both sides shortcut uses the existing `viewMode` and `activeSide` fields; it introduces no parallel view state or programme-schema changes. `renderSideSelect` refreshes the button's pressed/disabled state alongside the menus. The header's flex layout puts page themes beside the actions when their intrinsic widths fit and lets them wrap otherwise.
+
+`model/scale-order.js:adjacentScalePosition` supplies the same boundary-crossing destination to arrow buttons and grip up/down keys. It enters an adjacent empty rail rather than skipping it; `moveScale` still enforces the row limit. `rail-editor.js` uses that same destination logic to label/disable boundary buttons.
+
+`model/scale-history.js` owns a bounded, session-only undo stack. A successful scale-list edit records the previous face and preset attribution, its action description and occurrence-based focus position. Undo restores only that face and attribution, selecting the affected face but retaining current cursor, slide, view and appearance. Snapshot data is copied, not shared. No-op or rejected moves do not record an entry. Successful preset/JSON replacement clears history; failed JSON validation does not. The three Undo buttons expose one stack, and the Ctrl/Command+Z listener is scoped to editor grips/buttons, not text fields or native select menus. No undo state is exported.
+
+`ui/inactivity.js` is a small injectable-clock timer, tested at the exact 4,000 ms boundary. `ui/loupe.js` feeds it pointer movement, keydown/keyup and visibility/lifetime changes. The timer only changes an opacity class; it does not change whether the loupe is enabled. Holding a key suspends the countdown. No new paint work is scheduled while idle; an input wakes it immediately and a dirty copy is refreshed. Timers, held-key state, overlay and listeners are released on destruction. `styles/loupe.css` fades only the idle transition; the return transition is deliberately instantaneous.

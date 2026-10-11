@@ -3,7 +3,7 @@
 .toolbar {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     gap: 16px;
     margin-bottom: 6px;
@@ -13,25 +13,28 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
-    width: min(100%, 680px);
+    /* 50% more available control width; wrapping never steals rule width. */
+    flex: 1 1 680px;
+    width: 100%;
+    max-width: 1020px;
     min-width: 0;
 }
 
-.position-control {
+.position-control, .step-control {
     min-width: 0;
     padding: 8px 10px 5px;
-    border: 1px solid #b8c3c9;
+    border: 1px solid var(--ui-border);
     border-radius: 5px;
-    background: linear-gradient(#f6f7f4, #ecefe9);
-    box-shadow: inset 0 1px #fff;
+    background: linear-gradient(var(--ui-motion-top), var(--ui-motion-bottom));
+    box-shadow: inset 0 1px var(--ui-motion-shine);
 }
 
 .position-control.is-selected {
-    border-color: #526c7b;
+    border-color: var(--ui-accent);
 }
 
 .position-control:focus-within {
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--ui-focus);
     outline-offset: 2px;
 }
 
@@ -40,17 +43,17 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 8px;
-    color: #23313c;
+    color: var(--ui-ink);
 }
 
 .position-heading label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 650;
     cursor: pointer;
 }
 
 .position-heading output {
-    font: 13px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+    font: 14px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
     font-variant-numeric: tabular-nums;
 }
 
@@ -66,9 +69,9 @@
     width: 30px;
     height: 32px;
     border-radius: 3px;
-    border-color: #b1bec5;
-    background: #f9fbfa;
-    color: #334a56;
+    border-color: var(--ui-border);
+    background: var(--ui-control);
+    color: var(--ui-ink);
     font: 22px/1 system-ui, sans-serif;
 }
 
@@ -98,17 +101,17 @@ input.cursor-grip {
 /* Browser-specific pseudo-elements must be in separate rules. */
 input.motion-range::-webkit-slider-runnable-track {
     height: 8px;
-    border: 1px solid #80918d;
+    border: 1px solid var(--ui-track-border);
     border-radius: 2px;
-    background: repeating-linear-gradient(90deg, transparent 0 9px, #87978c 9px 10px), #d0d7cd;
+    background: repeating-linear-gradient(90deg, transparent 0 9px, var(--ui-track-tick) 9px 10px), var(--ui-track);
     box-shadow: inset 0 1px 2px #465b5266;
 }
 
 input.motion-range::-moz-range-track {
     height: 6px;
-    border: 1px solid #80918d;
+    border: 1px solid var(--ui-track-border);
     border-radius: 2px;
-    background: repeating-linear-gradient(90deg, transparent 0 9px, #87978c 9px 10px), #d0d7cd;
+    background: repeating-linear-gradient(90deg, transparent 0 9px, var(--ui-track-tick) 9px 10px), var(--ui-track);
     box-shadow: inset 0 1px 2px #465b5266;
 }
 
@@ -139,13 +142,88 @@ input.motion-range:active {
 
 .motion-settings {
     display: grid;
+    flex: 0 1 396px;
     gap: 6px;
     min-width: 0;
+    max-width: 100%;
 }
 
+/* One continuous recessed track and a shared, ridged grip. The four native
+   buttons provide detents and accessible labels, not four independent knobs. */
+.step-control > .field { color: var(--ui-ink); font-weight: 650; line-height: 1.4; }
+.step-switch {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    position: relative;
+    min-width: 0;
+    margin-top: 0;
+    touch-action: none;
+    user-select: none;
+    cursor: ew-resize;
+}
+.step-rail {
+    position: absolute;
+    top: 16px;
+    z-index: 1;
+    left: 12.5%;
+    right: 12.5%;
+    height: 8px;
+    border: 1px solid var(--ui-track-border);
+    border-radius: 2px;
+    background: repeating-linear-gradient(90deg, transparent 0 9px, var(--ui-track-tick) 9px 10px), var(--ui-track);
+    box-shadow: inset 0 1px 2px #465b5266;
+    pointer-events: none;
+}
+.step-grip {
+    position: absolute;
+    top: 6px;
+    left: calc((var(--step-index) + .5) * 25%);
+    transform: translateX(-50%);
+    width: 38px;
+    height: 28px;
+    border: 1px solid #667773;
+    border-radius: 3px;
+    background: repeating-linear-gradient(90deg, transparent 0 4px, #60716f 4px 5px, #ffffffb3 5px 6px, transparent 6px 8px) center / 22px 15px no-repeat, linear-gradient(#f6f5e9, #d1d6ce);
+    box-shadow: inset 0 0 0 2px #ffffff80, 0 1px 2px #34443e66;
+    pointer-events: none;
+    z-index: 2;
+}
+button.step-stop {
+    position: relative;
+    min-width: 0;
+    padding: 40px 1px 5px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--ui-muted);
+    cursor: ew-resize;
+    font-size: 13px;
+    line-height: 1.3;
+}
+button.step-stop::before {
+    content: "";
+    position: absolute;
+    top: 14px;
+    height: 12px;
+    left: calc(50% - 1px);
+    border-left: 2px solid var(--ui-track-border);
+}
+button.step-stop:hover { background: var(--ui-hover); }
+button.step-stop[aria-pressed="true"] { color: var(--ui-selected-ink); }
+button.step-stop[aria-pressed="true"] > span,
+button.step-stop[aria-pressed="true"] > small { background: var(--ui-selected); border-radius: 2px; }
+.step-stop > span { display: block; min-height: 34px; padding: 2px 0; }
+.step-stop small {
+    display: block;
+    font: 13px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.step-stop kbd { font: inherit; }
+.step-control:focus-within { outline: 2px solid var(--ui-focus); outline-offset: 2px; }
+.step-stop:focus-visible { outline-offset: -2px; }
+
 .motion-target {
-    font-size: 12px;
-    color: var(--muted);
+    font-size: 13px;
+    color: var(--ui-muted);
 }
 
 .motion-help {
@@ -159,16 +237,18 @@ input.motion-range:active {
         gap: 8px;
     }
     .motion-settings {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px 16px;
+        flex-basis: 100%;
+        width: 100%;
     }
 }
 
 @media (forced-colors: active) {
+    .step-rail { background: Canvas; border-color: ButtonText; }
+    .step-grip { background: ButtonText; border: 2px solid Highlight; }
+    button.step-stop { color: ButtonText; }
+    button.step-stop[aria-pressed="true"] { color: Highlight; }
     /* Keep a visible rail and grip when the system removes gradients. */
-    .position-control { background: Canvas; border-color: ButtonText; }
+    .position-control, .step-control { background: Canvas; border-color: ButtonText; }
     .position-heading, .motion-target { color: CanvasText; }
     input.motion-range::-webkit-slider-runnable-track { background: Canvas; border-color: ButtonText; }
     input.motion-range::-moz-range-track { background: Canvas; border-color: ButtonText; }

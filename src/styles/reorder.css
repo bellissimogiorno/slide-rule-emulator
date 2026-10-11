@@ -1,0 +1,39 @@
+/* Joined grip, selector, stacked arrows and remove button: more room for the
+   scale name without smaller text. The row is not clipped, so focus is visible. */
+.rail-row-list { position: relative; min-height: 34px; }
+.rail-empty { display: none; padding: 8px; border: 1px dashed var(--ui-border); border-radius: 5px; }
+.rail-empty:only-child { display: block; }
+.scale-control-row { align-items: stretch; border-radius: 5px; }
+.scale-control-row { min-height: 36px; }
+.scale-control-row button { display: grid; place-items: center; min-width: 0; padding: 0; border-radius: 0; }
+.scale-control-row > .scale-grip { border-radius: 5px 0 0 5px; }
+.scale-control-row > select { border-radius: 0; border-left: 0; padding: 5px 6px; }
+.scale-row-arrows { display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.scale-row-arrows > button { border-left: 0; }
+.scale-row-arrows > button + button { border-top: 0; }
+.scale-row-arrows svg { width: 12px; height: 12px; }
+.scale-control-row > button[data-action="remove"] { border-left: 0; border-radius: 0 5px 5px 0; }
+.scale-control-row button:focus-visible, .scale-control-row select:focus-visible { position: relative; z-index: 1; }
+.rail-editor-actions { display: flex; align-items: center; gap: 6px; }
+.rail-editor-actions button { font-size: 12px; padding: 5px 8px; }
+.rail-editor-actions .scale-undo { display: inline-flex; align-items: center; gap: 4px; }
+.rail-editor-actions .scale-undo:not(:disabled) { background: var(--ui-selected); color: var(--ui-selected-ink); border-color: var(--ui-accent); }
+@media (pointer: coarse) {
+    .scale-control-row { min-height: 48px; grid-template-columns: 28px minmax(0, 1fr) 28px 28px; }
+}
+.scale-control-row > button[data-action="remove"] { font-size: 20px; line-height: 1; }
+.scale-control-row .scale-grip { cursor: grab; touch-action: none; color: var(--ui-muted); }
+.scale-control-row .scale-grip:active { cursor: grabbing; }
+.scale-control-row button:disabled { opacity: .35; cursor: default; }
+.scale-control-row button:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 2px; }
+.scale-control-row.is-placeholder { outline: 2px dashed var(--ui-accent); outline-offset: -2px; background: var(--ui-inactive); }
+.scale-control-row.is-placeholder > * { visibility: hidden; }
+.reorder-ghost { position: fixed; left: 0; top: 0; margin: 0; z-index: 1000; pointer-events: none; background: var(--ui-card); box-shadow: 0 6px 18px #0004; outline: 2px solid var(--ui-accent); }
+.reorder-ghost.invalid-drop { outline-color: var(--ui-danger); }
+@media (forced-colors: active) {
+    .scale-control-row.is-placeholder { outline-color: Highlight; }
+    .reorder-ghost { outline: 2px solid Highlight; }
+}
+
+.reorder-drop-marker { position: fixed; height: 0; border-top: 3px solid var(--ui-accent); z-index: 999; pointer-events: none; }
+.reorder-drop-marker::before { content: ""; position: absolute; left: -3px; top: -5px; width: 7px; height: 7px; border-radius: 50%; background: var(--ui-accent); }

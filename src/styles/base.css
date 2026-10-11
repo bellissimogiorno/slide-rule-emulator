@@ -2,11 +2,8 @@
    All geometry below is in unzoomed CSS pixels; CSS zoom is applied to the
    instrument only. Pointer coordinates are converted separately in ui/application.js. */
 :root {
-    color-scheme: light;
+    color-scheme: var(--ui-scheme);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --ink: #23313c;
-    --muted: #586671;
-    --accent: #245786;
     --paper: #f8f2df;
     --paper2: #fffcf0;
     --scale-ink: #191d20;
@@ -34,8 +31,8 @@
 
 body {
     margin: 0;
-    background: #edf1f4;
-    color: var(--ink);
+    background: var(--ui-bg);
+    color: var(--ui-ink);
 }
 
 header {
@@ -56,9 +53,9 @@ h1 {
 .subtitle {
     max-width: 800px;
     margin-top: 8px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.45;
-    color: var(--muted);
+    color: var(--ui-muted);
 }
 
 .header-actions, .mini-actions {
@@ -77,29 +74,31 @@ button, select, input, textarea {
 }
 
 button, .button-like {
-    background: #fff;
-    color: var(--ink);
-    border: 1px solid #c6d0d8;
+    background: var(--ui-control);
+    color: var(--ui-ink);
+    border: 1px solid var(--ui-border);
     border-radius: 9px;
     padding: 8px 12px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.3;
 }
 
+a { color: var(--ui-accent); }
+
 button:hover, .button-like:hover {
-    border-color: var(--accent);
-    background: #f4f8fc;
+    border-color: var(--ui-accent);
+    background: var(--ui-hover);
 }
 
 button.primary {
-    color: white;
-    background: #245786;
-    border-color: #245786;
+    color: var(--ui-on-primary);
+    background: var(--ui-primary);
+    border-color: var(--ui-primary);
 }
 
 button.danger {
-    color: #9b2833;
+    color: var(--ui-danger);
 }
 
 button:disabled {
@@ -108,15 +107,15 @@ button:disabled {
 }
 
 :focus-visible {
-    outline: 2px solid #276fba;
+    outline: 2px solid var(--ui-focus);
     outline-offset: 3px;
 }
 
 .workbench, .side-panel {
-    background: #fff;
-    border: 1px solid #d6dfe5;
+    background: var(--ui-panel);
+    border: 1px solid var(--ui-divider);
     border-radius: 16px;
-    box-shadow: 0 6px 20px #23313c0d;
+    box-shadow: 0 6px 20px var(--ui-shadow);
     padding: 16px;
     min-width: 0;
 }
@@ -143,8 +142,8 @@ button:disabled {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 14px;
+    color: var(--ui-muted);
     min-width: 0;
 }
 
@@ -154,9 +153,9 @@ button:disabled {
 }
 
 select, input[type="number"], input[type="text"] {
-    background: #fff;
-    color: var(--ink);
-    border: 1px solid #c4cfd8;
+    background: var(--ui-control);
+    color: var(--ui-ink);
+    border: 1px solid var(--ui-border);
     border-radius: 7px;
     padding: 7px;
     min-height: 34px;
@@ -167,10 +166,11 @@ select, input[type="number"], input[type="text"] {
 }
 
 .app-status {
-    border-left: 3px solid #ab7725;
-    background: #fff7e5;
+    border-left: 3px solid var(--ui-warning-border);
+    background: var(--ui-warning);
+    color: var(--ui-warning-ink);
     padding: 10px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.45;
     margin-bottom: 10px;
 }
@@ -183,10 +183,12 @@ select, input[type="number"], input[type="text"] {
     overflow-x: auto;
     overscroll-behavior-x: contain;
     padding: 3px 1px 12px;
-    scrollbar-color: #8b9ca7 #eef2f5;
+    scrollbar-color: var(--ui-border) var(--ui-bg);
 }
 
 .rule-shell {
+    color-scheme: only light;
+    color: var(--scale-ink);
     position: relative;
     width: 100%;
     min-width: 940px;
@@ -277,9 +279,9 @@ select, input[type="number"], input[type="text"] {
 
 .instrument-note {
     margin: 9px 3px 0;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.5;
-    color: var(--muted);
+    color: var(--ui-muted);
 }
 
 /* Both faces use the same full-width coordinate system. Only the physical
@@ -289,5 +291,4 @@ select, input[type="number"], input[type="text"] {
 .face-heading { padding: 9px 12px; background: #edf1ed; color: #283b33; font-size: 12px; }
 .face-heading strong { display: block; }
 .face-heading span { display: block; margin-top: 4px; max-width: 95%; line-height: 1.4; }
-.readout-side-heading { grid-column: 1 / -1; font-size: 13px; font-weight: 650; margin-top: 10px; }
 #editSideField { margin: 14px 0 6px; }

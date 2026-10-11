@@ -1,0 +1,52 @@
+/* The lens belongs to the viewport, not the zoomed/scrolled instrument. It must
+   never become a mouse/touch target or receive focus, including its children. */
+.rule-loupe {
+    position: fixed;
+    z-index: 1000;
+    overflow: hidden;
+    border-radius: 12px;
+    color-scheme: only light;
+    color: var(--scale-ink);
+    background: var(--paper);
+    box-shadow: 0 0 0 2px var(--ui-border), 0 0 0 5px var(--ui-panel), 0 8px 24px #0005;
+    pointer-events: none;
+    user-select: none;
+    opacity: 1;
+    transition: none; /* Wake immediately, including halfway through a fade. */
+}
+.rule-loupe.is-idle { opacity: 0; transition: opacity 180ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+    .rule-loupe.is-idle { transition: none; }
+}
+.rule-loupe * { pointer-events: none !important; }
+.loupe-copy {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform-origin: 0 0;
+    overflow: hidden;
+    background: var(--paper);
+}
+.rule-loupe::after {
+    content: "2.5\00d7";
+    position: absolute;
+    right: 7px;
+    bottom: 6px;
+    z-index: 20;
+    padding: 2px 6px;
+    border: 1px solid var(--ui-border);
+    border-radius: 4px;
+    background: var(--ui-panel);
+    color: var(--ui-ink);
+    font: 600 12px/1.3 system-ui, sans-serif;
+}
+#loupeButton[aria-pressed="true"] {
+    color: var(--ui-selected-ink);
+    background: var(--ui-selected);
+    border-color: var(--ui-accent);
+}
+@media (forced-colors: active) {
+    .rule-loupe { outline: 3px solid Highlight; }
+    #loupeButton[aria-pressed="true"] { border: 2px solid Highlight; }
+}
+@media print { .rule-loupe { display: none; } }

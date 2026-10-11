@@ -4,7 +4,16 @@
  */
 import { clamp } from '#core/numbers.js';
 
-export const MOTION_STEPS = Object.freeze([0.001, 0.0001, 0.00001]);
+export const DEFAULT_MOTION_STEP = 0.001;
+export const MOTION_STEPS = Object.freeze([0.005, 0.001, 0.0005, 0.0001]);
+
+/** Number shortcuts are local to the instrument and its motion controls. */
+export function motionStepShortcut(event) {
+    if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)
+        return null;
+    const index = ['1', '2', '3', '4'].indexOf(event.key);
+    return index < 0 ? null : MOTION_STEPS[index];
+}
 export const MOTION_LIMITS = Object.freeze({
     slideOffset: Object.freeze([-0.9, 0.9]),
     cursor: Object.freeze([0, 1])
@@ -12,7 +21,7 @@ export const MOTION_LIMITS = Object.freeze({
 
 export function motionStep(value, finer = false) {
     const requested = Number(value);
-    const step = MOTION_STEPS.includes(requested) ? requested : MOTION_STEPS[0];
+    const step = MOTION_STEPS.includes(requested) ? requested : DEFAULT_MOTION_STEP;
     return finer ? step / 10 : step;
 }
 

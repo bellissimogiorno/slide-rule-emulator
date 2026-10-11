@@ -32,11 +32,11 @@ test('motion rejects browser, composition and already consumed keys', () => {
         assert.equal(motionKeyCommand({ key }, .001), null);
 });
 
-test('motion uses a bounded precision menu, not arbitrary injected step values', () => {
-    assert.equal(motionStep('0.00001'), .00001);
+test('motion uses a bounded precision choices, not arbitrary injected step values', () => {
+    assert.equal(motionStep('0.0001'), .0001);
     for (const value of ['', 0, -1, NaN, Infinity, 'bad', .01])
         assert.equal(motionStep(value), .001);
-    assert.ok(Math.abs(motionStep('0.00001', true) - .000001) < 1e-20);
+    assert.ok(Math.abs(motionStep('0.0001', true) - .00001) < 1e-20);
 });
 
 test('motion preserves an off-grid coordinate and does not quantise subpixel nudges', () => {
