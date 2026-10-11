@@ -30,6 +30,28 @@ tests remain separate and unchanged. Catalogue snapshots are not required to
 be bit-identical across runtimes; the standalone HTML build still is, because
 it embeds source rather than evaluated catalogue values.
 
+## Pages entry-point checks
+
+`tests/unit/pages.test.js` checks that root, docs and dist contain the same complete
+application and empty `.nojekyll` markers. It deliberately removes and changes
+each generated file in isolated directories: read-only build verification must
+reject the fault, and a normal build must restore all outputs. These tests do not
+execute GitHub's hosting infrastructure.
+
+```sh
+npm run test:pages
+# Or: python tests/browser/pages.py --output qa/pages-native
+```
+
+With the browser prerequisites below installed, this separate native test stages
+the **committed** files (without rebuilding) for each of the three publishing
+roots. It navigates Chromium over loopback HTTP to the origin home page, explicit
+`index.html`, a project subpath and its explicit `index.html`: twelve cases in all.
+It requires the served bytes to match, the emulator to start, linked faces and
+cursor controls to work, and native storage to survive a reload. Results include
+the actual browser version and any failure traceback. There is no DOM fallback.
+This is local static-site verification, not a live GitHub Pages deployment.
+
 ## Native browser checks
 
 ```sh
@@ -78,10 +100,10 @@ Test on the browsers, operating systems, fonts and input devices being supported
 
 ## Release verification
 
-CI uses Ubuntu 24.04, core checks on Node 22 and 24, and native Chromium checks with Node 24 and Python 3.13. The Node matrix does not cancel its other leg when one version fails. Each command has a descriptive workflow step and retains its output in a workflow artefact. Explicit Bash `pipefail` ensures piping output to `tee` cannot turn a failed command into a pass. Browser dependency installation, browser installation and schema checks have separate logs, so a setup failure is distinguishable from an application failure.
+CI uses Ubuntu 24.04, core checks on Node 22 and 24, and native Chromium checks with Node 24 and Python 3.13. The Node matrix does not cancel its other leg when one version fails. Each command has a descriptive workflow step and retains its output in a workflow artefact. Explicit Bash `pipefail` ensures piping output to `tee` cannot turn a failed command into a pass. Browser dependency installation, browser installation and schema and Pages entry-point checks have separate logs, so a setup failure is distinguishable from an application failure.
 
 `tests/unit/workflows.test.js` enforces selected textual workflow contracts: full SHA pins, read-only verification, non-persisted checkout credentials, native browser mode, separate Node results, and the manual-only Pages deployment guard. These checks are not a YAML parser, a complete workflow linter or proof of GitHub-hosted execution.
 
 Review actual workflow results; a workflow file alone is not evidence of execution. No repository secrets are required. A local diagnostic using another Playwright version or a system Chromium is not a successful test of the pinned toolchain. See [maintenance](MAINTENANCE.md) for the installed versions and update process.
 
-Before distributing an archive, run the core suite and relevant browser checks, verify its complete SHA-256 manifest, extract it into a fresh directory and rerun `npm run verify`. The rebuilt `dist/index.html` must match byte for byte. Report the tests actually performed and any unavailable environments.
+Before distributing an archive, run the core suite and relevant browser checks, verify its complete SHA-256 manifest, extract it into a fresh directory and rerun `npm run verify`. All three rebuilt `index.html` copies and their `.nojekyll` markers must match byte for byte. Report the tests actually performed and any unavailable environments.

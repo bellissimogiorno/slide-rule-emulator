@@ -8,7 +8,7 @@ Use four spaces in JavaScript, Python and CSS, and two in JSON/YAML. Keep native
 
 For a bug fix, add a failing regression or a documented visual reproduction first. Run `npm run verify`; run the native browser matrix for rendering/UI changes. Include preset, face, viewport, magnification, compact mode and a minimal JSON programme in rendering reports. Check correct positioning **and** adequate graduation coverage. A screenshot with no overlaps can still be wrong.
 
-Update relevant documentation and build `dist/index.html` after source changes. Do not commit virtual environments, fonts, copied historical scans, secrets or local user programmes. Generate and review screenshots for UI changes, and attach relevant evidence to the pull request. Local QA output is ignored and is not bundled with releases.
+Update relevant documentation and run `npm run build` after source changes. Commit the generated `index.html`, `docs/index.html`, `dist/index.html` and their `.nojekyll` markers together. Do not commit virtual environments, fonts, copied historical scans, secrets or local user programmes. Generate and review screenshots for UI changes, and attach relevant evidence to the pull request. Local QA output is ignored and is not bundled with releases.
 
 ## Language
 

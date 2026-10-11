@@ -14,13 +14,13 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.4**
+**Version 3.2.5**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
 ## Try it
 
-Open **[`dist/index.html`](dist/index.html)** in a modern browser. The complete application is in that file. Export a JSON programme or a configured standalone copy to keep a portable backup of your settings; local browser storage is not a backup.
+Open **[`index.html`](index.html)** in a modern browser. The complete application is in that file; identical generated copies are provided in `docs/` and `dist/` for different publishing setups. Export a JSON programme or a configured standalone copy to keep a portable backup of your settings; local browser storage is not a backup.
 
 For a local preview, use Node.js 22 or later:
 
@@ -31,6 +31,23 @@ npm start
 ```
 
 No `npm install` is required. `npm run dev` rebuilds on each preview request: edit a source file and reload. `src/index.html` is a build template, not a directly runnable page.
+
+## Publish the emulator on GitHub Pages
+
+Upload the **contents** of `slide-rule-emulator/` into the repository root, including
+`index.html` and `.nojekyll`. In **Settings → Pages → Build and deployment**, choose
+**Deploy from a branch**, select the branch containing these files (usually `main`),
+select **/ (root)**, and save. After that branch is published, **Visit site** opens
+the emulator. GitHub's repository **Code** page still displays this README.
+
+Publishing from **/docs** also works: that folder contains the same complete
+application and its own `.nojekyll`. Neither branch-based option needs a custom
+build workflow. No username, repository name or URL prefix needs editing.
+
+For the separate **GitHub Actions** publishing option, run the included
+**Pages (check; manual deploy)** workflow from the default branch. It publishes
+`dist/` and remains manual; pull requests only check the package. Choose one
+publishing method, not competing workflows. See [Pages setup and troubleshooting](docs/RELEASING.md#github-pages-site).
 
 ## Explore the instruments
 
@@ -59,16 +76,16 @@ The [examples](examples/) contain minimal arithmetic, custom-expression, Pickett
 | `tests/` | Numerical, integration and browser tests, with independent reference fixtures |
 | `tools/` | Build, preview, checking, catalogue and release utilities |
 | `docs/`, `examples/`, `schema/` | Guides, reference data and programme format |
-| `dist/` | Ready-to-use standalone application |
+| `index.html`, `docs/index.html`, `dist/index.html` | Identical generated applications for branch-root, branch-docs and workflow publication |
 
-The source uses native JavaScript modules. The deterministic build embeds them unchanged into the standalone HTML; it does not transpile or minify them. Edit the source rather than the generated file.
+The source uses native JavaScript modules. The deterministic build embeds them unchanged into the standalone HTML; it does not transpile or minify them. Edit the source rather than any generated copy; `npm run build` refreshes all three together.
 
 ## Build and test
 
 ```sh
 npm test                 # Unit and integration tests
 npm run check            # Syntax, module boundaries, catalogue and schema checks
-npm run build -- --check # Check that dist matches the source byte for byte
+npm run build -- --check # Check all three applications and .nojekyll markers
 npm run verify           # All three checks
 ```
 
@@ -79,6 +96,7 @@ python -m venv .venv
 # Activate .venv using the command for your shell.
 python -m pip install -r requirements-dev.txt
 python -m playwright install chromium
+npm run test:pages       # Native homepage, project-subpath and reload checks
 npm run test:browser
 npm run test:visual
 ```

@@ -6,6 +6,10 @@ import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, relative, join } from 'node:path';
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
+// GitHub Pages supports branch publication from / or /docs. The workflow
+// publishes dist/ instead. Each entry is the real, self-contained application,
+// not a redirect, so it also works below a project URL or on a custom domain.
+export const SITE_DIRECTORIES = Object.freeze(['.', 'docs', 'dist']);
 const STYLE_ORDER = ['base', 'scales', 'paired', 'compact', 'cursor', 'themes', 'controls', 'layout', 'graduations'];
 export async function sourceFiles(directory = join(ROOT, 'src')) {
     const result = [];
@@ -58,25 +62,42 @@ import('#main.js').catch(error => {
         .replace('<!-- STYLE_BUNDLE -->', '<style>\n' + css + '\n</style>')
         .replace('<!-- MODULE_BUNDLE -->', boot).replace(/\r\n/g, '\n');
 }
-export async function build({ check = false } = {}) {
+/** Build all publishing roots from one source. destination is only an output
+ * directory (useful for isolated tests); it never changes the source tree.
+ * Check mode is read-only and rejects both missing and stale generated files.
+ */
+export async function build({ check = false, destination = ROOT } = {}) {
     const html = await buildHtml();
-    const output = join(ROOT, 'dist/index.html');
-    if (check) {
-        const current = await readFile(output, 'utf8');
-        if (current !== html)
-            throw new Error('dist/index.html is stale. Run npm run build and commit the result.');
+    const outputs = [];
+    for (const directory of SITE_DIRECTORIES) {
+        for (const [filename, contents] of [['index.html', html], ['.nojekyll', '']]) {
+            const name = join(directory, filename);
+            const output = join(destination, name);
+            if (check) {
+                let current;
+                try {
+                    current = await readFile(output, 'utf8');
+                }
+                catch (error) {
+                    if (error.code !== 'ENOENT') throw error;
+                    throw new Error(`${name} is missing. Run npm run build and commit the result.`);
+                }
+                if (current !== contents)
+                    throw new Error(`${name} is stale. Run npm run build and commit the result.`);
+            }
+            else {
+                await mkdir(join(destination, directory), { recursive: true });
+                await writeFile(output, contents);
+            }
+            outputs.push(name);
+        }
     }
-    else {
-        await mkdir(join(ROOT, 'dist'), { recursive: true });
-        await writeFile(output, html);
-        await writeFile(join(ROOT, 'dist/.nojekyll'), '');
-    }
-    return { output, bytes: Buffer.byteLength(html) };
+    return { output: join(destination, 'dist/index.html'), outputs, bytes: Buffer.byteLength(html) };
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
     try {
         const result = await build({ check: process.argv.includes('--check') });
-        console.log(`${process.argv.includes('--check') ? 'Verified' : 'Built'} dist/index.html (${result.bytes} bytes)`);
+        console.log(`${process.argv.includes('--check') ? 'Verified' : 'Built'} ${result.outputs.join(', ')} (${result.bytes} bytes per application)`);
     }
     catch (error) {
         console.error(error.message);

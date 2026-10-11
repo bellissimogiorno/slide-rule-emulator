@@ -107,3 +107,11 @@ test('optional Python tools retain exact version pins', async () => {
     assert.ok(requirements.some(line => line.startsWith('playwright==')));
     for (const line of requirements) assert.match(line, /^[A-Za-z0-9_.-]+==\d+\.\d+\.\d+$/);
 });
+
+
+test('browser CI verifies actual Pages entry points after installing Chromium', () => {
+    const install = ci.indexOf('python -m playwright install --with-deps chromium');
+    const pagesCheck = ci.indexOf('python tests/browser/pages.py --output qa/ci/pages');
+    assert.ok(install >= 0 && pagesCheck > install);
+    assert.match(ci, /pages\.py --output qa\/ci\/pages 2>&1 \| tee qa\/ci\/pages\.log/);
+});

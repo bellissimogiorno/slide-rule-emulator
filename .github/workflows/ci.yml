@@ -74,6 +74,9 @@ jobs:
           python -m playwright install --with-deps chromium 2>&1 | tee qa/ci/browser-install.log
       - name: Check JSON programme schemas
         run: python tools/check_schema.py 2>&1 | tee qa/ci/schema.log
+      - name: Native Pages entry-point checks
+        # Serve the committed applications, not a README or a reconstructed DOM.
+        run: python tests/browser/pages.py --output qa/ci/pages 2>&1 | tee qa/ci/pages.log
       - name: Native browser and rendering checks
         # Never substitute DOM mode or suppress a failure in a required check.
         run: python tests/browser/run.py --mode native --visual --output qa/ci 2>&1 | tee qa/ci/browser.log

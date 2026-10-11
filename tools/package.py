@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIRECTORIES = ('src', 'tools', 'tests', 'examples', 'schema', 'docs', 'dist', '.github')
 FILES = (
     'README.md', 'CONTRIBUTING.md', 'SECURITY.md', 'LICENSE', 'LICENSING.md',
-    'VERSION', 'package.json', 'package-lock.json', 'requirements-dev.txt',
+    'index.html', '.nojekyll', 'VERSION', 'package.json', 'package-lock.json', 'requirements-dev.txt',
     '.editorconfig', '.gitattributes', '.gitignore',
 )
 EXCLUDED_PARTS = {'__pycache__', 'node_modules', '.venv', '.git', 'local', 'ci'}

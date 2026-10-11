@@ -86,12 +86,12 @@ branch and other PRs before attributing it to the proposed dependency.
 The **Verify** workflow retains `core-node-22-evidence`,
 `core-node-24-evidence` and `chromium-native-evidence`. Core evidence contains the
 runtime versions and `verify.log`. Browser evidence separates build, pip install,
-pip consistency, installed versions, browser installation, schema and browser
-logs. `browser-native.json` contains the executed groups, actual versions and
+pip consistency, installed versions, browser installation, schema, Pages entry-point and browser
+logs. The separate `pages/pages-native.json` records homepage navigation checks. `browser-native.json` contains the executed groups, actual versions and
 fatal traceback when available. Functional failures attempt a screenshot.
 If checkout/setup fails before logging starts, use the failed workflow step's log.
 
-The **Pages (check; manual deploy)** workflow also retains `pages-build-evidence`.
+For workflow-based publication, **Pages (check; manual deploy)** also retains `pages-build-evidence`. Branch-root and branch-docs publication use the committed entry points and GitHub's branch-based Pages deployment; see [publishing methods](RELEASING.md#github-pages-site).
 Artefacts expire after 14 days; the deployable Pages artefact has a one-day
 retention. Cancelled or infrastructure-failed jobs may not finish uploading logs.
 
