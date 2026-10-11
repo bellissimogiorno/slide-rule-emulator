@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.3**
+**Version 3.2.4**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -87,7 +87,7 @@ See [testing](docs/TESTING.md) for prerequisites, native and diagnostic modes, a
 
 ## Publish and contribute
 
-The repository includes verification workflows for pushes and pull requests, and a manual GitHub Pages deployment workflow. See [publishing and releases](docs/RELEASING.md). To build a distributable archive:
+The repository includes verification workflows for pushes and pull requests, plus a Pages workflow that checks packaging on pull requests and deploys only on manual dispatch from the default branch. Dependencies receive monthly, reviewable update proposals; there is no automatic merging. See [publishing and releases](docs/RELEASING.md) and [dependency maintenance](docs/MAINTENANCE.md). To build a distributable archive:
 
 ```sh
 npm run release

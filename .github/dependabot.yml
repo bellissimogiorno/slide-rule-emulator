@@ -4,7 +4,23 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      routine-actions:
+        applies-to: version-updates
+        patterns: ['*']
+        update-types: [minor, patch]
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 5
+    groups:
+      routine-test-tools:
+        applies-to: version-updates
+        patterns: ['*']
+        # Even a minor Playwright update changes the browser under test.
+        exclude-patterns: [playwright]
+        update-types: [minor, patch]
+# Major updates and Playwright remain separate reviewable proposals.
+# No automatic merging, ignored versions or security-update suppression.

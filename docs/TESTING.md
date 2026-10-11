@@ -54,7 +54,7 @@ python tests/browser/run.py --mode native --visual --output qa/local
 python tools/gallery.py --qa qa/local
 ```
 
-The runner writes its mode, browser version, results and screenshots to the selected output directory. The gallery tool assembles contact sheets and an HTML index. Open `qa/local/visual-gallery.html` and inspect the actual scale numbers, graduation density, margins and motion states. Generating a screenshot is not visual approval; record what was inspected and any remaining defects alongside the local report.
+The runner writes its mode, Python/Playwright/browser versions, executable selection, results and screenshots to the selected output directory. A fatal error includes its traceback. A failed functional check also attempts a viewport screenshot before the browser closes; failure to capture that diagnostic never replaces the original error. The gallery tool assembles contact sheets and an HTML index. Open `qa/local/visual-gallery.html` and inspect the actual scale numbers, graduation density, margins and motion states. Generating a screenshot is not visual approval; record what was inspected and any remaining defects alongside the local report.
 
 `qa/` is ignored by Git and excluded from release archives. CI preserves its own reports as workflow artefacts, including failures. Keep evidence outside the distributable source tree when longer retention is needed. Do not replace failed or unrun checks with assumed passes.
 
@@ -78,6 +78,10 @@ Test on the browsers, operating systems, fonts and input devices being supported
 
 ## Release verification
 
-CI is configured for Node 22 and 24 and native Chromium on Linux. Review actual workflow results; a workflow file alone is not evidence of execution. No repository secrets are required.
+CI uses Ubuntu 24.04, core checks on Node 22 and 24, and native Chromium checks with Node 24 and Python 3.13. The Node matrix does not cancel its other leg when one version fails. Each command has a descriptive workflow step and retains its output in a workflow artefact. Explicit Bash `pipefail` ensures piping output to `tee` cannot turn a failed command into a pass. Browser dependency installation, browser installation and schema checks have separate logs, so a setup failure is distinguishable from an application failure.
+
+`tests/unit/workflows.test.js` enforces selected textual workflow contracts: full SHA pins, read-only verification, non-persisted checkout credentials, native browser mode, separate Node results, and the manual-only Pages deployment guard. These checks are not a YAML parser, a complete workflow linter or proof of GitHub-hosted execution.
+
+Review actual workflow results; a workflow file alone is not evidence of execution. No repository secrets are required. A local diagnostic using another Playwright version or a system Chromium is not a successful test of the pinned toolchain. See [maintenance](MAINTENANCE.md) for the installed versions and update process.
 
 Before distributing an archive, run the core suite and relevant browser checks, verify its complete SHA-256 manifest, extract it into a fresh directory and rerun `npm run verify`. The rebuilt `dist/index.html` must match byte for byte. Report the tests actually performed and any unavailable environments.

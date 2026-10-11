@@ -16,6 +16,7 @@ import os
 import platform
 import threading
 import time
+import traceback
 from playwright.sync_api import sync_playwright
 from features import run_features
 from workspace_features import run_workspace_features
@@ -50,6 +51,7 @@ def main():
                 options['executable_path'] = args.executable
             browser = p.chromium.launch(**options)
             report['browser'] = browser.version
+            report['browserExecutable'] = args.executable or 'Playwright-managed Chromium'
             context = browser.new_context(viewport={'width': 1600, 'height': 1000}, accept_downloads=True)
             page = context.new_page()
             page.on('pageerror', lambda error: report['errors'].append(str(error)))
@@ -97,6 +99,13 @@ def main():
                     print('  passed', flush=True)
                 except Exception as error:
                     report['functional'].append({'name': name, 'passed': False, 'error': str(error)})
+                    # Capture before Playwright closes the page. A diagnostic
+                    # failure must never replace the original test exception.
+                    try:
+                        page.screenshot(path=args.output / 'functional-failure.png', timeout=5000)
+                        report['failureScreenshot'] = 'functional-failure.png'
+                    except Exception as diagnostic_error:
+                        report.setdefault('diagnosticErrors', []).append(str(diagnostic_error))
                     raise
 
             def download(selector):
@@ -296,6 +305,7 @@ def main():
             browser.close()
     except Exception as error:
         report['fatal'] = repr(error)
+        report['traceback'] = traceback.format_exc()
     finally:
         server.shutdown()
         server.server_close()
