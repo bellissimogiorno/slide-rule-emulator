@@ -12,6 +12,24 @@ Coverage includes scale/reference consistency, independent mathematical identiti
 
 `chemical.test.js` checks mixture fractions, unit conversion, reference symbols, saturation points and numerical integration of Cp/T. `flying-fish.test.js` checks scale inventories, exponential ranges, complementary angles, alignment and shared calibrations. `view.test.js` checks linked-face state and persistence, including programmes that omit the optional view setting.
 
+### Catalogue snapshots and floating-point portability
+
+The committed JSON catalogue is compared with the runtime catalogue using
+`tests/unit/catalogue-comparison.js`. Text (including UK spelling), types, keys
+and array order must match exactly. Finite, nonzero numeric leaves permit a
+relative difference of at most `16 * Number.EPSILON` (about `3.6e-15`); pairs of
+safe integers and signed zero still compare exactly. There is no absolute
+error allowance that could hide a zero or a substantial relative error in a
+tiny radiation coefficient.
+
+This is necessary because JavaScript mathematical functions can produce
+slightly different last bits between engines. The regression tests exercise
+both roundings of the peak radiation coefficient and deliberately changed
+coefficients, text, types and structure. Independent mathematical-reference
+tests remain separate and unchanged. Catalogue snapshots are not required to
+be bit-identical across runtimes; the standalone HTML build still is, because
+it embeds source rather than evaluated catalogue values.
+
 ## Native browser checks
 
 ```sh

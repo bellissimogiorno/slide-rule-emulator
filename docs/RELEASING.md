@@ -8,7 +8,7 @@ Use the repository contents, including `.github/`, as the repository root. Do no
 npm run verify
 git init -b main
 git add .
-git commit -m "Slide-rule emulator v3.2.2"
+git commit -m "Slide-rule emulator v3.2.3"
 # Create an empty repository, then substitute its actual URL:
 git remote add origin YOUR_REPOSITORY_URL
 git push -u origin main
@@ -31,7 +31,7 @@ The workflow follows [GitHub's custom workflow documentation](https://docs.githu
 3. Run `npm run build`, then `npm run verify`. Commit the generated `dist/index.html` with the source.
 4. Run native browser checks and review screenshots for UI changes. Record unavailable environments rather than implying a pass.
 5. Run `npm run release`. It verifies the repository and writes a deterministic ZIP, internal `MANIFEST.sha256` and external ZIP checksum to `releases/`.
-6. Run `python tools/verify_archive.py releases/slide-rule-emulator-v3.2.2-github.zip`, extract the archive into a fresh directory, and run `npm run verify` there. Use the matching filename when preparing another version.
+6. Run `python tools/verify_archive.py releases/slide-rule-emulator-v3.2.3-github.zip`, extract the archive into a fresh directory, and run `npm run verify` there. Use the matching filename when preparing another version.
 7. Publish the verified archive and its checksum. Keep supporting workflow artefacts separately from the distributable repository.
 
 The packaging tool includes an explicit set of source, test, documentation, configuration and application files. It excludes `qa/`, release archives, installed dependencies and caches; rejects symlinks and sensitive file types; and uses fixed ZIP timestamps, ordering and normalised permissions. Identical repository bytes produce an identical archive.

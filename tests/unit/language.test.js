@@ -7,6 +7,7 @@ import { ROOT, buildHtml } from '../../tools/build.mjs';
 import { BUILTIN_SCALES } from '#catalog/scales.js';
 import { PRESETS } from '#catalog/presets.js';
 import { THEMES, DENSITIES } from '#catalog/appearance.js';
+import { assertCatalogueEqual } from './catalogue-comparison.js';
 
 // Deliberately contains the rejected spellings as test data, not interface text.
 const NON_UK_PROSE = /\b(?:colou?rization|color(?:s|ed|ing)?|center(?:s|ed|ing)?|behavior(?:s|al)?|normaliz(?:e|ed|es|ing|ation)|moderniz(?:e|ed|es|ing|ation)|synchroniz(?:e|ed|es|ing|ation)|organiz(?:e|ed|es|ing|ation)|recogniz(?:e|ed|es|ing)|(?:re)?initializ(?:e|ed|es|ing|ation)|label(?:ed|ing)|artifacts?)\b/i;
@@ -45,7 +46,7 @@ test('committed catalogue data matches the current UK-English runtime catalogue'
         scales: BUILTIN_SCALES, presets: PRESETS, themes: THEMES, densities: DENSITIES
     })) {
         const actual = JSON.parse(await readFile(join(ROOT, 'docs/data', `${file}.json`), 'utf8'));
-        assert.deepEqual(actual, expected, file);
+        assertCatalogueEqual(actual, expected, file);
     }
 });
 

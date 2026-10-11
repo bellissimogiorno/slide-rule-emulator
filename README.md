@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.2**
+**Version 3.2.3**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
