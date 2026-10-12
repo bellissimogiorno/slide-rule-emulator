@@ -7,6 +7,8 @@ const THEMES = {
     blackbody: "Model 17 scientific instrument",
     "blackbody-wood": "Thornton F5100 wood / paper",
     "flying-fish": "Flying Fish white / black braces",
+    ultralog: "UltraLog white / yellow groups",
+    graphoplex: "Graphoplex white / grey braces",
     neutral: "Neutral workshop"
 };
 const DENSITIES = {

@@ -115,3 +115,25 @@ body[data-theme="flying-fish"] .rule-shell::before,
 body[data-theme="flying-fish"] .rule-shell::after {
     background: #262c2d;
 }
+
+/* These materials are independent of the Light/Dark/Solarised page theme. */
+body[data-theme="graphoplex"], body[data-theme="ultralog"] {
+    --paper: #fffef7;
+    --paper2: #fffef9;
+}
+body[data-theme="graphoplex"] .rule-shell {
+    background: linear-gradient(#d9dedb, #a9b2b0);
+    border-color: #747e7c;
+}
+body[data-theme="graphoplex"] .rule-shell::before,
+body[data-theme="graphoplex"] .rule-shell::after {
+    background: #555f5f;
+}
+body[data-theme="ultralog"] .rule-shell {
+    background: linear-gradient(#e4e3d8, #c8c8bc);
+}
+body[data-theme="ultralog"] .scale-row:is([data-scale="UL_DF"], [data-scale="UL_CF"], [data-scale="UL_CIF"],
+    [data-scale="UL_CI"], [data-scale="UL_C"], [data-scale="UL_D"], [data-scale="UL_DI"],
+    [data-scale="UL_A"], [data-scale="UL_B"], [data-scale="UL_K"]) {
+    background: #fffac8;
+}

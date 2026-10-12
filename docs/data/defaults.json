@@ -9,6 +9,9 @@
   "showFormulas": true,
   "compactScales": true,
   "magnification": 1,
+  "logGraduations": "adaptive",
+  "graduationMode": "conventional",
+  "adaptiveSpacing": "balanced",
   "slideOffset": 0,
   "cursor": 0.5,
   "customScales": [

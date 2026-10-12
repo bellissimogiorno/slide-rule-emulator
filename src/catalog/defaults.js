@@ -11,6 +11,9 @@ const DEFAULT_STATE = deepFreeze({
     showFormulas: PRESETS.faber283n.showFormulas,
     compactScales: true,
     magnification: 1,
+    logGraduations: "adaptive",
+    graduationMode: "conventional",
+    adaptiveSpacing: "balanced",
     slideOffset: 0,
     cursor: 0.5,
     customScales: [

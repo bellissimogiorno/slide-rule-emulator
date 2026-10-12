@@ -76,7 +76,7 @@ For squares or cubes, reverse the operation: place the cursor at the value on th
 
 ## Implementation and scope
 
-The `rootStack` layout type contains exactly two square-root or three cube-root children in increasing branch order. `PICKETT_R1`, `PICKETT_R2`, and `PICKETT_Q1` through `PICKETT_Q3` are dedicated component definitions. Keeping them distinct leaves existing custom overrides of generic `R1`/`R2`/`Q1`/`Q2`/`Q3` independent of the historical banks.
+The historical banks contain exactly two square-root or three cube-root children in increasing branch order. The `rootStack` layout also supports five fifth-root children for the separately labelled [mathematical extension](FIFTH_ROOTS.md); that is not part of the N3 or N4 reproduction. `PICKETT_R1`, `PICKETT_R2`, and `PICKETT_Q1` through `PICKETT_Q3` are dedicated component definitions. Keeping them distinct leaves existing custom overrides of generic `R1`/`R2`/`Q1`/`Q2`/`Q3` independent of the historical banks.
 
 `ui/root-stack.js` owns the shared-spine markup; `styles/root-stacks.css` owns vertical placement. `ui/tick-markup.js` supplies the common escaped tick/number markup. Tick generation and root mappings remain in the mathematical core. One mover contains every branch and the shared line, so a bank placed on the slide cannot split apart during dragging. Each branch's labels are packed independently; all branches are included in the digital readout.
 

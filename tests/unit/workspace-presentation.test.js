@@ -63,3 +63,34 @@ test('compact precision keeps four complete accessible names plus a selected-set
     const step = template.slice(template.indexOf('id="motionStep"'), template.indexOf('id="motionHelp"'));
     assert.ok(!step.includes('id="motionTarget"'), 'status must not make the step card taller');
 });
+
+
+test('graduation mode stays outside one shared options slot with two labelled menus', () => {
+    const slot = template.match(/<div class="graduation-options">([\s\S]*?)<\/div>/)?.[1];
+    assert.ok(slot, 'shared options slot must exist');
+    assert.equal((template.match(/class="graduation-options"/g) || []).length, 1);
+    assert.equal((slot.match(/<select\b/g) || []).length, 2);
+    assert.ok(!slot.includes('id="graduationModeSelect"'));
+    for (const [field, select, label] of [
+        ['logGraduationsField', 'logGraduationsSelect', 'C/D and W subdivisions'],
+        ['adaptiveSpacingField', 'adaptiveSpacingSelect', 'Adaptive detail']
+    ]) {
+        assert.match(slot, new RegExp(`<label id="${field}"[^>]*>[\\s\\S]*?<select id="${select}" aria-label="${label}"`));
+    }
+});
+test('initial graduation options match the conventional default without a disabled placeholder', () => {
+    assert.equal(DEFAULT_STATE.graduationMode, 'conventional');
+    assert.match(template, /<label id="adaptiveSpacingField"[^>]*\bhidden>/);
+    assert.match(template, /<select id="adaptiveSpacingSelect"[^>]*\bdisabled>/);
+    assert.doesNotMatch(template, /<label id="logGraduationsField"[^>]*\bhidden/);
+    assert.doesNotMatch(template, /<select id="logGraduationsSelect"[^>]*\bdisabled/);
+});
+test('graduation option labels and choices remain complete when sharing a slot', () => {
+    const choices = id => {
+        const menu = template.match(new RegExp(`<select id="${id}"[^>]*>([\\s\\S]*?)</select>`))[1];
+        return [...menu.matchAll(/value="([^"]+)"/g)].map(m => m[1]);
+    };
+    assert.deepEqual(choices('graduationModeSelect'), ['conventional', 'adaptive']);
+    assert.deepEqual(choices('adaptiveSpacingSelect'), ['clear', 'balanced', 'fine']);
+    assert.deepEqual(choices('logGraduationsSelect'), ['adaptive', 'standard', 'pocket', 'fine']);
+});

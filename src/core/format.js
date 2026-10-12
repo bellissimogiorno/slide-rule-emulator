@@ -1,6 +1,8 @@
+import { formatSexagesimal } from '#core/sexagesimal.js';
 function formatValue(value, def) {
     if (!Number.isFinite(value))
         return value > 0 ? "∞" : "--";
+    if (def.angleNotation === "sexagesimal") return formatSexagesimal(value);
     if (def.unit === "°" || def.type === "sin" || def.type === "cos" || def.type === "tan" || def.type === "tan2" || def.type === "smallAngle") {
         return `${formatSig(value, 5)}°`;
     }

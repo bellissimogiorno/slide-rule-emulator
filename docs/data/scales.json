@@ -1,4 +1,9268 @@
 {
+  "UL_LL00": {
+    "id": "UL_LL00",
+    "label": "LL/0",
+    "type": "loglog",
+    "decade": -3,
+    "sign": -1,
+    "min": 0.999000499833375,
+    "max": 0.9900498337491681,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "e^-x for x from 0.001 to 0.01.",
+    "family": "UltraLog"
+  },
+  "UL_LL01": {
+    "id": "UL_LL01",
+    "label": "LL/1",
+    "type": "loglog",
+    "decade": -2,
+    "sign": -1,
+    "min": 0.9900498337491681,
+    "max": 0.9048374180359595,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "e^-x for x from 0.01 to 0.1.",
+    "family": "UltraLog"
+  },
+  "UL_LL02": {
+    "id": "UL_LL02",
+    "label": "LL/2",
+    "type": "loglog",
+    "decade": -1,
+    "sign": -1,
+    "min": 0.9048374180359595,
+    "max": 0.36787944117144233,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "e^-x for x from 0.1 to 1.",
+    "family": "UltraLog"
+  },
+  "UL_LL03": {
+    "id": "UL_LL03",
+    "label": "LL/3",
+    "type": "loglog",
+    "decade": 0,
+    "sign": -1,
+    "min": 0.36787944117144233,
+    "max": 0.00004539992976248485,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "e^-x for x from 1 to 10.",
+    "family": "UltraLog"
+  },
+  "UL_DF": {
+    "id": "UL_DF",
+    "label": "DF",
+    "type": "foldedLog",
+    "fold": 3.141592653589793,
+    "foldLabel": "π",
+    "min": 1,
+    "max": 10,
+    "tickMode": "folded",
+    "formula": "πx",
+    "tone": "neutral",
+    "description": "D scale folded at pi, useful for avoiding off-scale products and multiplying by pi.",
+    "family": "UltraLog"
+  },
+  "UL_CF": {
+    "id": "UL_CF",
+    "label": "CF",
+    "type": "foldedLog",
+    "fold": 3.141592653589793,
+    "foldLabel": "π",
+    "min": 1,
+    "max": 10,
+    "tickMode": "folded",
+    "formula": "πx",
+    "tone": "neutral",
+    "description": "C scale folded at pi, useful for avoiding off-scale products and multiplying by pi.",
+    "family": "UltraLog"
+  },
+  "UL_CIF": {
+    "id": "UL_CIF",
+    "label": "CIF",
+    "type": "foldedInverse",
+    "fold": 3.141592653589793,
+    "foldLabel": "π",
+    "min": 1,
+    "max": 10,
+    "tickMode": "folded",
+    "formula": "1/(πx)",
+    "tone": "red",
+    "description": "True reciprocal of the CF scale, folded at pi.",
+    "family": "UltraLog"
+  },
+  "UL_SH1": {
+    "id": "UL_SH1",
+    "label": "SH1",
+    "type": "sinhLow",
+    "tickMode": "mapped",
+    "min": 0.09983407889920758,
+    "max": 0.881373587019543,
+    "formula": "sinh u",
+    "description": "Low hyperbolic-sine range, aligned with 0.1 through 1 on D.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_SH2": {
+    "id": "UL_SH2",
+    "label": "SH2",
+    "type": "sinhHigh",
+    "tickMode": "mapped",
+    "min": 0.881373587019543,
+    "max": 2.99822295029797,
+    "formula": "sinh u",
+    "description": "High hyperbolic-sine range, aligned with 1 through 10 on D.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_CH": {
+    "id": "UL_CH",
+    "label": "CH",
+    "type": "acosh",
+    "tickMode": "mapped",
+    "min": 0,
+    "max": 2.993222846126381,
+    "formula": "cosh u",
+    "description": "Inverse hyperbolic-cosine argument aligned with cosh(u) on D.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_TH": {
+    "id": "UL_TH",
+    "label": "TH",
+    "type": "tanh",
+    "tickMode": "mapped",
+    "min": 0.10033534773107558,
+    "max": 3,
+    "formula": "tanh u",
+    "description": "Hyperbolic-tangent range, stopping before the asymptote.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_LN": {
+    "id": "UL_LN",
+    "label": "Ln",
+    "type": "linear",
+    "min": 0,
+    "max": 2.302585092994046,
+    "majorStep": 0.2,
+    "formula": "ln x",
+    "description": "Natural logarithm of the D-scale mantissa, from 0 to ln(10).",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_L": {
+    "id": "UL_L",
+    "label": "L",
+    "type": "linear",
+    "min": 0,
+    "max": 1,
+    "majorStep": 0.1,
+    "formula": "log₁₀x",
+    "description": "Linear mantissa scale for common logarithms.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_CI": {
+    "id": "UL_CI",
+    "label": "CI",
+    "type": "inverseLog",
+    "min": 1,
+    "max": 10,
+    "formula": "10/x",
+    "tone": "red",
+    "description": "Inverted C scale for reciprocals and chained products.",
+    "family": "UltraLog"
+  },
+  "UL_C": {
+    "id": "UL_C",
+    "label": "C",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "gauges": [
+      {
+        "value": 1.1283791670955126,
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
+      },
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
+      }
+    ],
+    "formula": "x",
+    "tone": "neutral",
+    "description": "Sliding fundamental logarithmic scale for multiplication and division.",
+    "family": "UltraLog"
+  },
+  "UL_D": {
+    "id": "UL_D",
+    "label": "D",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "gauges": [
+      {
+        "value": 1.1283791670955126,
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
+      },
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
+      }
+    ],
+    "formula": "x",
+    "tone": "neutral",
+    "description": "Fixed fundamental logarithmic scale for multiplication and division.",
+    "family": "UltraLog"
+  },
+  "UL_LL3": {
+    "id": "UL_LL3",
+    "label": "LL3",
+    "type": "loglog",
+    "decade": 0,
+    "sign": 1,
+    "min": 2.718281828459045,
+    "max": 22026.465794806718,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "e^x for x from 1 to 10.",
+    "family": "UltraLog"
+  },
+  "UL_LL2": {
+    "id": "UL_LL2",
+    "label": "LL2",
+    "type": "loglog",
+    "decade": -1,
+    "sign": 1,
+    "min": 1.1051709180756477,
+    "max": 2.718281828459045,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "e^x for x from 0.1 to 1.",
+    "family": "UltraLog"
+  },
+  "UL_LL1": {
+    "id": "UL_LL1",
+    "label": "LL1",
+    "type": "loglog",
+    "decade": -2,
+    "sign": 1,
+    "min": 1.010050167084168,
+    "max": 1.1051709180756477,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "e^x for x from 0.01 to 0.1.",
+    "family": "UltraLog"
+  },
+  "UL_LL0": {
+    "id": "UL_LL0",
+    "label": "LL0",
+    "type": "loglog",
+    "decade": -3,
+    "sign": 1,
+    "min": 1.0010005001667084,
+    "max": 1.010050167084168,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "e^x for x from 0.001 to 0.01.",
+    "family": "UltraLog"
+  },
+  "UL_R1": {
+    "id": "UL_R1",
+    "label": "R1",
+    "type": "root",
+    "order": 2,
+    "branch": 0,
+    "min": 1,
+    "max": 3.1622776601683795,
+    "tickMode": "root",
+    "formula": "√x · branch 1",
+    "description": "Square-root branch for radicands in decades 10^(2k) through 10^(2k+1).",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_R2": {
+    "id": "UL_R2",
+    "label": "R2",
+    "type": "root",
+    "order": 2,
+    "branch": 1,
+    "min": 3.1622776601683795,
+    "max": 10,
+    "tickMode": "root",
+    "formula": "√x · branch 2",
+    "description": "Square-root branch for radicands in decades 10^(2k+1) through 10^(2k+2).",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_K": {
+    "id": "UL_K",
+    "label": "K",
+    "type": "log",
+    "min": 1,
+    "max": 1000,
+    "power": 3,
+    "tickMode": "log",
+    "formula": "x³",
+    "description": "Three-decade cube scale; read cubes from D and cube roots to D.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_A": {
+    "id": "UL_A",
+    "label": "A",
+    "type": "log",
+    "min": 1,
+    "max": 100,
+    "power": 2,
+    "tickMode": "log",
+    "formula": "x²",
+    "description": "Fixed two-decade square scale; read squares from D and square roots to D.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_B": {
+    "id": "UL_B",
+    "label": "B",
+    "type": "log",
+    "min": 1,
+    "max": 100,
+    "power": 2,
+    "tickMode": "log",
+    "formula": "x²",
+    "description": "Sliding two-decade square scale; read squares from C and square roots to C.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_T1": {
+    "id": "UL_T1",
+    "label": "T1",
+    "type": "tan",
+    "tickMode": "tan",
+    "min": 5.710593137,
+    "max": 45,
+    "unit": "°",
+    "formula": "tan θ",
+    "description": "Tangent scale from atan(0.1) to 45 degrees.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_T2": {
+    "id": "UL_T2",
+    "label": "T2",
+    "type": "tan2",
+    "tickMode": "tan2",
+    "min": 45,
+    "max": 84.289406863,
+    "unit": "°",
+    "formula": "tan θ",
+    "tone": "neutral",
+    "description": "Upper tangent scale from 45 degrees to atan(10).",
+    "family": "UltraLog"
+  },
+  "UL_ST": {
+    "id": "UL_ST",
+    "label": "ST",
+    "type": "smallAngle",
+    "tickMode": "smallAngle",
+    "min": 0.5729673449,
+    "max": 5.739170477,
+    "unit": "°",
+    "formula": "sin θ ≈ tan θ",
+    "description": "Small-angle sine/tangent scale from about 0.573 to 5.739 degrees.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_S": {
+    "id": "UL_S",
+    "label": "S",
+    "type": "sin",
+    "tickMode": "sin",
+    "min": 5.739170477,
+    "max": 90,
+    "unit": "°",
+    "formula": "sin θ",
+    "description": "Sine scale, labelled in degrees from asin(0.1) to 90 degrees.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_P": {
+    "id": "UL_P",
+    "label": "P",
+    "type": "pythagorean",
+    "min": 0,
+    "max": 0.99498743710662,
+    "formula": "√(1−x²)",
+    "description": "Pythagorean scale sqrt(1-x^2), useful for cosines and right triangles.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_H1": {
+    "id": "UL_H1",
+    "label": "H1",
+    "type": "hypotenuseLow",
+    "tickMode": "mapped",
+    "min": 1.004987562112089,
+    "max": 1.4142135623730951,
+    "formula": "√(1+x²)",
+    "description": "Low sqrt(1+x^2) range for x from 0.1 through 1.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_H2": {
+    "id": "UL_H2",
+    "label": "H2",
+    "type": "hypotenuseHigh",
+    "tickMode": "mapped",
+    "min": 1.4142135623730951,
+    "max": 10.04987562112089,
+    "formula": "√(1+x²)",
+    "description": "High sqrt(1+x^2) range for x from 1 through 10.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_DI": {
+    "id": "UL_DI",
+    "label": "DI",
+    "type": "inverseLog",
+    "min": 1,
+    "max": 10,
+    "formula": "10/x",
+    "tone": "red",
+    "description": "Inverted D scale for reciprocals.",
+    "family": "UltraLog"
+  },
+  "UL_Q1": {
+    "id": "UL_Q1",
+    "label": "Q1",
+    "type": "root",
+    "order": 3,
+    "branch": 0,
+    "min": 1,
+    "max": 2.154434690031884,
+    "tickMode": "root",
+    "formula": "∛x · branch 1",
+    "description": "Cube-root branch 1 of 3.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_Q2": {
+    "id": "UL_Q2",
+    "label": "Q2",
+    "type": "root",
+    "order": 3,
+    "branch": 1,
+    "min": 2.154434690031884,
+    "max": 4.641588833612778,
+    "tickMode": "root",
+    "formula": "∛x · branch 2",
+    "description": "Cube-root branch 2 of 3.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_Q3": {
+    "id": "UL_Q3",
+    "label": "Q3",
+    "type": "root",
+    "order": 3,
+    "branch": 2,
+    "min": 4.641588833612778,
+    "max": 10,
+    "tickMode": "root",
+    "formula": "∛x · branch 3",
+    "description": "Cube-root branch 3 of 3.",
+    "family": "UltraLog",
+    "tone": "neutral"
+  },
+  "UL_CONST": {
+    "id": "UL_CONST",
+    "label": "Const",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "referenceOnly": true,
+    "ticks": [
+      {
+        "value": 1.1283791670955126,
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor sqrt(4/pi); not the speed of light.",
+        "mass": 1.1283791670955126,
+        "kind": "gauge"
+      },
+      {
+        "value": 1.4142135623730951,
+        "label": "√2",
+        "title": "√2 = 1.414213562373. Square root of two.",
+        "mass": 1.4142135623730951,
+        "kind": "gauge"
+      },
+      {
+        "value": 1.7320508075688772,
+        "label": "√3",
+        "title": "√3 = 1.732050807569. Square root of three.",
+        "mass": 1.7320508075688772,
+        "kind": "gauge"
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Base of natural logarithms.",
+        "mass": 2.718281828459045,
+        "kind": "gauge"
+      },
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Ratio of circumference to diameter of a circle.",
+        "mass": 3.141592653589793,
+        "kind": "gauge"
+      },
+      {
+        "value": 3.1622776601683795,
+        "label": "√10",
+        "title": "√10 = 3.162277660168. Square root of ten.",
+        "mass": 3.1622776601683795,
+        "kind": "gauge"
+      },
+      {
+        "value": 2.302585092994046,
+        "label": "ln 10",
+        "title": "ln 10 = 2.302585092994. Natural logarithm of ten.",
+        "mass": 2.302585092994046,
+        "kind": "gauge"
+      },
+      {
+        "value": 6.283185307179586,
+        "label": "2π",
+        "title": "2π = 6.28318530718. Angle of a complete turn in radians.",
+        "mass": 6.283185307179586,
+        "kind": "gauge"
+      }
+    ],
+    "compactLabels": false,
+    "family": "UltraLog",
+    "tone": "neutral",
+    "formula": "Reference marks",
+    "description": "Emulator-supplied mathematical constants, not a transcription of the UltraLog prototype. The published design names a Const row but its original contents could not be verified. Hover each symbol for the exact relationship and value; the readout identifies the nearest mark."
+  },
+  "GP_LL00": {
+    "id": "GP_LL00",
+    "label": "LL00",
+    "type": "loglog",
+    "decade": -3,
+    "sign": -1,
+    "min": 0.999000499833375,
+    "max": 0.9900498337491681,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "Graphoplex LL00: exp(-1 * D * 10^-3). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL0": {
+    "id": "GP_LL0",
+    "label": "LL0",
+    "type": "loglog",
+    "decade": -3,
+    "sign": 1,
+    "min": 1.0010005001667084,
+    "max": 1.010050167084168,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "Graphoplex LL0: exp(1 * D * 10^-3). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL01": {
+    "id": "GP_LL01",
+    "label": "LL01",
+    "type": "loglog",
+    "decade": -2,
+    "sign": -1,
+    "min": 0.9900498337491681,
+    "max": 0.9048374180359595,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "Graphoplex LL01: exp(-1 * D * 10^-2). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL1": {
+    "id": "GP_LL1",
+    "label": "LL1",
+    "type": "loglog",
+    "decade": -2,
+    "sign": 1,
+    "min": 1.010050167084168,
+    "max": 1.1051709180756477,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "Graphoplex LL1: exp(1 * D * 10^-2). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL02": {
+    "id": "GP_LL02",
+    "label": "LL02",
+    "type": "loglog",
+    "decade": -1,
+    "sign": -1,
+    "min": 0.9048374180359595,
+    "max": 0.36787944117144233,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "Graphoplex LL02: exp(-1 * D * 10^-1). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL2": {
+    "id": "GP_LL2",
+    "label": "LL2",
+    "type": "loglog",
+    "decade": -1,
+    "sign": 1,
+    "min": 1.1051709180756477,
+    "max": 2.718281828459045,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "Graphoplex LL2: exp(1 * D * 10^-1). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL03": {
+    "id": "GP_LL03",
+    "label": "LL03",
+    "type": "loglog",
+    "decade": 0,
+    "sign": -1,
+    "min": 0.36787944117144233,
+    "max": 0.00004539992976248485,
+    "tickMode": "loglog",
+    "formula": "e⁻ˣ",
+    "tone": "red",
+    "description": "Graphoplex LL03: exp(-1 * D * 10^0). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_LL3": {
+    "id": "GP_LL3",
+    "label": "LL3",
+    "type": "loglog",
+    "decade": 0,
+    "sign": 1,
+    "min": 2.718281828459045,
+    "max": 22026.465794806718,
+    "tickMode": "loglog",
+    "formula": "eˣ",
+    "tone": "neutral",
+    "description": "Graphoplex LL3: exp(1 * D * 10^0). Main interval without end extensions.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP690_S": {
+    "id": "GP690_S",
+    "label": "S",
+    "type": "sin",
+    "tickMode": "sin",
+    "min": 5.739170477266787,
+    "max": 90,
+    "unit": "°",
+    "formula": "sin θ",
+    "description": "Graphoplex 690A S. Black angles and red complements sum to 90 degrees on shared ticks. Sine/cosine or tangent/cotangent aligned with the number scale. Degree/minute conventional engraving; adaptive mode uses round decimal positions with sexagesimal captions.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral",
+    "pairedSum": 90,
+    "ticks": [
+      {
+        "value": 5.739170477266787,
+        "kind": "index",
+        "label": ""
+      },
+      {
+        "value": 5.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.916666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6,
+        "kind": "major",
+        "label": "6°"
+      },
+      {
+        "value": 6.083333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.166666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.333333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.416666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 6.583333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.666666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.916666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7,
+        "kind": "major",
+        "label": "7°"
+      },
+      {
+        "value": 7.083333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.166666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.333333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.416666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 7.583333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.666666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.916666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8,
+        "kind": "major",
+        "label": "8°"
+      },
+      {
+        "value": 8.083333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.416666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 8.583333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.916666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9,
+        "kind": "major",
+        "label": "9°"
+      },
+      {
+        "value": 9.083333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.416666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 9.583333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.916666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 10,
+        "kind": "major",
+        "label": "10°"
+      },
+      {
+        "value": 10.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 10.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 11.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 11.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12,
+        "kind": "major",
+        "label": "12°"
+      },
+      {
+        "value": 12.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 12.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 13.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 13.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14,
+        "kind": "major",
+        "label": "14°"
+      },
+      {
+        "value": 14.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 14.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 15.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 15.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16,
+        "kind": "major",
+        "label": "16°"
+      },
+      {
+        "value": 16.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 16.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 17.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 17.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18,
+        "kind": "major",
+        "label": "18°"
+      },
+      {
+        "value": 18.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 18.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 19.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 19.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20,
+        "kind": "major",
+        "label": "20°"
+      },
+      {
+        "value": 20.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 21.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 22.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 23.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 24.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25,
+        "kind": "major",
+        "label": "25°"
+      },
+      {
+        "value": 25.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 26.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 27.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 28.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 29.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30,
+        "kind": "major",
+        "label": "30°"
+      },
+      {
+        "value": 30.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 31.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 32.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 33.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 34.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35,
+        "kind": "major",
+        "label": "35°"
+      },
+      {
+        "value": 35.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 36.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 37.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 38.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 39.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40,
+        "kind": "major",
+        "label": "40°"
+      },
+      {
+        "value": 40.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 41.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 42.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 43.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 44.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 45,
+        "kind": "major",
+        "label": "45°"
+      },
+      {
+        "value": 45.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 46,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 46.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 47,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 47.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 48,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 48.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 49,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 49.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 50,
+        "kind": "major",
+        "label": "50°"
+      },
+      {
+        "value": 50.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 51,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 51.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 52,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 52.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 53,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 53.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 54,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 54.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 55,
+        "kind": "major",
+        "label": "55°"
+      },
+      {
+        "value": 55.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 56,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 56.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 57,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 57.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 58,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 58.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 59,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 59.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 60,
+        "kind": "major",
+        "label": "60°"
+      },
+      {
+        "value": 60.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 61,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 61.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 62,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 62.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 63,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 63.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 64,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 64.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 65,
+        "kind": "major",
+        "label": "65°"
+      },
+      {
+        "value": 65.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 66,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 66.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 67,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 67.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 68,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 68.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 69,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 69.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 70,
+        "kind": "major",
+        "label": "70°"
+      },
+      {
+        "value": 71,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 72,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 73,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 74,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 75,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 76,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 77,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 78,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 79,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 80,
+        "kind": "major",
+        "label": "80°"
+      },
+      {
+        "value": 81,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 82,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 83,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 84,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 85,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 86,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 87,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 88,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 89,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 90,
+        "kind": "index",
+        "label": "90°"
+      }
+    ],
+    "adaptiveTicks": true,
+    "angleNotation": "sexagesimal",
+    "compactLabels": false
+  },
+  "GP691_S": {
+    "id": "GP691_S",
+    "label": "S",
+    "type": "sin",
+    "tickMode": "sin",
+    "min": 5.739170477266787,
+    "max": 90,
+    "unit": "°",
+    "formula": "sin θ",
+    "description": "Graphoplex 691A S. Black angles and red complements sum to 90 degrees on shared ticks. Sine/cosine or tangent/cotangent aligned with the number scale. Decimal-degree engraving.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral",
+    "pairedSum": 90,
+    "ticks": [
+      {
+        "value": 5.739170477266787,
+        "kind": "index",
+        "label": ""
+      },
+      {
+        "value": 5.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6,
+        "kind": "major",
+        "label": "6"
+      },
+      {
+        "value": 6.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 6.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7,
+        "kind": "major",
+        "label": "7"
+      },
+      {
+        "value": 7.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 7.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8,
+        "kind": "major",
+        "label": "8"
+      },
+      {
+        "value": 8.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 8.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9,
+        "kind": "major",
+        "label": "9"
+      },
+      {
+        "value": 9.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 9.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 10,
+        "kind": "major",
+        "label": "10"
+      },
+      {
+        "value": 10.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 10.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 11.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 11.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12,
+        "kind": "major",
+        "label": "12"
+      },
+      {
+        "value": 12.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 12.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 13.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 13.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14,
+        "kind": "major",
+        "label": "14"
+      },
+      {
+        "value": 14.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 14.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 15.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 15.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16,
+        "kind": "major",
+        "label": "16"
+      },
+      {
+        "value": 16.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 16.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 17.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 17.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18,
+        "kind": "major",
+        "label": "18"
+      },
+      {
+        "value": 18.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 18.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 19.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 19.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20,
+        "kind": "major",
+        "label": "20"
+      },
+      {
+        "value": 20.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 21.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 22.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 23.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 24.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25,
+        "kind": "major",
+        "label": "25"
+      },
+      {
+        "value": 25.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 26.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 27.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 28.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 29.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30,
+        "kind": "major",
+        "label": "30"
+      },
+      {
+        "value": 30.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 31.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 32.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 33.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 34.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35,
+        "kind": "major",
+        "label": "35"
+      },
+      {
+        "value": 35.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 36.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 37.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 38.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 39.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40,
+        "kind": "major",
+        "label": "40"
+      },
+      {
+        "value": 40.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 41,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 41.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 42,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 42.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 43,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 43.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 44,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 44.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 45,
+        "kind": "major",
+        "label": "45"
+      },
+      {
+        "value": 45.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 46,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 46.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 47,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 47.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 48,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 48.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 49,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 49.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 50,
+        "kind": "major",
+        "label": "50"
+      },
+      {
+        "value": 50.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 51,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 51.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 52,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 52.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 53,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 53.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 54,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 54.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 55,
+        "kind": "major",
+        "label": "55"
+      },
+      {
+        "value": 55.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 56,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 56.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 57,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 57.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 58,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 58.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 59,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 59.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 60,
+        "kind": "major",
+        "label": "60"
+      },
+      {
+        "value": 60.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 61,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 61.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 62,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 62.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 63,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 63.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 64,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 64.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 65,
+        "kind": "major",
+        "label": "65"
+      },
+      {
+        "value": 66,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 67,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 68,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 69,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 70,
+        "kind": "major",
+        "label": "70"
+      },
+      {
+        "value": 71,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 72,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 73,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 74,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 75,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 76,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 77,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 78,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 79,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 80,
+        "kind": "major",
+        "label": "80"
+      },
+      {
+        "value": 81,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 82,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 83,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 84,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 85,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 86,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 87,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 88,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 89,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 90,
+        "kind": "index",
+        "label": "90"
+      }
+    ],
+    "adaptiveTicks": true
+  },
+  "GP690_T1": {
+    "id": "GP690_T1",
+    "label": "T<45°",
+    "type": "tan",
+    "tickMode": "tan",
+    "min": 5.710593137499643,
+    "max": 45,
+    "unit": "°",
+    "formula": "tan θ",
+    "description": "Graphoplex 690A T<45°. Black angles and red complements sum to 90 degrees on shared ticks. Sine/cosine or tangent/cotangent aligned with the number scale. Degree/minute conventional engraving; adaptive mode uses round decimal positions with sexagesimal captions.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral",
+    "pairedSum": 90,
+    "ticks": [
+      {
+        "value": 5.710593137499643,
+        "kind": "index",
+        "label": ""
+      },
+      {
+        "value": 5.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.916666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6,
+        "kind": "major",
+        "label": "6°"
+      },
+      {
+        "value": 6.083333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.166666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.333333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.416666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 6.583333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.666666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.916666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7,
+        "kind": "major",
+        "label": "7°"
+      },
+      {
+        "value": 7.083333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.166666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.333333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.416666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 7.583333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.666666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.916666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8,
+        "kind": "major",
+        "label": "8°"
+      },
+      {
+        "value": 8.083333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.416666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 8.583333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.916666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9,
+        "kind": "major",
+        "label": "9°"
+      },
+      {
+        "value": 9.083333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.416666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 9.583333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.916666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 10,
+        "kind": "major",
+        "label": "10°"
+      },
+      {
+        "value": 10.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 10.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 11.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 11.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12,
+        "kind": "major",
+        "label": "12°"
+      },
+      {
+        "value": 12.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 12.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 13.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 13.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14,
+        "kind": "major",
+        "label": "14°"
+      },
+      {
+        "value": 14.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 14.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 15.166666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.333333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 15.666666666666666,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.833333333333334,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16,
+        "kind": "major",
+        "label": "16°"
+      },
+      {
+        "value": 16.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 16.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 17.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 17.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18,
+        "kind": "major",
+        "label": "18°"
+      },
+      {
+        "value": 18.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 18.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 19.166666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 19.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.833333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20,
+        "kind": "major",
+        "label": "20°"
+      },
+      {
+        "value": 20.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 21.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 22.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 23.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 24.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25,
+        "kind": "major",
+        "label": "25°"
+      },
+      {
+        "value": 25.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 26.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 27.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 28.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 29.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30,
+        "kind": "major",
+        "label": "30°"
+      },
+      {
+        "value": 30.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 31.333333333333332,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.666666666666668,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 32.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 33.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 34.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35,
+        "kind": "major",
+        "label": "35°"
+      },
+      {
+        "value": 35.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 36.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 37.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 38.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 39.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40,
+        "kind": "major",
+        "label": "40°"
+      },
+      {
+        "value": 40.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 41.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 42.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 43.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 44.333333333333336,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44.666666666666664,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 45,
+        "kind": "index",
+        "label": "45°"
+      }
+    ],
+    "adaptiveTicks": true,
+    "angleNotation": "sexagesimal",
+    "compactLabels": false
+  },
+  "GP691_T1": {
+    "id": "GP691_T1",
+    "label": "T<45°",
+    "type": "tan",
+    "tickMode": "tan",
+    "min": 5.710593137499643,
+    "max": 45,
+    "unit": "°",
+    "formula": "tan θ",
+    "description": "Graphoplex 691A T<45°. Black angles and red complements sum to 90 degrees on shared ticks. Sine/cosine or tangent/cotangent aligned with the number scale. Decimal-degree engraving.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral",
+    "pairedSum": 90,
+    "ticks": [
+      {
+        "value": 5.710593137499643,
+        "kind": "index",
+        "label": ""
+      },
+      {
+        "value": 5.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6,
+        "kind": "major",
+        "label": "6"
+      },
+      {
+        "value": 6.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 6.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 6.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 6.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7,
+        "kind": "major",
+        "label": "7"
+      },
+      {
+        "value": 7.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 7.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 7.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 7.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8,
+        "kind": "major",
+        "label": "8"
+      },
+      {
+        "value": 8.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 8.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 8.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 8.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9,
+        "kind": "major",
+        "label": "9"
+      },
+      {
+        "value": 9.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 9.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 9.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 9.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 10,
+        "kind": "major",
+        "label": "10"
+      },
+      {
+        "value": 10.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 10.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 10.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 11.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 11.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 11.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12,
+        "kind": "major",
+        "label": "12"
+      },
+      {
+        "value": 12.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 12.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 12.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 13.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 13.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 13.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14,
+        "kind": "major",
+        "label": "14"
+      },
+      {
+        "value": 14.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 14.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 14.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 15.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 15.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 15.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16,
+        "kind": "major",
+        "label": "16"
+      },
+      {
+        "value": 16.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 16.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 16.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 17.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 17.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 17.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18,
+        "kind": "major",
+        "label": "18"
+      },
+      {
+        "value": 18.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 18.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 18.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 19.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 19.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 19.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20,
+        "kind": "major",
+        "label": "20"
+      },
+      {
+        "value": 20.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 20.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 21.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 21.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 22.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 22.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 23.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 23.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 24.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 24.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25,
+        "kind": "major",
+        "label": "25"
+      },
+      {
+        "value": 25.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 25.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 26.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 26.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 27.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 27.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 28.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 28.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 29.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 29.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30,
+        "kind": "major",
+        "label": "30"
+      },
+      {
+        "value": 30.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 30.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 31.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 31.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 32.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 32.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 33.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 33.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 34.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 34.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35,
+        "kind": "major",
+        "label": "35"
+      },
+      {
+        "value": 35.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 35.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 36.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 36.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 37.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 37.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 38.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 38.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 39.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 39.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40,
+        "kind": "major",
+        "label": "40"
+      },
+      {
+        "value": 40.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 40.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 41.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 41.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 42.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 42.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 43.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 43.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 44.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 44.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 45,
+        "kind": "index",
+        "label": "45"
+      }
+    ],
+    "adaptiveTicks": true
+  },
+  "GP690_T2": {
+    "id": "GP690_T2",
+    "label": "T>45°",
+    "type": "tan2",
+    "tickMode": "tan2",
+    "min": 45,
+    "max": 84.28940686250037,
+    "unit": "°",
+    "formula": "tan θ",
+    "tone": "neutral",
+    "description": "Graphoplex 690A T>45°. Black angles and red complements sum to 90 degrees on shared ticks. Sine/cosine or tangent/cotangent aligned with the number scale. Degree/minute conventional engraving; adaptive mode uses round decimal positions with sexagesimal captions.",
+    "family": "Graphoplex Neperlog",
+    "pairedSum": 90,
+    "ticks": [
+      {
+        "value": 45,
+        "kind": "index",
+        "label": "45°"
+      },
+      {
+        "value": 45.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 46,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 46.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 47,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 47.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 48,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 48.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 49,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 49.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 50,
+        "kind": "major",
+        "label": "50°"
+      },
+      {
+        "value": 50.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 51,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 51.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 52,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 52.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 53,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 53.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 54,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 54.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 55,
+        "kind": "major",
+        "label": "55°"
+      },
+      {
+        "value": 55.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 56,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 56.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 57,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 57.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 58,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 58.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 59,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 59.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 60,
+        "kind": "major",
+        "label": "60°"
+      },
+      {
+        "value": 60.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 61,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 61.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 62,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 62.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 63,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 63.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 64,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 64.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 65,
+        "kind": "major",
+        "label": "65°"
+      },
+      {
+        "value": 65.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 66,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 66.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 67,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 67.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 68,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 68.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 69,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 69.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 70,
+        "kind": "major",
+        "label": "70°"
+      },
+      {
+        "value": 70.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 70.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 71,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 71.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 71.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 72,
+        "kind": "major",
+        "label": "72°"
+      },
+      {
+        "value": 72.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 72.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 73,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 73.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 73.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 74,
+        "kind": "major",
+        "label": "74°"
+      },
+      {
+        "value": 74.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 74.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 75,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 75.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 75.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 76,
+        "kind": "major",
+        "label": "76°"
+      },
+      {
+        "value": 76.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 76.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 77,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 77.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 77.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 78,
+        "kind": "major",
+        "label": "78°"
+      },
+      {
+        "value": 78.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 78.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 79,
+        "kind": "major",
+        "label": ""
+      },
+      {
+        "value": 79.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 79.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 80,
+        "kind": "major",
+        "label": "80°"
+      },
+      {
+        "value": 80.16666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 80.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 80.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 80.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 80.83333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 81,
+        "kind": "major",
+        "label": "81°"
+      },
+      {
+        "value": 81.16666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 81.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 81.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 81.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 81.83333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 82,
+        "kind": "major",
+        "label": "82°"
+      },
+      {
+        "value": 82.16666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 82.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 82.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 82.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 82.83333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 83,
+        "kind": "major",
+        "label": "83°"
+      },
+      {
+        "value": 83.16666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 83.33333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 83.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 83.66666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 83.83333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 84,
+        "kind": "major",
+        "label": "84°"
+      },
+      {
+        "value": 84.16666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 84.28940686250037,
+        "kind": "index",
+        "label": ""
+      }
+    ],
+    "adaptiveTicks": true,
+    "angleNotation": "sexagesimal",
+    "compactLabels": false
+  },
+  "GP690_ST": {
+    "type": "expression",
+    "min": 0.5729577951308232,
+    "max": 5.729577951308232,
+    "pos": "log10(x*PI/180)+2",
+    "value": "180*10^(p-2)/PI",
+    "tickMode": "mapped",
+    "unit": "°",
+    "formula": "sin / tan (small)",
+    "pairedSum": 90,
+    "label": "S & T",
+    "description": "Graphoplex 690A S & T. Black angles and red complements sum to 90 degrees on shared ticks. Small-angle sine/tangent approximation in radians, corresponding to C/100. Red angles are the complements for cosine/cotangent. The approximation, not exact sine or tangent, is graduated.Degree/minute conventional engraving; adaptive mode uses round decimal positions with sexagesimal captions.",
+    "id": "GP690_ST",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral",
+    "ticks": [
+      {
+        "value": 0.5729577951308232,
+        "kind": "index",
+        "label": ""
+      },
+      {
+        "value": 0.5833333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.6,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.6166666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.6333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.6666666666666666,
+        "kind": "mid",
+        "label": "0°40′"
+      },
+      {
+        "value": 0.6833333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.7,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.7166666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.7333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.7666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.7833333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.8,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.8166666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.8333333333333334,
+        "kind": "mid",
+        "label": "0°50′"
+      },
+      {
+        "value": 0.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.8666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.8833333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.9,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.9166666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.9333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.9666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.9833333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1,
+        "kind": "major",
+        "label": "1°"
+      },
+      {
+        "value": 1.0333333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.0666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.1,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.1333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.1666666666666667,
+        "kind": "mid",
+        "label": "1°10′"
+      },
+      {
+        "value": 1.2,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.2333333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.2666666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.3,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.3333333333333333,
+        "kind": "mid",
+        "label": "1°20′"
+      },
+      {
+        "value": 1.3666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.4,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.4333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.4666666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.5,
+        "kind": "submajor",
+        "label": "1°30′"
+      },
+      {
+        "value": 1.5333333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.5666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.6,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.6333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.6666666666666667,
+        "kind": "mid",
+        "label": "1°40′"
+      },
+      {
+        "value": 1.7,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.7333333333333334,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.7666666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.8,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.8333333333333333,
+        "kind": "mid",
+        "label": "1°50′"
+      },
+      {
+        "value": 1.8666666666666667,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.9,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.9333333333333333,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.9666666666666666,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2,
+        "kind": "major",
+        "label": "2°"
+      },
+      {
+        "value": 2.0833333333333335,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.1666666666666665,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.3333333333333335,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.4166666666666665,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.5,
+        "kind": "submajor",
+        "label": "2°30′"
+      },
+      {
+        "value": 2.5833333333333335,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.6666666666666665,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.8333333333333335,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.9166666666666665,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3,
+        "kind": "major",
+        "label": "3°"
+      },
+      {
+        "value": 3.0833333333333335,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.1666666666666665,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.3333333333333335,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.4166666666666665,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.5,
+        "kind": "submajor",
+        "label": "3°30′"
+      },
+      {
+        "value": 3.5833333333333335,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.6666666666666665,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.8333333333333335,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.9166666666666665,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4,
+        "kind": "major",
+        "label": "4°"
+      },
+      {
+        "value": 4.166666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.333333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.5,
+        "kind": "submajor",
+        "label": "4°30′"
+      },
+      {
+        "value": 4.666666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.833333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5,
+        "kind": "major",
+        "label": "5°"
+      },
+      {
+        "value": 5.166666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.333333333333333,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.5,
+        "kind": "submajor",
+        "label": "5°30′"
+      },
+      {
+        "value": 5.666666666666667,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.729577951308232,
+        "kind": "index",
+        "label": ""
+      }
+    ],
+    "adaptiveTicks": true,
+    "angleNotation": "sexagesimal",
+    "compactLabels": false
+  },
+  "GP691_ST": {
+    "type": "expression",
+    "min": 0.5729577951308232,
+    "max": 5.729577951308232,
+    "pos": "log10(x*PI/180)+2",
+    "value": "180*10^(p-2)/PI",
+    "tickMode": "mapped",
+    "unit": "°",
+    "formula": "sin / tan (small)",
+    "pairedSum": 90,
+    "label": "S & T",
+    "description": "Graphoplex 691A S & T. Black angles and red complements sum to 90 degrees on shared ticks. Small-angle sine/tangent approximation in radians, corresponding to C/100. Red angles are the complements for cosine/cotangent. The approximation, not exact sine or tangent, is graduated.Decimal-degree engraving.",
+    "id": "GP691_ST",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral",
+    "ticks": [
+      {
+        "value": 0.5729577951308232,
+        "kind": "index",
+        "label": ""
+      },
+      {
+        "value": 0.575,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.58,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.585,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.59,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.595,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.6,
+        "kind": "mid",
+        "label": "0.6"
+      },
+      {
+        "value": 0.605,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.61,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.615,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.62,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.625,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.63,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.635,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.64,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.645,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.655,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.66,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.665,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.67,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.675,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.68,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.685,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.69,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.695,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.7,
+        "kind": "mid",
+        "label": "0.7"
+      },
+      {
+        "value": 0.705,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.71,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.715,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.72,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.725,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.73,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.735,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.74,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.745,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.755,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.76,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.765,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.77,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.775,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.78,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.785,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.79,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.795,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.8,
+        "kind": "mid",
+        "label": "0.8"
+      },
+      {
+        "value": 0.805,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.81,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.815,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.82,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.825,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.83,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.835,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.84,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.845,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.855,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.86,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.865,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.87,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.875,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.88,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.885,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.89,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.895,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.9,
+        "kind": "mid",
+        "label": "0.9"
+      },
+      {
+        "value": 0.905,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.91,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.915,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.92,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.925,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.93,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.935,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.94,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.945,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.955,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.96,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.965,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.97,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.975,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.98,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.985,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.99,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 0.995,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1,
+        "kind": "major",
+        "label": "1"
+      },
+      {
+        "value": 1.01,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.02,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.03,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.04,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.06,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.07,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.08,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.09,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 1.11,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.12,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.13,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.14,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.16,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.17,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.18,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.19,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.2,
+        "kind": "mid",
+        "label": "1.2"
+      },
+      {
+        "value": 1.21,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.22,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.23,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.24,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.26,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.27,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.28,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.29,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 1.31,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.32,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.33,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.34,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.36,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.37,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.38,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.39,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.4,
+        "kind": "mid",
+        "label": "1.4"
+      },
+      {
+        "value": 1.41,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.42,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.43,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.44,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.46,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.47,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.48,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.49,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.5,
+        "kind": "submajor",
+        "label": ""
+      },
+      {
+        "value": 1.51,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.52,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.53,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.54,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.56,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.57,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.58,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.59,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.6,
+        "kind": "mid",
+        "label": "1.6"
+      },
+      {
+        "value": 1.61,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.62,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.63,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.64,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.66,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.67,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.68,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.69,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 1.71,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.72,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.73,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.74,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.76,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.77,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.78,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.79,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.8,
+        "kind": "mid",
+        "label": "1.8"
+      },
+      {
+        "value": 1.81,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.82,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.83,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.84,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.86,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.87,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.88,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.89,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 1.91,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.92,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.93,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.94,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.96,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.97,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.98,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 1.99,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2,
+        "kind": "major",
+        "label": "2"
+      },
+      {
+        "value": 2.02,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.04,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.06,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.08,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.12,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.14,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.16,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.18,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.22,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.24,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.26,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.28,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.32,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.34,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.36,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.38,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.42,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.44,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.46,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.48,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.5,
+        "kind": "submajor",
+        "label": "2.5"
+      },
+      {
+        "value": 2.52,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.54,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.56,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.58,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.62,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.64,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.66,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.68,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.72,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.74,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.76,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.78,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.82,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.84,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.86,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.88,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 2.92,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.94,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.96,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 2.98,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3,
+        "kind": "major",
+        "label": "3"
+      },
+      {
+        "value": 3.02,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.04,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.06,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.08,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.12,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.14,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.16,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.18,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.22,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.24,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.26,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.28,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.32,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.34,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.36,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.38,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.42,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.44,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.46,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.48,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.5,
+        "kind": "submajor",
+        "label": "3.5"
+      },
+      {
+        "value": 3.52,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.54,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.56,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.58,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.62,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.64,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.66,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.68,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.72,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.74,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.76,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.78,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.82,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.84,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.86,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.88,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 3.92,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.94,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.96,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 3.98,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4,
+        "kind": "major",
+        "label": "4"
+      },
+      {
+        "value": 4.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.5,
+        "kind": "submajor",
+        "label": "4.5"
+      },
+      {
+        "value": 4.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.75,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.8,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.85,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 4.9,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 4.95,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5,
+        "kind": "major",
+        "label": "5"
+      },
+      {
+        "value": 5.05,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.1,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.15,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.2,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.25,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.3,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.35,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.4,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.45,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.5,
+        "kind": "submajor",
+        "label": "5.5"
+      },
+      {
+        "value": 5.55,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.6,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.65,
+        "kind": "minor",
+        "label": ""
+      },
+      {
+        "value": 5.7,
+        "kind": "mid",
+        "label": ""
+      },
+      {
+        "value": 5.729577951308232,
+        "kind": "index",
+        "label": ""
+      }
+    ],
+    "adaptiveTicks": true
+  },
+  "GP_C": {
+    "id": "GP_C",
+    "label": "C",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "gauges": [
+      {
+        "value": 1.1283791670955126,
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
+      },
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
+      },
+      {
+        "value": 3.437746770784939,
+        "label": "ρ′",
+        "title": "ρ′ = 3.437746770785. 3437.746770785 arcminutes per radian, shown divided by 1000 on C; arc length equals radius times the angle in arcminutes divided by that constant."
+      },
+      {
+        "value": 2.0626480624709638,
+        "label": "ρ″",
+        "title": "ρ″ = 2.062648062471. 206264.8062471 arcseconds per radian, shown divided by 100000 on C."
+      },
+      {
+        "value": 6.366197723675814,
+        "label": "ρcc",
+        "title": "ρcc = 6.366197723676. 636619.7723676 centesimal seconds per radian (10000 per gon), shown divided by 100000; not sexagesimal arcseconds."
+      }
+    ],
+    "formula": "x",
+    "tone": "neutral",
+    "description": "Sliding fundamental logarithmic scale for multiplication and division.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_D": {
+    "id": "GP_D",
+    "label": "D",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "gauges": [
+      {
+        "value": 1.1283791670955126,
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
+      },
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
+      }
+    ],
+    "formula": "x",
+    "tone": "neutral",
+    "description": "Fixed fundamental logarithmic scale for multiplication and division.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_CF": {
+    "id": "GP_CF",
+    "label": "CF",
+    "type": "foldedLog",
+    "fold": 3.141592653589793,
+    "foldLabel": "π",
+    "min": 1,
+    "max": 10,
+    "tickMode": "folded",
+    "formula": "πx",
+    "tone": "neutral",
+    "description": "C scale folded at pi, useful for avoiding off-scale products and multiplying by pi.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_DF": {
+    "id": "GP_DF",
+    "label": "DF",
+    "type": "foldedLog",
+    "fold": 3.141592653589793,
+    "foldLabel": "π",
+    "min": 1,
+    "max": 10,
+    "tickMode": "folded",
+    "formula": "πx",
+    "tone": "neutral",
+    "description": "D scale folded at pi, useful for avoiding off-scale products and multiplying by pi.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_CIF": {
+    "id": "GP_CIF",
+    "label": "CIF",
+    "type": "foldedInverse",
+    "fold": 3.141592653589793,
+    "foldLabel": "π",
+    "min": 1,
+    "max": 10,
+    "tickMode": "folded",
+    "formula": "1/(πx)",
+    "tone": "red",
+    "description": "True reciprocal of the CF scale, folded at pi.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_CI": {
+    "id": "GP_CI",
+    "label": "CI",
+    "type": "inverseLog",
+    "min": 1,
+    "max": 10,
+    "formula": "10/x",
+    "tone": "red",
+    "description": "Inverted C scale for reciprocals and chained products.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_DI": {
+    "id": "GP_DI",
+    "label": "DI",
+    "type": "inverseLog",
+    "min": 1,
+    "max": 10,
+    "formula": "10/x",
+    "tone": "red",
+    "description": "Inverted D scale for reciprocals.",
+    "family": "Graphoplex Neperlog"
+  },
+  "GP_A": {
+    "id": "GP_A",
+    "label": "A",
+    "type": "log",
+    "min": 1,
+    "max": 100,
+    "power": 2,
+    "tickMode": "log",
+    "formula": "x²",
+    "description": "Fixed two-decade square scale; read squares from D and square roots to D.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_B": {
+    "id": "GP_B",
+    "label": "B",
+    "type": "log",
+    "min": 1,
+    "max": 100,
+    "power": 2,
+    "tickMode": "log",
+    "formula": "x²",
+    "description": "Sliding two-decade square scale; read squares from C and square roots to C.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_K": {
+    "id": "GP_K",
+    "label": "K",
+    "type": "log",
+    "min": 1,
+    "max": 1000,
+    "power": 3,
+    "tickMode": "log",
+    "formula": "x³",
+    "description": "Three-decade cube scale; read cubes from D and cube roots to D.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_L": {
+    "id": "GP_L",
+    "label": "L",
+    "type": "linear",
+    "min": 0,
+    "max": 1,
+    "majorStep": 0.1,
+    "formula": "log₁₀x",
+    "description": "Linear mantissa scale for common logarithms.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_P": {
+    "id": "GP_P",
+    "label": "P",
+    "type": "pythagorean",
+    "min": 0,
+    "max": 0.99498743710662,
+    "formula": "√(1−x²)",
+    "description": "Graphoplex reverse-running Pythagorean scale. With D read as 0.1-1, P = sqrt(1-D^2).",
+    "family": "Graphoplex Neperlog",
+    "tone": "red"
+  },
+  "GP_CH": {
+    "id": "GP_CH",
+    "label": "Ch",
+    "type": "acosh",
+    "tickMode": "mapped",
+    "min": 0,
+    "max": 2.993222846126381,
+    "formula": "cosh u",
+    "description": "Inverse hyperbolic-cosine argument aligned with cosh(u) on D.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_TH": {
+    "id": "GP_TH",
+    "label": "Th",
+    "type": "tanh",
+    "tickMode": "mapped",
+    "min": 0.10033534773107558,
+    "max": 3,
+    "formula": "tanh u",
+    "description": "Hyperbolic-tangent range, stopping before the asymptote.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_SH1": {
+    "id": "GP_SH1",
+    "label": "Sh1",
+    "type": "sinhLow",
+    "tickMode": "mapped",
+    "min": 0.09983407889920758,
+    "max": 0.881373587019543,
+    "formula": "sinh u",
+    "description": "Low hyperbolic-sine range, aligned with 0.1 through 1 on D.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
+  "GP_SH2": {
+    "id": "GP_SH2",
+    "label": "Sh2",
+    "type": "sinhHigh",
+    "tickMode": "mapped",
+    "min": 0.881373587019543,
+    "max": 2.99822295029797,
+    "formula": "sinh u",
+    "description": "High hyperbolic-sine range, aligned with 1 through 10 on D.",
+    "family": "Graphoplex Neperlog",
+    "tone": "neutral"
+  },
   "FC282_T1": {
     "id": "FC282_T1",
     "label": "T₁",
@@ -517,7 +9781,8 @@
     "pMax": 0.9999999999999999,
     "formula": "tan angle",
     "description": "Pickett 14 T: degree angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 90 ° and share each tick.",
-    "pairedSum": 90
+    "pairedSum": 90,
+    "adaptiveTicks": true
   },
   "P14_S": {
     "id": "P14_S",
@@ -728,7 +9993,8 @@
     "pMax": 1,
     "formula": "sin angle",
     "description": "Pickett 14 S: degree angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 90 ° and share each tick.",
-    "pairedSum": 90
+    "pairedSum": 90,
+    "adaptiveTicks": true
   },
   "P14_ST": {
     "id": "P14_ST",
@@ -820,7 +10086,8 @@
         "label": "″",
         "title": "Arcsecond conversion index: 1 arcsecond = pi/648000 = 0.000004848136811095 radians. The ST graduation is at 1.181810286004 degrees, not at 1 arcsecond."
       }
-    ]
+    ],
+    "adaptiveTicks": true
   },
   "P14_OPP_DEG": {
     "id": "P14_OPP_DEG",
@@ -926,7 +10193,8 @@
     "pMax": 0.3010299956639812,
     "formula": "sin angle",
     "description": "Pickett 14 Opp. deg: degree angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 180 ° and share each tick.",
-    "pairedSum": 180
+    "pairedSum": 180,
+    "adaptiveTicks": true
   },
   "P14_OPP_MIL": {
     "id": "P14_OPP_MIL",
@@ -1007,7 +10275,8 @@
     "pMax": 0.3010299956639812,
     "formula": "sin angle",
     "description": "Pickett 14 Opp. mil: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 3200 mil and share each tick.",
-    "pairedSum": 3200
+    "pairedSum": 3200,
+    "adaptiveTicks": true
   },
   "P14_APEX_MIL": {
     "id": "P14_APEX_MIL",
@@ -1207,7 +10476,8 @@
     "pMin": 0,
     "pMax": 1,
     "formula": "sin angle",
-    "description": "Pickett 14 Apex mil: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced."
+    "description": "Pickett 14 Apex mil: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced.",
+    "adaptiveTicks": true
   },
   "P14_APEX_DEG": {
     "id": "P14_APEX_DEG",
@@ -1347,7 +10617,8 @@
     "pMin": 0,
     "pMax": 0.9999999999999999,
     "formula": "sin angle",
-    "description": "Pickett 14 Apex deg: degree angle graduation. Main calibrated interval; original end extensions are not reproduced."
+    "description": "Pickett 14 Apex deg: degree angle graduation. Main calibrated interval; original end extensions are not reproduced.",
+    "adaptiveTicks": true
   },
   "P14_T_MIL": {
     "id": "P14_T_MIL",
@@ -1493,7 +10764,8 @@
     "pMax": 1,
     "formula": "tan angle",
     "description": "Pickett 14 TAN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 1600 mil and share each tick.",
-    "pairedSum": 1600
+    "pairedSum": 1600,
+    "adaptiveTicks": true
   },
   "P14_ST_MIL": {
     "id": "P14_ST_MIL",
@@ -1653,7 +10925,8 @@
     "pMin": 0,
     "pMax": 1,
     "formula": "small angle",
-    "description": "Pickett 14 SIN-TAN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced."
+    "description": "Pickett 14 SIN-TAN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced.",
+    "adaptiveTicks": true
   },
   "P14_S_MIL": {
     "id": "P14_S_MIL",
@@ -1839,7 +11112,8 @@
     "pMax": 1,
     "formula": "sin angle",
     "description": "Pickett 14 SIN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 1600 mil and share each tick.",
-    "pairedSum": 1600
+    "pairedSum": 1600,
+    "adaptiveTicks": true
   },
   "P14_BASE": {
     "id": "P14_BASE",
@@ -5126,7 +14400,8 @@
       }
     ],
     "formula": "logit(x) / 8",
-    "description": "Fraction, not percent: 0.2 means 20%. Paired with the eight-decade M pitch for binary mass/mole or ideal additive-volume conversions."
+    "description": "Fraction, not percent: 0.2 means 20%. Paired with the eight-decade M pitch for binary mass/mole or ideal additive-volume conversions.",
+    "adaptiveTicks": true
   },
   "CHEM_X": {
     "id": "CHEM_X",
@@ -7768,7 +17043,8 @@
       }
     ],
     "formula": "logit(x) / 8",
-    "description": "Fraction, not percent: 0.2 means 20%. Paired with the eight-decade M pitch for binary mass/mole or ideal additive-volume conversions."
+    "description": "Fraction, not percent: 0.2 means 20%. Paired with the eight-decade M pitch for binary mass/mole or ideal additive-volume conversions.",
+    "adaptiveTicks": true
   },
   "CHEM_M1_XW": {
     "id": "CHEM_M1_XW",
@@ -8723,7 +17999,8 @@
     ],
     "unit": "K",
     "formula": "100-1000 K",
-    "description": "One-decade absolute-temperature conversion, aligned with C on the opposite face. Modern 273.15 K Celsius zero."
+    "description": "One-decade absolute-temperature conversion, aligned with C on the opposite face. Modern 273.15 K Celsius zero.",
+    "adaptiveTicks": true
   },
   "CHEM_TC": {
     "id": "CHEM_TC",
@@ -9199,7 +18476,8 @@
     ],
     "unit": "°C",
     "formula": "100-1000 K",
-    "description": "One-decade absolute-temperature conversion, aligned with C on the opposite face. Modern 273.15 K Celsius zero."
+    "description": "One-decade absolute-temperature conversion, aligned with C on the opposite face. Modern 273.15 K Celsius zero.",
+    "adaptiveTicks": true
   },
   "CHEM_TF": {
     "id": "CHEM_TF",
@@ -10035,7 +19313,8 @@
     ],
     "unit": "°F",
     "formula": "100-1000 K",
-    "description": "One-decade absolute-temperature conversion, aligned with C on the opposite face. Modern 273.15 K Celsius zero."
+    "description": "One-decade absolute-temperature conversion, aligned with C on the opposite face. Modern 273.15 K Celsius zero.",
+    "adaptiveTicks": true
   },
   "CHEM_P_KG": {
     "id": "CHEM_P_KG",
@@ -10181,7 +19460,8 @@
     "pMax": 0.5023659894727436,
     "formula": "absolute P",
     "description": "Pressure conversion on the common six-decade absolute-pressure coordinate. Gauge and vacuum references use one standard atmosphere.",
-    "tone": "red"
+    "tone": "red",
+    "adaptiveTicks": true
   },
   "CHEM_P_PSI": {
     "id": "CHEM_P_PSI",
@@ -10276,7 +19556,8 @@
     "pMax": 1,
     "formula": "absolute P",
     "description": "Pressure conversion on the common six-decade absolute-pressure coordinate. Gauge and vacuum references use one standard atmosphere.",
-    "tone": "neutral"
+    "tone": "neutral",
+    "adaptiveTicks": true
   },
   "CHEM_P_MMHG_ATM": {
     "id": "CHEM_P_MMHG_ATM",
@@ -13193,7 +22474,8 @@
       }
     ],
     "formula": "logit(x) / 8",
-    "description": "Fraction, not percent: 0.2 means 20%. Paired with the eight-decade M pitch for binary mass/mole or ideal additive-volume conversions."
+    "description": "Fraction, not percent: 0.2 means 20%. Paired with the eight-decade M pitch for binary mass/mole or ideal additive-volume conversions.",
+    "adaptiveTicks": true
   },
   "FF_M": {
     "id": "FF_M",
@@ -13497,7 +22779,8 @@
     "formula": "√x",
     "description": "Faber-Castell W1 square-root branch.",
     "family": "Powers and roots",
-    "tone": "blue"
+    "tone": "blue",
+    "graduationProfile": "faber-w"
   },
   "W2": {
     "id": "W2",
@@ -13511,7 +22794,8 @@
     "formula": "√(10x)",
     "description": "Faber-Castell W2 square-root branch.",
     "family": "Powers and roots",
-    "tone": "blue"
+    "tone": "blue",
+    "graduationProfile": "faber-w"
   },
   "W1P": {
     "id": "W1P",
@@ -13525,7 +22809,8 @@
     "formula": "√x",
     "description": "Sliding Faber-Castell W1-prime square-root branch.",
     "family": "Powers and roots",
-    "tone": "blue"
+    "tone": "blue",
+    "graduationProfile": "faber-w"
   },
   "W2P": {
     "id": "W2P",
@@ -13539,7 +22824,8 @@
     "formula": "√(10x)",
     "description": "Sliding Faber-Castell W2-prime square-root branch.",
     "family": "Powers and roots",
-    "tone": "blue"
+    "tone": "blue",
+    "graduationProfile": "faber-w"
   },
   "Q1": {
     "id": "Q1",
@@ -13652,6 +22938,123 @@
     "description": "Fifth-root branch 5 of 5.",
     "family": "Powers and roots",
     "tone": "blue"
+  },
+  "PICKETT_5R1": {
+    "id": "PICKETT_5R1",
+    "label": "⁵√₁",
+    "type": "root",
+    "order": 5,
+    "branch": 0,
+    "min": 1,
+    "max": 1.5848931924611136,
+    "tickMode": "root",
+    "formula": "5√x · branch 1",
+    "description": "Pickett-style fifth-root branch 1: (10^0 times x)^(1/5), where x is the local C/D reading from 1 to 10.",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral"
+  },
+  "PICKETT_5R2": {
+    "id": "PICKETT_5R2",
+    "label": "⁵√₂",
+    "type": "root",
+    "order": 5,
+    "branch": 1,
+    "min": 1.5848931924611136,
+    "max": 2.51188643150958,
+    "tickMode": "root",
+    "formula": "5√x · branch 2",
+    "description": "Pickett-style fifth-root branch 2: (10^1 times x)^(1/5), where x is the local C/D reading from 1 to 10.",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral"
+  },
+  "PICKETT_5R3": {
+    "id": "PICKETT_5R3",
+    "label": "⁵√₃",
+    "type": "root",
+    "order": 5,
+    "branch": 2,
+    "min": 2.51188643150958,
+    "max": 3.9810717055349722,
+    "tickMode": "root",
+    "formula": "5√x · branch 3",
+    "description": "Pickett-style fifth-root branch 3: (10^2 times x)^(1/5), where x is the local C/D reading from 1 to 10.",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral"
+  },
+  "PICKETT_5R4": {
+    "id": "PICKETT_5R4",
+    "label": "⁵√₄",
+    "type": "root",
+    "order": 5,
+    "branch": 3,
+    "min": 3.9810717055349722,
+    "max": 6.309573444801933,
+    "tickMode": "root",
+    "formula": "5√x · branch 4",
+    "description": "Pickett-style fifth-root branch 4: (10^3 times x)^(1/5), where x is the local C/D reading from 1 to 10.",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral"
+  },
+  "PICKETT_5R5": {
+    "id": "PICKETT_5R5",
+    "label": "⁵√₅",
+    "type": "root",
+    "order": 5,
+    "branch": 4,
+    "min": 6.309573444801933,
+    "max": 10,
+    "tickMode": "root",
+    "formula": "5√x · branch 5",
+    "description": "Pickett-style fifth-root branch 5: (10^4 times x)^(1/5), where x is the local C/D reading from 1 to 10.",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral"
+  },
+  "PICKETT_FIFTH_ROOT": {
+    "id": "PICKETT_FIFTH_ROOT",
+    "label": "Fifth roots",
+    "type": "rootStack",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral",
+    "layers": [
+      {
+        "scale": "PICKETT_5R1",
+        "caption": "⁵√₁"
+      },
+      {
+        "scale": "PICKETT_5R2",
+        "caption": "⁵√₂"
+      },
+      {
+        "scale": "PICKETT_5R3",
+        "caption": "⁵√₃"
+      },
+      {
+        "scale": "PICKETT_5R4",
+        "caption": "⁵√₄"
+      },
+      {
+        "scale": "PICKETT_5R5",
+        "caption": "⁵√₅"
+      }
+    ],
+    "formula": "(10^j x)^(1/5), j=0..4",
+    "description": "Pickett-style extension: one unruled fifth-root branch, then two back-to-back pairs on two shared lines. All five branches increase left to right; each keeps its own exact graduations. Not a historical Pickett scale."
+  },
+  "F5_PAIR": {
+    "id": "F5_PAIR",
+    "label": "x⁵ / x⁻⁵",
+    "type": "log",
+    "min": 1,
+    "max": 100000,
+    "power": 5,
+    "tickMode": "log",
+    "formula": "x^5 / x^(-5)",
+    "description": "Shared fifth-power ticks: black x^5 from 1 to 100000 and red x^(-5) from 1 to 0.00001. Each black/red pair multiplies to 1, not 100000. x is the local C/D reading. A mathematical extension, not a historical Pickett scale.",
+    "family": "Pickett-style fifth roots and powers",
+    "tone": "neutral",
+    "pairedProduct": 1,
+    "positiveCaption": "x⁵",
+    "negativeCaption": "x⁻⁵"
   },
   "P": {
     "id": "P",

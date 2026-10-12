@@ -49,6 +49,7 @@ h2 {
 #presetDescription { margin-top: 8px; }
 .appearance-grid .field { display: grid; gap: 5px; }
 .appearance-grid select { width: 100%; }
+.graduation-options { min-width: 0; }
 @media (max-width: 760px) {
     .preset-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; }
     .preset-row label { grid-area: 1 / 1; }

@@ -26,6 +26,7 @@ from editor_polish import run_editor_polish
 from features import run_features
 from workspace_features import run_workspace_features
 from pickett_roots import run_pickett_roots
+from fifths import run_fifths
 from pickett14 import run_pickett14
 from motion_controls import run_motion_controls
 from interface_features import run_interface_features
@@ -44,8 +45,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=['native', 'dom'], default='native')
     parser.add_argument('--visual', action='store_true')
-    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish', 'pickett14', 'reaudit', 'scale-help', 'workspace', 'loupe'], default='all',
-                        help='all checks (default), controls, editor, polish, Pickett 14, reaudit, end-label scale help, or workspace presentation')
+    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish', 'pickett14', 'reaudit', 'scale-help', 'workspace', 'loupe', 'fifths'], default='all',
+                        help='all checks (default), controls, editor, polish, Pickett 14, reaudit, end-label scale help, workspace presentation, or fifth-root/power extensions')
     parser.add_argument('--executable', default=os.environ.get('CHROMIUM_EXECUTABLE'))
     parser.add_argument('--output', type=Path, default=ROOT / 'qa')
     args = parser.parse_args()
@@ -262,6 +263,9 @@ def main():
                 assert download('#recoveryButton') == 'corrupt-data'
             check('corrupt saved programme remains downloadable', recovery)
             load()
+            if args.suite in ('all', 'fifths'):
+                run_fifths(lambda: page, state, apply, settle, check, load, download,
+                           args.visual, args.output, report, GEOMETRY)
             if args.suite in ('all', 'loupe'):
                 run_loupe_rendering(lambda: page, state, apply, settle, check, load, download,
                                     args.visual, args.output, report)

@@ -129,9 +129,21 @@
           <label class="field">Scale spacing
             <select id="densitySelect" aria-label="Scale spacing"></select>
           </label>
+          <label class="field">Graduations
+            <select id="graduationModeSelect" aria-label="Graduations" aria-describedby="graduationHelp"><option value="conventional">Conventional</option><option value="adaptive">Fully adaptive</option></select>
+          </label>
+          <div class="graduation-options">
+            <label id="logGraduationsField" class="field" title="Applies to C/D-type log, inverse and folded scales, and W/W-prime. Lengths name the C/D pattern; W has twice the effective length. The 10-inch choice retains the documented W pattern. Adaptive chooses complete patterns for the displayed width; fixed patterns retain every stroke. Other root banks retain their existing effective-length policy.">C/D + W
+              <select id="logGraduationsSelect" aria-label="C/D and W subdivisions"><option value="adaptive">Adaptive (screen)</option><option value="standard">10-inch pattern</option><option value="pocket">5-inch pattern</option><option value="fine">20-inch pattern</option></select>
+            </label>
+            <label id="adaptiveSpacingField" class="field" hidden>Adaptive detail
+              <select id="adaptiveSpacingSelect" aria-label="Adaptive detail" disabled><option value="clear">Clear</option><option value="balanced">Balanced</option><option value="fine">Fine</option></select>
+            </label>
+          </div>
           <label class="check-field"><input id="formulaToggle" type="checkbox" /> Show self-documenting formula captions</label>
           <label class="check-field" title="Pack numerals beside major ticks, or split suitable multi-digit numerals around a tick, in the manner of compact Pickett and Versalog engraving."><input id="compactScaleToggle" type="checkbox" /> Compact scale numbering (right / split)</label>
         </div>
+        <p id="graduationHelp" class="hint">Only the active options are shown; both settings are remembered. Fully adaptive fits whole round-number subdivisions to each continuous scale; Balanced is a good starting point. Conventional applies the shared choice to C/D and W; W uses twice the effective length. The 10-inch choice retains the documented W pattern. Calculations and chemical reference marks are unchanged; custom tick lists require an explicit opt-in.</p>
         <label id="editSideField" class="field" hidden>Edit face
           <select id="editSideSelect" aria-label="Face to edit"></select>
         </label>
@@ -183,6 +195,13 @@
         <p class="hint">Load <strong>Pickett N3</strong> or <strong>N4</strong> and select Front or Both sides. The square-root branches meet one common line. The cube-root bank has an unruled upper branch and a back-to-back middle/lower pair. Both number modes use this construction. Previously saved layouts are retained; use <strong>Load preset</strong> to adopt the current arrangement.</p>
         <p class="hint">At D = 6.4, the cube-root branches read about 1.85664, 4 and 8.61774, for 6.4, 64 and 640 respectively. For a positive number N = m &times; 10<sup>k</sup>, with 1 &le; m &lt; 10, set D to m. For an order-n root, choose branch 1 plus the nonnegative remainder of k divided by n, then multiply its reading by 10<sup>floor(k/n)</sup>. This works for negative exponents too. The gutter digit-count reminders apply to positive integers.</p>
         <p class="hint">The root branches have independently positioned round-number graduations; they are not reciprocal log-log pairs. All branches increase to the right and use black ink. In the library, <strong>PICKETT_SQRT</strong> and <strong>PICKETT_CBRT</strong> add complete movable banks; the generic roots, fifth roots and Faber-Castell W scales remain independent.</p>
+      </details>
+
+      <details>
+        <summary>Pickett-style fifth roots and powers</summary>
+        <p class="hint">Choose <strong>Pickett-style fifth roots and powers</strong> in Layout preset, then Load preset. This is a mathematical extension, not a historical model. <strong>PICKETT_FIFTH_ROOT</strong> adds five branches as one bank: an unruled upper branch and two back-to-back pairs, each with a shared line. <strong>F5_PAIR</strong> adds black x<sup>5</sup> and red x<sup>&minus;5</sup> on a single set of ticks.</p>
+        <p class="hint">For N = m &times; 10<sup>k</sup>, set C/D to m. Choose branch 1 plus the non-negative remainder of k divided by 5; multiply its reading by 10<sup>floor(k/5)</sup>. At D = 3.2, branch 2 reads 2, the fifth root of 32. For 0.00032, the same branch reads 2; divide by 10 to obtain 0.2. The gutter digit reminders apply to positive integers.</p>
+        <p class="hint">At C/D = 2, the power pair reads <strong>32</strong> and <strong>0.03125</strong>; their product is 1. The legacy F5I is unchanged and reads 100000/x<sup>5</sup> instead. The front uses fixed groups aligned with D; the back uses movable groups aligned with C. Each group can be moved, removed or restored with Undo as one item.</p>
       </details>
 
       <details>

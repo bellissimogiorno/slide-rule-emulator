@@ -37,6 +37,7 @@ def main():
     # generic composite subrows or overlapping horizontal segments.
     cases = [('rootStack', 2, True), ('rootStack', 3, True),
              ('rootStack', 1, False), ('rootStack', 4, False),
+             ('rootStack', 5, True), ('rootStack', 6, False),
              ('composite', 2, True), ('composite', 3, False),
              ('segmented', 2, True), ('segmented', 3, False)]
     for kind, count, expected in cases:

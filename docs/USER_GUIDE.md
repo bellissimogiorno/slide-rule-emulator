@@ -119,3 +119,13 @@ Individual annotated marks, such as pi, e, the circle-diameter factor and chemic
 elements, still have their own tooltips when you hover over that particular mark.
 Ordinary numeric graduations do not gain popups merely because they belong to a
 segmented scale. No setting or programme change is needed.
+
+## Pickett-style fifth roots and powers
+
+Select **Pickett-style fifth roots and powers**, then **Load preset**. The front
+provides a fixed five-branch root bank and a true reciprocal fifth-power pair;
+the back demonstrates the same groups on the slide. In the editor, choose
+`PICKETT_FIFTH_ROOT` or `F5_PAIR` to add a complete group to any layout. At D=3.2,
+branch 2 gives the fifth root of 32, which is 2. At D=2 the power pair reads 32
+and 0.03125. Keep track of decimal exponents; see the [worked guide](FIFTH_ROOTS.md).
+These are mathematical extensions, not historical Pickett presets.

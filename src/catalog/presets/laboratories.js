@@ -1,5 +1,29 @@
 /** Mathematical scale laboratories, not historical facsimiles. */
 export const laboratoriesPresets = {
+    fifths: {
+        group: "Mathematical laboratories",
+        name: "Pickett-style fifth roots and powers",
+        modelLabel: "Pickett-style fifth roots and powers",
+        theme: "pickett-white",
+        density: "pickett",
+        showFormulas: true,
+        description: "Five increasing fifth-root branches in one back-to-back bank, plus a shared-tick x^5 / x^(-5) row. Fixed on the front; movable on the back alongside square and cube root banks.",
+        instrumentNote: "A mathematical extension of Pickett-style engraving, not a historical model. For N = m times 10^k, choose fifth-root branch 1 + (k mod 5) and multiply its reading by 10^floor(k/5). The red fifth-power reading is the true reciprocal of the black one.",
+        sides: {
+            front: {
+                name: "Front \u00b7 fixed fifth roots and powers",
+                topStator: ["PICKETT_FIFTH_ROOT"],
+                slide: ["CI", "C"],
+                bottomStator: ["D", "F5_PAIR", "L"]
+            },
+            back: {
+                name: "Back \u00b7 movable fifths with square and cube roots",
+                topStator: ["PICKETT_SQRT", "PICKETT_CBRT"],
+                slide: ["PICKETT_FIFTH_ROOT", "F5_PAIR", "CI", "C"],
+                bottomStator: ["D", "L"]
+            }
+        }
+    },
     comprehensive: {
         group: "Mathematical laboratories",
         name: "Full scientific complement",

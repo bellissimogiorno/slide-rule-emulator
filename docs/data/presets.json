@@ -459,6 +459,188 @@
       }
     }
   },
+  "ultralog": {
+    "group": "Classic instruments",
+    "name": "UltraLog - Zvi Doron design",
+    "modelLabel": "UltraLog - Zvi Doron",
+    "theme": "ultralog",
+    "density": "classic",
+    "showFormulas": true,
+    "description": "Forty separately ruled rows: eight log-log ranges, a wide hyperbolic/logarithmic slide, expanded square/cube roots and trigonometric/hypotenuse scales.",
+    "instrumentNote": "Mathematical implementation of Zvi Doron’s published 40-row proposal, not a production facsimile. No back-to-back rows. Const contains explicitly emulator-supplied mathematical references: the original inventory could not be verified. Source artwork is not included. See docs/ULTRALOG.md for attribution, source access and scope.",
+    "sides": {
+      "front": {
+        "name": "Front - log-log / hyperbolic",
+        "topStator": [
+          "UL_LL00",
+          "UL_LL01",
+          "UL_LL02",
+          "UL_LL03",
+          "UL_DF"
+        ],
+        "slide": [
+          "UL_CF",
+          "UL_CIF",
+          "UL_SH1",
+          "UL_SH2",
+          "UL_CH",
+          "UL_TH",
+          "UL_LN",
+          "UL_L",
+          "UL_CI",
+          "UL_C"
+        ],
+        "bottomStator": [
+          "UL_D",
+          "UL_LL3",
+          "UL_LL2",
+          "UL_LL1",
+          "UL_LL0"
+        ]
+      },
+      "back": {
+        "name": "Back - roots / trigonometric",
+        "topStator": [
+          "UL_CONST",
+          "UL_R1",
+          "UL_R2",
+          "UL_K",
+          "UL_A"
+        ],
+        "slide": [
+          "UL_B",
+          "UL_T1",
+          "UL_T2",
+          "UL_ST",
+          "UL_S",
+          "UL_P",
+          "UL_H1",
+          "UL_H2",
+          "UL_CI",
+          "UL_C"
+        ],
+        "bottomStator": [
+          "UL_D",
+          "UL_DI",
+          "UL_Q1",
+          "UL_Q2",
+          "UL_Q3"
+        ]
+      }
+    }
+  },
+  "graphoplex690a": {
+    "group": "Classic instruments",
+    "theme": "graphoplex",
+    "density": "classic",
+    "showFormulas": true,
+    "name": "Graphoplex 690A Neperlog",
+    "modelLabel": "Graphoplex 690A Neperlog",
+    "description": "Degree/minute trigonometry, eight natural log-log ranges, reciprocal and pi-folded arithmetic. Distinct from the hyperbolic 691A.",
+    "instrumentNote": "Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. End extensions, auxiliary cursor hairlines and every original gauge are not reproduced.",
+    "sides": {
+      "front": {
+        "name": "Front - degrees/minutes / near-unity log-log",
+        "topStator": [
+          "GP_LL00",
+          "GP_L",
+          "GP690_T2",
+          "GP_A"
+        ],
+        "slide": [
+          "GP_B",
+          "GP690_T1",
+          "GP690_ST",
+          "GP690_S",
+          "GP_C"
+        ],
+        "bottomStator": [
+          "GP_D",
+          "GP_P",
+          "GP_DI",
+          "GP_LL0"
+        ]
+      },
+      "back": {
+        "name": "Back - folded / natural log-log",
+        "topStator": [
+          "GP_LL01",
+          "GP_LL02",
+          "GP_LL03",
+          "GP_DF"
+        ],
+        "slide": [
+          "GP_CF",
+          "GP_CIF",
+          "GP_K",
+          "GP_CI",
+          "GP_C"
+        ],
+        "bottomStator": [
+          "GP_D",
+          "GP_LL3",
+          "GP_LL2",
+          "GP_LL1"
+        ]
+      }
+    }
+  },
+  "graphoplex691a": {
+    "group": "Classic instruments",
+    "theme": "graphoplex",
+    "density": "classic",
+    "showFormulas": true,
+    "name": "Graphoplex 691A Neperlog Hyperbolic",
+    "modelLabel": "Graphoplex 691A Neperlog Hyperbolic",
+    "description": "Decimal-degree trigonometry and Ch, Th, Sh2, Sh1 hyperbolic rows, with six natural log-log ranges on the reverse.",
+    "instrumentNote": "Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals only; end extensions and auxiliary cursor hairlines are not reproduced.",
+    "sides": {
+      "front": {
+        "name": "Front - decimal degrees / hyperbolic",
+        "topStator": [
+          "GP_L",
+          "GP_P",
+          "GP_CH",
+          "GP_A"
+        ],
+        "slide": [
+          "GP_B",
+          "GP691_T1",
+          "GP691_ST",
+          "GP691_S",
+          "GP_C"
+        ],
+        "bottomStator": [
+          "GP_D",
+          "GP_TH",
+          "GP_SH2",
+          "GP_SH1"
+        ]
+      },
+      "back": {
+        "name": "Back - folded / natural log-log",
+        "topStator": [
+          "GP_LL01",
+          "GP_LL02",
+          "GP_LL03",
+          "GP_DF"
+        ],
+        "slide": [
+          "GP_CF",
+          "GP_CIF",
+          "GP_K",
+          "GP_CI",
+          "GP_C"
+        ],
+        "bottomStator": [
+          "GP_D",
+          "GP_LL3",
+          "GP_LL2",
+          "GP_LL1"
+        ]
+      }
+    }
+  },
   "faber282n": {
     "group": "Classic instruments",
     "name": "Faber-Castell 2/82N",
@@ -675,6 +857,50 @@
           "CHEM_P_MMHG_ATM",
           "CHEM_P_VAC_PSI",
           "CHEM_TW"
+        ]
+      }
+    }
+  },
+  "fifths": {
+    "group": "Mathematical laboratories",
+    "name": "Pickett-style fifth roots and powers",
+    "modelLabel": "Pickett-style fifth roots and powers",
+    "theme": "pickett-white",
+    "density": "pickett",
+    "showFormulas": true,
+    "description": "Five increasing fifth-root branches in one back-to-back bank, plus a shared-tick x^5 / x^(-5) row. Fixed on the front; movable on the back alongside square and cube root banks.",
+    "instrumentNote": "A mathematical extension of Pickett-style engraving, not a historical model. For N = m times 10^k, choose fifth-root branch 1 + (k mod 5) and multiply its reading by 10^floor(k/5). The red fifth-power reading is the true reciprocal of the black one.",
+    "sides": {
+      "front": {
+        "name": "Front · fixed fifth roots and powers",
+        "topStator": [
+          "PICKETT_FIFTH_ROOT"
+        ],
+        "slide": [
+          "CI",
+          "C"
+        ],
+        "bottomStator": [
+          "D",
+          "F5_PAIR",
+          "L"
+        ]
+      },
+      "back": {
+        "name": "Back · movable fifths with square and cube roots",
+        "topStator": [
+          "PICKETT_SQRT",
+          "PICKETT_CBRT"
+        ],
+        "slide": [
+          "PICKETT_FIFTH_ROOT",
+          "F5_PAIR",
+          "CI",
+          "C"
+        ],
+        "bottomStator": [
+          "D",
+          "L"
         ]
       }
     }

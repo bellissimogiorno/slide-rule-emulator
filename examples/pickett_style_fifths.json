@@ -1,0 +1,63 @@
+{
+  "activeSide": "front",
+  "viewMode": "both",
+  "presetId": "fifths",
+  "theme": "pickett-white",
+  "density": "pickett",
+  "modelLabel": "Pickett-style fifth roots and powers",
+  "instrumentNote": "A mathematical extension of Pickett-style engraving, not a historical model. For N = m times 10^k, choose fifth-root branch 1 + (k mod 5) and multiply its reading by 10^floor(k/5). The red fifth-power reading is the true reciprocal of the black one.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "slideOffset": 0,
+  "cursor": 0.505149978319906,
+  "customScales": [
+    {
+      "id": "X2",
+      "label": "X2",
+      "type": "expression",
+      "min": 1,
+      "max": 100,
+      "pos": "Math.log10(x) / 2",
+      "value": "Math.pow(10, 2 * p)",
+      "tickMode": "log",
+      "formula": "x²",
+      "description": "Example custom square scale made from expressions.",
+      "family": "Custom"
+    }
+  ],
+  "sides": {
+    "front": {
+      "name": "Front · fixed fifth roots and powers",
+      "topStator": [
+        "PICKETT_FIFTH_ROOT"
+      ],
+      "slide": [
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "F5_PAIR",
+        "L"
+      ]
+    },
+    "back": {
+      "name": "Back · movable fifths with square and cube roots",
+      "topStator": [
+        "PICKETT_SQRT",
+        "PICKETT_CBRT"
+      ],
+      "slide": [
+        "PICKETT_FIFTH_ROOT",
+        "F5_PAIR",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "L"
+      ]
+    }
+  }
+}

@@ -6,21 +6,20 @@ not only class names; automated geometry is not a substitute for image review.
 import json
 import math
 
-ROOT_GEOMETRY = """() => {
+ROOT_GEOMETRY = r"""() => {
     const banks = [], failures = [];
     for (const row of document.querySelectorAll('.root-stack')) {
         const id = row.dataset.scale;
         const track = row.querySelector('.tick-pane > .root-stack-track');
-        const spine = track?.querySelector('.root-spine');
+        const spines = [...(track?.querySelectorAll('.root-spine') || [])];
         const branches = [...(track?.querySelectorAll('.root-branch') || [])];
-        const n = row.classList.contains('root-stack-3') ? 3 : 2;
+        const n = Number([...row.classList].find(c=>/^root-stack-\d+$/.test(c))?.split('-').pop());
         const fail = message => failures.push({id, message});
-        if (!spine || track.querySelectorAll('.root-spine').length !== 1) fail('not exactly one shared spine');
+        if (![2,3,5].includes(n) || spines.length !== Math.floor(n/2)) fail('incorrect shared-spine count');
         if (track?.querySelector('.baseline,.syncro-baseline')) fail('extra baseline');
         if (branches.length !== n) fail('missing branch');
-        if (track?.querySelectorAll('.root-single').length !== n - 2) fail('incorrect upper-branch structure');
-        if (!spine) continue;
-        const y = spine.getBoundingClientRect().top, counts = [];
+        if (track?.querySelectorAll('.root-single').length !== n % 2) fail('incorrect upper-branch structure');
+        const counts = [];
         for (const [index, branch] of branches.entries()) {
             if (+branch.dataset.rootBranch !== index) fail('wrong branch order');
             const ticks = [...branch.querySelectorAll('.tick')];
@@ -28,6 +27,9 @@ ROOT_GEOMETRY = """() => {
             counts.push({ticks: ticks.length, visibleLabels: labels.length});
             if (!ticks.length || labels.length < 3) fail('empty or unreadable branch');
             if (branch.closest('.root-single')) continue;
+            const spine=branch.closest('.root-pair')?.querySelector('.root-spine');
+            if(!spine) {fail('missing local spine');continue;}
+            const y=spine.getBoundingClientRect().top;
             const lower = branch.classList.contains('root-lower');
             for (const tick of ticks) {
                 const r = tick.getBoundingClientRect();

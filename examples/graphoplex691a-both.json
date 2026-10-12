@@ -1,0 +1,64 @@
+{
+  "activeSide": "front",
+  "viewMode": "both",
+  "presetId": "graphoplex691a",
+  "theme": "graphoplex",
+  "density": "classic",
+  "modelLabel": "Graphoplex 691A Neperlog Hyperbolic",
+  "instrumentNote": "Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals only; end extensions and auxiliary cursor hairlines are not reproduced.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "graduationMode": "conventional",
+  "adaptiveSpacing": "balanced",
+  "logGraduations": "adaptive",
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "Front - decimal degrees / hyperbolic",
+      "topStator": [
+        "GP_L",
+        "GP_P",
+        "GP_CH",
+        "GP_A"
+      ],
+      "slide": [
+        "GP_B",
+        "GP691_T1",
+        "GP691_ST",
+        "GP691_S",
+        "GP_C"
+      ],
+      "bottomStator": [
+        "GP_D",
+        "GP_TH",
+        "GP_SH2",
+        "GP_SH1"
+      ]
+    },
+    "back": {
+      "name": "Back - folded / natural log-log",
+      "topStator": [
+        "GP_LL01",
+        "GP_LL02",
+        "GP_LL03",
+        "GP_DF"
+      ],
+      "slide": [
+        "GP_CF",
+        "GP_CIF",
+        "GP_K",
+        "GP_CI",
+        "GP_C"
+      ],
+      "bottomStator": [
+        "GP_D",
+        "GP_LL3",
+        "GP_LL2",
+        "GP_LL1"
+      ]
+    }
+  }
+}

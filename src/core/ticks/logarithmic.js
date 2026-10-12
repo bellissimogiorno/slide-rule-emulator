@@ -1,3 +1,5 @@
+import { adaptiveTicks, usesAdaptiveGraduations } from "#core/ticks/adaptive.js";
+import { conventionalLogCandidates, usesConventionalLog } from "#core/ticks/conventional.js";
 import { foldedIndexDescription } from "#core/mark-descriptions.js";
 import { formatCompact, formatRootLabel, formatSig, smartRound } from "#core/format.js";
 import { clamp, fineNiceStep, nearMultiple } from "#core/numbers.js";
@@ -34,10 +36,17 @@ function rootTicks(def, rt, width = 1000) {
     ticks.push({ pos: rt.pos(max), value: max, label: formatSig(max, 5), kind: "index" });
     return dedupeTicks(ticks).sort(byPos);
 }
-function foldedTicks(def, rt) {
+function foldedTicks(def, rt, width = 1000, options = {}) {
     const inverse = def.type === "foldedInverse";
     const fold = Number(def.fold) > 0 ? Number(def.fold) : Math.PI;
-    const ticks = engineeringLogCandidates(1, 10, 1).map(candidate => {
+    const candidates = usesAdaptiveGraduations(def, options)
+        ? adaptiveTicks({ type: 'log' }, { pMin: 0, pMax: 1, pos: Math.log10, value: p => 10 ** p },
+            width * (options.displayScale ?? 1), options.adaptiveSpacing || 'balanced').map(t => ({ coord: t.value,
+                kind: t.kind, labelCandidate: Boolean(t.label), endpoint: t.pos === 0 || t.pos === 1 }))
+        : usesConventionalLog(def)
+        ? conventionalLogCandidates(def, width * (options.displayScale ?? 1), options.logGraduations)
+        : engineeringLogCandidates(1, 10, 1);
+    const ticks = candidates.map(candidate => {
         const value = candidate.coord;
         const label = candidate.labelCandidate && !candidate.endpoint ? labelForLogMajor(value, 1, 10, 1) : "";
         return { pos: rt.pos(value), value, label, kind: candidate.kind };
@@ -52,12 +61,14 @@ function foldedTicks(def, rt) {
     ticks.push({ pos: 1, value: endpointValue, label: endpointLabel, kind: "index", title });
     return dedupeTicks(ticks).sort(byPos);
 }
-function logTicks(def, rt) {
+function logTicks(def, rt, width = 1000, options = {}) {
     const min = Number(def.min), max = Number(def.max);
     if (!(min > 0) || !(max > min))
         return [];
     const decades = Math.log10(max) - Math.log10(min);
-    const candidates = engineeringLogCandidates(min, max, logCompression(decades));
+    const candidates = usesConventionalLog(def)
+        ? conventionalLogCandidates(def, width * (options.displayScale ?? 1), options.logGraduations)
+        : engineeringLogCandidates(min, max, logCompression(decades));
     const ticks = candidates.map(candidate => ({
         pos: rt.pos(candidate.coord), value: candidate.coord,
         label: candidate.labelCandidate ? labelForLogMajor(candidate.coord, min, max, decades) : "",

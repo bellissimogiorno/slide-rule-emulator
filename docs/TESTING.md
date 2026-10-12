@@ -220,3 +220,65 @@ forced colours and live appearance changes. The suite runs in native mode unless
 percentages or colour components, renderer separation, disposal-related attributes
 and the non-interactive final-size path. Geometry tests remain in `loupe.test.js`.
 See [the rendering contract](LOUPE_RENDERING.md) before extending face markup.
+
+The fifth-root/power extension has a targeted browser suite:
+`python tests/browser/run.py --mode native --suite fifths --visual`. It checks
+actual root-spine junctions, paired-tick geometry, numerical readouts, motion,
+undo, export, end-only scale help and direct loupe rendering, with ordinary and
+compact numbering. Use `--executable` only to select an explicitly recorded
+browser binary. The default native mode does not substitute DOM loading.
+
+
+## Whole-library adaptive graduations
+
+`node --test tests/unit/adaptive-graduations.test.js` verifies documented W values,
+shared long-scale root plans, effective power-scale pitch, all continuous library
+entries, nonlinear coverage, exact mapping identities, saved metadata and explicit
+reference/custom-grid boundaries. The ordinary `npm test` includes these tests.
+
+`python tests/browser/adaptive_graduations.py --mode native --functional --zoom-matrix`
+checks actual controls, zoom-triggered regeneration, stationary nodes during motion,
+all presets at three widths and both numbering modes, plus a magnification/detail
+matrix. `--presets faber283n pickettN3` selects a subset; `--presets` alone omits the
+matrix. Reports are written incrementally so an interrupted run is not mistaken
+for completed coverage. `--mode dom` explicitly selects diagnostic opaque-origin
+execution with a storage substitute, not native navigation or persistence.
+
+### Contextual graduation menus
+
+`python tests/browser/graduation_controls.py --width 1600 --theme light`
+checks that the mode selector stays visible, exactly one options menu occupies
+the shared slot, both option values survive switching, and keyboard focus skips
+the inactive field. It also checks control bounds and captures both modes.
+Repeat with other widths and `--theme dark` or `--theme solarised`. Each invocation
+uses an independent browser to keep the large instrument drawings isolated.
+The test uses native HTTP navigation by default; `--mode dom` explicitly opts
+into the restricted-environment test with a storage substitute.
+
+## Shared C/D and W subdivisions
+
+`node --test tests/unit/w-subdivisions.test.js` checks independent decimal
+lattices, branch seams, primed/unprimed equality, fixed grids, effective-width
+selection, cache isolation and Fully adaptive precedence. The nonhistorical W
+variants are explicit display policies; only the standard W table is the cited
+manufacturer pattern.
+
+Run `python tests/browser/w_subdivisions.py` for native browser tests of the menu,
+all four W rows, magnification, layout geometry, keyboard motion, loupe and exports.
+The default requires HTTP navigation. Use `--mode dom` only when intentionally
+checking an opaque-origin document with the storage substitute; it is not a native
+persistence test. `--executable` selects an installed Chromium executable.
+
+## UltraLog and Graphoplex presets
+
+`node --test tests/unit/ultralog-graphoplex.test.js` checks the source-derived
+row order, independent trigonometric/hyperbolic/log-log/root identities,
+sexagesimal carrying and rejection of invalid notation metadata. The two
+Graphoplex small-angle grids have explicit opening-interval coverage tests.
+
+Run `python tests/browser/ultralog_graphoplex.py` for native tests of all three
+presets, conventional/adaptive modes, both numbering styles, widths, themes
+and magnifications. It checks actual numeral bounds, linked keyboard motion,
+readouts, configured downloads and the loupe. `--mode dom` is a deliberate
+opaque-origin test with a storage substitute, not evidence of native launch
+or persistence. `--executable` selects an installed Chromium executable.

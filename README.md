@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.17**
+**Version 3.2.23**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -55,17 +55,21 @@ publishing method, not competing workflows. See [Pages setup and troubleshooting
 
 ## Explore the instruments
 
-**Eighteen presets** cover Faber-Castell 2/82N and 2/83N, British Thornton AA010, Pickett N3/N4/N16 and Model 14, K&E Deci-Lon, Pickett Model 17, Thornton F5100, Hemmi 257 and Flying Fish 1017, alongside scientific, classic, root, log-log, trigonometric and hyperbolic layouts.
+**Twenty-two presets** cover Faber-Castell 2/82N and 2/83N, British Thornton AA010, Pickett N3/N4/N16 and Model 14, K&E Deci-Lon, Pickett Model 17, Thornton F5100, Hemmi 257 and Flying Fish 1017, UltraLog, Graphoplex 690A and 691A, alongside scientific, classic, root, log-log, trigonometric and hyperbolic layouts.
 
-The scale library contains **222 definitions**, including aliases and composite rows. Arithmetic, reciprocal and folded scales sit alongside square/cube/fifth powers and roots, circular and hyperbolic functions, paired log-log ranges, and specialist chemical and radiation relationships. The Pickett N3/N4 paired log-log rows share graduations with reciprocal readings in black and red. Their square- and cube-root banks reproduce the back-to-back construction, with branch graduations meeting a common line; see [Pickett root scales](docs/PICKETT_ROOTS.md).
+The scale library contains **297 definitions**, including aliases and composite rows. Arithmetic, reciprocal and folded scales sit alongside square/cube/fifth powers and roots, circular and hyperbolic functions, paired log-log ranges, and specialist chemical and radiation relationships. The Pickett N3/N4 paired log-log rows share graduations with reciprocal readings in black and red. Their square- and cube-root banks reproduce the back-to-back construction, with branch graduations meeting a common line; see [Pickett root scales](docs/PICKETT_ROOTS.md). The separate **Pickett-style fifth roots and powers** laboratory adds a five-branch back-to-back bank and a shared-tick fifth-power/reciprocal pair; see [fifth-root scales](docs/FIFTH_ROOTS.md). These are mathematical extensions, not additional historical claims.
 
 The [Faber-Castell 2/82N](docs/FABER_282N.md) follows the 27-row N-model arrangement, with movable sine and cube scales and paired complementary angular readings. It is distinct from later 2/82 layouts.
 
 The [Pickett Model 14](docs/PICKETT_14.md) includes its general log-log face and degree/6400-mil face, with shared complementary/supplementary angle ticks. It is a mathematical reconstruction, not a fire-control calculator.
 
+The [UltraLog](docs/ULTRALOG.md) implements Zvi Doron’s forty-row proposal with separate scales and a wide slide. Its Const row is explicitly an emulator-supplied mathematical reference set, not a transcription of an unverified original inventory. The [Graphoplex 690A and 691A](docs/GRAPHOPLEX.md) follow the supplied specimen photographs; the former uses degree/minute captions, the latter decimal degrees and hyperbolic rows.
+
 Hover over named constant marks for their numerical value and a short, scale-specific explanation. For example, the arithmetic **c** is the circle-diameter factor, not the speed of light. See [constant and reference marks](docs/CONSTANT_MARKS.md).
 
 Use **Both sides**, next to **Flip side**, to toggle linked front and back faces. The Side menu offers the same choice; the button stays highlighted while both faces are visible. Either face controls the same slide and cursor; **Edit face** selects the layout being edited. The instrument gets the full available width, with the scale editor below it. Compact numbering places numerals alongside or around major ticks. Magnification runs from 75% to 200%; narrow screens scroll the instrument instead of squeezing the graduations.
+
+**Graduations** in Scale layout offers **Conventional** and **Fully adaptive**. Fully adaptive uses the displayed length of every automatically graduated continuous scale, including powers, expanded roots and nonlinear scales, with Clear/Balanced/Fine detail. It never shrinks the numeral font or changes calculations. Conventional applies one subdivision choice to C/D and W, accounting for W's doubled effective length; the 10-inch choice retains the documented Faber W pattern. Only the active options menu is shown beside Graduations: C/D + W or Adaptive detail. Both choices are remembered when switching modes. Chemical references and explicit custom tick lists remain authored rather than inventing intermediate values. See [graduation design](docs/GRADUATIONS.md).
 
 The prominent **Layout preset** bar above the instrument selects a ready-made layout. Press **Load preset** to apply it; **About** reveals its description. The Magnification menu offers **75%, 100%, 125%, 150% and 200%**, independently of the page controls.
 

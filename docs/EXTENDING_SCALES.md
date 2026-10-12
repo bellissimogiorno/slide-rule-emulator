@@ -72,7 +72,7 @@ Nested composites and shared log-log rows inside composites are rejected. A `syn
 
 ## Back-to-back root banks
 
-Use `PICKETT_SQRT` or `PICKETT_CBRT` as a single rail entry. To customise the names or colours, define a `rootStack`:
+Use `PICKETT_SQRT`, `PICKETT_CBRT` or the mathematical extension `PICKETT_FIFTH_ROOT` as a single rail entry. To customise the names or colours, define a `rootStack`:
 
 ```json
 {
@@ -88,7 +88,7 @@ Use `PICKETT_SQRT` or `PICKETT_CBRT` as a single rail entry. To customise the na
 
 Import `examples/custom_root_banks.json` for a complete editable two- and three-branch example.
 
-A bank needs two children of order 2 or three of order 3. Child branches must be consecutive from zero and occupy the complete scale length. A three-child bank has an unruled first branch, then a shared-line pair. Nested layouts, mixed orders, repeated/out-of-order branches and partial ranges are rejected. Define any custom numerical ticks on the individual child scales, not on the parent bank. Parent mapping or tick parameters are rejected rather than silently ignored.
+A bank needs two children of order 2, three of order 3 or five of order 5. Child branches must be consecutive from zero and occupy the complete scale length. An odd-child bank has an unruled first branch, then one (order 3) or two (order 5) shared-line pairs. Nested layouts, mixed orders, repeated/out-of-order branches and partial ranges are rejected. Define any custom numerical ticks on the individual child scales, not on the parent bank. Parent mapping or tick parameters are rejected rather than silently ignored.
 
 A layer's explicit `tone` takes precedence over the bank's `tone`; otherwise black is used. All historical root branches increase to the right. `compactLabels: false` on the bank or any child opts the bank out of compact numbering. A bank may be placed on any rail: all its children move as a unit on the slide, and the readout includes all branches. Ordinary `composite` rows still have at most two independent subrows and are not this historical root construction.
 
@@ -115,3 +115,14 @@ The top-level `viewMode` field is `single` or `both`; `activeSide` still chooses
 `pairedSum` on an expression, sine or tangent definition displays two readings on each tick: the primary value and `pairedSum - value`. Specify compatible non-negative angle bounds and units; `pairedSum` must be at least the maximum primary value. This is a presentation property, not a new mathematical map. Such pairs cannot be nested inside composite, segmented or root-stack rows. See [Pickett 14](PICKETT_14.md) for examples.
 
 A gauge or manual tick may include a `title` (up to 240 characters); an anchor may include `anchorTitle`. Text is escaped in markup and displayed as text, never evaluated. See [constant marks](CONSTANT_MARKS.md).
+
+## Shared product graduations
+
+On a positive `log` or `inverseLog` scale, `pairedProduct` displays the primary
+value above each tick and `pairedProduct / value` below it. Set it to **1** for
+true reciprocals. `positiveCaption` and `negativeCaption` label the gutters and
+readouts. These pairs reuse the shared-tick renderer, not two independent rows.
+Both secondary endpoints must remain positive and finite; nested pairs and
+combining this property with `pairedSum` or `referenceOnly` are rejected. See
+[fifth roots and powers](FIFTH_ROOTS.md) for a complete example and the distinction
+from the legacy decade-scaled `F5I` numbering.

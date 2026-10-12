@@ -37,7 +37,8 @@ def run_reaudit(get_page, state, apply, settle, check, load, download,
             }
             return count;
         }""")
-        assert comparisons == 162
+        preset_count = p.evaluate("async()=>Object.keys((await import('#catalog/presets.js')).PRESETS).length")
+        assert comparisons == preset_count * 3 * 3
         report['retainedReadoutComparisons'] = comparisons
     check('motion retains readout and graduation nodes; incremental values match fresh rendering', retained_readouts)
 

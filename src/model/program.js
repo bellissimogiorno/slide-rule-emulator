@@ -1,3 +1,5 @@
+import { GRADUATION_MODES, ADAPTIVE_SPACING } from "#core/ticks/adaptive.js";
+import { LOG_GRADUATIONS } from "#core/ticks/conventional.js";
 import { MAGNIFICATIONS } from "#model/view.js";
 import { deepFreeze, deepClone } from "#core/objects.js";
 import { DENSITIES, THEMES } from "#catalog/appearance.js";
@@ -39,6 +41,9 @@ function normalizeState(s) {
     s.compactScales = s.compactScales !== false;
     s.slideOffset = clamp(Number(s.slideOffset) || 0, -0.9, 0.9);
     s.cursor = clamp(Number.isFinite(Number(s.cursor)) ? Number(s.cursor) : 0.5, 0, 1);
+    s.graduationMode = GRADUATION_MODES.includes(s.graduationMode) ? s.graduationMode : 'conventional';
+    s.adaptiveSpacing = Object.hasOwn(ADAPTIVE_SPACING, s.adaptiveSpacing) ? s.adaptiveSpacing : 'balanced';
+    s.logGraduations = LOG_GRADUATIONS.includes(s.logGraduations) ? s.logGraduations : "adaptive";
     s.magnification = MAGNIFICATIONS.includes(s.magnification) ? s.magnification : 1;
     if (!Array.isArray(s.customScales))
         s.customScales = [];
@@ -69,6 +74,9 @@ function exportableState(state) {
         showFormulas: Boolean(state.showFormulas),
         compactScales: Boolean(state.compactScales),
         magnification: state.magnification,
+        graduationMode: state.graduationMode || 'conventional',
+        adaptiveSpacing: state.adaptiveSpacing || 'balanced',
+        logGraduations: state.logGraduations || "adaptive",
         slideOffset: state.slideOffset,
         cursor: state.cursor,
         customScales: deepClone(state.customScales || []),

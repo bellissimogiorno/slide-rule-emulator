@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Programmable slide rule programme (v3.2.17)",
+  "title": "Programmable slide rule programme (v3.2.23)",
   "type": "object",
   "required": [
     "sides"
@@ -23,7 +23,9 @@
         "blackbody",
         "blackbody-wood",
         "flying-fish",
-        "neutral"
+        "neutral",
+        "ultralog",
+        "graphoplex"
       ]
     },
     "density": {
@@ -215,7 +217,7 @@
           "layers": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 3,
+            "maxItems": 5,
             "items": {
               "oneOf": [
                 {
@@ -499,6 +501,25 @@
           "anchorTitle": {
             "type": "string",
             "maxLength": 240
+          },
+          "pairedProduct": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Second reading is pairedProduct divided by the primary value, on the same tick. Only positive log/inverseLog scales are supported; endpoint reciprocals must remain representable."
+          },
+          "graduationProfile": {
+            "enum": [
+              "faber-w"
+            ]
+          },
+          "adaptiveTicks": {
+            "type": "boolean"
+          },
+          "angleNotation": {
+            "enum": [
+              "sexagesimal"
+            ],
+            "description": "Degree/minute/second captions for paired angular scales. Mathematical inputs remain decimal degrees."
           }
         },
         "additionalProperties": true,
@@ -520,8 +541,20 @@
               ],
               "properties": {
                 "layers": {
-                  "minItems": 2,
-                  "maxItems": 3
+                  "oneOf": [
+                    {
+                      "minItems": 2,
+                      "maxItems": 2
+                    },
+                    {
+                      "minItems": 3,
+                      "maxItems": 3
+                    },
+                    {
+                      "minItems": 5,
+                      "maxItems": 5
+                    }
+                  ]
                 }
               }
             },
@@ -596,6 +629,27 @@
         "both"
       ],
       "description": "Show one selected face or all faces together. activeSide still selects the layout editor."
+    },
+    "logGraduations": {
+      "enum": [
+        "adaptive",
+        "pocket",
+        "standard",
+        "fine"
+      ]
+    },
+    "graduationMode": {
+      "enum": [
+        "conventional",
+        "adaptive"
+      ]
+    },
+    "adaptiveSpacing": {
+      "enum": [
+        "clear",
+        "balanced",
+        "fine"
+      ]
     }
   },
   "$defs": {

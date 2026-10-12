@@ -163,3 +163,24 @@ property names cannot become arithmetic operators. Both manually specified ticks
 and named reference gauges undergo the same position/domain/inverse-branch
 checks. These finite numerical samples catch errors, but are not a proof of
 correctness for an arbitrary user-supplied formula.
+
+## Back-to-back fifth-root and power extensions
+
+`catalog/scales/fifths.js` defines the five independent root components, their
+complete bank and the power pair. `ui/root-stack.js` partitions both ticks and
+gutters into an optional single branch followed by pairs; CSS positions each
+pair on its own spine. It uses the same code for two, three and five branches.
+`core/paired-products.js` supplies secondary tick captions for the validated
+`pairedProduct` property; `ui/readout-values.js` applies the corresponding
+product rule to full-precision readings. The existing shared-tick markup and
+label-packing code then handle the pair. No new scalar mapping is required.
+
+
+Graduation policy is separate from mathematical mappings. `core/ticks/adaptive.js`
+owns continuous decimal-cell planning and the independent label-spacing pass;
+`core/ticks/expanded-roots.js` owns fixed W engraving and long-scale branch cuts.
+`core/ticks/index.js` selects a policy before adding protected named gauges and
+paired values. Both ordinary and composite/root-stack rendering pass the same
+policy and displayed magnification. Moving the slide/cursor never regenerates
+these plans. A magnification change does regenerate them even if CSS layout width
+has not changed.

@@ -1,0 +1,64 @@
+{
+  "activeSide": "front",
+  "viewMode": "both",
+  "presetId": "graphoplex690a",
+  "theme": "graphoplex",
+  "density": "classic",
+  "modelLabel": "Graphoplex 690A Neperlog",
+  "instrumentNote": "Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. End extensions, auxiliary cursor hairlines and every original gauge are not reproduced.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "graduationMode": "conventional",
+  "adaptiveSpacing": "balanced",
+  "logGraduations": "adaptive",
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "Front - degrees/minutes / near-unity log-log",
+      "topStator": [
+        "GP_LL00",
+        "GP_L",
+        "GP690_T2",
+        "GP_A"
+      ],
+      "slide": [
+        "GP_B",
+        "GP690_T1",
+        "GP690_ST",
+        "GP690_S",
+        "GP_C"
+      ],
+      "bottomStator": [
+        "GP_D",
+        "GP_P",
+        "GP_DI",
+        "GP_LL0"
+      ]
+    },
+    "back": {
+      "name": "Back - folded / natural log-log",
+      "topStator": [
+        "GP_LL01",
+        "GP_LL02",
+        "GP_LL03",
+        "GP_DF"
+      ],
+      "slide": [
+        "GP_CF",
+        "GP_CIF",
+        "GP_K",
+        "GP_CI",
+        "GP_C"
+      ],
+      "bottomStator": [
+        "GP_D",
+        "GP_LL3",
+        "GP_LL2",
+        "GP_LL1"
+      ]
+    }
+  }
+}

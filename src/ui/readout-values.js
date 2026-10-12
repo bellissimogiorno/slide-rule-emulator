@@ -21,17 +21,21 @@ function singleReading(def, p) {
 }
 
 export function scaleReadings(def, p, library) {
-    if (def.type === "syncroLogLog" || def.pairedSum !== undefined) {
+    if (def.type === "syncroLogLog" || def.pairedSum !== undefined || def.pairedProduct !== undefined) {
         const point = positionOnScale(def, p);
         let positive = "off scale", negative = "off scale";
         if (!point.outside) {
             try {
                 const value = point.rt.value(point.p);
                 positive = formatValue(value, def);
-                negative = formatValue(def.pairedSum === undefined ? 1 / value : def.pairedSum - value, def);
+                negative = formatValue(def.pairedSum === undefined ? (def.pairedProduct ?? 1) / value : def.pairedSum - value, def);
             } catch {
                 positive = negative = "error";
             }
+        }
+        if (def.pairedProduct !== undefined) {
+            return { outside: point.outside, multi: true,
+                texts: [`${def.positiveCaption || "Primary"}: ${positive}`, `${def.negativeCaption || "Secondary"}: ${negative}`] };
         }
         return { outside: point.outside, multi: true, texts: def.pairedSum === undefined ? [`+: ${positive}`, `\u2212: ${negative}`] : [`Black: ${positive}`, `Red: ${negative}`] };
     }

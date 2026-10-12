@@ -1,15 +1,18 @@
-/* Pickett root banks: one unruled upper branch (cube only), then two branches
-   graduated back-to-back from one physical spine. Do not mirror the x-axis or
+/* Pickett-style root banks: one unruled upper branch for odd orders, then
+   consecutive pairs graduated back-to-back from one spine per pair. Do not mirror the x-axis or
    substitute reciprocal-log-log ticks: each branch has its own root mapping. */
 .scale-row.root-stack {
     --root-single-h: 0px;
+    --root-pair-count: 1;
     --root-pair-h: var(--pair-h);
-    height: calc(var(--root-single-h) + var(--root-pair-h));
+    height: calc(var(--root-single-h) + var(--root-pair-count) * var(--root-pair-h));
 }
 
-.scale-row.root-stack-3 {
+.scale-row.root-stack-3, .scale-row.root-stack-5 {
     --root-single-h: var(--row-h);
 }
+
+.scale-row.root-stack-5 { --root-pair-count: 2; }
 
 .root-stack .root-single {
     position: absolute;
@@ -21,10 +24,13 @@
 
 .root-stack .root-pair {
     position: absolute;
-    top: var(--root-single-h);
+    /* Share the available content height, excluding any row separator.
+       Fixed pair heights would clip the last line after a bordered row. */
+    --root-band-h: calc((100% - var(--root-single-h)) / var(--root-pair-count));
+    top: calc(var(--root-single-h) + var(--root-pair-index, 0) * var(--root-band-h));
     left: 0;
     right: 0;
-    bottom: 0;
+    height: var(--root-band-h);
 }
 
 .root-branch {
@@ -81,10 +87,10 @@
 
 body[data-compact-scales="true"] .scale-row.root-stack:not(.no-compact-labels) {
     --root-pair-h: var(--compact-pair-h);
-    height: calc(var(--root-single-h) + var(--root-pair-h));
+    height: calc(var(--root-single-h) + var(--root-pair-count) * var(--root-pair-h));
 }
 
-body[data-compact-scales="true"] .scale-row.root-stack-3:not(.no-compact-labels) {
+body[data-compact-scales="true"] .scale-row:is(.root-stack-3, .root-stack-5):not(.no-compact-labels) {
     --root-single-h: var(--compact-row-h);
 }
 

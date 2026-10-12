@@ -36,6 +36,7 @@ function createApplication(document) {
     let motionFrame = 0;
     let resizeFrame = 0;
     let renderedTrackWidth = 0;
+    let renderedDisplayScale = 0;
     let state = loadState();
     let libraryDefinitions = state.customScales;
     let scaleLibrary = buildLibrary(state);
@@ -86,6 +87,11 @@ function createApplication(document) {
         presetDetailsButton: document.getElementById("presetDetailsButton"),
         themeSelect: document.getElementById("themeSelect"),
         densitySelect: document.getElementById("densitySelect"),
+        graduationModeSelect: document.getElementById("graduationModeSelect"),
+        adaptiveSpacingSelect: document.getElementById("adaptiveSpacingSelect"),
+        adaptiveSpacingField: document.getElementById("adaptiveSpacingField"),
+        logGraduationsSelect: document.getElementById("logGraduationsSelect"),
+        logGraduationsField: document.getElementById("logGraduationsField"),
         formulaToggle: document.getElementById("formulaToggle"),
         compactScaleToggle: document.getElementById("compactScaleToggle"),
         railEditors: document.getElementById("railEditors"),
@@ -240,6 +246,19 @@ function createApplication(document) {
             applyAppearance();
             renderRuleAndReadout(false);
         });
+        for (const [control, field] of [[dom.graduationModeSelect, 'graduationMode'], [dom.adaptiveSpacingSelect, 'adaptiveSpacing']]) {
+            listen(control, 'change', () => {
+                state[field] = control.value;
+                saveState();
+                applyAppearance();
+                renderRuleAndReadout(false);
+            });
+        }
+        listen(dom.logGraduationsSelect, "change", () => {
+            state.logGraduations = dom.logGraduationsSelect.value;
+            saveState();
+            renderRuleAndReadout(false);
+        });
         listen(dom.densitySelect, "change", () => {
             state.density = dom.densitySelect.value;
             saveState();
@@ -325,7 +344,7 @@ function createApplication(document) {
         resizeFrame = requestAnimationFrame(() => {
             resizeFrame = 0;
             const width = getScalePixelWidth();
-            if (Math.abs(width - renderedTrackWidth) > 0.5)
+            if (Math.abs(width - renderedTrackWidth) > 0.5 || renderedDisplayScale !== state.magnification)
                 renderRule();
             else {
                 updateCursorPosition();
@@ -413,6 +432,15 @@ function createApplication(document) {
         dom.themeSelect.value = state.theme;
         dom.densitySelect.innerHTML = Object.entries(DENSITIES).map(([id, label]) => `<option value="${escapeHtml(id)}">${escapeHtml(label)}</option>`).join("");
         dom.densitySelect.value = state.density;
+        dom.graduationModeSelect.value = state.graduationMode;
+        dom.adaptiveSpacingSelect.value = state.adaptiveSpacing;
+        // One shared options slot; hiding a field never discards its selection.
+        const fullyAdaptive = state.graduationMode === "adaptive";
+        dom.adaptiveSpacingField.hidden = !fullyAdaptive;
+        dom.adaptiveSpacingSelect.disabled = !fullyAdaptive;
+        dom.logGraduationsField.hidden = fullyAdaptive;
+        dom.logGraduationsSelect.disabled = fullyAdaptive;
+        dom.logGraduationsSelect.value = state.logGraduations;
         dom.formulaToggle.checked = Boolean(state.showFormulas);
         dom.compactScaleToggle.checked = Boolean(state.compactScales);
     }
@@ -487,7 +515,10 @@ function createApplication(document) {
         // Replacing a face invalidates its captured pointer geometry.
         endDrag();
         renderedTrackWidth = getScalePixelWidth();
+        renderedDisplayScale = state.magnification;
         const context = { library: scaleLibrary, width: renderedTrackWidth,
+            graduationMode: state.graduationMode, adaptiveSpacing: state.adaptiveSpacing,
+            logGraduations: state.logGraduations, displayScale: state.magnification,
             minGap: state.density === "comfortable" ? 1.8 : 1.65 };
         dom.ruleCanvas.innerHTML = visibleSideKeys(state).map((key, index) => {
             const side = state.sides[key];

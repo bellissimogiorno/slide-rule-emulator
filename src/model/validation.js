@@ -1,3 +1,5 @@
+import { GRADUATION_MODES, ADAPTIVE_SPACING } from "#core/ticks/adaptive.js";
+import { LOG_GRADUATIONS } from "#core/ticks/conventional.js";
 import { MAGNIFICATIONS } from "#model/view.js";
 /** Untrusted JSON enters through this boundary before live state is changed.
  * Validation is deliberately stronger than JSON Schema: it checks references,
@@ -14,7 +16,7 @@ import { SCALE_TYPES, TICK_MODES, TICK_KINDS, INK_TONES, RAILS, assertTickStrate
 export const PROGRAM_LIMITS = Object.freeze({ characters: 1000000, nodes: 30000, depth: 12, sides: 8, customScales: 128, rowsPerRail: 40, rows: 320, manualTicks: 2000 });
 const RESERVED = new Set(['__proto__', 'prototype', 'constructor']);
 const TEXT_FIELDS = ['label', 'unit', 'formula', 'description', 'family', 'anchor', 'anchorTitle', 'endLabel', 'compactLabel', 'startLabel', 'foldLabel', 'positiveCaption', 'negativeCaption'];
-const NUMBER_FIELDS = ['pairedSum', 'min', 'max', 'pMin', 'pMax', 'order', 'branch', 'decade', 'sign', 'power', 'coeff', 'fold', 'majorStep', 'minorDivisions', 'anchorPos', 'u0', 'minTemperature', 'maxTemperature', 'origin'];
+const NUMBER_FIELDS = ['pairedSum', 'pairedProduct', 'min', 'max', 'pMin', 'pMax', 'order', 'branch', 'decade', 'sign', 'power', 'coeff', 'fold', 'majorStep', 'minorDivisions', 'anchorPos', 'u0', 'minTemperature', 'maxTemperature', 'origin'];
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const fail = message => { throw new Error(message); };
 const identifier = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(value) && !RESERVED.has(value);
@@ -57,6 +59,12 @@ function validateMetadata(programme) {
         if (programme[key] !== undefined && (typeof programme[key] !== 'number' || programme[key] < lo || programme[key] > hi))
             fail(key + ' is outside its permitted range.');
     }
+    if (programme.graduationMode !== undefined && !GRADUATION_MODES.includes(programme.graduationMode))
+        fail('graduationMode must be conventional or adaptive.');
+    if (programme.adaptiveSpacing !== undefined && !Object.hasOwn(ADAPTIVE_SPACING, programme.adaptiveSpacing))
+        fail('adaptiveSpacing must be clear, balanced or fine.');
+    if (programme.logGraduations !== undefined && !LOG_GRADUATIONS.includes(programme.logGraduations))
+        fail('logGraduations must be adaptive, pocket, standard or fine.');
     if (programme.magnification !== undefined && !MAGNIFICATIONS.includes(programme.magnification))
         fail('magnification must be one of ' + MAGNIFICATIONS.join(', ') + '.');
     for (const key of ['modelLabel', 'instrumentNote', 'presetId', 'activeSide']) {
@@ -100,10 +108,16 @@ function validateScaleFields(definition) {
     for (const key of NUMBER_FIELDS)
         if (d[key] !== undefined && !Number.isFinite(d[key]))
             fail(key + ' must be a finite number.');
+    if (d.angleNotation !== undefined && (d.angleNotation !== 'sexagesimal' || d.unit !== '\u00b0' || d.pairedSum === undefined))
+        fail('angleNotation sexagesimal requires a paired angular scale in degrees.');
     if (d.tone !== undefined && !INK_TONES.includes(d.tone))
         fail('Unknown ink tone.');
     if (d.axis !== undefined && !['top', 'bottom'].includes(d.axis))
         fail('axis must be top or bottom.');
+    if (d.graduationProfile !== undefined && (d.graduationProfile !== 'faber-w' || d.type !== 'root' || d.order !== 2))
+        fail('graduationProfile faber-w requires an order-two root scale.');
+    if (d.adaptiveTicks !== undefined && typeof d.adaptiveTicks !== 'boolean')
+        fail('adaptiveTicks must be a boolean.');
     if (d.compactLabels !== undefined && typeof d.compactLabels !== 'boolean')
         fail('compactLabels must be a boolean.');
     if (d.labelPacking !== undefined && !['centred', 'auto'].includes(d.labelPacking))
@@ -170,8 +184,8 @@ function validateScaleFields(definition) {
     if (['composite', 'segmented'].includes(d.type) && (!Array.isArray(d.layers) || d.layers.length < 1 || d.layers.length > 2))
         fail('A composite needs one or two layers.');
     if (d.type === 'rootStack') {
-        if (!Array.isArray(d.layers) || ![2, 3].includes(d.layers.length))
-            fail('A rootStack needs two square-root or three cube-root branches.');
+        if (!Array.isArray(d.layers) || ![2, 3, 5].includes(d.layers.length))
+            fail('A rootStack needs two square-root, three cube-root or five fifth-root branches.');
         // A rootStack is presentation, not an additional scalar mapping. Reject
         // ignored calibration/ticks rather than accepting misleading settings.
         for (const key of [...NUMBER_FIELDS, 'pos', 'value', 'tickMode', 'ticks', 'gauges', 'anchor', 'refineTicks', 'referenceOnly'])
@@ -182,6 +196,13 @@ function validateScaleFields(definition) {
     if (d.pairedSum !== undefined && (!['expression', 'sin', 'tan', 'tan2'].includes(d.type) ||
         !(d.min >= 0 && d.max > d.min && d.max <= d.pairedSum && d.pairedSum <= 1e6) || d.referenceOnly))
         fail('pairedSum requires a scalar angle scale with 0 <= min < max <= pairedSum <= 1000000.');
+    if (d.pairedProduct !== undefined) {
+        if (!['log', 'inverseLog'].includes(d.type) || d.pairedSum !== undefined || d.referenceOnly ||
+            !(d.pairedProduct > 0 && d.min > 0 && d.max > d.min))
+            fail('pairedProduct requires a positive log or inverseLog scale; it cannot be combined with pairedSum or referenceOnly.');
+        if (![d.min, d.max].every(value => Number.isFinite(d.pairedProduct / value) && d.pairedProduct / value > 0))
+            fail('Both secondary endpoint values must be positive and finite.');
+    }
     validateTickInputs(d);
 }
 const INVERSE_SAMPLES = [...Array.from({ length: 65 }, (_, i) => i / 64), ...Array.from({ length: 64 }, (_, i) => ((i + 1) * 0.6180339887498949) % 1)].sort((a, b) => a - b);
@@ -262,13 +283,13 @@ function validateComposites(library) {
         if (!['composite', 'segmented', 'rootStack'].includes(d.type))
             continue;
         const rootStack = d.type === 'rootStack';
-        if (!Array.isArray(d.layers) || (rootStack ? ![2, 3].includes(d.layers.length) : d.layers.length < 1 || d.layers.length > 2))
+        if (!Array.isArray(d.layers) || (rootStack ? ![2, 3, 5].includes(d.layers.length) : d.layers.length < 1 || d.layers.length > 2))
             fail(d.id + ': incorrect number of child scales.');
         for (const layer of d.layers) {
             const id = typeof layer === 'string' ? layer : layer?.scale;
             if (!identifier(id) || !Object.hasOwn(library, id))
                 fail(d.id + ': missing layer ' + id);
-            if (['composite', 'segmented', 'rootStack', 'syncroLogLog'].includes(library[id].type) || library[id].pairedSum !== undefined)
+            if (['composite', 'segmented', 'rootStack', 'syncroLogLog'].includes(library[id].type) || library[id].pairedSum !== undefined || library[id].pairedProduct !== undefined)
                 fail(d.id + ': a composite layer must be an ordinary single-line scale.');
             if (typeof layer !== 'string') {
                 if (!object(layer))
@@ -283,7 +304,7 @@ function validateComposites(library) {
             d.layers.forEach((layer, branch) => {
                 const child = library[typeof layer === 'string' ? layer : layer.scale];
                 if (child.type !== 'root' || child.order !== d.layers.length || child.branch !== branch)
-                    fail(d.id + ': rootStack children must be consecutive branches of the same square or cube root, in increasing order.');
+                    fail(d.id + ': rootStack children must be consecutive branches of the same square, cube or fifth root, in increasing order.');
                 const rt = makeRuntimeScale(child);
                 if (rt.pMin !== 0 || rt.pMax !== 1)
                     fail(d.id + ': rootStack children must span the full scale length.');
