@@ -8,6 +8,7 @@ These are programmable, formula-driven digital instruments. Their names and appe
 | Pickett N3 / N4 | Photographed back-to-back root banks and genuinely shared reciprocal LL graduations | Root branches retain independent tick positions; N3 natural and N4 base-10 LL geometry are distinct. Finite screen engraving is not a scan; see [Pickett roots](PICKETT_ROOTS.md) |
 | Thornton AA010 | Standard arithmetic/trigonometric families and paired presentation | Correction rows are normalised mathematical studies, not fully calibrated historical differential scales |
 | K&E Deci-Lon | Cream/red layout and scale-family study | Explicitly inspired by the instrument, not a calibrated dimensional replica |
+| Pickett Model 14 | General log-log and degree/6400-mil faces, with shared angle ticks | Main-index mathematical reconstruction; no original end extensions or firing tables. See [Pickett 14](PICKETT_14.md) |
 | Pickett N16 | Standard scientific front, illustrative electronics reverse | Electronics reverse uses normalised relationships, without the full original decimal-point/unit system |
 | Pickett Model 17 | Energy/photon radiation relationships and tested temperature-to-ratio alignment | Educational calculation, not certified radiation metrology; not every manual workflow reproduced |
 | Thornton F5100 | Lettered scale arrangement and radiation/wavelength references | Operational coupling and full historical instruction workflow are not established |
@@ -20,3 +21,12 @@ The application includes instrument-specific warnings alongside the presets. A f
 Do not use the emulator as the sole basis for safety-critical engineering, radiation protection, financial decisions or other work where errors have substantial consequences. Keep independent calculation checks and portable programme backups.
 
 Historical manuals and photos are research pointers in REFERENCE_REGISTER.md. They are not bundled, and no right to redistribute third-party scans, logos or fonts is asserted.
+
+## Faber-Castell 2/82N
+
+The [2/82N preset](FABER_282N.md) follows the 1962 manufacturer's N-model
+manual: 13 front rows and 14 back rows, including sliding S' and K'. It is not
+the later 24-row 2/82. S/S' and both tangent ranges have complementary black/red
+angle readings; P is reverse-running red. Main mathematical intervals are
+implemented, not every end extension, gauge, physical reference table or
+auxiliary cursor line.

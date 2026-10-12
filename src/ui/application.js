@@ -1,3 +1,4 @@
+import { createMarkTooltips } from "#ui/mark-tooltips.js";
 import { createScaleHistory } from "#model/scale-history.js";
 import { moveScale } from "#model/scale-order.js";
 import { railEditorMarkup, refreshEditorPositions } from "#ui/rail-editor.js";
@@ -13,11 +14,11 @@ import { DEFAULT_STATE } from "#catalog/defaults.js";
 import { PRESETS } from "#catalog/presets.js";
 import { clamp } from "#core/numbers.js";
 import { buildLibrary, deepClone, exportableState, mergeState, normalizeState } from "#model/program.js";
-import { validateProgram } from "#model/validation.js";
 import { escapeHtml, scaleSort, titleCase, railLabel } from "#ui/html.js";
 import { optimizeScaleLabels } from "#ui/labels.js";
 import { visibleSideKeys } from "#model/view.js";
-import { renderReadout } from "#ui/readout.js";
+import { createReadoutView } from '#ui/readout-view.js';
+import { createProgrammeEditor } from '#ui/programme-editor.js';
 import { renderRailRows } from "#ui/scale-markup.js";
 import { APP_VERSION, DEFAULT_LABEL_W, STORAGE_KEY } from "#version.js";
 function createApplication(document) {
@@ -25,7 +26,6 @@ function createApplication(document) {
     const lifetime = new window.AbortController();
     const listen = (target, type, listener) => target.addEventListener(type, listener, { signal: lifetime.signal });
     let resizeObserver;
-    let jsonTimer = 0;
     let destroyed = false;
     let startupMessage = "";
     let recoveryData = null;
@@ -33,12 +33,14 @@ function createApplication(document) {
     let storageWarningShown = false;
     let saveTimer = 0;
     let stateDirty = false;
-    let jsonDirty = false;
     let motionFrame = 0;
     let resizeFrame = 0;
     let renderedTrackWidth = 0;
     let state = loadState();
+    let libraryDefinitions = state.customScales;
     let scaleLibrary = buildLibrary(state);
+    let programmeEditor;
+    let readoutView;
     let dragMode = null;
     let dragFace = null;
     let dragStartX = 0;
@@ -51,7 +53,6 @@ function createApplication(document) {
     let railReorder;
     const scaleHistory = createScaleHistory();
     let dragPointerId = null;
-    let syncJsonSoon = false;
     let scalePolishFrame = 0;
     const dom = {
         workbench: document.getElementById("workbench"),
@@ -88,17 +89,13 @@ function createApplication(document) {
         compactScaleToggle: document.getElementById("compactScaleToggle"),
         railEditors: document.getElementById("railEditors"),
         reorderStatus: document.getElementById("reorderStatus"),
-        jsonEditor: document.getElementById("jsonEditor"),
-        jsonStatus: document.getElementById("jsonStatus"),
-        applyJsonButton: document.getElementById("applyJsonButton"),
-        syncJsonButton: document.getElementById("syncJsonButton"),
-        exportJsonButton: document.getElementById("exportJsonButton"),
-        importJsonFile: document.getElementById("importJsonFile"),
-        importJsonButton: document.getElementById("importJsonButton"),
         libraryList: document.getElementById("libraryList")
     };
     function init() {
         normalizeState(state);
+        readoutView = createReadoutView(dom.readout);
+        programmeEditor = createProgrammeEditor({ document, signal: lifetime.signal,
+            getProgramme: () => exportableState(state), applyProgramme: applyProgramme });
         stepControls = createStepControls({
             element: dom.motionStep, signal: lifetime.signal,
             returnTarget: () => lastMotionFocus?.isConnected ? lastMotionFocus : dom.ruleCanvas,
@@ -118,6 +115,7 @@ function createApplication(document) {
             signal: lifetime.signal,
             returnTarget: () => lastMotionFocus?.isConnected ? lastMotionFocus : dom.ruleCanvas
         });
+        createMarkTooltips({ document, canvas: dom.ruleCanvas, signal: lifetime.signal });
         render();
         if (startupMessage)
             showAppStatus(startupMessage);
@@ -139,9 +137,8 @@ function createApplication(document) {
             applyAppearance();
             scheduleResize();
             saveState();
-            requestJsonSync();
+            programmeEditor.scheduleSync();
         });
-        listen(dom.jsonEditor, "input", () => { jsonDirty = true; });
         listen(dom.recoveryButton, "click", () => {
             downloadBlob(new Blob([recoveryData], { type: "application/json" }), "slide-rule-recovered-state.json");
         });
@@ -167,10 +164,10 @@ function createApplication(document) {
                 if (event.isPrimary !== false && event.button === 0) grip.focus({ preventScroll: true });
             });
         }
-        listen(window, "pagehide", flushState);
+        listen(window, "pagehide", () => { endDrag(); flushState(); });
+        listen(window, "blur", endDrag);
         listen(document, "visibilitychange", () => {
-            if (document.hidden)
-                flushState();
+            if (document.hidden) { endDrag(); flushState(); }
         });
         listen(dom.sideSelect, "change", () => {
             state.viewMode = dom.sideSelect.value === "" ? "both" : "single";
@@ -183,7 +180,7 @@ function createApplication(document) {
             state.activeSide = dom.editSideSelect.value;
             saveState();
             renderRailEditors();
-            requestJsonSync();
+            programmeEditor.scheduleSync();
         });
         listen(dom.bothSidesButton, "click", () => {
             state.viewMode = state.viewMode === "both" ? "single" : "both";
@@ -268,16 +265,7 @@ function createApplication(document) {
                 undoScaleEdit();
             }
         });
-        listen(dom.applyJsonButton, "click", applyJsonProgram);
-        listen(dom.syncJsonButton, "click", () => {
-            if (jsonDirty && !window.confirm("Replace the unapplied JSON draft with the current layout?"))
-                return;
-            syncJsonEditor(true);
-            setJsonStatus("JSON synced from current layout.");
-        });
-        listen(dom.exportJsonButton, "click", exportJsonProgram);
-        listen(dom.importJsonFile, "change", importJsonProgram);
-        listen(dom.importJsonButton, "click", () => dom.importJsonFile.click());
+
     }
     function loadState() {
         const result = loadProgramme({
@@ -321,7 +309,7 @@ function createApplication(document) {
             motionFrame = 0;
             updateSlideTransform();
             updateCursorPosition();
-            dom.readout.innerHTML = renderReadout(state, scaleLibrary);
+            readoutView.update(state, scaleLibrary);
             updatePositionControls();
         });
     }
@@ -351,7 +339,7 @@ function createApplication(document) {
         state[field] = movedPosition(state[field], field, command);
         scheduleMotion();
         saveState();
-        requestJsonSync();
+        programmeEditor.scheduleSync();
     }
     function onMotionKeyDown(event) {
         const target = event.target;
@@ -391,8 +379,11 @@ function createApplication(document) {
         event.preventDefault(); // prevent a second, browser-native range step
     }
     function render() {
-        scaleLibrary = buildLibrary(state);
         normalizeState(state);
+        if (state.customScales !== libraryDefinitions) {
+            libraryDefinitions = state.customScales;
+            scaleLibrary = buildLibrary(state);
+        }
         applyAppearance();
         renderSideSelect();
         renderPresetSelect();
@@ -400,9 +391,9 @@ function createApplication(document) {
         renderRailEditors();
         renderLibraryList();
         updatePositionControls();
-        syncJsonEditor();
-        if (!jsonDirty)
-            setJsonStatus("");
+        programmeEditor.sync();
+        if (!programmeEditor.dirty)
+            programmeEditor.status("");
     }
     function applyAppearance() {
         document.body.dataset.theme = state.theme;
@@ -477,16 +468,18 @@ function createApplication(document) {
         state.cursor = 0.5;
         saveState();
         render();
-        setJsonStatus(`Loaded preset: ${preset.name}.`);
+        programmeEditor.status(`Loaded preset: ${preset.name}.`);
     }
     function renderRuleAndReadout(preserveJson = true) {
         renderRule();
-        dom.readout.innerHTML = renderReadout(state, scaleLibrary);
+        readoutView.update(state, scaleLibrary);
         updatePositionControls();
         if (!preserveJson)
-            requestJsonSync();
+            programmeEditor.scheduleSync();
     }
     function renderRule() {
+        // Replacing a face invalidates its captured pointer geometry.
+        endDrag();
         renderedTrackWidth = getScalePixelWidth();
         const context = { library: scaleLibrary, width: renderedTrackWidth,
             minGap: state.density === "comfortable" ? 1.8 : 1.65 };
@@ -497,9 +490,9 @@ function createApplication(document) {
             return `<section class="rule-face" data-side="${escapeHtml(key)}" aria-label="${escapeHtml(side.name || key)}">
                 ${heading}<div class="rule-face-body">
                 <div class="rail top-stator" data-rail="topStator">${renderRailRows(side.topStator, "topStator", false, context)}</div>
-                <div class="rail slide-rail" data-rail="slide" title="Drag to move the slide on both faces">${renderRailRows(side.slide, "slide", true, context)}</div>
+                <div class="rail slide-rail" data-rail="slide">${renderRailRows(side.slide, "slide", true, context)}</div>
                 <div class="rail bottom-stator" data-rail="bottomStator">${renderRailRows(side.bottomStator, "bottomStator", false, context)}</div>
-                <div id="${index ? "cursor-" + index : "cursor"}" class="cursor" title="Drag the linked cursor"></div>
+                <div id="${index ? "cursor-" + index : "cursor"}" class="cursor"></div>
                 </div></section>`;
         }).join("");
         updateSlideTransform();
@@ -583,7 +576,7 @@ function createApplication(document) {
             saveState();
             renderRuleAndReadout(false);
             renderPresetSelect();
-            syncJsonEditor();
+            programmeEditor.sync();
             refreshUndoButtons();
             return true;
         } catch (error) {
@@ -615,7 +608,7 @@ function createApplication(document) {
         saveState();
         renderRuleAndReadout(false);
         renderPresetSelect();
-        syncJsonEditor();
+        programmeEditor.sync();
         refreshUndoButtons();
         dom.reorderStatus.textContent = `${old} replaced with ${event.target.value}. Undo is available.`;
     }
@@ -655,7 +648,7 @@ function createApplication(document) {
         renderRuleAndReadout(false);
         renderRailEditors();
         renderPresetSelect();
-        syncJsonEditor();
+        programmeEditor.sync();
         dom.reorderStatus.textContent = message;
         const list = [...dom.railEditors.querySelectorAll(".rail-row-list")].find(el => el.dataset.rail === rail);
         const focus = action === "remove"
@@ -724,6 +717,10 @@ function createApplication(document) {
     function onPointerUp(event) {
         if (!dragMode || event.pointerId !== dragPointerId)
             return;
+        endDrag();
+    }
+    function endDrag() {
+        if (!dragMode) return;
         const pointer = dragPointerId;
         dragMode = null;
         dragPointerId = null;
@@ -737,7 +734,7 @@ function createApplication(document) {
         if (slideRail)
             slideRail.classList.remove("dragging");
         dragFace = null;
-        requestJsonSync();
+        programmeEditor.scheduleSync();
     }
     function updateCursorFromClientX(clientX) {
         const geometry = getScaleGeometry(dragFace);
@@ -772,94 +769,32 @@ function createApplication(document) {
         const geometry = getScaleGeometry();
         return Math.max(1, geometry.width || dom.ruleCanvas.clientWidth - getLabelWidth() - getLegendWidth());
     }
-    function syncJsonEditor(force = false) {
-        if (!force && jsonDirty)
-            return;
-        dom.jsonEditor.value = JSON.stringify(exportableState(state), null, 2);
-        jsonDirty = false;
-    }
-    function requestJsonSync() {
-        if (syncJsonSoon)
-            return;
-        syncJsonSoon = true;
-        jsonTimer = window.setTimeout(() => {
-            jsonTimer = 0;
-            syncJsonSoon = false;
-            syncJsonEditor();
-        }, 160);
-    }
-    function applyJsonProgram() {
+    function applyProgramme(parsed) {
+        const candidate = mergeState(deepClone(DEFAULT_STATE), parsed);
+        if (!parsed.presetId) candidate.presetId = "custom";
+        normalizeState(candidate);
+        const previous = state;
         try {
-            if (dom.jsonEditor.value.length > 1000000)
-                throw new Error("Programme exceeds the 1 MB limit.");
-            const parsed = JSON.parse(dom.jsonEditor.value);
-            validateProgram(parsed);
-            const candidate = mergeState(deepClone(DEFAULT_STATE), parsed);
-            if (!parsed.presetId)
-                candidate.presetId = "custom";
-            normalizeState(candidate);
-            const previous = state;
-            try {
-                state = candidate;
-                render();
-            }
-            catch (error) {
-                state = previous;
-                render();
-                throw error;
-            }
-            scaleHistory.clear();
-            refreshUndoButtons();
-            dom.reorderStatus.textContent = "";
-            jsonDirty = false;
-            syncJsonEditor(true);
-            saveState();
-            setJsonStatus("JSON applied.");
+            state = candidate;
+            render();
+        } catch (error) {
+            state = previous;
+            render();
+            throw error;
         }
-        catch (error) {
-            setJsonStatus(error.message || String(error), true);
-        }
-    }
-    function setJsonStatus(message, isError = false) {
-        dom.jsonStatus.textContent = message;
-        dom.jsonStatus.classList.toggle("error", Boolean(isError));
-    }
-    function exportJsonProgram() {
-        const blob = new Blob([JSON.stringify(exportableState(state), null, 2)], { type: "application/json" });
-        downloadBlob(blob, "slide-rule-program.json");
-        setJsonStatus("JSON exported.");
-    }
-    function importJsonProgram(event) {
-        const file = event.target.files && event.target.files[0];
-        if (!file)
-            return;
-        if (file.size > 1000000) {
-            setJsonStatus("Programme exceeds the 1 MB limit.", true);
-            event.target.value = "";
-            return;
-        }
-        if (jsonDirty && !window.confirm("Replace the unapplied JSON draft with this file?")) {
-            event.target.value = "";
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => {
-            dom.jsonEditor.value = String(reader.result || "");
-            jsonDirty = true;
-            applyJsonProgram();
-        };
-        reader.onerror = () => setJsonStatus("Could not read that file.", true);
-        reader.readAsText(file);
-        event.target.value = "";
+        scaleHistory.clear();
+        refreshUndoButtons();
+        dom.reorderStatus.textContent = "";
+        saveState();
     }
     function saveStandaloneCopy() {
         if (document.querySelector("script[src]")) {
-            setJsonStatus("Use the built dist HTML to save a self-contained copy.", true);
+            programmeEditor.status("Use the built dist HTML to save a self-contained copy.", true);
             return;
         }
         const html = standaloneHtml(document, exportableState(state));
         downloadBlob(new Blob([html], { type: "text/html" }), "slide-rule-v" + APP_VERSION + "-configured.html");
-        setJsonStatus("Standalone copy saved with the current applied programme.");
+        programmeEditor.status("Standalone copy saved with the current applied programme.");
     }
     function downloadBlob(blob, filename) {
         saveBlob(document, blob, filename);
@@ -871,6 +806,7 @@ function createApplication(document) {
             if (destroyed)
                 return;
             destroyed = true;
+            endDrag();
             flushState();
             lifetime.abort();
             scaleHistory.clear();
@@ -879,7 +815,6 @@ function createApplication(document) {
             for (const frame of [motionFrame, resizeFrame, scalePolishFrame])
                 window.cancelAnimationFrame(frame);
             window.clearTimeout(saveTimer);
-            window.clearTimeout(jsonTimer);
         }
     };
 }

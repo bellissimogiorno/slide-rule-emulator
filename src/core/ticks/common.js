@@ -151,6 +151,8 @@ function dedupeTicks(ticks) {
             donor = existing;
             map.set(key, keeper);
         }
+        if (!keeper.title && donor.title)
+            keeper.title = donor.title;
         if (!keeper.label && donor.label)
             keeper.label = donor.label;
         if (!keeper.positiveLabel && donor.positiveLabel)

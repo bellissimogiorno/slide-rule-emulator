@@ -18,11 +18,14 @@ import threading
 import time
 import traceback
 from playwright.sync_api import sync_playwright
+from scale_help import run_scale_help
+from reaudit import run_reaudit
 from editor_features import run_editor_features
 from editor_polish import run_editor_polish
 from features import run_features
 from workspace_features import run_workspace_features
 from pickett_roots import run_pickett_roots
+from pickett14 import run_pickett14
 from motion_controls import run_motion_controls
 from interface_features import run_interface_features
 from loupe_features import run_loupe_features
@@ -39,8 +42,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=['native', 'dom'], default='native')
     parser.add_argument('--visual', action='store_true')
-    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish'], default='all',
-                        help='all checks (default), controls, readout/editor, or header/undo/idle checks')
+    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish', 'pickett14', 'reaudit', 'scale-help'], default='all',
+                        help='all checks (default), controls, editor, polish, Pickett 14, reaudit, or end-label scale help')
     parser.add_argument('--executable', default=os.environ.get('CHROMIUM_EXECUTABLE'))
     parser.add_argument('--output', type=Path, default=ROOT / 'qa')
     args = parser.parse_args()
@@ -257,6 +260,12 @@ def main():
                 assert download('#recoveryButton') == 'corrupt-data'
             check('corrupt saved programme remains downloadable', recovery)
             load()
+            if args.suite in ('all', 'scale-help'):
+                run_scale_help(lambda: page, state, apply, settle, check, load, download,
+                               args.visual, args.output, report, GEOMETRY)
+            if args.suite in ('all', 'reaudit'):
+                run_reaudit(lambda: page, state, apply, settle, check, load, download,
+                            args.visual, args.output, report, GEOMETRY)
             if args.suite == 'all':
                 run_features(lambda: page, state, apply, settle, check, load, download,
                              args.visual, args.output, report, GEOMETRY)
@@ -264,6 +273,9 @@ def main():
                                        args.visual, args.output, report, GEOMETRY)
                 run_pickett_roots(lambda: page, state, apply, settle, check, load, download,
                                   args.visual, args.output, report, GEOMETRY)
+            if args.suite in ('all', 'pickett14'):
+                run_pickett14(lambda: page, state, apply, settle, check, load, download,
+                             args.visual, args.output, report, GEOMETRY)
             if args.suite in ('all', 'polish'):
                 run_editor_polish(lambda: page, state, apply, settle, check, load, download,
                                   args.visual, args.output, report, GEOMETRY)

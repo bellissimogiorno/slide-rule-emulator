@@ -50,8 +50,11 @@ function decimalPlacesForStep(step) {
     return decimals;
 }
 function smartRound(x) {
-    if (x === 0)
-        return 0;
+    if (!Number.isFinite(x) || x === 0)
+        return x;
+    // Fixed decimal places erase small, perfectly representable log labels.
+    if (Math.abs(x) < 1e-7)
+        return Number(x.toPrecision(9));
     const digits = Math.max(0, 8 - Math.floor(Math.log10(Math.abs(x))));
     return Number(x.toFixed(Math.min(10, digits)));
 }

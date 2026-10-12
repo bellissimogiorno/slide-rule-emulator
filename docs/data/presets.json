@@ -459,6 +459,115 @@
       }
     }
   },
+  "faber282n": {
+    "group": "Classic instruments",
+    "name": "Faber-Castell 2/82N",
+    "modelLabel": "A.W. Faber-Castell 2/82N Castell-Duplex",
+    "theme": "faber",
+    "density": "faber",
+    "showFormulas": true,
+    "description": "The 1962 N-model: paired tangent/cotangent and sine/cosine, movable S-prime and K-prime, reciprocal squares, folded arithmetic and six log-log ranges.",
+    "instrumentNote": "N-model main intervals from the manufacturer’s manual. S and S-prime multiply sine values; K and K-prime support cube calculations. Red angular readings are complements, not reciprocals. Original end extensions, every gauge mark and auxiliary cursor lines are not reproduced.",
+    "sides": {
+      "front": {
+        "name": "Front - trigonometric / S-prime",
+        "topStator": [
+          "FC282_T1",
+          "FC282_T2",
+          "L",
+          "A"
+        ],
+        "slide": [
+          "B",
+          "BI",
+          "CI",
+          "FC282_SP",
+          "C"
+        ],
+        "bottomStator": [
+          "D",
+          "FC282_S",
+          "ST",
+          "FC282_P"
+        ]
+      },
+      "back": {
+        "name": "Back - K-prime / folded / log-log",
+        "topStator": [
+          "LL03",
+          "LL02",
+          "LL01",
+          "K",
+          "DF"
+        ],
+        "slide": [
+          "CF",
+          "FC282_KP",
+          "CIF",
+          "CI",
+          "C"
+        ],
+        "bottomStator": [
+          "D",
+          "LL1",
+          "LL2",
+          "LL3"
+        ]
+      }
+    }
+  },
+  "pickett14": {
+    "label": "Pickett 14 U.S. Military / Artillery",
+    "modelLabel": "Pickett Model 14 U.S.",
+    "theme": "pickett-es",
+    "density": "pickett",
+    "showFormulas": false,
+    "compactScales": true,
+    "description": "General log-log face and degree/6400-mil trigonometric face. Shared complementary and supplementary angle ticks. Main index-to-index ranges, not a photographic facsimile.",
+    "instrumentNote": "Historical mathematical reconstruction. Degrees and 6400 mils/turn (not milliradians). Opposite-angle rows end at 90 degrees / 1600 mils; their supplementary readings run backwards. Original end extensions are omitted. Not a ballistic or fire-control calculator.",
+    "sides": {
+      "front": {
+        "name": "Front - general log-log",
+        "topStator": [
+          "PLL1",
+          "PLL2",
+          "P14_A"
+        ],
+        "slide": [
+          "P14_B",
+          "P14_T",
+          "P14_ST",
+          "P14_S",
+          "K",
+          "P14_C"
+        ],
+        "bottomStator": [
+          "P14_D",
+          "PLL3",
+          "PLL4"
+        ]
+      },
+      "back": {
+        "name": "Back - degrees and mils",
+        "topStator": [
+          "P14_OPP_DEG",
+          "P14_OPP_MIL"
+        ],
+        "slide": [
+          "P14_APEX_MIL",
+          "P14_APEX_DEG",
+          "P14_T_MIL",
+          "P14_ST_MIL",
+          "P14_S_MIL",
+          "P14_BASE"
+        ],
+        "bottomStator": [
+          "P14_DISTANCE",
+          "P14_A"
+        ]
+      }
+    }
+  },
   "flyingFish1017": {
     "name": "Flying Fish 1017 - Chemical engineering",
     "group": "Chemical instruments",

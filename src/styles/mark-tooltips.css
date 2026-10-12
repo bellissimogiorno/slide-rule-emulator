@@ -1,0 +1,20 @@
+/* Labels remain part of the draggable instrument; explanations don't intercept it. */
+.mark-tooltip {
+    position: fixed;
+    z-index: 2000;
+    max-width: min(360px, calc(100vw - 16px));
+    padding: 10px 12px;
+    border: 1px solid var(--ui-border);
+    border-radius: 7px;
+    background: var(--ui-panel);
+    color: var(--ui-ink);
+    font: 14px/1.45 system-ui, sans-serif;
+    box-shadow: 0 3px 12px #0003;
+    overflow-wrap: anywhere;
+    pointer-events: none;
+}
+.mark-tooltip[hidden] { display: none; }
+.syncro-number[title] { pointer-events: auto; }
+@media (forced-colors: active) {
+    .mark-tooltip { background: Canvas; color: CanvasText; border-color: CanvasText; }
+}

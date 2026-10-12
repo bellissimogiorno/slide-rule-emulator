@@ -153,3 +153,43 @@ python tests/browser/run.py --mode native --suite polish --visual --output qa/po
 ```
 
 These checks are also included in the default full browser suite. The explicit `--mode dom` diagnostic mode does not establish native navigation, native persistence or cross-browser correctness.
+
+## Pickett 14 and hover explanations
+
+`python tests/browser/run.py --suite pickett14 --visual` checks both faces, shared angle ticks, short position domains, all page themes, tooltip text beneath cursor glass, clean exports and teardown. Native navigation remains the default. Explicit `--mode dom` is a separate restricted-environment check, not native persistence verification. Node tests include independent angle identities and context-specific gauge values.
+
+## Programme integrity, retained rendering and the 2/82N
+
+`tests/unit/reaudit.test.js` rejects inherited names as operators and validates
+both reference marks and manual graduations, including wrong inverse branches
+at very small magnitudes. It checks nonzero small-value labels and immutable
+library sharing. `faber282n.test.js` verifies the manufacturer's N-model row
+order and independent trigonometric/cube identities.
+
+`tests/browser/reaudit.py` tests retained readout and graduation nodes, incremental
+versus stateless readout values, lost-focus drag cancellation, deterministic
+delayed-file-reader races, disposal, 2/82N loading/export and responsive geometry.
+The fake reader controls completion order; ordinary file imports are also tested
+in the main browser suite.
+
+```sh
+python tests/browser/run.py --mode native --suite reaudit --visual --output qa/reaudit
+```
+
+These checks also run in the default full suite. The explicit DOM diagnostic
+mode does not test native navigation or native storage persistence. Numerical
+round trips and geometry checks complement, rather than replace, independent
+reference values and manual inspection.
+
+## End-label scale help
+
+`python tests/browser/run.py --suite scale-help --visual` checks every preset on
+both faces in both numbering modes. It inspects the actual native-title target
+and its ancestors at the left name, right legend, ordinary graduations and cursor.
+Native tooltip bubbles belong to the browser, not the page DOM; these checks
+verify their title attributes and hit regions rather than claiming to photograph
+the browser bubble. Separate real hover tests verify the application-owned
+constant and element popups, including under the cursor glass. The suite also
+checks dragging, keyboard motion, configured exports, mobile scrolling and zoom.
+The default is native navigation; `--mode dom` explicitly selects the restricted
+DOM-loading test mode.

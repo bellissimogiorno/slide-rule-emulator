@@ -1,14 +1,10 @@
 import { makeFoldedScale } from "#catalog/factories.js";
-const STANDARD_GAUGES = [{
-        value: Math.sqrt(4 / Math.PI),
-        label: "c"
-    }, {
-        value: Math.E,
-        label: "e"
-    }, {
-        value: Math.PI,
-        label: "π"
-    }];
+import { constantGauge } from "#core/mark-descriptions.js";
+const STANDARD_GAUGES = [
+    constantGauge(Math.sqrt(4 / Math.PI), "c", "Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."),
+    constantGauge(Math.E, "e", "Euler's number, the base of natural logarithms; ln(e) = 1."),
+    constantGauge(Math.PI, "\u03c0", "Pi, the ratio of a circle's circumference to its diameter.")
+];
 const arithmeticScales = {
     D: {
         id: "D",

@@ -12,8 +12,8 @@ import { generateTicks } from '#core/ticks/index.js';
 import { SCALE_TYPES, TICK_MODES, TICK_KINDS, INK_TONES, RAILS, assertTickStrategy } from '#core/scale-types.js';
 export const PROGRAM_LIMITS = Object.freeze({ characters: 1000000, nodes: 30000, depth: 12, sides: 8, customScales: 128, rowsPerRail: 40, rows: 320, manualTicks: 2000 });
 const RESERVED = new Set(['__proto__', 'prototype', 'constructor']);
-const TEXT_FIELDS = ['label', 'unit', 'formula', 'description', 'family', 'anchor', 'endLabel', 'compactLabel', 'startLabel', 'foldLabel', 'positiveCaption', 'negativeCaption'];
-const NUMBER_FIELDS = ['min', 'max', 'pMin', 'pMax', 'order', 'branch', 'decade', 'sign', 'power', 'coeff', 'fold', 'majorStep', 'minorDivisions', 'anchorPos', 'u0', 'minTemperature', 'maxTemperature', 'origin'];
+const TEXT_FIELDS = ['label', 'unit', 'formula', 'description', 'family', 'anchor', 'anchorTitle', 'endLabel', 'compactLabel', 'startLabel', 'foldLabel', 'positiveCaption', 'negativeCaption'];
+const NUMBER_FIELDS = ['pairedSum', 'min', 'max', 'pMin', 'pMax', 'order', 'branch', 'decade', 'sign', 'power', 'coeff', 'fold', 'majorStep', 'minorDivisions', 'anchorPos', 'u0', 'minTemperature', 'maxTemperature', 'origin'];
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const fail = message => { throw new Error(message); };
 const identifier = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(value) && !RESERVED.has(value);
@@ -176,8 +176,14 @@ function validateScaleFields(definition) {
         for (const key of [...NUMBER_FIELDS, 'pos', 'value', 'tickMode', 'ticks', 'gauges', 'anchor', 'refineTicks', 'referenceOnly'])
             if (d[key] !== undefined) fail('rootStack: set ' + key + ' on its child scales instead.');
     }
+    if (d.anchorTitle !== undefined && d.anchorTitle.length > 240)
+        fail('anchorTitle must be at most 240 characters.');
+    if (d.pairedSum !== undefined && (!['expression', 'sin', 'tan', 'tan2'].includes(d.type) ||
+        !(d.min >= 0 && d.max > d.min && d.max <= d.pairedSum && d.pairedSum <= 1e6) || d.referenceOnly))
+        fail('pairedSum requires a scalar angle scale with 0 <= min < max <= pairedSum <= 1000000.');
     validateTickInputs(d);
 }
+const INVERSE_SAMPLES = [...Array.from({ length: 65 }, (_, i) => i / 64), ...Array.from({ length: 64 }, (_, i) => ((i + 1) * 0.6180339887498949) % 1)].sort((a, b) => a - b);
 function validateRuntime(definition) {
     const d = definition;
     if (['composite', 'segmented', 'rootStack'].includes(d.type))
@@ -198,10 +204,10 @@ function validateRuntime(definition) {
     }
     // Include off-grid samples: checking only i/64 missed expressions oscillating
     // exactly between those points. This remains a finite diagnostic, not a proof.
-    const samples = [...Array.from({ length: 65 }, (_, i) => i / 64), ...Array.from({ length: 64 }, (_, i) => ((i + 1) * 0.6180339887498949) % 1)].sort((a, b) => a - b);
+
     let lastValue;
     let direction = 0;
-    for (const fraction of samples) {
+    for (const fraction of INVERSE_SAMPLES) {
         const p = rt.pMin + (rt.pMax - rt.pMin) * fraction;
         const value = rt.value(p);
         if (!Number.isFinite(value))
@@ -231,18 +237,18 @@ function validateRuntime(definition) {
             lastValue = value;
         }
     }
-    for (const tick of d.ticks || []) {
+    for (const tick of [...(d.ticks || []), ...(d.gauges || [])]) {
         const p = rt.pos(tick.value);
         if (!Number.isFinite(p) || p < rt.pMin - 1e-10 || p > rt.pMax + 1e-10)
-            fail('A manual tick is outside the scale domain.');
+            fail('A manual tick or gauge is outside the scale domain.');
         const expected = rt.value(p);
         if (['foldedLog', 'foldedInverse'].includes(d.type)) {
             const decades = Math.log10(tick.value) - Math.log10(expected);
             if (Math.abs(decades - Math.round(decades)) > 1e-8)
                 fail('Manual tick value disagrees with the folded mapping.');
         }
-        else if (Math.abs(expected - tick.value) > Math.max(1e-14, Math.abs(tick.value) * 1e-8)) {
-            fail('Manual tick value is on the wrong branch of the mapping.');
+        else if (Math.abs(expected - tick.value) / Math.max(Math.abs(expected), Math.abs(tick.value), Number.MIN_VALUE) > 1e-8) {
+            fail('Manual tick or gauge value is on the wrong branch of the mapping.');
         }
     }
     if (d.anchor && d.anchorPos !== undefined && (d.anchorPos < rt.pMin || d.anchorPos > rt.pMax))
@@ -261,7 +267,7 @@ function validateComposites(library) {
             const id = typeof layer === 'string' ? layer : layer?.scale;
             if (!identifier(id) || !Object.hasOwn(library, id))
                 fail(d.id + ': missing layer ' + id);
-            if (['composite', 'segmented', 'rootStack', 'syncroLogLog'].includes(library[id].type))
+            if (['composite', 'segmented', 'rootStack', 'syncroLogLog'].includes(library[id].type) || library[id].pairedSum !== undefined)
                 fail(d.id + ': a composite layer must be an ordinary single-line scale.');
             if (typeof layer !== 'string') {
                 if (!object(layer))

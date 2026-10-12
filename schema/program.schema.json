@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Programmable slide rule programme (v3.2.12)",
+  "title": "Programmable slide rule programme (v3.2.15)",
   "type": "object",
   "required": [
     "sides"
@@ -489,6 +489,16 @@
           },
           "refineTicks": {
             "type": "boolean"
+          },
+          "pairedSum": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000,
+            "description": "Second reading is pairedSum minus the primary angle, on the same tick. Runtime validates the angle range."
+          },
+          "anchorTitle": {
+            "type": "string",
+            "maxLength": 240
           }
         },
         "additionalProperties": true,

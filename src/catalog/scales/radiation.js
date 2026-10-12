@@ -238,6 +238,7 @@ const radiationScales = {
                 label: "T"
             }],
         anchor: "T",
+        anchorTitle: "T: temperature-alignment index at mid-scale (multiplier 3.162277660168). It is a movable reference, not a fixed temperature or physical constant.",
         anchorPos: 0.5,
         formula: "peak multiplier",
         description: "Peak spectral-energy mantissa multiplier and T alignment index.",
@@ -264,6 +265,7 @@ const radiationScales = {
                 label: "T"
             }],
         anchor: "T",
+        anchorTitle: "T: temperature-alignment index at mid-scale (multiplier 3.162277660168). It is a movable reference, not a fixed temperature or physical constant.",
         anchorPos: 0.5,
         formula: "peak multiplier",
         description: "Peak spectral-photon mantissa multiplier and T alignment index.",

@@ -1,0 +1,62 @@
+{
+  "activeSide": "front",
+  "viewMode": "both",
+  "presetId": "faber282n",
+  "theme": "faber",
+  "density": "faber",
+  "modelLabel": "A.W. Faber-Castell 2/82N Castell-Duplex",
+  "instrumentNote": "N-model main intervals from the manufacturer’s manual. S and S-prime multiply sine values; K and K-prime support cube calculations. Red angular readings are complements, not reciprocals. Original end extensions, every gauge mark and auxiliary cursor lines are not reproduced.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "Front - trigonometric / S-prime",
+      "topStator": [
+        "FC282_T1",
+        "FC282_T2",
+        "L",
+        "A"
+      ],
+      "slide": [
+        "B",
+        "BI",
+        "CI",
+        "FC282_SP",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "FC282_S",
+        "ST",
+        "FC282_P"
+      ]
+    },
+    "back": {
+      "name": "Back - K-prime / folded / log-log",
+      "topStator": [
+        "LL03",
+        "LL02",
+        "LL01",
+        "K",
+        "DF"
+      ],
+      "slide": [
+        "CF",
+        "FC282_KP",
+        "CIF",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "LL1",
+        "LL2",
+        "LL3"
+      ]
+    }
+  }
+}

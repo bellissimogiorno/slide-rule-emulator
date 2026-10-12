@@ -13,6 +13,11 @@ const MathExpressions = (() => {
         'sign', 'sin', 'sinh', 'sqrt', 'cbrt', 'tan', 'tanh', 'trunc', 'pow', 'atan2',
         'min', 'max', 'hypot'
     ].map(name => [name, Math[name]])));
+    // A null-prototype table cannot mistake inherited names (e.g. constructor)
+    // for operators. Build once, not on every iteration of the parser.
+    const precedence = Object.freeze(Object.assign(Object.create(null), {
+        '+': 10, '-': 10, '*': 20, '/': 20, '%': 20, '**': 30, '^': 30
+    }));
     const cache = new Map();
     function compile(source, variable) {
         if (typeof source !== 'string' || !source.trim() || source.length > 1024)
@@ -93,7 +98,7 @@ const MathExpressions = (() => {
             }
             while (index < tokens.length) {
                 const operator = tokens[index];
-                const binding = ({ '+': 10, '-': 10, '*': 20, '/': 20, '%': 20, '**': 30, '^': 30 })[operator];
+                const binding = precedence[operator];
                 if (binding === undefined || binding < minimum)
                     break;
                 index++;

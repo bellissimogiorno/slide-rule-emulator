@@ -109,3 +109,9 @@ Use `{ "id": "MIX", "type": "segmented", "layers": ["CHEM_M1", "CHEM_XW"] }` to 
 Chemical reference rows demonstrate optional validated tick `title`, `mass`, and `decade` metadata. `referenceOnly: true` requires nonempty labelled manual mass marks; the reader reports the nearest mark. It never interpolates a mass. Titles are escaped. `refineTicks: true` is an explicit request for round-value gap filling, including between manual marks; absent that opt-in, manual lists are used exactly as supplied. See CHEMICAL_SCALES.md for the two specialist scientific mapping types and published-range restrictions.
 
 The top-level `viewMode` field is `single` or `both`; `activeSide` still chooses the editor face. `both` shows every configured face in insertion order, including custom programmes with more than two faces. It is not a reserved face identifier.
+
+## Shared angle graduations and mark explanations
+
+`pairedSum` on an expression, sine or tangent definition displays two readings on each tick: the primary value and `pairedSum - value`. Specify compatible non-negative angle bounds and units; `pairedSum` must be at least the maximum primary value. This is a presentation property, not a new mathematical map. Such pairs cannot be nested inside composite, segmented or root-stack rows. See [Pickett 14](PICKETT_14.md) for examples.
+
+A gauge or manual tick may include a `title` (up to 240 characters); an anchor may include `anchorTitle`. Text is escaped in markup and displayed as text, never evaluated. See [constant marks](CONSTANT_MARKS.md).

@@ -90,3 +90,18 @@ CHEMICAL_SCALES.md, rather than an unsupported historical-calibration claim.
 
 - W3C WAI-ARIA Authoring Practices, [Slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/): arrow keys, endpoints, optional larger page-key steps and accessible value descriptions. Native range inputs are retained in this project; this reference does not constitute a conformance certification.
 - W3C, [Understanding character key shortcuts](https://www.w3.org/WAI/WCAG22/Understanding/character-key-shortcuts.html): S/C are enabled only while the instrument has focus, not while editing or dictating elsewhere on the page.
+
+## Pickett Model 14 and reference marks
+
+[Pickett 14](PICKETT_14.md) records the primary specimen sources, mathematical conventions and omitted end extensions. [Constant marks](CONSTANT_MARKS.md) records manufacturer page pointers and independently checked values.
+
+## Faber-Castell 2/82N
+
+- Manufacturer, *Anleitung zu den doppelseitigen Rechenstaeben Castell-Duplex*,
+  models 2/82N and 62/82N, 1962: https://www.rechenschieber.org/wordpress/wp-content/uploads/2018/08/FC_2_82_N__62_82_N.pdf
+- Printed pages 3-4: exact front/back row order, including S' and K'.
+- Printed pages 15-16: reverse P in red; sine/cosine and tangent/cotangent ink.
+- Printed page 17: movable S' sine-product example.
+
+The [preset guide](FABER_282N.md) separates the manufacturer's statements from
+independent numerical checks and identifies omitted physical details.

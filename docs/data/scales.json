@@ -1,4 +1,83 @@
 {
+  "FC282_T1": {
+    "id": "FC282_T1",
+    "label": "T₁",
+    "type": "tan",
+    "tickMode": "tan",
+    "min": 5.710593137,
+    "max": 45,
+    "unit": "°",
+    "formula": "tan θ",
+    "description": "Lower tangent/cotangent range. Black and red angles sum to 90 degrees on shared ticks.",
+    "family": "Faber-Castell 2/82N",
+    "pairedSum": 90,
+    "tone": "neutral"
+  },
+  "FC282_T2": {
+    "id": "FC282_T2",
+    "label": "T₂",
+    "type": "tan2",
+    "tickMode": "tan2",
+    "min": 45,
+    "max": 84.289406863,
+    "unit": "°",
+    "formula": "tan θ",
+    "tone": "neutral",
+    "description": "Upper tangent/cotangent range. Black tangent angles increase; red cotangent angles decrease.",
+    "family": "Faber-Castell 2/82N",
+    "pairedSum": 90
+  },
+  "FC282_S": {
+    "id": "FC282_S",
+    "label": "S",
+    "type": "sin",
+    "tickMode": "sin",
+    "min": 5.739170477,
+    "max": 90,
+    "unit": "°",
+    "formula": "sin θ",
+    "description": "Fixed sine/cosine scale. Read black angles for sine and complementary red angles for cosine.",
+    "family": "Faber-Castell 2/82N",
+    "pairedSum": 90,
+    "tone": "neutral"
+  },
+  "FC282_SP": {
+    "id": "FC282_SP",
+    "label": "S′",
+    "type": "sin",
+    "tickMode": "sin",
+    "min": 5.739170477,
+    "max": 90,
+    "unit": "°",
+    "formula": "sin θ",
+    "description": "Movable sine/cosine scale, used with fixed S to multiply or divide trigonometric values directly.",
+    "family": "Faber-Castell 2/82N",
+    "pairedSum": 90,
+    "tone": "neutral"
+  },
+  "FC282_KP": {
+    "id": "FC282_KP",
+    "label": "K′",
+    "type": "log",
+    "min": 1,
+    "max": 1000,
+    "power": 3,
+    "tickMode": "log",
+    "formula": "x³",
+    "description": "Movable three-decade cube scale, aligned with fixed K for calculations involving cubes.",
+    "family": "Faber-Castell 2/82N"
+  },
+  "FC282_P": {
+    "id": "FC282_P",
+    "label": "P",
+    "type": "pythagorean",
+    "min": 0,
+    "max": 0.99498743710662,
+    "formula": "√(1−x²)",
+    "description": "Reverse-running Pythagorean scale; with D read as 0.1 to 1, P gives sqrt(1-D^2).",
+    "family": "Faber-Castell 2/82N",
+    "tone": "red"
+  },
   "D": {
     "id": "D",
     "label": "D",
@@ -8,15 +87,18 @@
     "gauges": [
       {
         "value": 1.1283791670955126,
-        "label": "c"
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
       },
       {
         "value": 2.718281828459045,
-        "label": "e"
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
       },
       {
         "value": 3.141592653589793,
-        "label": "π"
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
       }
     ],
     "formula": "x",
@@ -33,15 +115,18 @@
     "gauges": [
       {
         "value": 1.1283791670955126,
-        "label": "c"
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
       },
       {
         "value": 2.718281828459045,
-        "label": "e"
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
       },
       {
         "value": 3.141592653589793,
-        "label": "π"
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
       }
     ],
     "formula": "x",
@@ -176,6 +261,1610 @@
     "formula": "ln x",
     "description": "Natural logarithm of the D-scale mantissa, from 0 to ln(10).",
     "family": "Logarithms"
+  },
+  "P14_A": {
+    "id": "P14_A",
+    "label": "A",
+    "type": "log",
+    "min": 1,
+    "max": 100,
+    "tickMode": "log",
+    "tone": "neutral",
+    "family": "Pickett 14",
+    "description": "Pickett 14 two-decade square scale.",
+    "gauges": []
+  },
+  "P14_B": {
+    "id": "P14_B",
+    "label": "B",
+    "type": "log",
+    "min": 1,
+    "max": 100,
+    "tickMode": "log",
+    "tone": "neutral",
+    "family": "Pickett 14",
+    "description": "Pickett 14 sliding two-decade square scale.",
+    "gauges": [
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the circumference-to-diameter ratio of a circle."
+      },
+      {
+        "value": 78.53981633974483,
+        "label": ".785",
+        "title": ".785 denotes pi/4 = 0.7853981633974, the circle-area factor: area = (pi/4) times diameter squared. This two-decade scale carries its equivalent mark at 78.53981633974."
+      }
+    ]
+  },
+  "P14_C": {
+    "id": "P14_C",
+    "label": "C",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "tickMode": "log",
+    "tone": "neutral",
+    "family": "Pickett 14",
+    "description": "Pickett 14 sliding arithmetic scale.",
+    "gauges": [
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the circumference-to-diameter ratio of a circle."
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms."
+      },
+      {
+        "value": 5.729577951308232,
+        "label": "R",
+        "title": "R = 180/pi = 57.29577951308 degrees per radian. Decimal-normalised C/D mark: 5.729577951308; R itself is ten times that scale value."
+      }
+    ]
+  },
+  "P14_D": {
+    "id": "P14_D",
+    "label": "D",
+    "type": "log",
+    "min": 1,
+    "max": 10,
+    "tickMode": "log",
+    "tone": "neutral",
+    "family": "Pickett 14",
+    "description": "Pickett 14 fixed arithmetic scale.",
+    "gauges": [
+      {
+        "value": 3.141592653589793,
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the circumference-to-diameter ratio of a circle."
+      },
+      {
+        "value": 2.718281828459045,
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms."
+      },
+      {
+        "value": 5.729577951308232,
+        "label": "R",
+        "title": "R = 180/pi = 57.29577951308 degrees per radian. Decimal-normalised C/D mark: 5.729577951308; R itself is ten times that scale value."
+      }
+    ]
+  },
+  "P14_T": {
+    "id": "P14_T",
+    "label": "T",
+    "unit": "°",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 5.710593137499643,
+    "max": 45,
+    "pos": "log10(10*(tan(x*(PI/180))))",
+    "value": "atan(10^p/10)*180/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 10,
+        "label": "10",
+        "kind": "major"
+      },
+      {
+        "value": 15,
+        "label": "15",
+        "kind": "major"
+      },
+      {
+        "value": 20,
+        "label": "20",
+        "kind": "major"
+      },
+      {
+        "value": 25,
+        "label": "25",
+        "kind": "major"
+      },
+      {
+        "value": 30,
+        "label": "30",
+        "kind": "major"
+      },
+      {
+        "value": 35,
+        "label": "35",
+        "kind": "major"
+      },
+      {
+        "value": 40,
+        "label": "40",
+        "kind": "major"
+      },
+      {
+        "value": 6,
+        "label": "6",
+        "kind": "major"
+      },
+      {
+        "value": 7,
+        "label": "7",
+        "kind": "major"
+      },
+      {
+        "value": 8,
+        "label": "8",
+        "kind": "major"
+      },
+      {
+        "value": 9,
+        "label": "9",
+        "kind": "major"
+      },
+      {
+        "value": 11,
+        "label": "11",
+        "kind": "major"
+      },
+      {
+        "value": 12,
+        "label": "12",
+        "kind": "major"
+      },
+      {
+        "value": 13,
+        "label": "13",
+        "kind": "major"
+      },
+      {
+        "value": 14,
+        "label": "14",
+        "kind": "major"
+      },
+      {
+        "value": 16,
+        "label": "16",
+        "kind": "major"
+      },
+      {
+        "value": 17,
+        "label": "17",
+        "kind": "major"
+      },
+      {
+        "value": 18,
+        "label": "18",
+        "kind": "major"
+      },
+      {
+        "value": 19,
+        "label": "19",
+        "kind": "major"
+      },
+      {
+        "value": 22,
+        "label": "22",
+        "kind": "major"
+      },
+      {
+        "value": 24,
+        "label": "24",
+        "kind": "major"
+      },
+      {
+        "value": 26,
+        "label": "26",
+        "kind": "major"
+      },
+      {
+        "value": 28,
+        "label": "28",
+        "kind": "major"
+      },
+      {
+        "value": 32,
+        "label": "32",
+        "kind": "major"
+      },
+      {
+        "value": 34,
+        "label": "34",
+        "kind": "major"
+      },
+      {
+        "value": 36,
+        "label": "36",
+        "kind": "major"
+      },
+      {
+        "value": 38,
+        "label": "38",
+        "kind": "major"
+      },
+      {
+        "value": 5.710593137499643,
+        "label": "5.7106",
+        "kind": "index"
+      },
+      {
+        "value": 45,
+        "label": "45",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 0.9999999999999999,
+    "formula": "tan angle",
+    "description": "Pickett 14 T: degree angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 90 ° and share each tick.",
+    "pairedSum": 90
+  },
+  "P14_S": {
+    "id": "P14_S",
+    "label": "S",
+    "unit": "°",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 5.739170477266787,
+    "max": 90,
+    "pos": "log10(10*(sin(x*(PI/180))))",
+    "value": "(asin(min(1,10^p/10)))*180/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 10,
+        "label": "10",
+        "kind": "major"
+      },
+      {
+        "value": 15,
+        "label": "15",
+        "kind": "major"
+      },
+      {
+        "value": 20,
+        "label": "20",
+        "kind": "major"
+      },
+      {
+        "value": 25,
+        "label": "25",
+        "kind": "major"
+      },
+      {
+        "value": 30,
+        "label": "30",
+        "kind": "major"
+      },
+      {
+        "value": 35,
+        "label": "35",
+        "kind": "major"
+      },
+      {
+        "value": 40,
+        "label": "40",
+        "kind": "major"
+      },
+      {
+        "value": 45,
+        "label": "45",
+        "kind": "major"
+      },
+      {
+        "value": 50,
+        "label": "50",
+        "kind": "major"
+      },
+      {
+        "value": 55,
+        "label": "55",
+        "kind": "major"
+      },
+      {
+        "value": 60,
+        "label": "60",
+        "kind": "major"
+      },
+      {
+        "value": 65,
+        "label": "65",
+        "kind": "major"
+      },
+      {
+        "value": 70,
+        "label": "70",
+        "kind": "major"
+      },
+      {
+        "value": 75,
+        "label": "75",
+        "kind": "major"
+      },
+      {
+        "value": 80,
+        "label": "80",
+        "kind": "major"
+      },
+      {
+        "value": 85,
+        "label": "85",
+        "kind": "major"
+      },
+      {
+        "value": 6,
+        "label": "6",
+        "kind": "major"
+      },
+      {
+        "value": 7,
+        "label": "7",
+        "kind": "major"
+      },
+      {
+        "value": 8,
+        "label": "8",
+        "kind": "major"
+      },
+      {
+        "value": 9,
+        "label": "9",
+        "kind": "major"
+      },
+      {
+        "value": 11,
+        "label": "11",
+        "kind": "major"
+      },
+      {
+        "value": 12,
+        "label": "12",
+        "kind": "major"
+      },
+      {
+        "value": 13,
+        "label": "13",
+        "kind": "major"
+      },
+      {
+        "value": 14,
+        "label": "14",
+        "kind": "major"
+      },
+      {
+        "value": 16,
+        "label": "16",
+        "kind": "major"
+      },
+      {
+        "value": 17,
+        "label": "17",
+        "kind": "major"
+      },
+      {
+        "value": 18,
+        "label": "18",
+        "kind": "major"
+      },
+      {
+        "value": 19,
+        "label": "19",
+        "kind": "major"
+      },
+      {
+        "value": 22,
+        "label": "22",
+        "kind": "major"
+      },
+      {
+        "value": 24,
+        "label": "24",
+        "kind": "major"
+      },
+      {
+        "value": 26,
+        "label": "26",
+        "kind": "major"
+      },
+      {
+        "value": 28,
+        "label": "28",
+        "kind": "major"
+      },
+      {
+        "value": 32,
+        "label": "32",
+        "kind": "major"
+      },
+      {
+        "value": 34,
+        "label": "34",
+        "kind": "major"
+      },
+      {
+        "value": 36,
+        "label": "36",
+        "kind": "major"
+      },
+      {
+        "value": 38,
+        "label": "38",
+        "kind": "major"
+      },
+      {
+        "value": 5.739170477266787,
+        "label": "5.7392",
+        "kind": "index"
+      },
+      {
+        "value": 90,
+        "label": "90",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 1,
+    "formula": "sin angle",
+    "description": "Pickett 14 S: degree angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 90 ° and share each tick.",
+    "pairedSum": 90
+  },
+  "P14_ST": {
+    "id": "P14_ST",
+    "label": "ST",
+    "unit": "°",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 0.5729577951308232,
+    "max": 5.729577951308232,
+    "pos": "log10(100*(x*(PI/180)))",
+    "value": "(10^p/100)*180/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 1,
+        "label": "1",
+        "kind": "major"
+      },
+      {
+        "value": 1.5,
+        "label": "1.5",
+        "kind": "major"
+      },
+      {
+        "value": 2,
+        "label": "2",
+        "kind": "major"
+      },
+      {
+        "value": 2.5,
+        "label": "2.5",
+        "kind": "major"
+      },
+      {
+        "value": 3,
+        "label": "3",
+        "kind": "major"
+      },
+      {
+        "value": 3.5,
+        "label": "3.5",
+        "kind": "major"
+      },
+      {
+        "value": 4,
+        "label": "4",
+        "kind": "major"
+      },
+      {
+        "value": 4.5,
+        "label": "4.5",
+        "kind": "major"
+      },
+      {
+        "value": 5,
+        "label": "5",
+        "kind": "major"
+      },
+      {
+        "value": 5.5,
+        "label": "5.5",
+        "kind": "major"
+      },
+      {
+        "value": 0.5729577951308232,
+        "label": "0.57296",
+        "kind": "index"
+      },
+      {
+        "value": 5.729577951308232,
+        "label": "5.7296",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 1,
+    "formula": "small angle",
+    "description": "Pickett 14 small-angle radian approximation, with minute and second conversion indices. Not an exact sine or tangent away from zero.",
+    "gauges": [
+      {
+        "value": 1.9696838100070462,
+        "label": "′",
+        "title": "Arcminute conversion index: 1 arcminute = pi/10800 = 0.0002908882086657 radians. The ST graduation is at 1.969683810007 degrees, not at 1 arcminute."
+      },
+      {
+        "value": 1.1818102860042277,
+        "label": "″",
+        "title": "Arcsecond conversion index: 1 arcsecond = pi/648000 = 0.000004848136811095 radians. The ST graduation is at 1.181810286004 degrees, not at 1 arcsecond."
+      }
+    ]
+  },
+  "P14_OPP_DEG": {
+    "id": "P14_OPP_DEG",
+    "label": "Opp. deg",
+    "unit": "°",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 30,
+    "max": 90,
+    "pos": "log10(2*(sin(x*(PI/180))))",
+    "value": "(asin(min(1,10^p/2)))*180/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 35,
+        "label": "35",
+        "kind": "major"
+      },
+      {
+        "value": 40,
+        "label": "40",
+        "kind": "major"
+      },
+      {
+        "value": 45,
+        "label": "45",
+        "kind": "major"
+      },
+      {
+        "value": 50,
+        "label": "50",
+        "kind": "major"
+      },
+      {
+        "value": 55,
+        "label": "55",
+        "kind": "major"
+      },
+      {
+        "value": 60,
+        "label": "60",
+        "kind": "major"
+      },
+      {
+        "value": 65,
+        "label": "65",
+        "kind": "major"
+      },
+      {
+        "value": 70,
+        "label": "70",
+        "kind": "major"
+      },
+      {
+        "value": 75,
+        "label": "75",
+        "kind": "major"
+      },
+      {
+        "value": 80,
+        "label": "80",
+        "kind": "major"
+      },
+      {
+        "value": 85,
+        "label": "85",
+        "kind": "major"
+      },
+      {
+        "value": 32,
+        "label": "32",
+        "kind": "major"
+      },
+      {
+        "value": 34,
+        "label": "34",
+        "kind": "major"
+      },
+      {
+        "value": 36,
+        "label": "36",
+        "kind": "major"
+      },
+      {
+        "value": 38,
+        "label": "38",
+        "kind": "major"
+      },
+      {
+        "value": 30,
+        "label": "30",
+        "kind": "index"
+      },
+      {
+        "value": 90,
+        "label": "90",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 0.3010299956639812,
+    "formula": "sin angle",
+    "description": "Pickett 14 Opp. deg: degree angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 180 ° and share each tick.",
+    "pairedSum": 180
+  },
+  "P14_OPP_MIL": {
+    "id": "P14_OPP_MIL",
+    "label": "Opp. mil",
+    "unit": "mil",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 533.3333333333334,
+    "max": 1600,
+    "pos": "log10(2*(sin(x*(PI/3200))))",
+    "value": "(asin(min(1,10^p/2)))*3200/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 600,
+        "label": "600",
+        "kind": "major"
+      },
+      {
+        "value": 700,
+        "label": "700",
+        "kind": "major"
+      },
+      {
+        "value": 800,
+        "label": "800",
+        "kind": "major"
+      },
+      {
+        "value": 900,
+        "label": "900",
+        "kind": "major"
+      },
+      {
+        "value": 1000,
+        "label": "1000",
+        "kind": "major"
+      },
+      {
+        "value": 1100,
+        "label": "1100",
+        "kind": "major"
+      },
+      {
+        "value": 1200,
+        "label": "1200",
+        "kind": "major"
+      },
+      {
+        "value": 1300,
+        "label": "1300",
+        "kind": "major"
+      },
+      {
+        "value": 1400,
+        "label": "1400",
+        "kind": "major"
+      },
+      {
+        "value": 1500,
+        "label": "1500",
+        "kind": "major"
+      },
+      {
+        "value": 533.3333333333334,
+        "label": "533.33",
+        "kind": "index"
+      },
+      {
+        "value": 1600,
+        "label": "1600",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 0.3010299956639812,
+    "formula": "sin angle",
+    "description": "Pickett 14 Opp. mil: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 3200 mil and share each tick.",
+    "pairedSum": 3200
+  },
+  "P14_APEX_MIL": {
+    "id": "P14_APEX_MIL",
+    "label": "Apex mil",
+    "unit": "mil",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 50.9508263573131,
+    "max": 533.3333333333334,
+    "pos": "log10(20*(sin(x*(PI/3200))))",
+    "value": "(asin(min(1,10^p/20)))*3200/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 100,
+        "label": "100",
+        "kind": "major"
+      },
+      {
+        "value": 150,
+        "label": "150",
+        "kind": "major"
+      },
+      {
+        "value": 200,
+        "label": "200",
+        "kind": "major"
+      },
+      {
+        "value": 250,
+        "label": "250",
+        "kind": "major"
+      },
+      {
+        "value": 300,
+        "label": "300",
+        "kind": "major"
+      },
+      {
+        "value": 350,
+        "label": "350",
+        "kind": "major"
+      },
+      {
+        "value": 400,
+        "label": "400",
+        "kind": "major"
+      },
+      {
+        "value": 450,
+        "label": "450",
+        "kind": "major"
+      },
+      {
+        "value": 500,
+        "label": "500",
+        "kind": "major"
+      },
+      {
+        "value": 55,
+        "label": "55",
+        "kind": "major"
+      },
+      {
+        "value": 60,
+        "label": "60",
+        "kind": "major"
+      },
+      {
+        "value": 65,
+        "label": "65",
+        "kind": "major"
+      },
+      {
+        "value": 70,
+        "label": "70",
+        "kind": "major"
+      },
+      {
+        "value": 75,
+        "label": "75",
+        "kind": "major"
+      },
+      {
+        "value": 80,
+        "label": "80",
+        "kind": "major"
+      },
+      {
+        "value": 85,
+        "label": "85",
+        "kind": "major"
+      },
+      {
+        "value": 90,
+        "label": "90",
+        "kind": "major"
+      },
+      {
+        "value": 95,
+        "label": "95",
+        "kind": "major"
+      },
+      {
+        "value": 110,
+        "label": "110",
+        "kind": "major"
+      },
+      {
+        "value": 120,
+        "label": "120",
+        "kind": "major"
+      },
+      {
+        "value": 130,
+        "label": "130",
+        "kind": "major"
+      },
+      {
+        "value": 140,
+        "label": "140",
+        "kind": "major"
+      },
+      {
+        "value": 160,
+        "label": "160",
+        "kind": "major"
+      },
+      {
+        "value": 170,
+        "label": "170",
+        "kind": "major"
+      },
+      {
+        "value": 180,
+        "label": "180",
+        "kind": "major"
+      },
+      {
+        "value": 190,
+        "label": "190",
+        "kind": "major"
+      },
+      {
+        "value": 220,
+        "label": "220",
+        "kind": "major"
+      },
+      {
+        "value": 240,
+        "label": "240",
+        "kind": "major"
+      },
+      {
+        "value": 260,
+        "label": "260",
+        "kind": "major"
+      },
+      {
+        "value": 280,
+        "label": "280",
+        "kind": "major"
+      },
+      {
+        "value": 320,
+        "label": "320",
+        "kind": "major"
+      },
+      {
+        "value": 340,
+        "label": "340",
+        "kind": "major"
+      },
+      {
+        "value": 360,
+        "label": "360",
+        "kind": "major"
+      },
+      {
+        "value": 380,
+        "label": "380",
+        "kind": "major"
+      },
+      {
+        "value": 50.9508263573131,
+        "label": "50.951",
+        "kind": "index"
+      },
+      {
+        "value": 533.3333333333334,
+        "label": "533.33",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 1,
+    "formula": "sin angle",
+    "description": "Pickett 14 Apex mil: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced."
+  },
+  "P14_APEX_DEG": {
+    "id": "P14_APEX_DEG",
+    "label": "Apex deg",
+    "unit": "°",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 2.8659839825988622,
+    "max": 30,
+    "pos": "log10(20*(sin(x*(PI/180))))",
+    "value": "(asin(min(1,10^p/20)))*180/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 4,
+        "label": "4",
+        "kind": "major"
+      },
+      {
+        "value": 6,
+        "label": "6",
+        "kind": "major"
+      },
+      {
+        "value": 8,
+        "label": "8",
+        "kind": "major"
+      },
+      {
+        "value": 10,
+        "label": "10",
+        "kind": "major"
+      },
+      {
+        "value": 12,
+        "label": "12",
+        "kind": "major"
+      },
+      {
+        "value": 14,
+        "label": "14",
+        "kind": "major"
+      },
+      {
+        "value": 16,
+        "label": "16",
+        "kind": "major"
+      },
+      {
+        "value": 18,
+        "label": "18",
+        "kind": "major"
+      },
+      {
+        "value": 20,
+        "label": "20",
+        "kind": "major"
+      },
+      {
+        "value": 22,
+        "label": "22",
+        "kind": "major"
+      },
+      {
+        "value": 24,
+        "label": "24",
+        "kind": "major"
+      },
+      {
+        "value": 26,
+        "label": "26",
+        "kind": "major"
+      },
+      {
+        "value": 28,
+        "label": "28",
+        "kind": "major"
+      },
+      {
+        "value": 3,
+        "label": "3",
+        "kind": "major"
+      },
+      {
+        "value": 5,
+        "label": "5",
+        "kind": "major"
+      },
+      {
+        "value": 7,
+        "label": "7",
+        "kind": "major"
+      },
+      {
+        "value": 9,
+        "label": "9",
+        "kind": "major"
+      },
+      {
+        "value": 11,
+        "label": "11",
+        "kind": "major"
+      },
+      {
+        "value": 13,
+        "label": "13",
+        "kind": "major"
+      },
+      {
+        "value": 15,
+        "label": "15",
+        "kind": "major"
+      },
+      {
+        "value": 17,
+        "label": "17",
+        "kind": "major"
+      },
+      {
+        "value": 19,
+        "label": "19",
+        "kind": "major"
+      },
+      {
+        "value": 2.8659839825988622,
+        "label": "2.866",
+        "kind": "index"
+      },
+      {
+        "value": 30,
+        "label": "30",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 0.9999999999999999,
+    "formula": "sin angle",
+    "description": "Pickett 14 Apex deg: degree angle graduation. Main calibrated interval; original end extensions are not reproduced."
+  },
+  "P14_T_MIL": {
+    "id": "P14_T_MIL",
+    "label": "TAN",
+    "unit": "mil",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 101.52165577777143,
+    "max": 800,
+    "pos": "log10(10*(tan(x*(PI/3200))))",
+    "value": "atan(10^p/10)*3200/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 200,
+        "label": "200",
+        "kind": "major"
+      },
+      {
+        "value": 300,
+        "label": "300",
+        "kind": "major"
+      },
+      {
+        "value": 400,
+        "label": "400",
+        "kind": "major"
+      },
+      {
+        "value": 500,
+        "label": "500",
+        "kind": "major"
+      },
+      {
+        "value": 600,
+        "label": "600",
+        "kind": "major"
+      },
+      {
+        "value": 700,
+        "label": "700",
+        "kind": "major"
+      },
+      {
+        "value": 110,
+        "label": "110",
+        "kind": "major"
+      },
+      {
+        "value": 120,
+        "label": "120",
+        "kind": "major"
+      },
+      {
+        "value": 130,
+        "label": "130",
+        "kind": "major"
+      },
+      {
+        "value": 140,
+        "label": "140",
+        "kind": "major"
+      },
+      {
+        "value": 150,
+        "label": "150",
+        "kind": "major"
+      },
+      {
+        "value": 160,
+        "label": "160",
+        "kind": "major"
+      },
+      {
+        "value": 170,
+        "label": "170",
+        "kind": "major"
+      },
+      {
+        "value": 180,
+        "label": "180",
+        "kind": "major"
+      },
+      {
+        "value": 190,
+        "label": "190",
+        "kind": "major"
+      },
+      {
+        "value": 220,
+        "label": "220",
+        "kind": "major"
+      },
+      {
+        "value": 240,
+        "label": "240",
+        "kind": "major"
+      },
+      {
+        "value": 260,
+        "label": "260",
+        "kind": "major"
+      },
+      {
+        "value": 280,
+        "label": "280",
+        "kind": "major"
+      },
+      {
+        "value": 320,
+        "label": "320",
+        "kind": "major"
+      },
+      {
+        "value": 340,
+        "label": "340",
+        "kind": "major"
+      },
+      {
+        "value": 360,
+        "label": "360",
+        "kind": "major"
+      },
+      {
+        "value": 380,
+        "label": "380",
+        "kind": "major"
+      },
+      {
+        "value": 101.52165577777143,
+        "label": "101.52",
+        "kind": "index"
+      },
+      {
+        "value": 800,
+        "label": "800",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 1,
+    "formula": "tan angle",
+    "description": "Pickett 14 TAN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 1600 mil and share each tick.",
+    "pairedSum": 1600
+  },
+  "P14_ST_MIL": {
+    "id": "P14_ST_MIL",
+    "label": "SIN-TAN",
+    "unit": "mil",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 10.1859163578813,
+    "max": 101.85916357881301,
+    "pos": "log10(100*(x*(PI/3200)))",
+    "value": "(10^p/100)*3200/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 20,
+        "label": "20",
+        "kind": "major"
+      },
+      {
+        "value": 30,
+        "label": "30",
+        "kind": "major"
+      },
+      {
+        "value": 40,
+        "label": "40",
+        "kind": "major"
+      },
+      {
+        "value": 50,
+        "label": "50",
+        "kind": "major"
+      },
+      {
+        "value": 60,
+        "label": "60",
+        "kind": "major"
+      },
+      {
+        "value": 70,
+        "label": "70",
+        "kind": "major"
+      },
+      {
+        "value": 80,
+        "label": "80",
+        "kind": "major"
+      },
+      {
+        "value": 90,
+        "label": "90",
+        "kind": "major"
+      },
+      {
+        "value": 100,
+        "label": "100",
+        "kind": "major"
+      },
+      {
+        "value": 11,
+        "label": "11",
+        "kind": "major"
+      },
+      {
+        "value": 12,
+        "label": "12",
+        "kind": "major"
+      },
+      {
+        "value": 13,
+        "label": "13",
+        "kind": "major"
+      },
+      {
+        "value": 14,
+        "label": "14",
+        "kind": "major"
+      },
+      {
+        "value": 15,
+        "label": "15",
+        "kind": "major"
+      },
+      {
+        "value": 16,
+        "label": "16",
+        "kind": "major"
+      },
+      {
+        "value": 17,
+        "label": "17",
+        "kind": "major"
+      },
+      {
+        "value": 18,
+        "label": "18",
+        "kind": "major"
+      },
+      {
+        "value": 19,
+        "label": "19",
+        "kind": "major"
+      },
+      {
+        "value": 25,
+        "label": "25",
+        "kind": "major"
+      },
+      {
+        "value": 35,
+        "label": "35",
+        "kind": "major"
+      },
+      {
+        "value": 45,
+        "label": "45",
+        "kind": "major"
+      },
+      {
+        "value": 55,
+        "label": "55",
+        "kind": "major"
+      },
+      {
+        "value": 65,
+        "label": "65",
+        "kind": "major"
+      },
+      {
+        "value": 75,
+        "label": "75",
+        "kind": "major"
+      },
+      {
+        "value": 85,
+        "label": "85",
+        "kind": "major"
+      },
+      {
+        "value": 95,
+        "label": "95",
+        "kind": "major"
+      },
+      {
+        "value": 10.1859163578813,
+        "label": "10.186",
+        "kind": "index"
+      },
+      {
+        "value": 101.85916357881301,
+        "label": "101.86",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 1,
+    "formula": "small angle",
+    "description": "Pickett 14 SIN-TAN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced."
+  },
+  "P14_S_MIL": {
+    "id": "P14_S_MIL",
+    "label": "SIN",
+    "unit": "mil",
+    "family": "Pickett 14",
+    "tone": "neutral",
+    "type": "expression",
+    "min": 102.02969737363175,
+    "max": 1600,
+    "pos": "log10(10*(sin(x*(PI/3200))))",
+    "value": "(asin(min(1,10^p/10)))*3200/PI",
+    "tickMode": "mapped",
+    "ticks": [
+      {
+        "value": 200,
+        "label": "200",
+        "kind": "major"
+      },
+      {
+        "value": 300,
+        "label": "300",
+        "kind": "major"
+      },
+      {
+        "value": 400,
+        "label": "400",
+        "kind": "major"
+      },
+      {
+        "value": 500,
+        "label": "500",
+        "kind": "major"
+      },
+      {
+        "value": 600,
+        "label": "600",
+        "kind": "major"
+      },
+      {
+        "value": 700,
+        "label": "700",
+        "kind": "major"
+      },
+      {
+        "value": 800,
+        "label": "800",
+        "kind": "major"
+      },
+      {
+        "value": 900,
+        "label": "900",
+        "kind": "major"
+      },
+      {
+        "value": 1000,
+        "label": "1000",
+        "kind": "major"
+      },
+      {
+        "value": 1100,
+        "label": "1100",
+        "kind": "major"
+      },
+      {
+        "value": 1200,
+        "label": "1200",
+        "kind": "major"
+      },
+      {
+        "value": 1300,
+        "label": "1300",
+        "kind": "major"
+      },
+      {
+        "value": 1400,
+        "label": "1400",
+        "kind": "major"
+      },
+      {
+        "value": 1500,
+        "label": "1500",
+        "kind": "major"
+      },
+      {
+        "value": 110,
+        "label": "110",
+        "kind": "major"
+      },
+      {
+        "value": 120,
+        "label": "120",
+        "kind": "major"
+      },
+      {
+        "value": 130,
+        "label": "130",
+        "kind": "major"
+      },
+      {
+        "value": 140,
+        "label": "140",
+        "kind": "major"
+      },
+      {
+        "value": 150,
+        "label": "150",
+        "kind": "major"
+      },
+      {
+        "value": 160,
+        "label": "160",
+        "kind": "major"
+      },
+      {
+        "value": 170,
+        "label": "170",
+        "kind": "major"
+      },
+      {
+        "value": 180,
+        "label": "180",
+        "kind": "major"
+      },
+      {
+        "value": 190,
+        "label": "190",
+        "kind": "major"
+      },
+      {
+        "value": 220,
+        "label": "220",
+        "kind": "major"
+      },
+      {
+        "value": 240,
+        "label": "240",
+        "kind": "major"
+      },
+      {
+        "value": 260,
+        "label": "260",
+        "kind": "major"
+      },
+      {
+        "value": 280,
+        "label": "280",
+        "kind": "major"
+      },
+      {
+        "value": 320,
+        "label": "320",
+        "kind": "major"
+      },
+      {
+        "value": 340,
+        "label": "340",
+        "kind": "major"
+      },
+      {
+        "value": 360,
+        "label": "360",
+        "kind": "major"
+      },
+      {
+        "value": 380,
+        "label": "380",
+        "kind": "major"
+      },
+      {
+        "value": 102.02969737363175,
+        "label": "102.03",
+        "kind": "index"
+      },
+      {
+        "value": 1600,
+        "label": "1600",
+        "kind": "index"
+      }
+    ],
+    "refineTicks": true,
+    "pMin": 0,
+    "pMax": 1,
+    "formula": "sin angle",
+    "description": "Pickett 14 SIN: 6400-mil angle graduation. Main calibrated interval; original end extensions are not reproduced. Black/red angle readings sum to 1600 mil and share each tick.",
+    "pairedSum": 1600
+  },
+  "P14_BASE": {
+    "id": "P14_BASE",
+    "label": "Base C",
+    "type": "log",
+    "min": 100,
+    "max": 1000,
+    "tickMode": "log",
+    "tone": "neutral",
+    "family": "Pickett 14",
+    "description": "Pickett 14 C-labelled arithmetic decade: 100 to 1000. Decimal places are explicit.",
+    "gauges": []
+  },
+  "P14_DISTANCE": {
+    "id": "P14_DISTANCE",
+    "label": "Distance D",
+    "type": "log",
+    "min": 1000,
+    "max": 10000,
+    "tickMode": "log",
+    "tone": "neutral",
+    "family": "Pickett 14",
+    "description": "Pickett 14 D-labelled arithmetic decade: 1000 to 10000. Decimal places are explicit.",
+    "gauges": [],
+    "compactLabel": "Dist. D"
   },
   "CHEM_CH_AM": {
     "id": "CHEM_CH_AM",
@@ -12907,6 +14596,7 @@
       }
     ],
     "anchor": "T",
+    "anchorTitle": "T: temperature-alignment index at mid-scale (multiplier 3.162277660168). It is a movable reference, not a fixed temperature or physical constant.",
     "anchorPos": 0.5,
     "formula": "peak multiplier",
     "description": "Peak spectral-energy mantissa multiplier and T alignment index.",
@@ -12935,6 +14625,7 @@
       }
     ],
     "anchor": "T",
+    "anchorTitle": "T: temperature-alignment index at mid-scale (multiplier 3.162277660168). It is a movable reference, not a fixed temperature or physical constant.",
     "anchorPos": 0.5,
     "formula": "peak multiplier",
     "description": "Peak spectral-photon mantissa multiplier and T alignment index.",
@@ -13078,15 +14769,18 @@
     "gauges": [
       {
         "value": 1.1283791670955126,
-        "label": "c"
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
       },
       {
         "value": 2.718281828459045,
-        "label": "e"
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
       },
       {
         "value": 3.141592653589793,
-        "label": "π"
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
       }
     ],
     "formula": "energy multiplier",
@@ -13135,15 +14829,18 @@
     "gauges": [
       {
         "value": 1.1283791670955126,
-        "label": "c"
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
       },
       {
         "value": 2.718281828459045,
-        "label": "e"
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
       },
       {
         "value": 3.141592653589793,
-        "label": "π"
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
       }
     ],
     "formula": "energy multiplier",
@@ -13182,15 +14879,18 @@
     "gauges": [
       {
         "value": 1.1283791670955126,
-        "label": "c"
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
       },
       {
         "value": 2.718281828459045,
-        "label": "e"
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
       },
       {
         "value": 3.141592653589793,
-        "label": "π"
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
       }
     ],
     "formula": "photon multiplier",
@@ -13231,15 +14931,18 @@
     "gauges": [
       {
         "value": 1.1283791670955126,
-        "label": "c"
+        "label": "c",
+        "title": "c = 1.128379167096. Circle-diameter factor: diameter = c times the square root of area, in compatible units. Not the speed of light."
       },
       {
         "value": 2.718281828459045,
-        "label": "e"
+        "label": "e",
+        "title": "e = 2.718281828459. Euler's number, the base of natural logarithms; ln(e) = 1."
       },
       {
         "value": 3.141592653589793,
-        "label": "π"
+        "label": "π",
+        "title": "π = 3.14159265359. Pi, the ratio of a circle's circumference to its diameter."
       }
     ],
     "formula": "photon multiplier",

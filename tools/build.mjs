@@ -10,7 +10,7 @@ export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 // publishes dist/ instead. Each entry is the real, self-contained application,
 // not a redirect, so it also works below a project URL or on a custom domain.
 export const SITE_DIRECTORIES = Object.freeze(['.', 'docs', 'dist']);
-const STYLE_ORDER = ['page-themes', 'base', 'scales', 'paired', 'compact', 'root-stacks', 'cursor', 'themes', 'controls', 'readout', 'reorder', 'motion', 'loupe', 'layout', 'graduations'];
+const STYLE_ORDER = ['page-themes', 'base', 'scales', 'paired', 'compact', 'root-stacks', 'cursor', 'themes', 'controls', 'readout', 'reorder', 'motion', 'loupe', 'layout', 'graduations', 'mark-tooltips'];
 export async function sourceFiles(directory = join(ROOT, 'src')) {
     const result = [];
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name, 'en'))) {

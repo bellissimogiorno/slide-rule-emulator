@@ -98,3 +98,22 @@ Load **Pickett N3-T / N3-ES** or **Pickett N4-T / N4-ES**, then select Front or 
 For example, set D to 6.4: the cube-root bank reads approximately 1.85664, 4 and 8.61774, for radicands 6.4, 64 and 640 respectively. Decimal exponents still need to be tracked. See the [root guide](PICKETT_ROOTS.md) for fractional radicands and branch-selection rules.
 
 Previously saved layouts are not overwritten during an application update. Export custom work first, then use **Load preset** to adopt the current Pickett layout. The library also offers **PICKETT_SQRT** and **PICKETT_CBRT** to add to a custom layout.
+
+## Pickett 14 and constant marks
+
+Load **Pickett 14 U.S. Military / Artillery** for its general and degree/mil faces. Both sides works as for the other presets. Black/red angle readings are complementary or supplementary, not reciprocals. Original end extensions are omitted; see the [Model 14 guide](PICKETT_14.md).
+
+Hover over a constant tick or label for its value and explanation, even beneath the cursor. The c gauge means the circle-diameter factor, not the speed of light. Alignment indices and decimal-scaled constants are described explicitly. See [constant marks](CONSTANT_MARKS.md).
+
+## Scale help without interrupting calculation
+
+Hover over a scale's **left-hand name** or **right-hand legend/formula** to read
+its explanation. The same rule applies to both stators and the movable slide.
+Scale explanations do not appear over the graduation area or cursor glass;
+the working surfaces have no inherited row-wide or drag-instruction titles.
+The specialised branch hints on Pickett root end labels remain available.
+
+Individual annotated marks, such as pi, e, the circle-diameter factor and chemical
+elements, still have their own tooltips when you hover over that particular mark.
+Ordinary numeric graduations do not gain popups merely because they belong to a
+segmented scale. No setting or programme change is needed.

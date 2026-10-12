@@ -19,9 +19,9 @@ A **scale definition** is immutable declarative data: its identity, mapping type
 
 `generateTicks(definition, runtime, width, minimumGap)` returns positioned numerical graduations. Mapping, numeric tick selection and pixel thinning are separate steps. The tick strategy must be compatible with the mapping; `core/scale-types.js` is their shared registry. Tick candidates have a value, position, kind and optional label. Paired log-log ticks also carry reciprocal values and positive/negative captions. Tick thinning must not move a mark to a convenient pixel.
 
-A **programme** holds sides and their three rails (`topStator`, `slide`, `bottomStator`), custom scales, appearance and motion. The model owns validation, cloning, normalisation and exports. `exportableState` returns a deep snapshot and preserves floating-point cursor/slide positions without gratuitous rounding. `buildLibrary` clones caller-owned data before freezing the resulting library. Only immutable definitions are eligible for runtime caching.
+A **programme** holds sides and their three rails (`topStator`, `slide`, `bottomStator`), custom scales, appearance and motion. The model owns validation, cloning, normalisation and exports. `exportableState` returns a deep snapshot and preserves floating-point cursor/slide positions without gratuitous rounding. `buildLibrary` shares already-frozen built-in definitions and clones caller-owned custom data before freezing the resulting library. The controller reuses this library until the custom-scale array is replaced. Only immutable definitions are eligible for runtime caching.
 
-The single controller is `createApplication(document)` in `ui/application.js`. It owns live state, DOM references, event handlers, scheduling and lifecycle. Rendering helpers receive their inputs rather than finding global application state. `getProgram()` exposes a snapshot; `destroy()` removes listeners, observers, frames and timers. The controller is intentionally not split into many state-owning components: one owner keeps a small application understandable.
+The single controller is `createApplication(document)` in `ui/application.js`. It owns the applied programme, orchestration and lifecycle; focused helpers own draft editing, readout reconciliation and individual interactions. Rendering helpers receive their inputs rather than finding global application state. `getProgram()` exposes a snapshot; `destroy()` removes listeners, observers, frames and timers. Helpers do not own competing copies of the applied programme. The controller accepts a validated programme through one transactional apply callback.
 
 ## Data flow
 
@@ -29,7 +29,7 @@ The single controller is `createApplication(document)` in `ui/application.js`. I
 2. `parseProgramText` / `validateProgram` check decoded JSON, structure, limits, references, domains, tick compatibility and sampled mathematical behaviour before data can become live state.
 3. The controller builds an immutable library and renders the current face.
 4. `scale-markup.js` produces escaped markup. `labels.js` measures actual text and packs labels; it never changes the value/position mapping.
-5. Cursor/slide motion changes CSS positions and readouts, not the full graduation DOM tree. Layout or scale changes regenerate graduations.
+5. Cursor/slide motion changes CSS positions and value text, not the graduation tree or the readout cards. Layout or scale changes regenerate graduations.
 6. Storage writes are debounced; failure is reported. Rejected original data remains recoverable. Downloaded JSON and configured HTML are explicit portable backups.
 
 Unapplied editor text is a separate draft. Normal UI updates do not overwrite it. Import validation is transactional: a rejected programme cannot partially change the live instrument or persisted state.
@@ -52,7 +52,7 @@ This trades a somewhat larger HTML file for zero build dependencies and real mod
 | Historical scale order | `catalog/presets/historical.js` | preset references + both-face screenshots |
 | Pickett back-to-back roots | `ui/root-stack.js`, `styles/root-stacks.css` | root-bank structure + branch coordinates + browser geometry |
 | Compact numbering | `ui/labels.js`, `styles/compact.css` | overlap/tick-crossing negative controls |
-| Import/storage/export | `model/`, `ui/files.js` | invalid atomicity, recovery, repeated export |
+| Import/storage/export | `model/`, `ui/programme-editor.js`, `ui/files.js` | invalid atomicity, recovery, repeated export |
 | UI controls | `ui/application.js`, `src/index.html` | keyboard and pointer integration |
 
 The generated catalogue in `docs/CATALOGUE.md` is a navigation aid, not a second source of truth. Regenerate it with `node tools/catalogue.mjs` after changing definitions.
@@ -131,3 +131,35 @@ The Both sides shortcut uses the existing `viewMode` and `activeSide` fields; it
 `model/scale-history.js` owns a bounded, session-only undo stack. A successful scale-list edit records the previous face and preset attribution, its action description and occurrence-based focus position. Undo restores only that face and attribution, selecting the affected face but retaining current cursor, slide, view and appearance. Snapshot data is copied, not shared. No-op or rejected moves do not record an entry. Successful preset/JSON replacement clears history; failed JSON validation does not. The three Undo buttons expose one stack, and the Ctrl/Command+Z listener is scoped to editor grips/buttons, not text fields or native select menus. No undo state is exported.
 
 `ui/inactivity.js` is a small injectable-clock timer, tested at the exact 4,000 ms boundary. `ui/loupe.js` feeds it pointer movement, keydown/keyup and visibility/lifetime changes. The timer only changes an opacity class; it does not change whether the loupe is enabled. Holding a key suspends the countdown. No new paint work is scheduled while idle; an input wakes it immediately and a dirty copy is refreshed. Timers, held-key state, overlay and listeners are released on destruction. `styles/loupe.css` fades only the idle transition; the return transition is deliberately instantaneous.
+
+## Draft editing and readout reconciliation
+
+`ui/programme-editor.js` owns unapplied JSON text, a monotonic draft revision, the
+synchronisation timer and file-reader lifecycle. It receives `getProgramme` and
+`applyProgramme` callbacks rather than direct access to the live state. Imports
+validate through the same `parseProgramText` function used for saved programmes.
+A delayed reader may apply its result only while its request, editor revision,
+editor contents and starting programme still match. A newer import aborts the
+older reader; destroying the application invalidates callbacks and clears timers.
+
+`ui/readout-values.js` computes readings without the DOM. Both the stateless HTML
+renderer in `readout.js` and the retained-DOM view in `readout-view.js` use it. The
+view rebuilds cards only when visible faces, their names or rails, or the library
+change. Otherwise it updates value text and off-scale classes in place. A
+segmented row may gain or lose value spans at a domain boundary without replacing
+its card. Tests compare incremental output with independently generated full
+markup for many motion states and assert DOM identity is retained.
+
+The instrument drag has one completion path for pointer release, capture loss,
+window focus loss, page hiding, rerendering and disposal. It releases capture,
+removes drag styling and preserves the last applied coordinate.
+
+## Graduation dispatch and validation
+
+`core/ticks/index.js` uses a static strategy table; mapping-specific generation,
+optional refinement, reference-mark attachment and pixel thinning remain separate.
+The expression parser's operator table has no prototype, so inherited object
+property names cannot become arithmetic operators. Both manually specified ticks
+and named reference gauges undergo the same position/domain/inverse-branch
+checks. These finite numerical samples catch errors, but are not a proof of
+correctness for an arbitrary user-supplied formula.

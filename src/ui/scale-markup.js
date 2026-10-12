@@ -21,21 +21,26 @@ function rowAxis(rail, index, total, def) {
         return "bottom";
     return index < Math.ceil(total / 2) ? "top" : "bottom";
 }
+// Native titles inherit through descendants. Put scale-wide help only on the
+// two end panels, never on a row or a graduation pane used for calculation.
+function scaleHelpTitle(def, label) {
+    return escapeHtml(def.description || def.formula || label || def.id || "");
+}
 function renderScaleLegend(def, label, compactLabel) {
     const safeName = escapeHtml(def.type === "syncroLogLog" ? label : (compactLabel || label || def.id || ""));
     const safeFormula = escapeHtml(def.formula || compactLabel || label || def.id || "");
     if (def.type === "syncroLogLog") {
         const positive = escapeHtml(def.positiveCaption || "+");
         const negative = escapeHtml(def.negativeCaption || "−");
-        return `<div class="scale-legend syncro-legend" title="${escapeHtml(def.description || label)}"><span><strong>${safeName}+</strong> ${positive}</span><span class="negative"><strong>${safeName}−</strong> ${negative}</span></div>`;
+        return `<div class="scale-legend syncro-legend" title="${scaleHelpTitle(def, label)}"><span><strong>${safeName}+</strong> ${positive}</span><span class="negative"><strong>${safeName}−</strong> ${negative}</span></div>`;
     }
     if (def.type === "composite") {
-        return `<div class="scale-legend dual-legend" title="${escapeHtml(def.formula || def.description || label)}">${def.layers.map((layer, i) => {
+        return `<div class="scale-legend dual-legend" title="${scaleHelpTitle(def, label)}">${def.layers.map((layer, i) => {
             const spec = typeof layer === "string" ? { scale: layer } : layer;
             return `<span class="ink-${escapeHtml(spec.tone || (i ? "red" : "neutral"))}">${escapeHtml(spec.caption || spec.scale)}</span>`;
         }).join("")}</div>`;
     }
-    return `<div class="scale-legend" title="${escapeHtml(def.formula || def.description || label)}"><span class="legend-formula">${safeFormula}</span><span class="legend-name">${safeName}</span></div>`;
+    return `<div class="scale-legend" title="${scaleHelpTitle(def, label)}"><span class="legend-formula">${safeFormula}</span><span class="legend-name">${safeName}</span></div>`;
 }
 function renderScaleRow(scaleId, isSlide, rail, index, total, { library: scaleLibrary, width, minGap }) {
     const def = scaleLibrary[scaleId];
@@ -60,11 +65,13 @@ function renderScaleRow(scaleId, isSlide, rail, index, total, { library: scaleLi
         })) classes.push("no-compact-labels");
         paneHtml = renderRootStackPane(def, scaleLibrary, { width, minGap, moverClass });
     }
-    else if (def.type === "syncroLogLog") {
+    else if (def.type === "syncroLogLog" || def.pairedSum !== undefined) {
         classes.push("syncro-scale");
         const rt = makeRuntimeScale(def);
         const ticks = generateTicks(def, rt, width, minGap);
-        paneHtml = `<div class="tick-pane"><div class="${moverClass} syncro-track"><div class="syncro-baseline"></div>${ticks.map(t => renderSyncroTick(t)).join("")}${anchor}</div>${endLabel}</div>`;
+        const domain = def.pairedSum === undefined ? "" : ` style="left:${100 * rt.pMin}%;right:auto;width:${100 * (rt.pMax - rt.pMin)}%"`;
+        if (def.pairedSum !== undefined) classes.push("paired-angle-scale");
+        paneHtml = `<div class="tick-pane"><div class="${moverClass} syncro-track"><div class="syncro-baseline"${domain}></div>${ticks.map(t => renderSyncroTick(t)).join("")}${anchor}</div>${endLabel}</div>`;
     }
     else if (def.type === "segmented") {
         classes.push("segmented-scale");
@@ -72,7 +79,6 @@ function renderScaleRow(scaleId, isSlide, rail, index, total, { library: scaleLi
             const spec = typeof layer === "string" ? { scale: layer } : layer;
             const child = scaleLibrary[spec.scale];
             return generateTicks(child, makeRuntimeScale(child), width, minGap).map(t => ({ ...t,
-                title: t.title || `${spec.caption || child.label}: ${t.value}`,
                 ink: spec.tone || scaleTone(spec.scale, child) }));
         });
         paneHtml = `<div class="tick-pane"><div class="${moverClass}"><div class="baseline"></div>${dedupeTicks(ticks).map(renderTick).join("")}</div></div>`;
@@ -104,10 +110,10 @@ function renderScaleRow(scaleId, isSlide, rail, index, total, { library: scaleLi
         ? `<span class="syncro-scale-name"><span>${escapeHtml(label)}+</span><span class="negative">${escapeHtml(label)}−</span></span>`
         : escapeHtml(compactLabel);
     const legendHtml = def.type === "rootStack"
-        ? `<div class="scale-legend root-stack-legend">${renderRootStackGutter(def, scaleLibrary, true)}</div>`
+        ? `<div class="scale-legend root-stack-legend" title="${scaleHelpTitle(def, label)}">${renderRootStackGutter(def, scaleLibrary, true)}</div>`
         : renderScaleLegend(def, label, compactLabel);
-    return `<div class="${classes.join(" ")}" data-scale="${escapeHtml(scaleId)}" data-rail="${escapeHtml(rail)}" title="${escapeHtml(def.description || scaleId)}">
-        <div class="scale-name">${labelHtml}${def.unit ? `<small>${escapeHtml(def.unit)}</small>` : ""}</div>
+    return `<div class="${classes.join(" ")}" data-scale="${escapeHtml(scaleId)}" data-rail="${escapeHtml(rail)}">
+        <div class="scale-name" title="${scaleHelpTitle(def, label)}">${labelHtml}${def.unit ? `<small>${escapeHtml(def.unit)}</small>` : ""}</div>
         ${paneHtml}
         ${legendHtml}
       </div>`;

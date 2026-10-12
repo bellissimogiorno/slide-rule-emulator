@@ -1,3 +1,5 @@
+import { faber282nScales } from '#catalog/scales/faber282n.js';
+import { pickett14Scales } from "#catalog/scales/pickett14.js";
 import { flyingFishScales } from "#catalog/scales/flying-fish.js";
 /** Immutable built-in catalogue. Mathematical mappings live in core/, not here. */
 import { chemicalScales } from "#catalog/scales/chemical.js";
@@ -11,7 +13,9 @@ import { hyperbolicScales } from "#catalog/scales/hyperbolic.js";
 import { specialistScales } from "#catalog/scales/specialist.js";
 import { radiationScales } from "#catalog/scales/radiation.js";
 const base = {
+    ...faber282nScales,
     ...arithmeticScales,
+    ...pickett14Scales,
     ...chemicalScales,
     ...flyingFishScales,
     ...rootsScales,

@@ -1,3 +1,4 @@
+import { foldedIndexDescription } from "#core/mark-descriptions.js";
 import { formatCompact, formatRootLabel, formatSig, smartRound } from "#core/format.js";
 import { clamp, fineNiceStep, nearMultiple } from "#core/numbers.js";
 import { addTick, byPos, dedupeTicks, engineeringLogCandidates, logCompression, validTick } from "#core/ticks/common.js";
@@ -46,8 +47,9 @@ function foldedTicks(def, rt) {
     const endpointValue = rt.value(0);
     const foldLabel = def.foldLabel || formatSig(fold, 5);
     const endpointLabel = inverse ? `10/${foldLabel}` : foldLabel;
-    ticks.push({ pos: 0, value: endpointValue, label: endpointLabel, kind: "index" });
-    ticks.push({ pos: 1, value: endpointValue, label: endpointLabel, kind: "index" });
+    const title = foldedIndexDescription(def, endpointValue);
+    ticks.push({ pos: 0, value: endpointValue, label: endpointLabel, kind: "index", title });
+    ticks.push({ pos: 1, value: endpointValue, label: endpointLabel, kind: "index", title });
     return dedupeTicks(ticks).sort(byPos);
 }
 function logTicks(def, rt) {

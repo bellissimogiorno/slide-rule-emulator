@@ -42,8 +42,10 @@ function normalizeState(s) {
     if (!Array.isArray(s.customScales))
         s.customScales = [];
 }
+/** Built-ins are already deeply immutable: share them across programmes.
+ * Clone only custom definitions, never freezing or retaining caller data. */
 function buildLibrary(programme) {
-    const lib = Object.assign(Object.create(null), deepClone(BUILTIN_SCALES));
+    const lib = Object.assign(Object.create(null), BUILTIN_SCALES);
     for (const rawDef of programme.customScales || []) {
         if (!rawDef || typeof rawDef !== "object" || !rawDef.id)
             continue;
