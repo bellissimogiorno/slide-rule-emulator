@@ -37,6 +37,15 @@
 
   <main>
     <section id="workbench" class="workbench" aria-label="Slide rule emulator">
+      <div id="presetPicker" class="preset-picker" role="group" aria-labelledby="presetLabel">
+        <div class="preset-row">
+          <label id="presetLabel" for="presetSelect">Layout preset</label>
+          <select id="presetSelect" aria-label="Layout preset" aria-describedby="presetDescription"></select>
+          <button id="loadPresetButton" type="button" class="primary" title="Load the selected layout, replacing the scales on both faces">Load preset</button>
+          <button id="presetDetailsButton" type="button" aria-expanded="false" aria-controls="presetDescription">About</button>
+        </div>
+        <div id="presetDescription" class="hint" hidden></div>
+      </div>
       <div class="toolbar">
         <div class="motion-controls" role="group" aria-label="Slide and cursor position controls">
           <div class="position-control" data-motion="slideOffset">
@@ -64,33 +73,35 @@
         </div>
         <div class="motion-settings">
           <div id="motionStep" class="step-control" role="group" aria-labelledby="motionStepLabel" aria-describedby="stepHelp">
-            <div id="motionStepLabel" class="field">Keyboard step</div>
+            <div class="position-heading">
+              <span id="motionStepLabel" class="field">Keyboard step</span>
+              <span class="step-value" aria-hidden="true">2 Normal</span>
+            </div>
             <div class="step-switch" style="--step-index:1">
               <span class="step-rail" aria-hidden="true"></span>
               <span class="step-grip" aria-hidden="true"></span>
-              <button class="step-stop" type="button" data-step="0.005" aria-pressed="false" aria-keyshortcuts="1"><span><kbd>1</kbd> Faster</span><small>0.005</small></button>
-              <button class="step-stop" type="button" data-step="0.001" aria-pressed="true" aria-keyshortcuts="2"><span><kbd>2</kbd> Normal</span><small>0.001</small></button>
-              <button class="step-stop" type="button" data-step="0.0005" aria-pressed="false" aria-keyshortcuts="3"><span><kbd>3</kbd> Fine</span><small>0.0005</small></button>
-              <button class="step-stop" type="button" data-step="0.0001" aria-pressed="false" aria-keyshortcuts="4"><span><kbd>4</kbd> Very fine</span><small>0.0001</small></button>
+              <button class="step-stop" type="button" data-step="0.005" data-step-name="Faster" title="1: Faster - 0.005 scale lengths" aria-pressed="false" aria-keyshortcuts="1"><span class="visually-hidden"><kbd>1</kbd> Faster: </span><small>0.005</small></button>
+              <button class="step-stop" type="button" data-step="0.001" data-step-name="Normal" title="2: Normal - 0.001 scale lengths" aria-pressed="true" aria-keyshortcuts="2"><span class="visually-hidden"><kbd>2</kbd> Normal: </span><small>0.001</small></button>
+              <button class="step-stop" type="button" data-step="0.0005" data-step-name="Fine" title="3: Fine - 0.0005 scale lengths" aria-pressed="false" aria-keyshortcuts="3"><span class="visually-hidden"><kbd>3</kbd> Fine: </span><small>0.0005</small></button>
+              <button class="step-stop" type="button" data-step="0.0001" data-step-name="Very fine" title="4: Very fine - 0.0001 scale lengths" aria-pressed="false" aria-keyshortcuts="4"><span class="visually-hidden"><kbd>4</kbd> Very fine: </span><small>0.0001</small></button>
             </div>
-            <span id="stepHelp" class="visually-hidden">Click a stop or drag the grip; only four settings are possible. Motion focus is retained. Tab to a setting and press Enter or Space to select it and return to the instrument. Keys 1 to 4 change step while the rule or a motion grip has focus.</span>
+            <span id="stepHelp" class="visually-hidden">Click a numeric stop or drag the grip; only four settings are possible. The heading names the selected setting. Shortcuts 1 to 4 run from faster to finer. Motion focus is retained. Tab to a setting and press Enter or Space to select it and return to the instrument. Keys 1 to 4 change step while the rule or a motion grip has focus.</span>
           </div>
-          <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span>
         </div>
       </div>
-      <p id="motionHelp" class="hint motion-help">Tab to either grip, then use &larr; / &rarr;. Click a step stop or drag its grip without losing control, or press 1&ndash;4. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects slide; C selects cursor. Positions and steps are in scale lengths.</p>
+      <p id="motionHelp" class="hint motion-help"><span class="motion-instructions">Tab to either grip, then use &larr; / &rarr;. Click a step stop or drag its grip without losing control, or press 1&ndash;4. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects slide; C selects cursor. Positions and steps are in scale lengths.</span> <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span></p>
       <div class="view-controls">
         <label class="field">Side
           <select id="sideSelect" aria-label="Visible side or both sides"></select>
         </label>
         <label class="field">Magnification
-          <select id="magnificationSelect" aria-label="Magnification"><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
+          <select id="magnificationSelect" aria-label="Magnification"><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
         </label>
         <button id="loupeButton" type="button" aria-pressed="false" aria-describedby="loupeHelp" title="Magnify the rule and cursor beneath the pointer (M); Escape switches off">2.5&times; loupe</button>
         <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
         <span class="hint">Scroll sideways on narrow screens.</span>
       </div>
-      <span id="loupeHelp" class="visually-hidden">Switch on, then hover over the rule or cursor for a live 2.5 times magnified view. The lens fades after four seconds of inactivity; pointer movement or a keypress restores it immediately. Dragging and keyboard movement remain available. M toggles the loupe when a motion control or the rule has focus; Escape switches it off.</span>
+      <span id="loupeHelp" class="visually-hidden">Switch on, then hover over the rule or cursor for a live 2.5 times magnified view in a 480-pixel square lens, reduced only to fit the screen. The lens fades after four seconds of inactivity; pointer movement or a keypress restores it immediately. Dragging and keyboard movement remain available. M toggles the loupe when a motion control or the rule has focus; Escape switches it off.</span>
       <div id="appStatus" class="app-status" role="status" hidden></div>
       <button id="recoveryButton" hidden>Download recovered programme</button>
       <div id="ruleViewport" class="rule-viewport" tabindex="0" aria-label="Scrollable slide rule" aria-describedby="motionHelp">
@@ -110,14 +121,7 @@
           <h2 id="scaleLayout" tabindex="-1">Scale layout</h2>
           <a class="button-like" href="#workbench">Back to rule &uarr;</a>
         </div>
-        <div class="hint">Use the controls below for quick changes. Use the JSON editor for programmable custom scales and saved layouts.</div>
-        <div class="preset-row">
-          <label class="field">Layout preset
-            <select id="presetSelect" aria-label="Layout preset"></select>
-          </label>
-          <button id="loadPresetButton">Load preset</button>
-        </div>
-        <div id="presetDescription" class="hint" style="margin-top:7px"></div>
+        <div class="hint">Choose an instrument with <a href="#presetPicker">Layout preset above the rule</a>, or use the controls below for quick changes. Use the JSON editor for programmable custom scales and saved layouts.</div>
         <div class="appearance-grid">
           <label class="field">Instrument style
             <select id="themeSelect" aria-label="Instrument style"></select>
@@ -153,7 +157,7 @@
 
       <details>
         <summary>Pointer magnifying loupe</summary>
-        <p class="hint">Enable <strong>2.5&times; loupe</strong> above the rule, then move the mouse or hovering pen over either face. The lens enlarges the actual graduations and cursor together, including during a drag or keyboard nudge. It does not change the scale coordinates, the page magnification or the keyboard step. After four seconds without pointer movement or a keypress, the lens fades out; move the pointer or press a key to restore it immediately. Holding a key keeps it visible. The lens also hides when the pointer leaves the rule. Press <strong>M</strong> over a focused motion control or rule to toggle it; <strong>Escape</strong> switches it off. Touch devices without hover can use the ordinary Magnification selector instead.</p>
+        <p class="hint">Enable <strong>2.5&times; loupe</strong> above the rule, then move the mouse or hovering pen over either face. The lens renders the actual graduations and cursor at the larger size using fresh text and strokes, not enlarged screen pixels, including during a drag or keyboard nudge. It does not change the scale coordinates, the page magnification or the keyboard step. After four seconds without pointer movement or a keypress, the lens fades out; move the pointer or press a key to restore it immediately. Holding a key keeps it visible. The lens also hides when the pointer leaves the rule. Press <strong>M</strong> over a focused motion control or rule to toggle it; <strong>Escape</strong> switches it off. Touch devices without hover can use the ordinary Magnification selector instead.</p>
       </details>
 
       <details>
@@ -207,7 +211,7 @@
         <summary>How to use it</summary>
         <p class="hint">Drag the middle slide to set the alignment. Drag the glass cursor to read all scales at the hairline. On a classic multiplication setup, align C 1 over a D number, then read products by moving the cursor to another C number and reading D.</p>
         <p class="hint">Use the Both sides button next to Flip side, or the Side menu, to see the faces together. The highlighted Both sides button returns to the selected editing face when clicked again. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored.</p>
-        <p class="hint"><strong>Full-width workspace:</strong> the instrument always comes first, across the available page width. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
+        <p class="hint"><strong>Full-width workspace:</strong> the Layout preset chooser is above the instrument, which uses the available page width. About reveals the selected preset description; Load preset applies the choice to both faces. Magnification includes 75% for a smaller view. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
         <p class="hint"><strong>Expanded roots:</strong> write the radicand as <span class="kbd">N = m × 10^k</span>, with 1 &le; m &lt; 10. For an n-th root, choose branch <span class="kbd">(k mod n) + 1</span>, put the cursor at m on D, and read the root mantissa on that branch. Example: 32 = 3.2 × 10^1, so 5R2 reads 2 over D = 3.2. A, K, and x⁵ provide the corresponding power scales.</p>
         <p class="hint"><strong>Log-log:</strong> LL0 through LL4 cover values above 1; LL00 through LL04 cover values below 1. Pickett paired and Syncro LL± rows use one shared graduation: the black number is above one and the red number immediately below it is its exact reciprocal. The N3 rows are natural-exponential; the N4 rows use Pickett's base-10 geometry.</p>
         <p class="hint"><strong>Compact scale numbering:</strong> primary numerals are tucked beside their long ticks. When a label cannot fit cleanly to the right, suitable multi-digit labels are divided around the tick. Turn the option off to restore centred-above-tick numbering. A custom scale can opt out with <span class="kbd">"compactLabels": false</span>.</p>

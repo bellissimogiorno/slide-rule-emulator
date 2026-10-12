@@ -23,10 +23,12 @@
     position: absolute;
     left: 0;
     top: 0;
-    transform-origin: 0 0;
     overflow: hidden;
     background: var(--paper);
 }
+/* The drawing materialises these at their final size. Do not draw the source
+   pseudo-elements a second time at their original one-pixel dimensions. */
+.loupe-copy .cursor::before, .loupe-copy .cursor::after { content: none !important; }
 .rule-loupe::after {
     content: "2.5\00d7";
     position: absolute;

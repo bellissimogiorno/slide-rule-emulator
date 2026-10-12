@@ -1,3 +1,4 @@
+import { MAGNIFICATIONS } from "#model/view.js";
 import { deepFreeze, deepClone } from "#core/objects.js";
 import { DENSITIES, THEMES } from "#catalog/appearance.js";
 import { DEFAULT_STATE } from "#catalog/defaults.js";
@@ -38,7 +39,7 @@ function normalizeState(s) {
     s.compactScales = s.compactScales !== false;
     s.slideOffset = clamp(Number(s.slideOffset) || 0, -0.9, 0.9);
     s.cursor = clamp(Number.isFinite(Number(s.cursor)) ? Number(s.cursor) : 0.5, 0, 1);
-    s.magnification = [1, 1.25, 1.5, 2].includes(s.magnification) ? s.magnification : 1;
+    s.magnification = MAGNIFICATIONS.includes(s.magnification) ? s.magnification : 1;
     if (!Array.isArray(s.customScales))
         s.customScales = [];
 }

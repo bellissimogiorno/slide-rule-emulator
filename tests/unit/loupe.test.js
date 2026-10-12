@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { loupeGeometry, LOUPE_FACTOR } from '#ui/loupe-geometry.js';
+import { loupeGeometry, LOUPE_FACTOR, LOUPE_SIZE } from '#ui/loupe-geometry.js';
 
 const close = (a, b) => assert.ok(Math.abs(a - b) < 1e-8, `${a} != ${b}`);
-for (const zoom of [1, 1.25, 1.5, 2]) {
+for (const zoom of [0.75, 1, 1.25, 1.5, 2]) {
     test(`loupe is exactly 2.5x relative to the displayed rule at ${zoom}x instrument zoom`, () => {
         const size = { width: 1000.25, height: 340.5 };
         const source = { left: -135, top: 320, width: size.width * zoom, height: size.height * zoom };
@@ -32,8 +32,8 @@ for (const [width, height] of [[320,600], [390,800], [1600,1000]]) {
         }
     });
 }
-for (const [viewportWidth, expected] of [[320, 304], [390, 320], [1600, 320]]) {
-    test(`loupe is square and retains its reading width in a ${viewportWidth}px viewport`, () => {
+for (const [viewportWidth, expected] of [[320, 304], [390, 374], [496, 480], [1600, 480]]) {
+    test(`loupe is square and fits its reading area in a ${viewportWidth}px viewport`, () => {
         const source = { left: 0, top: 0, width: 1000, height: 500 };
         const g = loupeGeometry({ x: viewportWidth / 2, y: 400 }, source, source,
             { left: 0, top: 0, width: viewportWidth, height: 800 });
@@ -80,8 +80,18 @@ test('loupe is non-interactive, absent from configured exports and tied to appli
     assert.match(css, /\.rule-loupe \* \{ pointer-events: none !important; \}/);
     assert.match(css, /border-radius: 12px;/);
     assert.match(source, /elementFromPoint/);
-    assert.match(source, /cloneNode\(true\)/);
+    assert.match(await read('src/ui/loupe-renderer.js'), /cloneNode\(true\)/);
     assert.match(files, /querySelectorAll\('\[data-runtime-only\]'\)/);
     assert.match(app, /loupe.destroy\(\)/);
     assert.match(html, /id="loupeButton"[^>]+aria-pressed="false"[^>]+aria-describedby="loupeHelp"/);
+});
+
+test('loupe area is 480px square at ordinary desktop sizes, without increasing magnification', () => {
+    assert.equal(LOUPE_SIZE, 480);
+    const g = loupeGeometry({x:800,y:500}, {left:0,top:0,width:1200,height:700},
+        {width:1200,height:700}, {left:0,top:0,width:1600,height:1000});
+    assert.equal(g.width, 320 * 1.5);
+    assert.equal(g.height, 320 * 1.5);
+    assert.equal(g.scaleX, 2.5);
+    assert.equal(g.scaleY, 2.5);
 });

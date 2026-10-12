@@ -5,12 +5,13 @@
  */
 import { clamp } from '#core/numbers.js';
 export const LOUPE_FACTOR = 2.5;
+export const LOUPE_SIZE = 480;
 
 export function loupeGeometry(point, source, size, viewport) {
     const margin = 8;
-    // Keep the 320px reading width, now with equal height. Only a viewport
-    // too narrow or short to contain it reduces BOTH dimensions together.
-    const width = Math.min(320, Math.max(1, viewport.width - 2 * margin),
+    // Keep a generous square reading area. A viewport too narrow or short
+    // to contain it reduces BOTH dimensions together, without changing zoom.
+    const width = Math.min(LOUPE_SIZE, Math.max(1, viewport.width - 2 * margin),
         Math.max(1, viewport.height - 2 * margin));
     const height = width;
     const left = clamp(point.x - width / 2, viewport.left + margin,

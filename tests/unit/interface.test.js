@@ -28,7 +28,7 @@ class Button extends EventTarget {
     setAttribute(name, value) { this.attributes[name] = value; }
 }
 function precisionFixture() {
-    const buttons = MOTION_STEPS.map(step => new Button({ step: String(step) }));
+    const buttons = MOTION_STEPS.map((step, i) => new Button({ step: String(step), stepName: ['Faster', 'Normal', 'Fine', 'Very fine'][i] }));
     const document = { activeElement: null };
     const target = { focusCalls: 0, focus(options) { assert.equal(options.preventScroll, true); this.focusCalls++; document.activeElement = this; } };
     const lifetime = new AbortController();
@@ -38,9 +38,10 @@ function precisionFixture() {
     rail.getBoundingClientRect = () => ({ left: 100, width: 400 });
     rail.setPointerCapture = id => { rail.captured = id; };
     rail.releasePointerCapture = () => { rail.captured = null; };
-    const element = { ownerDocument: document, querySelectorAll: () => buttons, querySelector: () => rail };
+    const readout = { textContent: "" };
+    const element = { ownerDocument: document, querySelectorAll: () => buttons, querySelector: s => s === '.step-switch' ? rail : readout };
     const controls = createStepControls({ element, signal: lifetime.signal, returnTarget: () => target, onChange: value => changes.push(value) });
-    return { buttons, document, target, lifetime, controls, changes, rail };
+    return { buttons, document, target, lifetime, controls, changes, rail, readout };
 }
 test('step buttons expose exactly one pressed choice and preserve live motion focus', () => {
     const f = precisionFixture();
@@ -48,6 +49,7 @@ test('step buttons expose exactly one pressed choice and preserve live motion fo
     for (const [i, b] of f.buttons.entries()) {
         b.dispatchEvent(new Event('click'));
         assert.equal(f.controls.value, MOTION_STEPS[i]);
+        assert.equal(f.readout.textContent, `${i + 1} ${b.dataset.stepName}`);
         assert.equal(f.buttons.filter(b => b.attributes['aria-pressed'] === 'true').length, 1);
         assert.equal(f.target.focusCalls, 0, 'already focused control must not be blurred/refocused');
     }

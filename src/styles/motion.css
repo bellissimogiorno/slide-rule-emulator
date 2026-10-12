@@ -39,6 +39,7 @@
 }
 
 .position-heading {
+    min-height: 21px;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -148,13 +149,16 @@ input.motion-range:active {
     max-width: 100%;
 }
 
-/* One continuous recessed track and a shared, ridged grip. The four native
-   buttons provide detents and accessible labels, not four independent knobs. */
-.step-control > .field { color: var(--ui-ink); font-weight: 650; line-height: 1.4; }
+/* Numeric detents sit above a single shallow rail. This fits the same 40px
+   track slot as the position grips; names/shortcuts remain in accessible labels,
+   hover hints and the selected-setting heading. Hit targets stay 40px high. */
+.step-control .field { color: var(--ui-ink); font-weight: 650; line-height: 1.4; }
+.step-value { font: 13px/1.4 system-ui, sans-serif; color: var(--ui-muted); white-space: nowrap; }
 .step-switch {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     position: relative;
+    height: 40px;
     min-width: 0;
     margin-top: 0;
     touch-action: none;
@@ -163,7 +167,7 @@ input.motion-range:active {
 }
 .step-rail {
     position: absolute;
-    top: 16px;
+    top: 26px;
     z-index: 1;
     left: 12.5%;
     right: 12.5%;
@@ -176,11 +180,11 @@ input.motion-range:active {
 }
 .step-grip {
     position: absolute;
-    top: 6px;
+    top: 17px;
     left: calc((var(--step-index) + .5) * 25%);
     transform: translateX(-50%);
     width: 38px;
-    height: 28px;
+    height: 23px;
     border: 1px solid #667773;
     border-radius: 3px;
     background: repeating-linear-gradient(90deg, transparent 0 4px, #60716f 4px 5px, #ffffffb3 5px 6px, transparent 6px 8px) center / 22px 15px no-repeat, linear-gradient(#f6f5e9, #d1d6ce);
@@ -191,7 +195,8 @@ input.motion-range:active {
 button.step-stop {
     position: relative;
     min-width: 0;
-    padding: 40px 1px 5px;
+    padding: 0 1px 24px;
+    height: 40px;
     border: 0;
     border-radius: 3px;
     background: transparent;
@@ -203,33 +208,38 @@ button.step-stop {
 button.step-stop::before {
     content: "";
     position: absolute;
-    top: 14px;
+    top: 24px;
     height: 12px;
     left: calc(50% - 1px);
     border-left: 2px solid var(--ui-track-border);
 }
 button.step-stop:hover { background: var(--ui-hover); }
 button.step-stop[aria-pressed="true"] { color: var(--ui-selected-ink); }
-button.step-stop[aria-pressed="true"] > span,
 button.step-stop[aria-pressed="true"] > small { background: var(--ui-selected); border-radius: 2px; }
-.step-stop > span { display: block; min-height: 34px; padding: 2px 0; }
 .step-stop small {
     display: block;
-    font: 13px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+    font: 13px/16px ui-monospace, SFMono-Regular, Consolas, monospace;
 }
 .step-stop kbd { font: inherit; }
 .step-control:focus-within { outline: 2px solid var(--ui-focus); outline-offset: 2px; }
 .step-stop:focus-visible { outline-offset: -2px; }
 
 .motion-target {
+    display: inline-block;
+
     font-size: 13px;
     color: var(--ui-muted);
 }
 
 .motion-help {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 16px;
     margin: 8px 0 12px;
-    max-width: 100ch;
 }
+
+.motion-instructions { flex: 1 1 680px; max-width: 100ch; }
 
 @media (max-width: 600px) {
     .motion-controls {

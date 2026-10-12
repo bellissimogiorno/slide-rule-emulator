@@ -18,11 +18,14 @@ export function createStepControls({ element, signal, returnTarget, onChange }) 
     let pointerStartValue = value;
     let suppressPointerClick = false;
     const rail = element.querySelector('.step-switch');
+    const readout = element.querySelector('.step-value');
     const buttons = [...element.querySelectorAll('button[data-step]')];
     const listen = (target, name, handler) => target.addEventListener(name, handler, { signal });
     function select(requested) {
         value = motionStep(requested);
-        rail.style.setProperty('--step-index', String(MOTION_STEPS.indexOf(value)));
+        const index = MOTION_STEPS.indexOf(value);
+        rail.style.setProperty('--step-index', String(index));
+        if (readout) readout.textContent = `${index + 1} ${buttons[index].dataset.stepName}`;
         for (const button of buttons)
             button.setAttribute('aria-pressed', String(Number(button.dataset.step) === value));
         onChange?.(value);

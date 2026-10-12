@@ -19,6 +19,7 @@ import time
 import traceback
 from playwright.sync_api import sync_playwright
 from scale_help import run_scale_help
+from workspace_presentation import run_workspace_presentation
 from reaudit import run_reaudit
 from editor_features import run_editor_features
 from editor_polish import run_editor_polish
@@ -29,6 +30,7 @@ from pickett14 import run_pickett14
 from motion_controls import run_motion_controls
 from interface_features import run_interface_features
 from loupe_features import run_loupe_features
+from loupe_rendering import run_loupe_rendering
 ROOT = Path(__file__).resolve().parents[2]
 GEOMETRY = Path(__file__).with_name('geometry.js').read_text(encoding='utf-8')
 STORAGE_SHIM = "(() => { const values = new Map();\nObject.defineProperty(window, 'localStorage', { configurable: true, value: {\ngetItem: key => values.get(key) ?? null, setItem: (key,value) => values.set(key,String(value)),\nremoveItem: key => values.delete(key), clear: () => values.clear(),\nkey: i => [...values.keys()][i] ?? null, get length() { return values.size; }\n} }); })();"
@@ -42,8 +44,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--mode', choices=['native', 'dom'], default='native')
     parser.add_argument('--visual', action='store_true')
-    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish', 'pickett14', 'reaudit', 'scale-help'], default='all',
-                        help='all checks (default), controls, editor, polish, Pickett 14, reaudit, or end-label scale help')
+    parser.add_argument('--suite', choices=['all', 'controls', 'editor', 'polish', 'pickett14', 'reaudit', 'scale-help', 'workspace', 'loupe'], default='all',
+                        help='all checks (default), controls, editor, polish, Pickett 14, reaudit, end-label scale help, or workspace presentation')
     parser.add_argument('--executable', default=os.environ.get('CHROMIUM_EXECUTABLE'))
     parser.add_argument('--output', type=Path, default=ROOT / 'qa')
     args = parser.parse_args()
@@ -260,6 +262,12 @@ def main():
                 assert download('#recoveryButton') == 'corrupt-data'
             check('corrupt saved programme remains downloadable', recovery)
             load()
+            if args.suite in ('all', 'loupe'):
+                run_loupe_rendering(lambda: page, state, apply, settle, check, load, download,
+                                    args.visual, args.output, report)
+            if args.suite in ('all', 'workspace'):
+                run_workspace_presentation(lambda: page, state, apply, settle, check, load, download,
+                                           args.visual, args.output, report, GEOMETRY)
             if args.suite in ('all', 'scale-help'):
                 run_scale_help(lambda: page, state, apply, settle, check, load, download,
                                args.visual, args.output, report, GEOMETRY)

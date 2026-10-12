@@ -1,6 +1,6 @@
 {
   "name": "programmable-slide-rule",
-  "version": "3.2.15",
+  "version": "3.2.17",
   "private": true,
   "type": "module",
   "description": "Programmable duplex slide-rule emulator with mathematical scales and compact engraving.",

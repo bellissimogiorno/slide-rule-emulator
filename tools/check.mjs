@@ -5,6 +5,7 @@ import { join, relative } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { ROOT, sourceFiles } from './build.mjs';
 import { APP_VERSION } from '../src/version.js';
+import { MAGNIFICATIONS } from '../src/model/view.js';
 import { SCALE_TYPES, TICK_MODES } from '../src/core/scale-types.js';
 import { PRESETS } from '../src/catalog/presets.js';
 import { THEMES, DENSITIES } from '../src/catalog/appearance.js';
@@ -53,6 +54,7 @@ for (const name of graph.keys())
 const schema = JSON.parse(await readFile(join(ROOT, 'schema/program.schema.json'), 'utf8'));
 assert.deepEqual([...schema.properties.theme.enum].sort(), Object.keys(THEMES).sort(), 'Schema themes drifted');
 assert.deepEqual([...schema.properties.density.enum].sort(), Object.keys(DENSITIES).sort(), 'Schema densities drifted');
+assert.deepEqual(schema.properties.magnification.enum, MAGNIFICATIONS, 'Schema magnifications drifted');
 const scale = schema.properties.customScales.items.properties;
 assert.deepEqual([...scale.type.enum].sort(), [...SCALE_TYPES].sort(), 'Schema scale types drifted');
 assert.deepEqual([...scale.tickMode.enum].sort(), [...TICK_MODES].sort(), 'Schema tick modes drifted');
@@ -63,6 +65,9 @@ for (const filename of await readdir(join(ROOT, 'examples'))) {
         parseProgramText(await readFile(join(ROOT, 'examples', filename), 'utf8'));
 }
 const template = await readFile(join(ROOT, 'src/index.html'), 'utf8');
+const zoomMenu = template.match(/<select id="magnificationSelect"[^>]*>([\s\S]*?)<\/select>/)[1];
+assert.deepEqual([...zoomMenu.matchAll(/value="([0-9.]+)"/g)].map(m => Number(m[1])),
+    MAGNIFICATIONS, 'Magnification menu and model disagree');
 const ids = [...template.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
 assert.equal(new Set(ids).size, ids.length, 'Duplicate template IDs');
 assert.equal(ids.filter(id => id === 'embedded-program').length, 1);

@@ -193,3 +193,30 @@ constant and element popups, including under the cursor glass. The suite also
 checks dragging, keyboard motion, configured exports, mobile scrolling and zoom.
 The default is native navigation; `--mode dom` explicitly selects the restricted
 DOM-loading test mode.
+
+## Workspace presentation
+
+`python tests/browser/run.py --suite workspace --visual` checks the promoted
+preset chooser, explicit loading and About disclosure, focus-preserving compact
+detents, equal-height controls in all three themes at 13 widths, 75% scaling and
+exports, all presets on both faces at 75%, and the 480px square loupe at ordinary,
+reduced and enlarged views. These are live DOM geometry and interaction checks;
+screenshots support a separate visual review. Use `--mode dom` only explicitly
+in a restricted environment; it does not test native navigation or persistence.
+
+## Native-size loupe drawing
+
+`python tests/browser/run.py --suite loupe --visual` compares the live source
+with the final-size drawing across every preset, both faces and numbering modes,
+and all five instrument magnifications. It checks independent box coordinates,
+larger computed font sizes, preserved hidden labels and the absence of magnifying
+transforms, duplicate IDs and focus targets. It deliberately inserts a scale
+transform and verifies rejection, then exercises motion, scrolling, resizing,
+exports and idle/wake. Additional cases cover high-DPI painting, font-run bounds,
+forced colours and live appearance changes. The suite runs in native mode unless
+`--mode dom` is explicitly specified; its mode is recorded in the output.
+
+`tests/unit/loupe-rendering.test.js` tests pixel-length conversion without altering
+percentages or colour components, renderer separation, disposal-related attributes
+and the non-interactive final-size path. Geometry tests remain in `loupe.test.js`.
+See [the rendering contract](LOUPE_RENDERING.md) before extending face markup.

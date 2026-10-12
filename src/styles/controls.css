@@ -26,21 +26,38 @@ h2 {
     color: var(--ui-danger);
 }
 
+/* The instrument chooser is part of the workbench, not buried in the editor.
+   The same page-theme tokens give it emphasis without changing instrument ink. */
+.preset-picker {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--ui-border);
+    border-inline-start: 4px solid var(--ui-accent);
+    border-radius: 9px;
+    background: var(--ui-motion-top);
+    scroll-margin-top: 16px;
+}
 .preset-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 8px;
-    align-items: end;
-    margin-top: 12px;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    gap: 8px 12px;
+    align-items: center;
 }
-
-.preset-row .field, .appearance-grid .field {
-    display: grid;
-    gap: 5px;
+.preset-row label { font-size: 15px; font-weight: 700; }
+.preset-row select { min-width: 0; width: 100%; font-size: 15px; }
+.preset-row button { white-space: nowrap; }
+#presetDescription { margin-top: 8px; }
+.appearance-grid .field { display: grid; gap: 5px; }
+.appearance-grid select { width: 100%; }
+@media (max-width: 760px) {
+    .preset-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; }
+    .preset-row label { grid-area: 1 / 1; }
+    #presetDetailsButton { grid-area: 2 / 3; }
+    #presetSelect { grid-area: 2 / 1 / 3 / 3; }
+    #loadPresetButton { grid-area: 1 / 2 / 2 / 4; }
 }
-
-.preset-row select, .appearance-grid select {
-    width: 100%;
+@media (forced-colors: active) {
+    .preset-picker { border-color: ButtonText; border-inline-start-color: Highlight; }
 }
 
 .appearance-grid {

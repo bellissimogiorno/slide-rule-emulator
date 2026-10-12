@@ -1,3 +1,4 @@
+import { MAGNIFICATIONS } from "#model/view.js";
 /** Untrusted JSON enters through this boundary before live state is changed.
  * Validation is deliberately stronger than JSON Schema: it checks references,
  * mathematical domains, sampled inverses and bounded graduation generation.
@@ -56,8 +57,8 @@ function validateMetadata(programme) {
         if (programme[key] !== undefined && (typeof programme[key] !== 'number' || programme[key] < lo || programme[key] > hi))
             fail(key + ' is outside its permitted range.');
     }
-    if (programme.magnification !== undefined && ![1, 1.25, 1.5, 2].includes(programme.magnification))
-        fail('magnification must be 1, 1.25, 1.5 or 2.');
+    if (programme.magnification !== undefined && !MAGNIFICATIONS.includes(programme.magnification))
+        fail('magnification must be one of ' + MAGNIFICATIONS.join(', ') + '.');
     for (const key of ['modelLabel', 'instrumentNote', 'presetId', 'activeSide']) {
         if (programme[key] !== undefined && typeof programme[key] !== 'string')
             fail(key + ' must be text.');

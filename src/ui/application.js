@@ -83,6 +83,7 @@ function createApplication(document) {
         presetSelect: document.getElementById("presetSelect"),
         loadPresetButton: document.getElementById("loadPresetButton"),
         presetDescription: document.getElementById("presetDescription"),
+        presetDetailsButton: document.getElementById("presetDetailsButton"),
         themeSelect: document.getElementById("themeSelect"),
         densitySelect: document.getElementById("densitySelect"),
         formulaToggle: document.getElementById("formulaToggle"),
@@ -224,6 +225,11 @@ function createApplication(document) {
         listen(window, "resize", scheduleResize);
         listen(dom.ruleCanvas, "lostpointercapture", onPointerUp);
         listen(dom.loadPresetButton, "click", () => applyPreset(dom.presetSelect.value));
+        listen(dom.presetDetailsButton, "click", () => {
+            const expanded = dom.presetDescription.hidden;
+            dom.presetDescription.hidden = !expanded;
+            dom.presetDetailsButton.setAttribute("aria-expanded", String(expanded));
+        });
         listen(dom.presetSelect, "change", () => {
             const preset = PRESETS[dom.presetSelect.value];
             dom.presetDescription.textContent = preset ? preset.description : "Current custom layout.";

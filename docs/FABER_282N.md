@@ -1,6 +1,6 @@
 # Faber-Castell 2/82N
 
-Choose **Faber-Castell 2/82N** in Scale layout and press **Load preset**. The
+Choose **Faber-Castell 2/82N** in the Layout preset bar above the rule and press **Load preset**. The
 Both sides button displays both faces with a shared slide and cursor. Export an
 important customised programme before replacing its layout.
 

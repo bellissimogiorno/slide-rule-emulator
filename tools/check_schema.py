@@ -44,6 +44,13 @@ def main():
                   'sides': {'front': {'topStator': [], 'slide': [], 'bottomStator': ['X']}}}
         if validator.is_valid(sample) != expected:
             raise SystemExit(f'Schema cardinality mismatch: {kind}, {count} layers')
+    zoom_cases = [(.75, True), (1, True), (1.25, True), (1.5, True), (2, True),
+                  (.5, False), (.76, False), ('0.75', False), (0, False), (2.5, False)]
+    for magnification, expected in zoom_cases:
+        sample = dict(programmes[0][1], magnification=magnification)
+        if validator.is_valid(sample) != expected:
+            raise SystemExit(f'Schema magnification mismatch: {magnification!r}')
+    print(f'{len(zoom_cases)} positive/negative magnification controls pass.')
     print(f'Schema is valid; {len(programmes)} default/preset/example programmes pass structurally.')
     print(f'{len(cases)} positive/negative layout-cardinality controls pass.')
     print('Mathematical domains and mapping compatibility are tested separately by the runtime validator.')

@@ -1,10 +1,10 @@
-/** Live, non-interactive 2.5x copy of the rendered face under the pointer.
- * A DOM copy retains vector text, the shared root ticks and the real hairline.
- * Rebuild only after engraving/layout changes; motion copies just transforms.
- * This is presentation-only: it has no access to the mathematical programme.
+/** Live, non-interactive 2.5x reading lens. The drawing module paints fresh
+ * full-size text and geometry; this controller owns hover, motion and lifetime.
+ * Neither module changes the mathematical programme or its engraving choices.
  */
 import { createInactivityTimer } from '#ui/inactivity.js';
 import { loupeGeometry } from '#ui/loupe-geometry.js';
+import { createLoupeDrawing } from '#ui/loupe-renderer.js';
 
 export function createLoupe({ document, canvas, button, signal, returnTarget }) {
     const window = document.defaultView;
@@ -20,9 +20,7 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
     let enabled = false;
     let pointer = null;
     let source = null;
-    let copy = null;
-    let movers = [];
-    let cursors = [];
+    let drawing = null;
     let dirty = true;
     let frame = 0;
     let destroyed = false;
@@ -35,26 +33,12 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
 
     function discardCopy() {
         lens.replaceChildren();
-        source = copy = null;
-        movers = [];
-        cursors = [];
+        source = drawing = null;
     }
     function rebuild(face) {
         source = face;
-        copy = face.cloneNode(true);
-        copy.classList.add('loupe-copy');
-        // Cloned IDs must not capture document queries, focus or label links.
-        for (const node of [copy, ...copy.querySelectorAll('[id], [tabindex], [title], [aria-describedby], [aria-labelledby]')]) {
-            for (const name of ['id', 'tabindex', 'title', 'aria-describedby', 'aria-labelledby'])
-                node.removeAttribute(name);
-        }
-        const pair = selector => {
-            const originals = [...face.querySelectorAll(selector)];
-            return [...copy.querySelectorAll(selector)].map((node, i) => [originals[i], node]);
-        };
-        movers = pair('.slide-mover');
-        cursors = pair('.cursor');
-        lens.replaceChildren(copy);
+        drawing = createLoupeDrawing(face);
+        lens.replaceChildren(drawing.element);
         dirty = false;
     }
     function paint() {
@@ -75,11 +59,7 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
             : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
         const g = loupeGeometry(pointer, rect, { width, height }, viewport);
         for (const key of ['left', 'top', 'width', 'height']) lens.style[key] = g[key] + 'px';
-        copy.style.width = width + 'px';
-        copy.style.height = height + 'px';
-        copy.style.transform = `translate(${g.x}px, ${g.y}px) scale(${g.scaleX}, ${g.scaleY})`;
-        for (const [original, node] of movers) node.style.transform = original.style.transform;
-        for (const [original, node] of cursors) node.style.left = original.style.left;
+        drawing.place(g.x, g.y);
         lens.hidden = false;
     }
     function refresh({ structure = false } = {}) {
@@ -147,6 +127,8 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
     // Capture sees page scrolling and the horizontally scrollable rule alike.
     listen(window, 'scroll', () => refresh(), { capture: true, passive: true });
     listen(window, 'resize', () => refresh({ structure: true }));
+    listen(window.matchMedia('(forced-colors: active)'), 'change', () => refresh({ structure: true }));
+    listen(document.fonts, 'loadingdone', () => refresh({ structure: true }));
     if (window.visualViewport) {
         listen(window.visualViewport, 'resize', () => refresh({ structure: true }));
         listen(window.visualViewport, 'scroll', () => refresh());

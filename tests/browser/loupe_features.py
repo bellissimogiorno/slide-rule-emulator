@@ -94,7 +94,7 @@ def run_loupe_features(get_page, state, apply, settle, check, load, download,
             for axis in ['width', 'height']:
                 assert abs(dst[axis] - 2.5 * src[axis]) < .15, (axis, src, dst)
         r = result['lens']
-        expected_side = min(320, result['vw'] - 16, result['vh'] - 16)
+        expected_side = min(480, result['vw'] - 16, result['vh'] - 16)
         assert abs(r['width'] - expected_side) < .1 and abs(r['height'] - expected_side) < .1
         assert all(radius == 12 for radius in result['corners']), result['corners']
         assert r['x'] >= 7.9 and r['y'] >= 7.9
