@@ -20,7 +20,11 @@ An offline, two-sided scientific slide rule with configurable scales, classic in
 
 ## Try it
 
-Open **[`index.html`](index.html)** in a modern browser. The complete application is in that file; identical generated copies are provided in `docs/` and `dist/` for different publishing setups. Export a JSON programme or a configured standalone copy to keep a portable backup of your settings; local browser storage is not a backup.
+**[Try the emulator online](https://bellissimogiorno.github.io/slide-rule-emulator/)** immediately in your browser, with no installation or build step.
+
+The source code, documentation and contributions are hosted in the [GitHub repository](https://github.com/bellissimogiorno/slide-rule-emulator/).
+
+For offline use, download the package and open **[`index.html`](index.html)** in a modern browser. The complete application is in that file; identical generated copies are provided in `docs/` and `dist/` for different publishing setups. Export a JSON programme or a configured standalone copy to keep a portable backup of your settings; local browser storage is not a backup.
 
 For a local preview, use Node.js 22 or later:
 
