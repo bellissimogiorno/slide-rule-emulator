@@ -75,15 +75,19 @@ function formatLogLogLabel(value, decade) {
     const sig = decade <= -2 ? 6 : 5;
     return formatSig(value, sig);
 }
-function logLogEngraving(value, decade) {
+function logLogEngraving(value, decade, endpoint = false) {
     if (!Number.isFinite(value))
         return "--";
+    // An exact endpoint must not be captioned as a neighbouring graduation.
+    // Each decade nearer one needs another digit because ln(value) shrinks.
+    if (endpoint && decade < 0)
+        return formatSig(value, 6 - Math.floor(decade));
     const magnitude = Math.abs(value);
     /* Classic rules favour a short engraving over calculator-style output.
        Retain the extra digit near unity on the fine LL ranges, but cap the
        wide LL ranges at four significant figures. */
     if (decade <= -3)
-        return formatSig(value, 5);
+        return formatSig(value, Math.max(5, 2 - Math.floor(decade)));
     if (decade <= -1)
         return formatSig(value, 4);
     if (magnitude >= 10000 || (magnitude > 0 && magnitude < 0.0001)) {

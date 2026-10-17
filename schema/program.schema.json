@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Programmable slide rule programme (v3.2.23)",
+  "title": "Programmable slide rule programme (v3.2.25)",
   "type": "object",
   "required": [
     "sides"

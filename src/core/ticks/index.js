@@ -38,7 +38,7 @@ function generateTicks(def, rt, width = 1000, minGap = 1.65, options = {}) {
         ticks = adaptiveTicks(def, rt, width * (options.displayScale ?? 1), options.adaptiveSpacing || 'balanced');
         if (def.type === 'syncroLogLog') ticks = spaceAdaptiveLabels(ticks, width * (options.displayScale ?? 1)).map(t => ({ ...t,
             reciprocalValue: 1 / t.value, positiveLabel: t.label,
-            negativeLabel: t.label ? logLogEngraving(1 / t.value, def.decade) : '' }));
+            negativeLabel: t.label ? logLogEngraving(1 / t.value, def.decade, t.pos === rt.pMin || t.pos === rt.pMax) : '' }));
     }
     else if (manual) ticks = manualTicks(def, rt);
     else if (mode === 'mapped' && HYPERBOLIC.has(def.type) && def.minorDivisions == null)

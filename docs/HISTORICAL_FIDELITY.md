@@ -30,3 +30,7 @@ the later 24-row 2/82. S/S' and both tangent ranges have complementary black/red
 angle readings; P is reverse-running red. Main mathematical intervals are
 implemented, not every end extension, gauge, physical reference table or
 auxiliary cursor line.
+
+## Mathema and Aristo hyperbolic presets
+
+See [Mathema 2/84N](MATHEMA.md) and [Aristo 0971 / 0972](ARISTO_HYPERBOLIC.md) for scale-by-scale mathematical conventions, source evidence, and the limits of the reconstruction. These are programmable mathematical instruments with documented scale arrangements; the emulator does not reproduce their entire physical engraving or auxiliary cursor hardware.

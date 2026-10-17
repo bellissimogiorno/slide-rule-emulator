@@ -1,0 +1,66 @@
+{
+  "activeSide": "front",
+  "viewMode": "both",
+  "presetId": "aristo0972",
+  "theme": "neutral",
+  "density": "classic",
+  "modelLabel": "Aristo 0972 HyperLog",
+  "instrumentNote": "Documented 0972 row order and main mathematical intervals. H1/H2 read sqrt(1+x^2) at x on D (0.1 to 1 / 1 to 10). Ch gives the argument of cosh. Red angular readings are complements. Th stops at argument 3. End extensions, auxiliary cursor lines and the complete original gauge inventory are not reproduced.",
+  "showFormulas": true,
+  "compactScales": true,
+  "magnification": 1,
+  "slideOffset": 0,
+  "cursor": 0.5,
+  "customScales": [],
+  "sides": {
+    "front": {
+      "name": "Front - hyperbolic / Pythagorean",
+      "topStator": [
+        "ARISTO_H2",
+        "ARISTO_SH2",
+        "ARISTO_TH",
+        "K",
+        "A"
+      ],
+      "slide": [
+        "B",
+        "ARISTO_T",
+        "ARISTO_ST",
+        "ARISTO_S",
+        "ARISTO_P",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "DI",
+        "ARISTO_CH",
+        "ARISTO_SH1",
+        "ARISTO_H1"
+      ]
+    },
+    "back": {
+      "name": "Back - folded / log-log",
+      "topStator": [
+        "LL00",
+        "LL01",
+        "LL02",
+        "LL03",
+        "DF"
+      ],
+      "slide": [
+        "CF",
+        "CIF",
+        "L",
+        "CI",
+        "C"
+      ],
+      "bottomStator": [
+        "D",
+        "LL3",
+        "LL2",
+        "LL1",
+        "LL0"
+      ]
+    }
+  }
+}

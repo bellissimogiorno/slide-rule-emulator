@@ -5,6 +5,10 @@ function tickKindRank(kind) {
 function thinTicksForPixels(ticks, width, baseGap) {
     const valid = dedupeTicks(ticks).filter(validTick);
     const ordered = [...valid].sort((a, b) => {
+        // A nearby round-number index cannot replace a known domain endpoint.
+        const endpointRank = Number(Boolean(b.endpoint)) - Number(Boolean(a.endpoint));
+        if (endpointRank)
+            return endpointRank;
         const rank = tickKindRank(b.kind) - tickKindRank(a.kind);
         if (rank)
             return rank;
@@ -115,7 +119,7 @@ function dedupeCandidateCoords(candidates) {
             continue;
         const key = Number(item.coord).toPrecision(11);
         const existing = map.get(key);
-        if (!existing || tickKindRank(item.kind) > tickKindRank(existing.kind) || (item.labelCandidate && !existing.labelCandidate))
+        if (!existing || (item.endpoint && !existing.endpoint) || tickKindRank(item.kind) > tickKindRank(existing.kind) || (item.labelCandidate && !existing.labelCandidate))
             map.set(key, item);
     }
     return [...map.values()].sort((a, b) => a.coord - b.coord);
@@ -146,7 +150,7 @@ function dedupeTicks(ticks) {
         }
         const existingRank = tickKindRank(existing.kind), newRank = tickKindRank(tick.kind);
         let keeper = existing, donor = tick;
-        if (newRank > existingRank) {
+        if ((tick.endpoint && !existing.endpoint) || newRank > existingRank) {
             keeper = tick;
             donor = existing;
             map.set(key, keeper);

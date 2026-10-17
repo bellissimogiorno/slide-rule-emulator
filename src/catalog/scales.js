@@ -1,4 +1,6 @@
 import { ultralogScales } from '#catalog/scales/ultralog.js';
+import { aristoHyperbolicScales } from '#catalog/scales/aristo-hyperbolic.js';
+import { mathemaScales } from '#catalog/scales/mathema.js';
 import { graphoplexScales } from '#catalog/scales/graphoplex.js';
 import { faber282nScales } from '#catalog/scales/faber282n.js';
 import { pickett14Scales } from "#catalog/scales/pickett14.js";
@@ -16,6 +18,8 @@ import { hyperbolicScales } from "#catalog/scales/hyperbolic.js";
 import { specialistScales } from "#catalog/scales/specialist.js";
 import { radiationScales } from "#catalog/scales/radiation.js";
 const base = {
+    ...aristoHyperbolicScales,
+    ...mathemaScales,
     ...ultralogScales,
     ...graphoplexScales,
     ...faber282nScales,

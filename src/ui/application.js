@@ -12,6 +12,7 @@ import { standaloneHtml, downloadBlob as saveBlob } from "#ui/files.js";
 import { DENSITIES, THEMES } from "#catalog/appearance.js";
 import { DEFAULT_STATE } from "#catalog/defaults.js";
 import { PRESETS } from "#catalog/presets.js";
+import { presetMenuGroups } from "#catalog/preset-menu.js";
 import { clamp } from "#core/numbers.js";
 import { buildLibrary, deepClone, exportableState, mergeState, normalizeState } from "#model/program.js";
 import { escapeHtml, scaleSort, titleCase, railLabel } from "#ui/html.js";
@@ -467,14 +468,7 @@ function createApplication(document) {
         dom.instrumentNote.textContent = side.note || state.instrumentNote || "Drag the slide and cursor; all readings update at the hairline.";
     }
     function renderPresetSelect() {
-        const groups = new Map();
-        for (const [id, preset] of Object.entries(PRESETS)) {
-            const group = preset.group || "Other";
-            if (!groups.has(group))
-                groups.set(group, []);
-            groups.get(group).push([id, preset]);
-        }
-        const options = [...groups.entries()].map(([group, items]) => {
+        const options = presetMenuGroups(PRESETS).map(([group, items]) => {
             const inner = items.map(([id, preset]) => `<option value="${escapeHtml(id)}">${escapeHtml(preset.name)}</option>`).join("");
             return `<optgroup label="${escapeHtml(group)}">${inner}</optgroup>`;
         }).join("");

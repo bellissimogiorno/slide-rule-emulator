@@ -1,7 +1,8 @@
 /** Specimen row order; educational mathematical reconstruction, not fire control. */
 export const pickett14Presets = {
     pickett14: {
-        label: "Pickett 14 U.S. Military / Artillery",
+        name: "Pickett Model 14 U.S. Military / Artillery",
+        group: "Specialist instruments",
         modelLabel: "Pickett Model 14 U.S.", theme: "pickett-es", density: "pickett",
         showFormulas: false, compactScales: true,
         description: "General log-log face and degree/6400-mil trigonometric face. Shared complementary and supplementary angle ticks. Main index-to-index ranges, not a photographic facsimile.",

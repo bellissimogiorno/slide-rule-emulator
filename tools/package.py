@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verify and package the repository using only Python's standard library.
 
-The allowlist avoids copying installed dependencies, secrets and old releases.
+The allowlist avoids copying installed dependencies, secrets and unrelated archives.
 Every entry is hashed; timestamps/order/permissions are fixed for repeatability.
 No browser-test pass is inferred from successful packaging.
 """

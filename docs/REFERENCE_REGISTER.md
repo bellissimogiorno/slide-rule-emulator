@@ -105,3 +105,7 @@ CHEMICAL_SCALES.md, rather than an unsupported historical-calibration claim.
 
 The [preset guide](FABER_282N.md) separates the manufacturer's statements from
 independent numerical checks and identifies omitted physical details.
+
+## Faber-Castell Mathema 2/84N and Aristo hyperbolic instruments
+
+The [Mathema guide](MATHEMA.md) records its gradian and function-scale conventions, source links and mathematical scope. The [Aristo guide](ARISTO_HYPERBOLIC.md) records the manufacturer manual, specimen scale order and the distinctions between the 0971 HyperboLog and 0972 HyperLog.

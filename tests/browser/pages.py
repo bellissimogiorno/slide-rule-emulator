@@ -44,7 +44,10 @@ def check_entry(browser, url, html, output, label):
             page.wait_for_function('document.documentElement.dataset.appReady === "true"')
             assert page.locator('html').get_attribute('lang') == 'en-GB'
             assert page.locator('.scale-row').count() == 15
-            assert page.locator('#presetSelect option:not([value="custom"])').count() == 16
+            expected_ids = page.evaluate("async()=>Object.keys((await import('#catalog/presets.js')).PRESETS)")
+            menu_ids = page.locator('#presetSelect option:not([value="custom"])').evaluate_all(
+                'options=>options.map(option=>option.value)')
+            assert sorted(menu_ids) == sorted(expected_ids), 'Preset menu differs from the runtime catalogue'
             # A successful HTTP response is not enough: the instrument must work.
             page.locator('#sideSelect').select_option('')
             page.wait_for_function('document.querySelectorAll(".rule-face").length === 2')

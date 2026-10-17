@@ -5,7 +5,7 @@
  * same policy; non-monotone radiation curves are explicitly split at the peak.
  * Named gauges, discrete references and authored tick lists remain authoritative.
  */
-import { formatSig } from '#core/format.js';
+import { formatSig, logLogEngraving } from '#core/format.js';
 import { nearMultiple, invertMonotonic, niceStep } from '#core/numbers.js';
 import { ENERGY_PEAK_U, PHOTON_PEAK_U } from '#core/physics.js';
 import { byPos, dedupeTicks } from '#core/ticks/common.js';
@@ -167,7 +167,9 @@ export function adaptiveTicks(def, rt, screenWidth, spacing = 'balanced') {
             graduateWindow(window, branch.pos, screenWidth, gap, ticks, budget);
         for (const [p, value] of [[branch.pMin, a], [branch.pMax, b]]) {
             const override = p === rt.pMin ? def.startLabel : p === rt.pMax ? def.endLabel : undefined;
-            ticks.push({ pos: p, value, label: override ?? formatSig(value, 6), kind: 'index' });
+            const label = def.decade < 0 && ['loglog', 'loglog10', 'syncroLogLog'].includes(def.type)
+                ? logLogEngraving(value, def.decade, true) : formatSig(value, 6);
+            ticks.push({ pos: p, value, label: override ?? label, kind: 'index' });
         }
     }
     // A spectral peak may evaluate one ULP above one. Collapse only numerical

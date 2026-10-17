@@ -30,12 +30,14 @@ function buildLogLogTicks(def, rt, base, sign, paired, width = 1000) {
         const labelWanted = Boolean(candidate.labelCandidate);
         if (paired) {
             ticks.push({ pos: clamp(pos, 0, 1), value: positiveValue, reciprocalValue: 1 / positiveValue,
-                positiveLabel: labelWanted ? logLogEngraving(positiveValue, decade) : "",
-                negativeLabel: labelWanted ? logLogEngraving(1 / positiveValue, decade) : "", kind: candidate.kind });
+                positiveLabel: labelWanted ? logLogEngraving(positiveValue, decade, candidate.endpoint) : "",
+                negativeLabel: labelWanted ? logLogEngraving(1 / positiveValue, decade, candidate.endpoint) : "",
+                kind: candidate.kind, endpoint: Boolean(candidate.endpoint) });
         }
         else {
             ticks.push({ pos: clamp(pos, 0, 1), value: actualValue,
-                label: labelWanted ? logLogEngraving(actualValue, decade) : "", kind: candidate.kind });
+                label: labelWanted ? logLogEngraving(actualValue, decade, candidate.endpoint) : "",
+                kind: candidate.kind, endpoint: Boolean(candidate.endpoint) });
         }
     }
     return dedupeTicks(ticks).sort(byPos);

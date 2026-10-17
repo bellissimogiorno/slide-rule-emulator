@@ -66,6 +66,7 @@ This is local static-site verification, not a live GitHub Pages deployment.
 python -m pip install -r requirements-dev.txt
 python -m playwright install chromium
 npm run test:browser
+npm run test:new-instruments
 npm run test:visual
 ```
 
@@ -282,3 +283,30 @@ and magnifications. It checks actual numeral bounds, linked keyboard motion,
 readouts, configured downloads and the loupe. `--mode dom` is a deliberate
 opaque-origin test with a storage substitute, not evidence of native launch
 or persistence. `--executable` selects an installed Chromium executable.
+
+## Mathema and Aristo presets
+
+```sh
+npm run test:new-instruments -- --visual --output qa/new-instruments
+```
+
+This focused native Chromium test checks manufacturer/model adjacency in the
+preset menu; the 24, 25 and 31 rows of the Mathema 2/84N, Aristo 0971 and Aristo
+0972; both faces at narrow and wide viewports; both numbering and graduation
+modes; actual keyboard and pointer movement; JSON-file import; and configured
+HTML downloads reopened in fresh browser contexts. Measured cursor and slide
+positions on each face must agree with the programme after keys and drags; two
+equally stale faces cannot satisfy the motion check. It rejects uncaught page
+exceptions and console errors. `--executable` or `CHROMIUM_EXECUTABLE` selects an
+installed browser. The report records missing prerequisites as a failed setup;
+there is no DOM-mode substitute. `--visual` retains optional screenshots for
+manual inspection, which remains separate from automated geometry checks.
+
+The browser CI job runs this suite as a separate required native step after
+installing Chromium. Its log, JSON results and screenshots are retained in the
+browser evidence artefact, including on failure.
+
+This test was added but could not be executed in the preparation environment:
+Python Playwright and Chromium were unavailable, and the Chromium download was
+blocked. Python syntax checking does not establish browser correctness. Run it
+with the documented browser prerequisites before claiming a native-browser pass.

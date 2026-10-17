@@ -115,3 +115,14 @@ test('browser CI verifies actual Pages entry points after installing Chromium', 
     assert.ok(install >= 0 && pagesCheck > install);
     assert.match(ci, /pages\.py --output qa\/ci\/pages 2>&1 \| tee qa\/ci\/pages\.log/);
 });
+
+test('Mathema and Aristo native checks are available locally and required by browser CI', async () => {
+    const scripts = JSON.parse(await read('package.json')).scripts;
+    assert.equal(scripts['test:new-instruments'], 'python tests/browser/new_instruments.py --mode native');
+    const install = ci.indexOf('python -m playwright install --with-deps chromium');
+    const focused = ci.indexOf('python tests/browser/new_instruments.py --mode native --visual --output qa/ci/new-instruments');
+    const upload = ci.indexOf('- name: Preserve actual results, including failures');
+    assert.ok(install >= 0 && focused > install && upload > focused);
+    assert.match(ci, /new_instruments\.py --mode native --visual --output qa\/ci\/new-instruments 2>&1 \| tee qa\/ci\/new-instruments\.log/);
+    assert.match(ci.slice(upload), /if: always\(\)[\s\S]*path: qa\/ci\//);
+});

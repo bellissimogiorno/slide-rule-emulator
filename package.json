@@ -1,6 +1,6 @@
 {
   "name": "programmable-slide-rule",
-  "version": "3.2.23",
+  "version": "3.2.25",
   "private": true,
   "type": "module",
   "description": "Programmable duplex slide-rule emulator with mathematical scales and compact engraving.",
@@ -18,6 +18,7 @@
     "check": "node tools/check.mjs",
     "test": "node --test tests/unit/*.test.js",
     "test:browser": "python tests/browser/run.py --mode native",
+    "test:new-instruments": "python tests/browser/new_instruments.py --mode native",
     "test:visual": "python tests/browser/run.py --mode native --visual",
     "verify": "npm run check && npm test && npm run build -- --check",
     "release": "python tools/package.py",

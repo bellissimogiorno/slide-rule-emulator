@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.23**
+**Version 3.2.25**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -55,11 +55,13 @@ publishing method, not competing workflows. See [Pages setup and troubleshooting
 
 ## Explore the instruments
 
-**Twenty-two presets** cover Faber-Castell 2/82N and 2/83N, British Thornton AA010, Pickett N3/N4/N16 and Model 14, K&E Deci-Lon, Pickett Model 17, Thornton F5100, Hemmi 257 and Flying Fish 1017, UltraLog, Graphoplex 690A and 691A, alongside scientific, classic, root, log-log, trigonometric and hyperbolic layouts.
+**Twenty-five presets** cover Aristo 0971 and 0972, Faber-Castell 2/82N, 2/83N and Mathema 2/84N, British Thornton AA010, Pickett N3/N4/N16 and Model 14, K&E Deci-Lon, Pickett Model 17, Thornton F5100, Hemmi 257 and Flying Fish 1017, UltraLog, Graphoplex 690A and 691A, alongside scientific, classic, root, log-log, trigonometric and hyperbolic layouts.
 
-The scale library contains **297 definitions**, including aliases and composite rows. Arithmetic, reciprocal and folded scales sit alongside square/cube/fifth powers and roots, circular and hyperbolic functions, paired log-log ranges, and specialist chemical and radiation relationships. The Pickett N3/N4 paired log-log rows share graduations with reciprocal readings in black and red. Their square- and cube-root banks reproduce the back-to-back construction, with branch graduations meeting a common line; see [Pickett root scales](docs/PICKETT_ROOTS.md). The separate **Pickett-style fifth roots and powers** laboratory adds a five-branch back-to-back bank and a shared-tick fifth-power/reciprocal pair; see [fifth-root scales](docs/FIFTH_ROOTS.md). These are mathematical extensions, not additional historical claims.
+The scale library includes aliases and composite rows; its complete generated inventory is in [the catalogue](docs/CATALOGUE.md). Arithmetic, reciprocal and folded scales sit alongside square/cube/fifth powers and roots, circular and hyperbolic functions, paired log-log ranges, and specialist chemical and radiation relationships. The Pickett N3/N4 paired log-log rows share graduations with reciprocal readings in black and red. Their square- and cube-root banks reproduce the back-to-back construction, with branch graduations meeting a common line; see [Pickett root scales](docs/PICKETT_ROOTS.md). The separate **Pickett-style fifth roots and powers** laboratory adds a five-branch back-to-back bank and a shared-tick fifth-power/reciprocal pair; see [fifth-root scales](docs/FIFTH_ROOTS.md). These are mathematical extensions, not additional historical claims.
 
 The [Faber-Castell 2/82N](docs/FABER_282N.md) follows the 27-row N-model arrangement, with movable sine and cube scales and paired complementary angular readings. It is distinct from later 2/82 layouts.
+
+The [Faber-Castell Mathema 2/84N](docs/MATHEMA.md) has its own function scales, including gradian trigonometry and hyperbolic functions. The [Aristo 0971 HyperboLog and 0972 HyperLog](docs/ARISTO_HYPERBOLIC.md) provide their documented duplex arrangements. Their guides describe the implemented mathematical intervals and omitted physical details.
 
 The [Pickett Model 14](docs/PICKETT_14.md) includes its general log-log face and degree/6400-mil face, with shared complementary/supplementary angle ticks. It is a mathematical reconstruction, not a fire-control calculator.
 
@@ -71,7 +73,7 @@ Use **Both sides**, next to **Flip side**, to toggle linked front and back faces
 
 **Graduations** in Scale layout offers **Conventional** and **Fully adaptive**. Fully adaptive uses the displayed length of every automatically graduated continuous scale, including powers, expanded roots and nonlinear scales, with Clear/Balanced/Fine detail. It never shrinks the numeral font or changes calculations. Conventional applies one subdivision choice to C/D and W, accounting for W's doubled effective length; the 10-inch choice retains the documented Faber W pattern. Only the active options menu is shown beside Graduations: C/D + W or Adaptive detail. Both choices are remembered when switching modes. Chemical references and explicit custom tick lists remain authored rather than inventing intermediate values. See [graduation design](docs/GRADUATIONS.md).
 
-The prominent **Layout preset** bar above the instrument selects a ready-made layout. Press **Load preset** to apply it; **About** reveals its description. The Magnification menu offers **75%, 100%, 125%, 150% and 200%**, independently of the page controls.
+The prominent **Layout preset** bar above the instrument selects a ready-made layout. Within each instrument section, manufacturers are grouped alphabetically and model numbers are ordered numerically (for example, Faber-Castell 2/82N, 2/83N, 2/84N). Press **Load preset** to apply it; **About** reveals its description. The Magnification menu offers **75%, 100%, 125%, 150% and 200%**, independently of the page controls.
 
 The neighbouring **Slide** and **Cursor** controls use a ridged slide grip and a glass-style hairline grip. Tab to either grip and use the arrow keys. The four-position **Keyboard step** slider is the same height as the position controls and retains motion focus: click a stop or drag the shared grip to Faster (0.005), Normal (0.001), Fine (0.0005) or Very fine (0.0001), then continue with the arrows immediately. Keys **1-4** select those same steps while a grip or the rule is focused; Alt gives a tenfold finer step. On the rule, **S** selects the slide and **C** selects the cursor for arrow-key movement. The part last dragged is selected automatically; Shift plus an arrow on the rule also moves the slide. The digital cursor readout shows the corresponding scale values. UK English is used throughout the interface and documentation.
 
@@ -121,6 +123,7 @@ python -m pip install -r requirements-dev.txt
 python -m playwright install chromium
 npm run test:pages       # Native homepage, project-subpath and reload checks
 npm run test:browser
+npm run test:new-instruments # Native Mathema and Aristo layout, motion and export checks
 npm run test:visual
 ```
 
