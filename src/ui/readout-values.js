@@ -3,6 +3,16 @@ import { formatValue, formatUseful } from '#core/format.js';
 import { makeRuntimeScale } from '#core/mappings.js';
 import { clamp } from '#core/numbers.js';
 
+/** Locate the visible copy of a point on the moving slide. The repeated image
+ * has the length of the complete track, even when a scale occupies only part
+ * of it. Keep the original endpoints distinct: the unshifted right index of
+ * C still reads 10, not 1. Retain the same boundary tolerance as scale readings.
+ */
+export function wrapSlidePosition(p) {
+    if (p >= -1e-10 && p <= 1 + 1e-10) return p;
+    return p - Math.floor(p);
+}
+
 function positionOnScale(def, p) {
     const rt = makeRuntimeScale(def);
     const min = Number.isFinite(rt.pMin) ? rt.pMin : 0;
@@ -72,14 +82,15 @@ export function scaleReadings(def, p, library, fullPrecision = false) {
 /** Report exactly the same coordinates as the painted cursor marks. Physical
  * off-track marks remain off scale even when a translated slide would supply
  * a mathematical value beyond the visible window. Never clamp an offset. */
-export function cursorScaleReadings(def, p, library, marks = [], cursorPosition = p, fullPrecision = false) {
-    const main = scaleReadings(def, p, library, fullPrecision);
+export function cursorScaleReadings(def, p, library, marks = [], cursorPosition = p, fullPrecision = false, wraparound = false) {
+    const read = position => scaleReadings(def, wraparound ? wrapSlidePosition(position) : position, library, fullPrecision);
+    const main = read(p);
     if (!marks.length) return main;
     const readings = [{ label: 'Main', result: main }, ...marks.map(mark => {
         const physical = cursorPosition + mark.offset;
         const result = physical < -1e-10 || physical > 1 + 1e-10
             ? { outside: true, texts: ['off scale'] }
-            : scaleReadings(def, p + mark.offset, library, fullPrecision);
+            : read(p + mark.offset);
         return { label: mark.label, result };
     })];
     return { outside: readings.every(({ result }) => result.outside), multi: true,

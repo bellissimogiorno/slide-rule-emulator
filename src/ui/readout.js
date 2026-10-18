@@ -9,8 +9,8 @@ import { cursorAppearanceSide } from '#model/cursor-appearance.js';
 
 const RAILS = ["topStator", "slide", "bottomStator"];
 
-function renderCard(id, def, p, library, marks, cursorPosition, fullPrecision) {
-    const value = cursorScaleReadings(def, p, library, marks, cursorPosition, fullPrecision);
+function renderCard(id, def, p, library, marks, cursorPosition, fullPrecision, wraparound) {
+    const value = cursorScaleReadings(def, p, library, marks, cursorPosition, fullPrecision, wraparound);
     const label = def.compactLabel || def.label || id;
     const classes = ["readout-card", value.outside ? "outside" : "", def.referenceOnly ? "is-reference" : ""].filter(Boolean).join(" ");
     const text = value.multi
@@ -25,7 +25,8 @@ export function renderReadout(state, library) {
         const groups = RAILS.map(rail => {
             const p = rail === "slide" ? state.cursor - state.slideOffset : state.cursor;
             const cards = side[rail].filter(id => library[id]).map(id =>
-                renderCard(id, library[id], p, library, marksForScale(side, id), state.cursor, state.fullPrecision)).join("");
+                renderCard(id, library[id], p, library, marksForScale(side, id), state.cursor, state.fullPrecision,
+                    rail === "slide" && state.slideWraparound)).join("");
             if (!cards) return "";
             return `<section class="readout-rail" data-readout-rail="${rail}" aria-label="${railLabel(rail)}"><h4 class="rail-name">${railLabel(rail)}</h4><div class="readout-cards">${cards}</div></section>`;
         }).join("");

@@ -6,7 +6,8 @@ export function standaloneHtml(document, programme) {
     clone.querySelector('#loupeButton')?.setAttribute('aria-pressed', 'false');
     // Retain the chosen cursor, but open a saved copy with its controls tucked away.
     clone.querySelector('#cursorAppearance')?.setAttribute('hidden', '');
-    for (const button of clone.querySelectorAll('[data-cursor-appearance-trigger]'))
+    clone.querySelector('#slidePresetPanel')?.setAttribute('hidden', '');
+    for (const button of clone.querySelectorAll('[data-cursor-appearance-trigger], [data-slide-preset-trigger]'))
         button.setAttribute('aria-expanded', 'false');
     const seed = clone.querySelector('#embedded-program');
     if (!seed)

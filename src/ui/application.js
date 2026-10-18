@@ -1,4 +1,5 @@
 import { createMarkTooltips } from "#ui/mark-tooltips.js";
+import { bindFloatingPanel } from '#ui/floating-panel.js';
 import { bindCursorAppearancePanel } from '#ui/cursor-appearance-panel.js';
 import { createScaleHistory } from "#model/scale-history.js";
 import { moveScale } from "#model/scale-order.js";
@@ -23,6 +24,7 @@ import { CURSOR_SHAPES, CURSOR_COLOURS, cursorAppearanceSide } from '#model/curs
 import { createReadoutView } from '#ui/readout-view.js';
 import { createProgrammeEditor } from '#ui/programme-editor.js';
 import { renderRailRows } from "#ui/scale-markup.js";
+import { updateSlideWraparound, refreshSlideWraparound } from '#ui/slide-wraparound.js';
 import { renderCursor, positionCursorMarks, cursorCapClasses } from '#ui/cursor-marks.js';
 import { APP_VERSION, DEFAULT_LABEL_W, STORAGE_KEY } from "#version.js";
 function createApplication(document) {
@@ -54,6 +56,7 @@ function createApplication(document) {
     let keyboardTarget = "cursor";
     let lastMotionFocus = null;
     let stepControls;
+    let slidePresetPanel;
     let loupe;
     let railReorder;
     const scaleHistory = createScaleHistory();
@@ -86,6 +89,7 @@ function createApplication(document) {
         instrumentNote: document.getElementById("instrumentNote"),
         readout: document.getElementById("readout"),
         presetSelect: document.getElementById("presetSelect"),
+        slidePresetSelect: document.getElementById("slidePresetSelect"),
         loadPresetButton: document.getElementById("loadPresetButton"),
         presetDescription: document.getElementById("presetDescription"),
         presetDetailsButton: document.getElementById("presetDetailsButton"),
@@ -102,6 +106,7 @@ function createApplication(document) {
         formulaToggle: document.getElementById("formulaToggle"),
         compactScaleToggle: document.getElementById("compactScaleToggle"),
         fullPrecisionToggle: document.getElementById("fullPrecisionToggle"),
+        slideWraparoundToggle: document.getElementById("slideWraparoundToggle"),
         railEditors: document.getElementById("railEditors"),
         reorderStatus: document.getElementById("reorderStatus"),
         libraryList: document.getElementById("libraryList")
@@ -121,6 +126,11 @@ function createApplication(document) {
             onStorageFailure: () => showAppStatus("Page theme changed for this session. Browser preferences cannot be saved; a standalone copy retains the chosen page theme.")
         });
         bindCursorAppearancePanel({ document, signal: lifetime.signal });
+        slidePresetPanel = bindFloatingPanel({ document, signal: lifetime.signal,
+            panel: document.getElementById('slidePresetPanel'),
+            triggers: [...document.querySelectorAll('[data-slide-preset-trigger]')],
+            initialFocus: () => dom.slidePresetSelect
+        });
         bindEvents();
         railReorder = createRailReorder({
             root: dom.railEditors, status: dom.reorderStatus, onMove: moveEditorScale,
@@ -162,7 +172,7 @@ function createApplication(document) {
         // Form controls outside the motion cards retain their own shortcuts.
         listen(dom.workbench, "keydown", onMotionKeyDown);
         listen(dom.workbench, "focusin", event => {
-            if (event.target.closest?.('[data-cursor-appearance-trigger]')) return;
+            if (event.target.closest?.('[data-cursor-appearance-trigger], [data-slide-preset-trigger]')) return;
             const card = event.target.closest?.(".position-control");
             if (card) selectMotionTarget(card.dataset.motion);
             if (card || event.target === dom.ruleCanvas || event.target === dom.ruleViewport)
@@ -241,6 +251,12 @@ function createApplication(document) {
         listen(window, "resize", scheduleResize);
         listen(dom.ruleCanvas, "lostpointercapture", onPointerUp);
         listen(dom.loadPresetButton, "click", () => applyPreset(dom.presetSelect.value));
+        listen(dom.slidePresetSelect, "change", () => {
+            const id = dom.slidePresetSelect.value;
+            if (Object.hasOwn(PRESETS, id)) applyPreset(id);
+            else renderPresetSelect(); // Custom/current is a status, not a preset.
+            slidePresetPanel.close(true);
+        });
         listen(dom.presetDetailsButton, "click", () => {
             const expanded = dom.presetDescription.hidden;
             dom.presetDescription.hidden = !expanded;
@@ -300,6 +316,12 @@ function createApplication(document) {
         });
         listen(dom.fullPrecisionToggle, "change", () => {
             state.fullPrecision = dom.fullPrecisionToggle.checked;
+            saveState();
+            applyAppearance();
+            renderRuleAndReadout(false);
+        });
+        listen(dom.slideWraparoundToggle, "change", () => {
+            state.slideWraparound = dom.slideWraparoundToggle.checked;
             saveState();
             applyAppearance();
             renderRuleAndReadout(false);
@@ -395,9 +417,9 @@ function createApplication(document) {
     }
     function onMotionKeyDown(event) {
         const target = event.target;
-        // The quiet menu button lives in the cursor card; its keys must not
-        // nudge the cursor, change the motion step or toggle the loupe.
-        if (target.closest?.('[data-cursor-appearance-trigger]')) return;
+        // The menu buttons live in the motion cards; their keys must not
+        // move either part, change the motion step or toggle the loupe.
+        if (target.closest?.('[data-cursor-appearance-trigger], [data-slide-preset-trigger]')) return;
         const card = target.closest?.(".position-control");
         const onRule = target.closest?.("#ruleViewport");
         if (!card && !onRule) return;
@@ -480,6 +502,7 @@ function createApplication(document) {
         dom.formulaToggle.checked = Boolean(state.showFormulas);
         dom.compactScaleToggle.checked = Boolean(state.compactScales);
         dom.fullPrecisionToggle.checked = state.fullPrecision;
+        dom.slideWraparoundToggle.checked = state.slideWraparound;
     }
     function renderSideSelect() {
         const options = Object.entries(state.sides).map(([key, side]) => {
@@ -511,6 +534,10 @@ function createApplication(document) {
         const customOption = `<option value="custom">Custom / current layout</option>`;
         dom.presetSelect.innerHTML = options + customOption;
         dom.presetSelect.value = PRESETS[state.presetId] ? state.presetId : "custom";
+        // The shortcut shows the applied layout. The main chooser may still
+        // stage a different choice until its Load preset button is pressed.
+        dom.slidePresetSelect.innerHTML = options + '<option value="custom" disabled>Custom / current layout</option>';
+        dom.slidePresetSelect.value = dom.presetSelect.value;
         const preset = PRESETS[dom.presetSelect.value];
         dom.presetDescription.textContent = preset ? preset.description : "Current custom layout. Loading a preset replaces both faces but keeps custom scale definitions.";
     }
@@ -574,16 +601,14 @@ function createApplication(document) {
         scalePolishFrame = requestAnimationFrame(() => {
             scalePolishFrame = 0;
             optimizeScaleLabels(dom.ruleCanvas, state.compactScales);
+            refreshSlideWraparound(dom.ruleCanvas);
             loupe.refresh({ structure: true });
             updateCursorPosition();
         });
     }
     function updateSlideTransform() {
         dom.ruleCanvas.style.setProperty("--slide-offset", String(state.slideOffset));
-        const movers = dom.ruleCanvas.querySelectorAll(".slide-mover");
-        movers.forEach(el => {
-            el.style.transform = `translateX(${(state.slideOffset * 100).toFixed(4)}%)`;
-        });
+        updateSlideWraparound(dom.ruleCanvas, state.slideOffset, state.slideWraparound);
     }
     function updateCursorPosition() {
         dom.ruleCanvas.querySelectorAll(".rule-face-body").forEach(face => {

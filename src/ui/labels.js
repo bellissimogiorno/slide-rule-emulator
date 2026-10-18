@@ -7,8 +7,11 @@ function optimizeScaleLabels(ruleCanvas, compact) {
             tick.classList.toggle("unlabelled-major", !selected.has(tick.dataset.pos));
         });
     };
-    ruleCanvas.querySelectorAll(".unlabelled-major").forEach(tick => tick.classList.remove("unlabelled-major"));
+    ruleCanvas.querySelectorAll(".unlabelled-major").forEach(tick => {
+        if (!tick.closest(".slide-wraparound-copy")) tick.classList.remove("unlabelled-major");
+    });
     ruleCanvas.querySelectorAll(".tick-mover:not(.root-stack-track), .root-branch").forEach(group => {
+        if (group.closest(".slide-wraparound-copy")) return;
         const useCompact = compact && !group.closest(".no-compact-labels");
         if (useCompact)
             demote(group, optimizeCompactLabelLine(group, ".tick-label", 2.0), ".tick");
@@ -16,6 +19,7 @@ function optimizeScaleLabels(ruleCanvas, compact) {
             optimizeLabelLine(group, ".tick-label", 2.2);
     });
     ruleCanvas.querySelectorAll(".syncro-track").forEach(group => {
+        if (group.closest(".slide-wraparound-copy")) return;
         const useCompact = compact && !group.closest(".no-compact-labels");
         if (useCompact) {
             const above = optimizeCompactLabelLine(group, ".syncro-number.positive", 2.0);

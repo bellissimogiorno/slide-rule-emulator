@@ -144,6 +144,16 @@ body[data-formulas="true"] .legend-name {
     width: 100%;
 }
 
+/* Each repeated slide image owns exactly one graduated length. This also
+   clips overhanging endpoint ink at the join between neighbouring periods. */
+.slide-wraparound-tile {
+    overflow: hidden;
+    /* Mark each join behind the engraving: a dark amber edge makes the yellow
+       band visible on pale instrument stock. Background paint changes no tick
+       geometry or pointer targets and is preserved by the reading lens. */
+    background-image: linear-gradient(to right, #ad6800 0 1px, #ffd84d 1px 5px, transparent 5px);
+}
+
 .tick-layer {
     overflow: hidden;
 }

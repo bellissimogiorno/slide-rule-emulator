@@ -134,7 +134,7 @@ summary {
     max-width: 100%;
 }
 .layout-actions > * { white-space: nowrap; }
-.cursor-position-heading { align-items: center; }
+.cursor-position-heading, .position-control[data-motion="slideOffset"] .position-heading { align-items: center; }
 .position-caption {
     display: inline-flex;
     align-items: center;
@@ -142,7 +142,7 @@ summary {
     height: 21px;
     min-width: 0;
 }
-.cursor-appearance-compact {
+.cursor-appearance-compact, .position-menu-button {
     width: 22px;
     height: 21px;
     min-height: 0;
@@ -155,11 +155,11 @@ summary {
     line-height: 1;
     flex: none;
 }
-.cursor-appearance-compact[aria-expanded="true"] {
+.cursor-appearance-compact[aria-expanded="true"], .position-menu-button[aria-expanded="true"] {
     background: var(--ui-hover);
     color: var(--ui-ink);
 }
-.cursor-appearance {
+.cursor-appearance, .slide-preset-panel {
     position: fixed;
     z-index: 2100;
     width: 360px;
@@ -232,7 +232,10 @@ summary {
         outline-offset: 3px;
     }
 }
-.cursor-appearance > .hint { margin: 6px 0 0; }
+.cursor-appearance > .hint, .slide-preset-panel > .hint { margin: 6px 0 0; }
+.slide-preset-panel { width: 440px; }
+.slide-preset-panel > .field { display: block; margin-bottom: 5px; }
+.slide-preset-panel > select { width: 100%; min-width: 0; }
 
 textarea {
     width: 100%;

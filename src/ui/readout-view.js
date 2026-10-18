@@ -28,7 +28,8 @@ export function createReadoutView(root) {
                 return;
             }
             for (const { node, value, definition, moving, marks } of cards) {
-                const result = cursorScaleReadings(definition, state.cursor - (moving ? state.slideOffset : 0), library, marks, state.cursor, state.fullPrecision);
+                const result = cursorScaleReadings(definition, state.cursor - (moving ? state.slideOffset : 0), library, marks, state.cursor, state.fullPrecision,
+                    moving && state.slideWraparound);
                 if (node.classList.contains('outside') !== result.outside)
                     node.classList.toggle('outside', result.outside);
                 if (result.multi) {

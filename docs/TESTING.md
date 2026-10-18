@@ -44,7 +44,7 @@ loading another preset. Exercise the Cursor range with pointer and keyboard at
 narrow and wide widths; its track and grip must stay inside the Cursor box
 between the nudge arrows, with no positioned input across the top of the page.
 
-Native browser verification for the 3.2.33 preparation environment was blocked:
+Native browser verification for the 3.2.35 preparation environment was blocked:
 no Chromium executable was installed, and browser provisioning returned HTTP
 403. No native rendering, pointer interaction, reload or download pass is claimed
 for this change. See the handover's current verification report for executed core
@@ -353,6 +353,27 @@ unchanged cursor-box dimensions, saved choices, both faces and standalone copies
 A setup failure means no browser cases ran; consult the handover's current
 verification report for the actual execution result.
 
+## Slide-box preset menu
+
+After building, run the separate native Playwright check:
+
+```sh
+node tests/browser/slide_preset.mjs --output qa/slide-preset
+```
+
+Check the complete grouped preset list, immediate application to both faces,
+position resets and synchronisation with the main Layout preset selector.
+The main selector must continue to wait for **Load preset**, while the Slide
+popup reflects the applied layout. Check the disabled custom-layout status,
+retained precision and cursor preferences, custom scale definitions, keyboard
+and outside dismissal, focus return after selection, narrow-screen placement
+and configured HTML exports with both popups closed. The shared floating-panel
+helper also requires regression checks of both Cursor appearance entry points.
+
+This runner requires Chromium and does not substitute a simulated browser when
+it is missing. A setup failure or syntax check is not a browser pass; consult
+the current verification report for the checks actually executed.
+
 ## Mathema and Aristo presets
 
 ```sh
@@ -380,3 +401,24 @@ This test was added but could not be executed in the preparation environment:
 Python Playwright and a Chromium executable were unavailable. A separate
 Node Playwright launch also failed because its browser executable was absent. Python syntax checking does not establish browser correctness. Run it
 with the documented browser prerequisites before claiming a native-browser pass.
+
+
+## Slide wraparound
+
+After building, run the focused native Playwright test:
+
+```sh
+npm run test:slide-wraparound -- --output qa/slide-wraparound
+```
+
+The runner is `tests/browser/slide_wraparound.mjs`. Review its retained report
+alongside the [wraparound contract](SLIDE_WRAPAROUND.md). The feature requires
+checks of the default-off control below Extended decimal precision, repetition
+in both directions, unchanged motion limits, fixed stators/gutters, both faces,
+main and auxiliary readings, paired/composite/root rows, short scale domains,
+zoom and loupe drawing. Verify saving through browser storage, JSON and configured
+HTML, plus retention across preset loading and position resets.
+
+A missing Chromium executable is a setup failure, not a passed browser test.
+Use the handover's current verification record for actual execution results;
+unit or syntax checks alone do not establish browser rendering correctness.

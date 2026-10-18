@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Programmable slide rule programme (v3.2.33)",
+  "title": "Programmable slide rule programme (v3.2.35)",
   "type": "object",
   "required": [
     "sides"
@@ -54,6 +54,11 @@
       "type": "boolean",
       "default": false,
       "description": "Use extended decimal precision in numerical labels and readouts. The default keeps four useful significant digits. Log-log and hypotenuse values between one and two use four significant digits of their excess above one; values below one, including reciprocal log-log values, use ordinary four-significant-digit rounding. Trailing decimal zeros are omitted. Calculations and saved positions are unchanged."
+    },
+    "slideWraparound": {
+      "type": "boolean",
+      "default": false,
+      "description": "Repeat the moving slide across the graduated window so parts leaving one end reappear at the other. Cursor readings follow the repeated scales. Stators and slide movement limits are unchanged."
     },
     "slideOffset": {
       "type": "number",

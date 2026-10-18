@@ -41,6 +41,7 @@ function normalizeState(s) {
     s.showFormulas = Boolean(s.showFormulas);
     s.compactScales = s.compactScales !== false;
     s.fullPrecision = s.fullPrecision === true;
+    s.slideWraparound = s.slideWraparound === true;
     s.slideOffset = clamp(Number(s.slideOffset) || 0, -0.9, 0.9);
     s.cursor = clamp(Number.isFinite(Number(s.cursor)) ? Number(s.cursor) : 0.5, 0, 1);
     s.cursorShape = typeof s.cursorShape === 'string' && Object.hasOwn(CURSOR_SHAPES, s.cursorShape) ? s.cursorShape : 'instrument';
@@ -78,6 +79,7 @@ function exportableState(state) {
         showFormulas: Boolean(state.showFormulas),
         compactScales: Boolean(state.compactScales),
         fullPrecision: state.fullPrecision === true,
+        slideWraparound: state.slideWraparound === true,
         magnification: state.magnification,
         graduationMode: state.graduationMode || 'conventional',
         adaptiveSpacing: state.adaptiveSpacing || 'balanced',

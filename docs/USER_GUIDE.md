@@ -1,8 +1,12 @@
 # User guide
 
-Use the prominent **Layout preset** bar above the motion controls: choose an instrument, then press **Load preset**. The **About** button reveals its description without changing the current layout. Selecting a name alone does not load it; loading replaces both faces. Use the face selector or Flip side to see the reverse, or the neighbouring Both sides button to show both faces together. Drag the slide to move the middle rails and drag the cursor hairline to read aligned values. The neighbouring position grips and nudge buttons provide another input method, with keyboard operation described below. Reset centres the cursor and aligns the slide; it does not erase the programme.
+Use the prominent **Layout preset** bar above the motion controls: choose an instrument, then press **Load preset**. The **About** button reveals its description without changing the current layout. Selecting a name in this bar alone does not load it.
 
-The digital readout shows underlying scale values at the hairline, with paired readings where applicable. Off-scale slide coordinates are not clamped into a misleading endpoint value. Ordinary slide-rule arithmetic still requires tracking the decimal exponent yourself unless a scale is explicitly absolute.
+For immediate loading, open the small arrow beside **Slide** in its position box. It matches the arrow beside Cursor and opens a popup containing the same complete, grouped menu of 25 presets. Choosing a preset applies it immediately and updates the main Layout preset selector. The popup shows the currently applied layout, even when a different choice is waiting in the main selector. A custom layout is shown as a disabled status item; choose any listed preset to replace it. Selection closes the popup and returns focus to its arrow. Escape, a click outside or moving keyboard focus outside also closes it.
+
+Loading through either route replaces both faces and resets the slide and cursor positions. Display precision, slide wraparound, cursor appearance and custom scale definitions are retained. Use the face selector or Flip side to see the reverse, or the neighbouring Both sides button to show both faces together. Drag the slide to move the middle rails and drag the cursor hairline to read aligned values. The neighbouring position grips and nudge buttons provide another input method, with keyboard operation described below. Reset centres the cursor and aligns the slide; it does not erase the programme.
+
+The digital readout shows underlying scale values at the hairline, with paired readings where applicable. With wraparound off, off-scale slide coordinates are not clamped into a misleading endpoint value. With wraparound on, slide readings use the visible repeated scale under each hairline. Ordinary slide-rule arithmetic still requires tracking the decimal exponent yourself unless a scale is explicitly absolute.
 
 Historical presets carry their own cursor markings where the sources establish
 them. Auxiliary readings are labelled separately from the main hairline and
@@ -29,6 +33,14 @@ For log-log values **between one and two**, the changing part matters more than 
 Labels and paired readings are rounded independently from their underlying unrounded values, avoiding a second rounding of an already shortened caption. Sexagesimal readings retain degrees/minutes/seconds notation after decimal degrees are rounded to four significant digits.
 
 Select **Extended decimal precision**, immediately below **Compact scale numbering**, to restore the detailed display. The choice survives a reload, JSON export/import and configured standalone HTML, and remains selected when loading another preset. Existing programmes without this option use the four-useful-digit default. Calculations, graduation positions and saved cursor/slide positions retain their original precision. Formulae, symbolic labels and exact configuration data are unaffected. See [display precision](DISPLAY_PRECISION.md) for the full policy and examples.
+
+## Slide wraparound
+
+Select **Wraparound slide**, directly below **Extended decimal precision** in **Scale layout**, to fill the exposed part of the slide with a copy of the engraving that has moved past the opposite end. The option is off by default. Slide right to reveal the repeated right end on the left; slide left to reveal the repeated left end on the right. Fixed scales and the name/legend gutters stay in place.
+
+Dragging, keyboard movement, nudge buttons and the Slide grip keep the same operation and limits. Switching wraparound on or off leaves the slide and cursor positions unchanged. Readouts use the copy beneath each main or auxiliary hairline, including paired scales and root banks. An auxiliary mark outside the visible graduated window remains off scale; so does a blank part of a scale with a shorter domain.
+
+The setting applies to both faces and the loupe. It survives reload, JSON export/import and configured HTML, and remains selected after a preset load, position reset, magnification change or face/view change. Old programmes without the option open with wraparound off. Repeated engraving does not remove the need to track decimal exponents in ordinary slide-rule arithmetic. See [slide wraparound](SLIDE_WRAPAROUND.md) for examples and the implementation contract.
 
 ## Arranging scales
 
@@ -83,7 +95,7 @@ The shortcuts do not act while typing in Programme JSON or navigating the Side, 
 
 Both faces share every movement. Magnification does not change a step's fraction of the scale length. Grabbing the cursor glass away from its centre preserves the original hairline position rather than snapping it to the mouse; clicking a fixed scale deliberately places the hairline there.
 
-The selected keyboard step and selected part are session controls, not additions to the programme schema. Loading a new page starts at Normal with the cursor selected; changing a preset within that page retains the keyboard step. The separate decimal-precision preference is saved with the programme. Exact slide and cursor positions are saved in programmes and configured standalone copies without rounding to either display format.
+The selected keyboard step and selected part are session controls, not additions to the programme schema. Loading a new page starts at Normal with the cursor selected; changing a preset within that page retains the keyboard step. The separate decimal-precision and slide-wraparound preferences are saved with the programme. Exact slide and cursor positions are saved in programmes and configured standalone copies without rounding to either display format.
 
 ## Pointer magnification
 

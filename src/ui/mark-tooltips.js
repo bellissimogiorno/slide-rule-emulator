@@ -2,6 +2,22 @@
  * Purely informational: no pointer capture, focus changes or motion commands.
  * The native title remains a fallback if this enhancement is not running.
  */
+export function visibleMarkBounds(mark) {
+    const box = mark.getBoundingClientRect();
+    let { left, right, top, bottom } = box;
+    // Bounding boxes include clipped-away ink. Restrict the hit area to the
+    // graduated pane and (when repeated) the image's own one-period window.
+    // Otherwise a hidden copy can show a tooltip over a fixed end gutter.
+    for (const selector of ['.tick-pane', '.slide-wraparound-tile']) {
+        const clip = mark.closest(selector);
+        if (!clip) continue;
+        const bounds = clip.getBoundingClientRect();
+        left = Math.max(left, bounds.left); right = Math.min(right, bounds.right);
+        top = Math.max(top, bounds.top); bottom = Math.min(bottom, bounds.bottom);
+    }
+    return right > left && bottom > top ? { left, right, top, bottom } : null;
+}
+
 export function createMarkTooltips({ document, canvas, signal }) {
     const window = document.defaultView;
     const tooltip = document.createElement('div');
@@ -33,8 +49,8 @@ export function createMarkTooltips({ document, canvas, signal }) {
         let best = null, distance = Infinity;
         for (const mark of marks ||= [...canvas.querySelectorAll('[data-mark-tip]')]) {
             if (mark.classList.contains('label-hidden')) continue;
-            const rect = mark.getBoundingClientRect();
-            if (!rect.height) continue;
+            const rect = visibleMarkBounds(mark);
+            if (!rect) continue;
             const dx = Math.max(rect.left - x, 0, x - rect.right);
             const dy = Math.max(rect.top - y, 0, y - rect.bottom);
             const gap = Math.hypot(dx, dy);

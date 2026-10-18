@@ -62,7 +62,7 @@ function validateMetadata(programme) {
         if (programme[key] !== undefined && !Object.hasOwn(values, programme[key]))
             fail('Unknown ' + key + ': ' + programme[key]);
     }
-    for (const key of ['showFormulas', 'compactScales', 'fullPrecision']) {
+    for (const key of ['showFormulas', 'compactScales', 'fullPrecision', 'slideWraparound']) {
         if (programme[key] !== undefined && typeof programme[key] !== 'boolean')
             fail(key + ' must be a boolean.');
     }

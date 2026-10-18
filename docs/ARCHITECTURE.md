@@ -196,11 +196,23 @@ has not changed.
 ## Cursor presentation preferences
 
 `ui/cursor-appearance-panel.js` binds the toolbar button and compact cursor-box
-button to one floating panel. Its open state and position are transient UI state;
+button to one floating panel through `ui/floating-panel.js`. Its open state and position are transient UI state;
 the application owns the shape and colour choices, reflected by two groups of
 buttons with `aria-pressed` states. Outside focus/pointer interaction and
 Escape dismiss the panel, and application disposal removes its listeners. The
 standalone exporter closes it and resets both buttons' expanded state.
+
+The Slide-box preset popup uses the same floating-panel helper for positioning,
+expanded state, focus handling and dismissal. Its native select contains the
+same grouped preset options as the main selector, but its change handler invokes
+the existing preset loader immediately. The main selector retains its staged
+choose-then-load behaviour. Both routes therefore share programme replacement,
+position resets and preference retention. The quick selector reflects the
+applied layout rather than an unapplied main-selector choice; an unrecognised
+or custom layout is represented by a disabled status item. Selection returns
+focus to the Slide arrow. `ui/files.js` closes both floating panels and clears
+their expanded states in configured HTML exports; popup state is not programme
+state.
 
 `model/cursor-appearance.js` projects each authored face according to the
 programme's `cursorShape` and `cursorColour`. The controller, static readout
@@ -216,3 +228,35 @@ is projected. This keeps the shape and hairline-colour choices independent.
 Choosing Instrument restores the original face; the projection is never stored
 as its replacement. The two top-level choices are validated and exported with
 the programme, and are retained when loading a layout preset.
+
+
+## Slide wraparound
+
+`slideWraparound` is a programme boolean, defaulting to false when absent.
+Validation, normalisation and export preserve this preference alongside the
+exact motion coordinates. Both preset entry points retain it; a programme
+import uses the imported value or the default. Position resets and view changes
+do not disable it. The checkbox is immediately below Extended decimal precision
+in Scale layout.
+
+`ui/slide-wraparound.js` owns `updateSlideWraparound` and
+`refreshSlideWraparound`, which copy the polished source tracks so label selection
+and engraving remain consistent across repeats. `wrapSlidePosition` in
+`ui/readout-values.js` resolves the corresponding readout coordinate.
+`ui/mark-tooltips.js` accounts for clipping, so offscreen portions of a copy
+cannot expose mark tips in the gutters.
+
+When enabled, the renderer repeats each movable track at one graduated-track
+width in each direction, clipped to the slide's visible window. Stators and
+name/legend gutters stay fixed. This applies to ordinary scales, composite rows
+and root stacks; the loupe draws the same repeated engraving. Motion still
+updates retained track positions rather than regenerating tick plans, and keeps
+the established slide limits of −0.9 to +0.9.
+
+Readout coordinates must follow the particular visible copy beneath each
+hairline. Resolve main and auxiliary positions independently; reject an auxiliary
+hairline outside the visible window before wrapping. Apply scale-domain bounds
+after locating the copy, so a short scale's blank area remains blank. Static and
+retained readouts must agree. Do not apply the slide's coordinate transform to
+stators, wrap by a composite child's numerical range, or feed a wrapped display
+coordinate back into saved motion. See [the wraparound contract](SLIDE_WRAPAROUND.md).

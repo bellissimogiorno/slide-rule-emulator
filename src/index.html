@@ -50,7 +50,10 @@
         <div class="motion-controls" role="group" aria-label="Slide and cursor position controls">
           <div class="position-control" data-motion="slideOffset">
             <div class="position-heading">
-              <label for="slideRange">Slide</label>
+              <span class="position-caption">
+                <label for="slideRange">Slide</label>
+                <button id="slidePresetButton" class="position-menu-button" type="button" data-slide-preset-trigger aria-label="Layout preset" aria-haspopup="dialog" aria-expanded="false" aria-controls="slidePresetPanel" title="Choose and load a layout preset">&#x25BE;</button>
+              </span>
               <output id="slideText" for="slideRange" title="Slide offset in scale lengths">+0.000000</output>
             </div>
             <div class="position-track">
@@ -106,6 +109,11 @@
           <button id="cursorAppearanceButton" type="button" data-cursor-appearance-trigger aria-haspopup="dialog" aria-expanded="false" aria-controls="cursorAppearance">Cursor appearance <span aria-hidden="true">&#x25BE;</span></button>
         </div>
         <span class="hint">Scroll sideways on narrow screens.</span>
+      </div>
+      <div id="slidePresetPanel" class="slide-preset-panel" role="dialog" aria-labelledby="slidePresetLabel" hidden>
+        <label id="slidePresetLabel" class="field" for="slidePresetSelect">Layout preset</label>
+        <select id="slidePresetSelect" aria-describedby="slidePresetHelp"></select>
+        <p id="slidePresetHelp" class="hint">Selecting a preset loads it immediately on both faces.</p>
       </div>
       <div id="cursorAppearance" class="cursor-appearance" role="dialog" aria-label="Cursor appearance" hidden>
         <div class="cursor-appearance-options">
@@ -171,6 +179,7 @@
           <label class="check-field"><input id="formulaToggle" type="checkbox" /> Show self-documenting formula captions</label>
           <label class="check-field" title="Pack numerals beside major ticks, or split suitable multi-digit numerals around a tick, in the manner of compact Pickett and Versalog engraving."><input id="compactScaleToggle" type="checkbox" /> Compact scale numbering (right / split)</label>
           <label class="check-field" title="Restore detailed decimal labels and readouts. By default, numbers use four useful significant digits. Log-log and hypotenuse values between one and two preserve four digits of their excess above one; values below one use ordinary significant digits."><input id="fullPrecisionToggle" type="checkbox" aria-describedby="precisionHelp" /> Extended decimal precision</label>
+          <label class="check-field" title="Parts of the moving slide that leave one end reappear at the other. Cursor readings follow the repeated scales; dragging and position controls work as usual."><input id="slideWraparoundToggle" type="checkbox" /> Wraparound slide</label>
         </div>
         <p id="graduationHelp" class="hint">Only the active options are shown; both settings are remembered. Fully adaptive fits whole round-number subdivisions to each continuous scale; Balanced is a good starting point. Conventional applies the shared choice to C/D and W; W uses twice the effective length. The 10-inch choice retains the documented W pattern. Calculations and chemical reference marks are unchanged; custom tick lists require an explicit opt-in.</p>
         <label id="editSideField" class="field" hidden>Edit face

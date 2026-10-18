@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.33**
+**Version 3.2.35**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -69,6 +69,8 @@ The [UltraLog](docs/ULTRALOG.md) implements Zvi Doron’s forty-row proposal wit
 
 Numerical labels and readouts default to **four useful significant digits**, with trailing decimal zeros omitted. For example, P reads **0.995** at its left endpoint and LL01 reads **0.99**. Log-log and hypotenuse values between one and two preserve four digits of their excess above one; reciprocal LL values use ordinary significant digits. **Extended decimal precision**, below **Compact scale numbering**, restores the detailed display. Calculations and saved positions retain their precision. See the [precision policy](docs/DISPLAY_PRECISION.md).
 
+Enable **Wraparound slide**, directly below **Extended decimal precision** in **Scale layout**, to repeat the slide at each end and fill the space exposed by moving it. It is off by default. Dragging and the position controls work as usual, and readouts follow the displayed copy beneath each hairline. The setting is saved with the programme and retained across presets and position resets. See [slide wraparound](docs/SLIDE_WRAPAROUND.md).
+
 Hover over named constant marks for their numerical value and a short, scale-specific explanation. For example, the arithmetic **c** is the circle-diameter factor, not the speed of light. See [constant and reference marks](docs/CONSTANT_MARKS.md).
 
 Use **Both sides**, next to **Flip side**, to toggle linked front and back faces. The Side menu offers the same choice; the button stays highlighted while both faces are visible. Either face controls the same slide and cursor; **Edit face** selects the layout being edited. The instrument gets the full available width, with the scale editor below it. Compact numbering places numerals alongside or around major ticks. Magnification runs from 75% to 200%; narrow screens scroll the instrument instead of squeezing the graduations.
@@ -76,6 +78,8 @@ Use **Both sides**, next to **Flip side**, to toggle linked front and back faces
 **Graduations** in Scale layout offers **Conventional** and **Fully adaptive**. Fully adaptive uses the displayed length of every automatically graduated continuous scale, including powers, expanded roots and nonlinear scales, with Clear/Balanced/Fine detail. It never shrinks the numeral font or changes calculations. Conventional applies one subdivision choice to C/D and W, accounting for W's doubled effective length; the 10-inch choice retains the documented Faber W pattern. Only the active options menu is shown beside Graduations: C/D + W or Adaptive detail. Both choices are remembered when switching modes. Chemical references and explicit custom tick lists remain authored rather than inventing intermediate values. See [graduation design](docs/GRADUATIONS.md).
 
 The prominent **Layout preset** bar above the instrument selects a ready-made layout. Within each instrument section, manufacturers are grouped alphabetically and model numbers are ordered numerically (for example, Faber-Castell 2/82N, 2/83N, 2/84N). Press **Load preset** to apply it; **About** reveals its description. The Magnification menu offers **75%, 100%, 125%, 150% and 200%**, independently of the page controls.
+
+For immediate loading, use the small arrow beside **Slide**, styled like the arrow beside Cursor. Its popup contains the same complete grouped Layout preset menu. Choosing an instrument applies it immediately and updates the main selector. Loading by either route replaces both faces and resets the slide and cursor positions, while preserving display precision, slide wraparound, cursor appearance and custom scale definitions. The popup reflects the applied layout; a custom layout appears as a disabled status item. Escape, clicking outside or moving focus outside closes it, and choosing a preset returns focus to the arrow.
 
 The neighbouring **Slide** and **Cursor** controls use a ridged slide grip and a glass-style hairline grip. Tab to either grip and use the arrow keys. The four-position **Keyboard step** slider is the same height as the position controls and retains motion focus: click a stop or drag the shared grip to Faster (0.005), Normal (0.001), Fine (0.0005) or Very fine (0.0001), then continue with the arrows immediately. Keys **1-4** select those same steps while a grip or the rule is focused; Alt gives a tenfold finer step. On the rule, **S** selects the slide and **C** selects the cursor for arrow-key movement. The part last dragged is selected automatically; Shift plus an arrow on the rule also moves the slide. The digital cursor readout shows the corresponding scale values. UK English is used throughout the interface and documentation.
 
