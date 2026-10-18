@@ -13,7 +13,8 @@ const ids = Object.keys(scales).filter(id => id.startsWith('P14_'));
 const html = id => renderScaleRow(id, true, 'slide', 0, 1, { library: scales, width: 1600, minGap: 1.65 });
 
 test('Pickett 14 specimen order: twelve general rows and ten degree/mil rows', () => {
-    assert.deepEqual(PRESETS.pickett14.sides.front, {
+    const front = PRESETS.pickett14.sides.front;
+    assert.deepEqual({ name: front.name, topStator: front.topStator, slide: front.slide, bottomStator: front.bottomStator }, {
         name: 'Front - general log-log', topStator: ['PLL1', 'PLL2', 'P14_A'],
         slide: ['P14_B', 'P14_T', 'P14_ST', 'P14_S', 'K', 'P14_C'], bottomStator: ['P14_D', 'PLL3', 'PLL4']
     });

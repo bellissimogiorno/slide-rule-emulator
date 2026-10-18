@@ -4,13 +4,31 @@ Use the prominent **Layout preset** bar above the motion controls: choose an ins
 
 The digital readout shows underlying scale values at the hairline, with paired readings where applicable. Off-scale slide coordinates are not clamped into a misleading endpoint value. Ordinary slide-rule arithmetic still requires tracking the decimal exponent yourself unless a scale is explicitly absolute.
 
+Historical presets carry their own cursor markings where the sources establish
+them. Auxiliary readings are labelled separately from the main hairline and
+appear only for the scales served by that mark. The [cursor guide](CURSORS.md)
+explains the model-specific conversions and the evidence for each reproduction.
+Cursor caps and marked lines move together when dragged. To adopt a preset's
+current cursor in an existing saved session, select the instrument and press
+**Load preset** after exporting any customised layout you want to keep.
+
 Use Focus rule to hide editing controls, Magnification to reduce the whole instrument to **75%** or enlarge it up to **200%**, and the instrument's horizontal scrollbar on a narrow screen. Scale density changes vertical spacing. Compact numbering packs labels alongside or around major graduations; it does not move graduations or reduce individual numerals to avoid collisions. At small widths some secondary numerals are omitted, not squeezed into unreadability.
 
 Each face has upper fixed, slide and lower fixed rails. Add/remove/reorder scale IDs in the layout editor. Some IDs represent two layers or a shared paired scale on one physical row. The current list of definitions is in the scale library and `docs/CATALOGUE.md`.
 
 ## Compact readings
 
-Readings are grouped by **Top stator**, **Slide** and **Bottom stator**, with a single heading per group. On wide screens several groups can share a line; narrow screens reflow their fields. Both sides retains a separate heading for each face. Each field places the scale name beside its value rather than reserving two lines. Ordinary values and paired/branch readings use 16 px text; nothing is collapsed, truncated or reduced in precision. Long values and units wrap when necessary.
+Readings are grouped by **Top stator**, **Slide** and **Bottom stator**, with a single heading per group. On wide screens several groups can share a line; narrow screens reflow their fields. Both sides retains a separate heading for each face. Each field places the scale name beside its value rather than reserving two lines. Ordinary values and paired/branch readings use 16 px text; all readings remain available. Long values and units wrap when necessary.
+
+## Decimal precision
+
+Numbers normally show **four useful significant digits**, with unnecessary trailing decimal zeros omitted. For example, the Faber-Castell 2/83N P endpoint reads **0.995**, an ordinary reading of 3.162277… reads **3.162**, and LL01's 0.990049833… reads **0.99**. This applies to numerical scale labels, both stator readouts, slide readouts, main and auxiliary cursor readings, position displays and chemical reference-mass readings.
+
+For log-log values **between one and two**, the changing part matters more than the common leading 1. These scales use four significant digits of the excess above one to choose the decimal rounding place. Thus exp(0.001) = 1.001000500… becomes **1.001001**, and exp(0.01) = 1.010050167… becomes **1.01005**. The same rule covers the H₁/H₂ hypotenuse values, including Mathema's expression scales. **Values below one use ordinary four-significant-digit rounding**, including reciprocal LL values; leading 9s count as significant digits. Trailing zeros are omitted, so 0.9900 displays as 0.99.
+
+Labels and paired readings are rounded independently from their underlying unrounded values, avoiding a second rounding of an already shortened caption. Sexagesimal readings retain degrees/minutes/seconds notation after decimal degrees are rounded to four significant digits.
+
+Select **Extended decimal precision**, immediately below **Compact scale numbering**, to restore the detailed display. The choice survives a reload, JSON export/import and configured standalone HTML, and remains selected when loading another preset. Existing programmes without this option use the four-useful-digit default. Calculations, graduation positions and saved cursor/slide positions retain their original precision. Formulae, symbolic labels and exact configuration data are unaffected. See [display precision](DISPLAY_PRECISION.md) for the full policy and examples.
 
 ## Arranging scales
 
@@ -34,7 +52,7 @@ Use **Light**, **Dark** or **Solarised** at the top of the page. These controls 
 
 ## Position controls and keyboard precision
 
-The **Slide** grip is a ridged rectangular tab; the **Cursor** grip is a glass-style frame with a red hairline. Both travel on horizontal rails. Their controls stay together above the instrument, side by side on wider screens and immediately above/below one another on a small screen. They never take width away from the rule.
+The **Slide** grip is a ridged rectangular tab; the **Cursor** grip is a glass-style frame with a red hairline. Both travel on horizontal rails, inside their labelled boxes between the left and right arrow buttons. Their controls stay together above the instrument, side by side on wider screens and immediately above/below one another on a small screen. They never take width away from the rule.
 
 Click or Tab to either grip. Its focus outline identifies the control being adjusted. Dragging a grip gives it keyboard focus, so a coarse mouse placement can be followed immediately by fine keyboard nudges. The small left/right buttons offer the same step without dragging.
 
@@ -57,7 +75,7 @@ The compact step panel is the same height as the Slide and Cursor panels. Its fo
 
 **For fine control without a modifier key:** click the Fine or Very fine stop, or drag the step grip to that detent, and keep using the arrows. The four stops preserve the exact focused grip or rule focus stop; there is no need to click back. Tab to a step button and activate it with Enter/Space to return to your last motion control. Keys 1-4 also change the step without leaving the rule or grip. This also works when a browser or operating system reserves an Alt combination. The same selected step applies to the nudge buttons; Alt while clicking a button reduces it tenfold. Holding an arrow uses normal keyboard repeat.
 
-Positions are fractions of the graduated scale length, not numerical scale readings or screen pixels. Slide offset zero aligns the indices and its limits are -0.9 and +0.9. Cursor position runs from 0 at the left index to 1 at the right index. The six-decimal displays show every offered nudge, including Very fine plus Alt (0.00001). At a 1,000-pixel graduated length, a Fine step represents 0.5 pixel and a Very fine step represents 0.1 pixel. Very small movements may accumulate before the displayed hairline crosses a physical pixel; the internal coordinate and readout still update.
+Positions are fractions of the graduated scale length, not numerical scale readings or screen pixels. Slide offset zero aligns the indices and its limits are -0.9 and +0.9. Cursor position runs from 0 at the left index to 1 at the right index. The default displays use four significant digits, so a very fine nudge may leave the displayed number unchanged. **Extended decimal precision** restores six decimal places and shows every offered nudge, including Very fine plus Alt (0.00001). At a 1,000-pixel graduated length, a Fine step represents 0.5 pixel and a Very fine step represents 0.1 pixel. Very small movements may accumulate before the displayed hairline crosses a physical pixel; the internal coordinate and readout still update.
 
 **On the instrument itself:** clicking or dragging a part selects it for keyboard movement. Press **S** to select the slide or **C** to select the cursor, then use the same arrows and precision setting. Both the rule canvas and its surrounding scrollable viewport accept these shortcuts when focused. **Focus rule** also transfers keyboard focus to the instrument, ready for arrow-key control. The indicator beside the motion instructions names the selected part. Shift plus an arrow on the rule temporarily moves the slide, retaining the earlier shortcut. On a focused position grip, Shift does not switch to the other part.
 
@@ -65,7 +83,7 @@ The shortcuts do not act while typing in Programme JSON or navigating the Side, 
 
 Both faces share every movement. Magnification does not change a step's fraction of the scale length. Grabbing the cursor glass away from its centre preserves the original hairline position rather than snapping it to the mouse; clicking a fixed scale deliberately places the hairline there.
 
-The selected keyboard step and selected part are session controls, not additions to the programme schema. Loading a new page starts at Normal with the cursor selected; changing a preset within that page retains the precision setting. The exact slide and cursor positions themselves are saved in programmes and configured standalone copies, without rounding to the six-decimal display.
+The selected keyboard step and selected part are session controls, not additions to the programme schema. Loading a new page starts at Normal with the cursor selected; changing a preset within that page retains the keyboard step. The separate decimal-precision preference is saved with the programme. Exact slide and cursor positions are saved in programmes and configured standalone copies without rounding to either display format.
 
 ## Pointer magnification
 
@@ -97,7 +115,7 @@ Choose **Flying Fish 1017 - Chemical engineering** for its distinct chemical/sci
 
 Load **Pickett N3-T / N3-ES** or **Pickett N4-T / N4-ES**, then select Front or Both sides. The two square-root branches meet one common line; the cube-root bank has an unruled upper branch and a back-to-back middle/lower pair. Both ordinary and compact numbering retain this arrangement. The readout lists every branch. The independent generic roots and Faber-Castell W scales retain their own layouts.
 
-For example, set D to 6.4: the cube-root bank reads approximately 1.85664, 4 and 8.61774, for radicands 6.4, 64 and 640 respectively. Decimal exponents still need to be tracked. See the [root guide](PICKETT_ROOTS.md) for fractional radicands and branch-selection rules.
+For example, set D to 6.4: the cube-root bank reads approximately 1.86, 4 and 8.62, for radicands 6.4, 64 and 640 respectively. Extended precision gives 1.85664, 4 and 8.61774. Decimal exponents still need to be tracked. See the [root guide](PICKETT_ROOTS.md) for fractional radicands and branch-selection rules.
 
 Previously saved layouts are not overwritten during an application update. Export custom work first, then use **Load preset** to adopt the current Pickett layout. The library also offers **PICKETT_SQRT** and **PICKETT_CBRT** to add to a custom layout.
 
@@ -129,3 +147,14 @@ the back demonstrates the same groups on the slide. In the editor, choose
 branch 2 gives the fifth root of 32, which is 2. At D=2 the power pair reads 32
 and 0.03125. Keep track of decimal exponents; see the [worked guide](FIFTH_ROOTS.md).
 These are mathematical extensions, not historical Pickett presets.
+
+## Choosing the cursor
+
+Open **Cursor appearance** beside **Scale layout**, or the small arrow beside
+**Cursor** in its position box, for two shape buttons and named, coloured
+hairline buttons.
+**Minimal** with **Red** gives the simple narrow cursor. **Instrument** restores
+the selected instrument’s markings. Minimal displays
+only the main hairline and its readings. Both choices apply to both faces, are
+saved with the programme, and remain selected when loading another preset.
+See [Appearance](APPEARANCE.md#cursor-appearance) for saving and import behaviour.

@@ -19,6 +19,7 @@ import traceback
 
 ROOT = Path(__file__).resolve().parents[2]
 GEOMETRY = Path(__file__).with_name('geometry.js').read_text(encoding='utf-8')
+CURSOR_GEOMETRY = Path(__file__).with_name('cursor_geometry.js').read_text(encoding='utf-8')
 MODELS = {'faber284n': 24, 'aristo0971': 25, 'aristo0972': 31}
 ORDERED_GROUPS = {
     'Classic instruments': [
@@ -444,8 +445,8 @@ def main():
                                                 assert_layout(page, model)
                                                 if model == 'faber284n':
                                                     assert_mathema_cursor(page)
-                                                else:
-                                                    assert page.locator('#ruleCanvas .cursor-window, #ruleCanvas .cursor-cap, #ruleCanvas .cursor-caption').count() == 0
+                                                cursor_geometry = page.evaluate(CURSOR_GEOMETRY)
+                                                assert not cursor_geometry['failures'], cursor_geometry['failures']
                                                 geometry = page.evaluate(GEOMETRY)
                                                 for key in ['collisions', 'tickCrossings', 'clipped', 'emptyRows']:
                                                     assert not geometry[key], (model, width, mode, compact, key, geometry[key][:8])

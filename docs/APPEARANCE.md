@@ -1,5 +1,33 @@
 # Page appearance and motion controls
 
+## Cursor appearance
+
+Open **Cursor appearance** beside **Scale layout**, or use the small arrow beside
+**Cursor** in the position box. Both buttons open the same menu, with the current
+shape and colour selected. It floats over the page without enlarging the position
+box or moving the instrument. Press Escape, click outside, or tab away to close it.
+
+- **Cursor shape:** the **Instrument** and **Minimal** buttons choose the face's
+  documented cursor or the narrow, transparent cursor with one main hairline.
+- **Hairline colour:** **Instrument** uses the face's own line colour. The named
+  **Red**, **Black**, **Blue** and **Green** buttons show their corresponding ink
+  colours and override the main and auxiliary hairlines on both faces. Printed
+  inscriptions retain their authored colours. Selected buttons are marked
+  independently of their colour.
+
+Choose **Minimal** and **Red** for the original simple red-hairline appearance.
+Minimal hides auxiliary lines, their inscriptions and their digital readings.
+Their calibration remains saved, and selecting Instrument restores them. Frames,
+corners and proportions are adapted for the screen.
+
+The choices apply to both sides and survive **Load preset**, **Reset view**,
+reloads when storage is available, Programme JSON export/import, and saved
+standalone copies. Loading a programme uses that programme's choices; if it
+omits these optional fields, both choices default to Instrument. Changing cursor
+appearance preserves the current positions and scale layout. The loupe shows
+the selected appearance. Operating-system forced-colour mode may substitute
+its own high-contrast colours.
+
 ## Page themes
 
 The header offers **Light**, **Dark** and **Solarised** on the right of its action row where space permits. Controls wrap on narrower screens rather than shrinking their text. The adjacent Flip side and Both sides buttons remain together. They style the page background, panels, form controls, keyboard-step selector, motion-control rails, digital readouts, editor and help. The physical instrument keeps its own colours, typography, bands and cursor. Changing a page theme does not rebuild graduations or change calculations, positions, magnification or the selected instrument.

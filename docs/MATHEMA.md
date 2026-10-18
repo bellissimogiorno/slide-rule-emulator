@@ -130,7 +130,9 @@ The two ordinary outer hairlines stand at
 `±0.5 log10(π/2)` principal decades from the main hairline. On the front they cover the ten
 rows from tangent through sine, stopping
 short of the two exponential rows. The main hairline spans all twelve rows.
-The reverse retains its three ordinary hairlines. On the quadratic rows **√X / √x**, the right hairline reads **π/2**
+The reverse retains its three ordinary hairlines and ivory end caps, as visible
+in the supplied duplex specimen photograph. The readout names “Left” and “Right”
+are digital aids; they are not printed on the glass. On the quadratic rows **√X / √x**, the right hairline reads **π/2**
 times the main-hairline value. The extra short **π/4** line stands at
 `0.5 log10(π/4)` and applies only to those quadratic rows.
 
@@ -165,6 +167,8 @@ The broad white rectangle in the close-up is interpreted as demonstration
 backing used to expose the cursor engravings. The emulator's glass remains
 transparent; only the external caps are opaque. Cap height, fittings and
 lettering are adapted to the screen rather than claimed as measured dimensions.
+The reverse caps remain unlettered in the screen rendering; the specimen
+photograph also shows fittings and a small maker inscription that are not reproduced.
 
 This photograph shows the middle of the **front** face. It confirms the cursor
 arrangement and supports the existing calibration, but does not show the far

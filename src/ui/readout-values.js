@@ -1,5 +1,5 @@
 /** Pure numerical reading selection, shared by HTML export and live updates. */
-import { formatValue } from '#core/format.js';
+import { formatValue, formatUseful } from '#core/format.js';
 import { makeRuntimeScale } from '#core/mappings.js';
 import { clamp } from '#core/numbers.js';
 
@@ -10,25 +10,25 @@ function positionOnScale(def, p) {
     return { rt, outside: p < min - 1e-10 || p > max + 1e-10, p: clamp(p, min, max) };
 }
 
-function singleReading(def, p) {
+function singleReading(def, p, fullPrecision) {
     const point = positionOnScale(def, p);
     if (point.outside) return { outside: true, text: "off scale" };
     try {
-        return { outside: false, text: formatValue(point.rt.value(point.p), def) };
+        return { outside: false, text: formatValue(point.rt.value(point.p), def, fullPrecision) };
     } catch {
         return { outside: false, text: "error" };
     }
 }
 
-export function scaleReadings(def, p, library) {
+export function scaleReadings(def, p, library, fullPrecision = false) {
     if (def.type === "syncroLogLog" || def.pairedSum !== undefined || def.pairedProduct !== undefined) {
         const point = positionOnScale(def, p);
         let positive = "off scale", negative = "off scale";
         if (!point.outside) {
             try {
                 const value = point.rt.value(point.p);
-                positive = formatValue(value, def);
-                negative = formatValue(def.pairedSum === undefined ? (def.pairedProduct ?? 1) / value : def.pairedSum - value, def);
+                positive = formatValue(value, def, fullPrecision);
+                negative = formatValue(def.pairedSum === undefined ? (def.pairedProduct ?? 1) / value : def.pairedSum - value, def, fullPrecision);
             } catch {
                 positive = negative = "error";
             }
@@ -46,7 +46,7 @@ export function scaleReadings(def, p, library) {
             const delta = Math.abs(point.rt.pos(mark.value) - p);
             if (delta < distance) { nearest = mark; distance = delta; }
         }
-        const text = nearest && !point.outside ? `Nearest: ${nearest.label} = ${nearest.mass}` : "off scale";
+        const text = nearest && !point.outside ? `Nearest: ${nearest.label} = ${fullPrecision ? nearest.mass : formatUseful(nearest.mass)}` : "off scale";
         return { outside: point.outside, texts: [text] };
     }
     if (Array.isArray(def.layers) && def.layers.length) {
@@ -56,7 +56,7 @@ export function scaleReadings(def, p, library) {
             const spec = typeof layer === "string" ? { scale: layer } : layer;
             const child = library[spec.scale];
             if (!child) { texts.push("missing"); continue; }
-            const reading = singleReading(child, p);
+            const reading = singleReading(child, p, fullPrecision);
             outsideAny ||= reading.outside;
             if (reading.outside && def.type === "segmented") continue;
             if (!reading.outside) insideCount++;
@@ -65,21 +65,21 @@ export function scaleReadings(def, p, library) {
         return { outside: def.type === "segmented" ? insideCount === 0 : outsideAny,
             multi: true, texts: texts.length ? texts : ["off scale"] };
     }
-    const reading = singleReading(def, p);
+    const reading = singleReading(def, p, fullPrecision);
     return { outside: reading.outside, texts: [reading.text] };
 }
 
 /** Report exactly the same coordinates as the painted cursor marks. Physical
  * off-track marks remain off scale even when a translated slide would supply
  * a mathematical value beyond the visible window. Never clamp an offset. */
-export function cursorScaleReadings(def, p, library, marks = [], cursorPosition = p) {
-    const main = scaleReadings(def, p, library);
+export function cursorScaleReadings(def, p, library, marks = [], cursorPosition = p, fullPrecision = false) {
+    const main = scaleReadings(def, p, library, fullPrecision);
     if (!marks.length) return main;
     const readings = [{ label: 'Main', result: main }, ...marks.map(mark => {
         const physical = cursorPosition + mark.offset;
         const result = physical < -1e-10 || physical > 1 + 1e-10
             ? { outside: true, texts: ['off scale'] }
-            : scaleReadings(def, p + mark.offset, library);
+            : scaleReadings(def, p + mark.offset, library, fullPrecision);
         return { label: mark.label, result };
     })];
     return { outside: readings.every(({ result }) => result.outside), multi: true,

@@ -107,6 +107,7 @@ test('manual square- and cube-root examples, including decimal powers', () => {
 
 test('cube bank readout includes the third branch and respects the slide displacement', () => {
     const state = programme();
+    state.fullPrecision = true;
     state.cursor = Math.log10(6.4);
     state.slideOffset = 0;
     state.activeSide = 'front';

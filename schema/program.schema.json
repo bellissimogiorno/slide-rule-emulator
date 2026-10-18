@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Programmable slide rule programme (v3.2.27)",
+  "title": "Programmable slide rule programme (v3.2.33)",
   "type": "object",
   "required": [
     "sides"
@@ -50,6 +50,11 @@
     "compactScales": {
       "type": "boolean"
     },
+    "fullPrecision": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use extended decimal precision in numerical labels and readouts. The default keeps four useful significant digits. Log-log and hypotenuse values between one and two use four significant digits of their excess above one; values below one, including reciprocal log-log values, use ordinary four-significant-digit rounding. Trailing decimal zeros are omitted. Calculations and saved positions are unchanged."
+    },
     "slideOffset": {
       "type": "number",
       "minimum": -0.9,
@@ -59,6 +64,18 @@
       "type": "number",
       "minimum": 0,
       "maximum": 1
+    },
+    "cursorShape": {
+      "type": "string",
+      "enum": ["instrument", "minimal"],
+      "default": "instrument",
+      "description": "Cursor appearance on every face. Instrument uses the authored cursor. Minimal shows a narrow single hairline. Authored side metadata is preserved."
+    },
+    "cursorColour": {
+      "type": "string",
+      "enum": ["instrument", "red", "black", "blue", "green"],
+      "default": "instrument",
+      "description": "Hairline colour on every face. Instrument uses each side's authored line tone. Explicit colours affect hairlines only; engraved captions retain their own colours."
     },
     "customScales": {
       "type": "array",
@@ -161,6 +178,11 @@
             "type": "number",
             "minimum": -8,
             "maximum": 1
+          },
+          "precisionOrigin": {
+            "type": "number",
+            "const": 1,
+            "description": "Exclude the shared leading 1 when displaying values between 1 and 2; formatting only."
           },
           "sign": {
             "type": "number",
@@ -662,6 +684,20 @@
               "red"
             ],
             "description": "Colour of the main and auxiliary hairlines on this face."
+          },
+          "cursorFrame": {
+            "enum": [
+              "ivory",
+              "metal",
+              "clear"
+            ],
+            "description": "Screen-adapted upper and lower cursor frame bars, independent of inscriptions and calibrated hairlines. Omit to retain the default cursor. Clear represents uncoloured plastic without claiming a magnifying lens."
+          },
+          "cursorWidth": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "description": "Requested full cursor housing width as a fraction of the engraved track. A 34px interaction minimum and the calibrated marks/captions can require a larger glass. Width never changes hairline offsets or readings."
           },
           "cursorCaptions": {
             "type": "array",

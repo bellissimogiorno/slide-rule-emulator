@@ -97,8 +97,8 @@ test('schema describes the same cursor metadata constraints', () => {
 
 test('auxiliary readouts apply the same physical offset to stator and translated slide', () => {
     const mark = [{ id: 'm', label: 'Right', offset: .1 }];
-    const stator = cursorScaleReadings(BUILTIN_SCALES.D, .5, BUILTIN_SCALES, mark, .5);
-    const slide = cursorScaleReadings(BUILTIN_SCALES.C, .3, BUILTIN_SCALES, mark, .5);
+    const stator = cursorScaleReadings(BUILTIN_SCALES.D, .5, BUILTIN_SCALES, mark, .5, true);
+    const slide = cursorScaleReadings(BUILTIN_SCALES.C, .3, BUILTIN_SCALES, mark, .5, true);
     assert.deepEqual(stator.texts, ['Main: 3.16228', 'Right: 3.98107']);
     assert.deepEqual(slide.texts, ['Main: 1.99526', 'Right: 2.51189']);
     assert.equal(slide.outside, false);
@@ -106,9 +106,9 @@ test('auxiliary readouts apply the same physical offset to stator and translated
 
 test('off-track marks are never clamped or read from invisible slide extensions', () => {
     const mark = [{ id: 'm', label: 'Right', offset: .2 }];
-    const reading = cursorScaleReadings(BUILTIN_SCALES.C, .3, BUILTIN_SCALES, mark, .9);
+    const reading = cursorScaleReadings(BUILTIN_SCALES.C, .3, BUILTIN_SCALES, mark, .9, true);
     assert.deepEqual(reading.texts, ['Main: 1.99526', 'Right: off scale']);
-    const reverse = cursorScaleReadings(BUILTIN_SCALES.C, -.05, BUILTIN_SCALES, mark, .3);
+    const reverse = cursorScaleReadings(BUILTIN_SCALES.C, -.05, BUILTIN_SCALES, mark, .3, true);
     assert.equal(reverse.outside, false, 'an auxiliary reading can remain valid when the main one is off scale');
     assert.deepEqual(reverse.texts, ['Main: off scale', 'Right: 1.41254']);
 });
@@ -117,7 +117,7 @@ test('readout captions remain scoped, escaped and explicit about the main hairli
     const data = state(); data.sides.front.cursorMarks = [{ id: 'm', label: '<pi>', offset: .1, scales: ['C'] }];
     const html = renderReadout(data, BUILTIN_SCALES);
     assert.equal((html.match(/Main:/g) || []).length, 1);
-    assert.match(html, /&lt;pi&gt;: 3.98107/);
+    assert.match(html, /&lt;pi&gt;: 3\.981</);
     assert.doesNotMatch(html, /<pi>/);
 });
 
@@ -140,6 +140,10 @@ test('calibrated glass width scales with the track rather than a fixed pixel gap
     assert.equal(cursorGlassWidth([], 1000), 34);
     assert.equal(cursorGlassWidth([-.2, .1], 500), 228);
     assert.equal(cursorGlassWidth([-.2, .1], 1000), 428);
+    assert.equal(cursorGlassWidth([], 1000, .12), 120);
+    assert.equal(cursorGlassWidth([], 500, .12), 60);
+    assert.equal(cursorGlassWidth([], 200, .12), 34, 'a narrow viewport retains the interaction minimum');
+    assert.equal(cursorGlassWidth([-.2, .1], 1000, .12), 428, 'calibrated markings still fit in narrower requested glass');
 });
 
 test('scoped mark placement uses row geometry in local units at fractional page zoom', () => {
@@ -207,6 +211,63 @@ test('an explicit hairline tone also applies to a plain single-line cursor', () 
             `<div id="cursor" class="cursor cursor-lines-${cursorLineTone}"></div>`);
 });
 
+test('unlettered historical frames add draggable bars without inventing hairlines or readings', () => {
+    for (const cursorFrame of ['ivory', 'metal', 'clear']) {
+        const data = state();
+        data.sides.front.cursorMarks = [];
+        const originalReadout = renderReadout(data, BUILTIN_SCALES);
+        data.sides.front.cursorFrame = cursorFrame;
+        data.sides.front.cursorLineTone = 'red';
+        assert.doesNotThrow(() => validateProgram(data));
+        const html = renderCursor(data.sides.front, 'cursor');
+        assert.match(html, new RegExp(`class="cursor has-auxiliary cursor-lines-red cursor-frame-${cursorFrame}"`));
+        assert.equal((html.match(/class="cursor-cap /g) || []).length, 2);
+        assert.match(html, /class="cursor-grip"/);
+        assert.doesNotMatch(html, /cursor-mark-line|data-cursor-caption|cursor-mark-label/);
+        assert.equal(renderReadout(data, BUILTIN_SCALES), originalReadout);
+        assert.deepEqual(parseProgramText(JSON.stringify(exportableState(data))).sides.front, data.sides.front);
+        assert.equal(cursorCapClasses(data.sides.front), `cursor-cap-top cursor-cap-bottom cursor-frame-${cursorFrame}`);
+    }
+});
+
+test('an explicitly framed inscription reserves only its own labelled cap height', () => {
+    const face = { ...side(), cursorFrame: 'metal', cursorCaptions: [capCaption()] };
+    assert.equal(cursorCapClasses(face), 'cursor-cap-top cursor-cap-bottom cursor-frame-metal cursor-captioned-top');
+    face.cursorCaptions.push({ ...capCaption(), id: 'lower', zone: 'bottomCap' });
+    assert.equal(cursorCapClasses(face), 'cursor-cap-top cursor-cap-bottom cursor-frame-metal cursor-captioned-top cursor-captioned-bottom');
+    const html = renderCursor(face, 'cursor');
+    assert.equal((html.match(/class="cursor-cap /g) || []).length, 2);
+    assert.equal(cursorMarkSegments(face).length, cursorMarkSegments(side()).length);
+});
+
+test('a proportional housing width survives export and leaves calibration and readings unchanged', () => {
+    const data = state(), originalReadout = renderReadout(data, BUILTIN_SCALES);
+    data.sides.front.cursorWidth = .12;
+    assert.doesNotThrow(() => validateProgram(data));
+    const restored = parseProgramText(JSON.stringify(exportableState(data)));
+    assert.equal(restored.sides.front.cursorWidth, .12);
+    assert.deepEqual(restored.sides.front.cursorMarks, marks());
+    assert.equal(renderReadout(data, BUILTIN_SCALES), originalReadout);
+    assert.match(renderCursor(data.sides.front, 'cursor'), /data-cursor-width="0.12"/);
+    data.sides.front.cursorMarks = [];
+    const html = renderCursor(data.sides.front, 'cursor');
+    assert.match(html, /class="cursor-window"/);
+    assert.match(html, /data-cursor-width="0.12"/);
+    assert.doesNotMatch(html, /cursor-cap|cursor-mark-line|data-cursor-caption/);
+});
+
+test('single-hairline proportional housing follows a resized track in local coordinates', () => {
+    const window = { style: {}, classList: { contains: name => name === 'cursor-window' } };
+    const cursor = { style: {}, dataset: { cursorWidth: '.12' }, parentElement: window, querySelectorAll: () => [] };
+    const face = { offsetWidth: 1000, getBoundingClientRect: () => ({ top: 100, width: 1250 }),
+        querySelector: () => cursor, querySelectorAll: () => [] };
+    positionCursorMarks(face, { left: 58, width: 1000 });
+    assert.equal(cursor.style.width, '120px');
+    positionCursorMarks(face, { left: 58, width: 500 });
+    assert.equal(cursor.style.width, '60px');
+    assert.equal(window.style.width, '500px');
+});
+
 test('continuous scoped marks and row captions use the complete zoom-corrected row span', () => {
     const mark = { dataset: { cursorOffset: '.1', cursorRail: 'topStator', cursorRow: '0',
         cursorEndRail: 'slide', cursorEndRow: '0' }, style: {}, classList: { toggle() {} } };
@@ -262,6 +323,20 @@ test('cursor presentation rejects invalid arrays, duplicate IDs, tone and showLa
     assert.throws(() => validateProgram(data));
 });
 
+test('cursor frame metadata rejects unsupported materials and non-string values', () => {
+    for (const cursorFrame of ['wood', '', false, null, {}, ['metal']]) {
+        const data = state(); data.sides.front.cursorFrame = cursorFrame;
+        assert.throws(() => validateProgram(data), /cursorFrame/);
+    }
+});
+
+test('cursor housing width rejects non-finite and out-of-range dimensions', () => {
+    for (const cursorWidth of [0, -0.1, 1.01, Infinity, NaN, '.1', null, {}, []]) {
+        const data = state(); data.sides.front.cursorWidth = cursorWidth;
+        assert.throws(() => validateProgram(data), /cursorWidth|numbers must be finite/);
+    }
+});
+
 test('cursor caption schema distinguishes row and cap anchors and bounds presentation data', () => {
     const schema = JSON.parse(readFileSync(new URL('../../schema/program.schema.json', import.meta.url)));
     const properties = schema.properties.sides.additionalProperties.properties;
@@ -270,4 +345,8 @@ test('cursor caption schema distinguishes row and cap anchors and bounds present
     assert.deepEqual(properties.cursorCaptions.items.allOf[0].then.required, ['scale', 'edge']);
     assert.equal(properties.cursorCaptions.items.properties.lines.maxItems, 2);
     assert.equal(properties.cursorMarks.items.properties.showLabel.type, 'boolean');
+    assert.deepEqual(properties.cursorFrame.enum, ['ivory', 'metal', 'clear']);
+    assert.equal(properties.cursorWidth.type, 'number');
+    assert.equal(properties.cursorWidth.exclusiveMinimum, 0);
+    assert.equal(properties.cursorWidth.maximum, 1);
 });

@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 import { mathemaScales } from '#catalog/scales/mathema.js';
 import { mathemaPresets } from '#catalog/presets/mathema.js';
 import { makeRuntimeScale } from '#core/mappings.js';
+import { renderCursor, cursorCapClasses } from '#ui/cursor-marks.js';
+import { cursorScaleReadings } from '#ui/readout-values.js';
 import { close } from './helpers.js';
 
 const preset = mathemaPresets.faber284n;
@@ -142,6 +144,21 @@ test('photographed pi captions identify the correct row and reference hairline o
     close(gauges[2].offset, mark('mathema-right').offset);
     close(gauges[3].offset, mark('mathema-left').offset);
     close(gauges[4].offset, mark('mathema-right').offset);
+});
+
+test('the reverse photographed ivory caps do not invent engraved labels or alter readings', () => {
+    const back = preset.sides.back;
+    assert.equal(back.cursorFrame, 'ivory');
+    assert.equal(cursorCapClasses(back), 'cursor-cap-top cursor-cap-bottom cursor-frame-ivory');
+    const html = renderCursor(back, 'mathema-back');
+    assert.equal((html.match(/class="cursor-cap /g) || []).length, 2);
+    assert.equal((html.match(/class="cursor-mark-line"/g) || []).length, 2);
+    assert.doesNotMatch(html, /cursor-mark-label|data-cursor-caption/);
+    assert.match(html, /title="Left"/);
+    assert.match(html, /title="Right"/);
+    const reading = cursorScaleReadings(mathemaScales.FC284_Y, scale('Y').pos(.2),
+        mathemaScales, back.cursorMarks, undefined, true);
+    assert.deepEqual(reading.texts, ['Main: 0.2', 'Left: 0.159577', 'Right: 0.250663']);
 });
 
 test('the Mathema example preserves the complete calibrated cursor configuration', () => {

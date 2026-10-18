@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.27**
+**Version 3.2.33**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -61,11 +61,13 @@ The scale library includes aliases and composite rows; its complete generated in
 
 The [Faber-Castell 2/82N](docs/FABER_282N.md) follows the 27-row N-model arrangement, with movable sine and cube scales and paired complementary angular readings. It is distinct from later 2/82 layouts.
 
-The [Faber-Castell Mathema 2/84N](docs/MATHEMA.md) has its own extended function scales, gon trigonometry and hyperbolic functions, calibrated exponent cursor banks, and π conversion hairlines. The [Aristo 0971 HyperboLog and 0972 HyperLog](docs/ARISTO_HYPERBOLIC.md) provide their documented duplex arrangements. Their guides describe the implemented mathematical intervals and omitted physical details.
+The [Faber-Castell Mathema 2/84N](docs/MATHEMA.md) has its own extended function scales, gon trigonometry and hyperbolic functions, calibrated exponent cursor banks, and π conversion hairlines. The [Aristo 0971 HyperboLog and 0972 HyperLog](docs/ARISTO_HYPERBOLIC.md) provide their documented duplex arrangements. Their guides describe the implemented mathematical intervals and omitted physical details. The [cursor review](docs/CURSORS.md) covers every preset, including model-specific conversion marks, documented single-line cursors, housing proportions and unresolved details.
 
 The [Pickett Model 14](docs/PICKETT_14.md) includes its general log-log face and degree/6400-mil face, with shared complementary/supplementary angle ticks. It is a mathematical reconstruction, not a fire-control calculator.
 
 The [UltraLog](docs/ULTRALOG.md) implements Zvi Doron’s forty-row proposal with separate scales and a wide slide. Its Const row is explicitly an emulator-supplied mathematical reference set, not a transcription of an unverified original inventory. The [Graphoplex 690A and 691A](docs/GRAPHOPLEX.md) follow the supplied specimen photographs; the former uses degree/minute captions, the latter decimal degrees and hyperbolic rows.
+
+Numerical labels and readouts default to **four useful significant digits**, with trailing decimal zeros omitted. For example, P reads **0.995** at its left endpoint and LL01 reads **0.99**. Log-log and hypotenuse values between one and two preserve four digits of their excess above one; reciprocal LL values use ordinary significant digits. **Extended decimal precision**, below **Compact scale numbering**, restores the detailed display. Calculations and saved positions retain their precision. See the [precision policy](docs/DISPLAY_PRECISION.md).
 
 Hover over named constant marks for their numerical value and a short, scale-specific explanation. For example, the arithmetic **c** is the circle-diameter factor, not the speed of light. See [constant and reference marks](docs/CONSTANT_MARKS.md).
 
@@ -145,3 +147,5 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes and [SECURITY.m
 These are mathematical reconstructions, not manufacturer-endorsed facsimiles. N16 electronics, Thornton correction rows and the F5100 operational layout are qualified studies; chemical presets use explicitly documented modern calibrations. Radiation relationships are educational, not certified metrology. Read [instrument fidelity and limitations](docs/HISTORICAL_FIDELITY.md), and independently check consequential calculations.
 
 **Licence: [MIT](LICENSE).** The copyright and permission notice must accompany copies or substantial portions of the software. The standalone HTML, including configured copies, embeds the full licence text. Package metadata declares `MIT`; `private: true` only prevents accidental npm publication. See [LICENSING.md](LICENSING.md) for scope and third-party notices. No third-party scans or font files are bundled.
+
+Cursor shape and hairline colour are available from **Cursor appearance** beside **Scale layout**, or the small arrow beside **Cursor** in its position box. Both open the same floating menu without changing the box size. The shape buttons are **Instrument** and **Minimal**; the hairline-colour buttons are **Instrument**, **Red**, **Black**, **Blue** and **Green**. The named colours are shown on the buttons. Choose **Minimal** and **Red** for a simple narrow cursor. Choices apply to both faces and are saved with the programme. See [appearance settings](docs/APPEARANCE.md#cursor-appearance).

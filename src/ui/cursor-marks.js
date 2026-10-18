@@ -3,6 +3,7 @@
  * Captions are presentation only: they cannot add a reading or a hairline.
  */
 import { escapeHtml } from '#ui/html.js';
+import { CURSOR_COLOURS } from '#model/cursor-appearance.js';
 
 const faceRows = side => ['topStator', 'slide', 'bottomStator'].flatMap(rail =>
     side[rail].map((scale, index) => ({ rail, index, scale })));
@@ -43,7 +44,14 @@ export function cursorCaptionSegments(side) {
 
 export function cursorCapClasses(side) {
     const zones = new Set((side.cursorCaptions || []).map(caption => caption.zone));
-    return [zones.has('topCap') ? 'cursor-cap-top' : '', zones.has('bottomCap') ? 'cursor-cap-bottom' : '']
+    // A photographed frame may have unlettered bars. Do not manufacture cap
+    // captions merely to obtain the physical frame, or additional hairlines.
+    const frame = side.cursorFrame;
+    return [frame || zones.has('topCap') ? 'cursor-cap-top' : '',
+        frame || zones.has('bottomCap') ? 'cursor-cap-bottom' : '',
+        frame ? `cursor-frame-${frame}` : '',
+        frame && zones.has('topCap') ? 'cursor-captioned-top' : '',
+        frame && zones.has('bottomCap') ? 'cursor-captioned-bottom' : '']
         .filter(Boolean).join(' ');
 }
 
@@ -53,7 +61,13 @@ const rowAttributes = (rail, index) => rail
 export function renderCursor(side, id) {
     const segments = cursorMarkSegments(side), captions = cursorCaptionSegments(side);
     const tone = side.cursorLineTone ? ` cursor-lines-${side.cursorLineTone}` : '';
-    if (!segments.length && !captions.length) return `<div id="${escapeHtml(id)}" class="cursor${tone}"></div>`;
+    // This is a display-only preference resolved from the programme, never an
+    // edit to the instrument's authored line tone or its caption colours.
+    const colour = side.cursorColour !== 'instrument' && Object.hasOwn(CURSOR_COLOURS, side.cursorColour)
+        ? ` cursor-colour-${side.cursorColour}` : '';
+    const frame = side.cursorFrame ? ` cursor-frame-${side.cursorFrame}` : '';
+    const width = side.cursorWidth === undefined ? '' : ` data-cursor-width="${side.cursorWidth}"`;
+    if (!segments.length && !captions.length && !frame && !width) return `<div id="${escapeHtml(id)}" class="cursor${tone}${colour}"></div>`;
     const marks = segments.map(({ mark, rail, index, endRail, endIndex }) => {
         const row = rowAttributes(rail, index) + (rail
             ? ` data-cursor-end-rail="${endRail}" data-cursor-end-row="${endIndex}"` : '');
@@ -76,13 +90,14 @@ export function renderCursor(side, id) {
         const edge = caption.zone === 'row' ? ` data-cursor-edge="${caption.edge}"` : '';
         return `<span class="${classes}" data-cursor-caption="${escapeHtml(caption.id)}" data-cursor-offset="${caption.offset}" data-cursor-zone="${caption.zone}"${row}${edge}>${caption.lines.map(line => `<span>${escapeHtml(line)}</span>`).join('')}</span>`;
     }).join('');
-    return `<div class="cursor-window"><div id="${escapeHtml(id)}" class="cursor has-auxiliary${tone}">${caps}<span class="cursor-grip" title="Drag the main cursor"></span>${marks}${annotationMarkup}</div></div>`;
+    return `<div class="cursor-window"><div id="${escapeHtml(id)}" class="cursor has-auxiliary${tone}${frame}${colour}"${width}>${caps}<span class="cursor-grip" title="Drag the main cursor"></span>${marks}${annotationMarkup}</div></div>`;
 }
 
 /** The symmetric glass contains the outermost mark/caption plus edge padding.
  * Empty glass is paint only: just the centre grip, marks and caps catch a drag. */
-export function cursorGlassWidth(offsets, trackWidth) {
-    return 2 * Math.max(17, ...offsets.map(offset => Math.abs(offset) * trackWidth + 14));
+export function cursorGlassWidth(offsets, trackWidth, widthFraction = 0) {
+    return Math.max(widthFraction * trackWidth,
+        2 * Math.max(17, ...offsets.map(offset => Math.abs(offset) * trackWidth + 14)));
 }
 
 export function positionCursorMarks(face, geometry) {
@@ -94,7 +109,7 @@ export function positionCursorMarks(face, geometry) {
     const marks = [...cursor.querySelectorAll('.cursor-mark')];
     const captions = [...cursor.querySelectorAll('.cursor-caption')];
     const offsets = [...marks, ...captions].map(node => Number(node.dataset.cursorOffset));
-    const width = cursorGlassWidth(offsets, geometry.width);
+    const width = cursorGlassWidth(offsets, geometry.width, Number(cursor.dataset?.cursorWidth) || 0);
     cursor.style.width = `${width}px`;
     const faceBox = face.getBoundingClientRect();
     const zoom = faceBox.width / Math.max(1, face.offsetWidth);

@@ -5,7 +5,7 @@
   "theme": "graphoplex",
   "density": "classic",
   "modelLabel": "Graphoplex 691A Neperlog Hyperbolic",
-  "instrumentNote": "Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals only; end extensions and auxiliary cursor hairlines are not reproduced.",
+  "instrumentNote": "Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals and the manufacturer-documented cursor conversions; end extensions and specimen-specific extra markings are not reproduced.",
   "showFormulas": true,
   "compactScales": true,
   "magnification": 1,
@@ -36,7 +36,34 @@
         "GP_TH",
         "GP_SH2",
         "GP_SH1"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorMarks": [
+        {
+          "id": "graphoplex-kw",
+          "label": "kW",
+          "offset": -0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-ps",
+          "label": "PS (metric horsepower)",
+          "offset": 0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-circle",
+          "label": "Circle area (π/4)",
+          "offset": -0.05245505931691428,
+          "scales": [
+            "GP_A",
+            "GP_B"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": []
     },
     "back": {
       "name": "Back - folded / natural log-log",
@@ -58,7 +85,33 @@
         "GP_LL3",
         "GP_LL2",
         "GP_LL1"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorMarks": [
+        {
+          "id": "graphoplex-kw",
+          "label": "kW",
+          "offset": -0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-ps",
+          "label": "PS (metric horsepower)",
+          "offset": 0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-360",
+          "label": "3.6 (D to DF)",
+          "offset": -0.059152628073153427,
+          "scales": [
+            "GP_D"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": []
     }
   }
 }

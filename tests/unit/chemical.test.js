@@ -131,7 +131,7 @@ test('chemical reference rows have 52 elements and 18 groups with correct decade
 });
 test('chemical reference readout identifies marks, not a fictitious continuous mass', () => {
     const au = scales.CHEM_CH_AM.ticks.find(t => t.label === 'Au');
-    assert.match(rendered('CHEM_CH_AM', Math.log10(au.value)), /Nearest: Au = 196.97/);
+    assert.match(rendered('CHEM_CH_AM', Math.log10(au.value)), /Nearest: Au = 197</);
     assert.match(rendered('CHEM_CH_AM', 1.1), /off scale/);
 });
 test('segmented readout switches domains instead of extrapolating a child', () => {

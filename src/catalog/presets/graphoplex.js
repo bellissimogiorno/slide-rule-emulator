@@ -10,7 +10,7 @@ const common = { group: 'Classic instruments', theme: 'graphoplex', density: 'cl
 export const graphoplexPresets = {
     graphoplex690a: { ...common, name: 'Graphoplex 690A Neperlog', modelLabel: 'Graphoplex 690A Neperlog',
         description: 'Degree/minute trigonometry, eight natural log-log ranges, reciprocal and pi-folded arithmetic. Distinct from the hyperbolic 691A.',
-        instrumentNote: 'Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. End extensions, auxiliary cursor hairlines and every original gauge are not reproduced.',
+        instrumentNote: 'Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. The cursor follows the manufacturer-documented power and circle conversions. End extensions and the full original gauge inventory are not reproduced.',
         sides: { front: { name: 'Front - degrees/minutes / near-unity log-log',
             topStator: ['GP_LL00', 'GP_L', 'GP690_T2', 'GP_A'],
             slide: ['GP_B', 'GP690_T1', 'GP690_ST', 'GP690_S', 'GP_C'],
@@ -18,7 +18,7 @@ export const graphoplexPresets = {
     },
     graphoplex691a: { ...common, name: 'Graphoplex 691A Neperlog Hyperbolic', modelLabel: 'Graphoplex 691A Neperlog Hyperbolic',
         description: 'Decimal-degree trigonometry and Ch, Th, Sh2, Sh1 hyperbolic rows, with six natural log-log ranges on the reverse.',
-        instrumentNote: 'Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals only; end extensions and auxiliary cursor hairlines are not reproduced.',
+        instrumentNote: 'Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals and the manufacturer-documented cursor conversions; end extensions and specimen-specific extra markings are not reproduced.',
         sides: { front: { name: 'Front - decimal degrees / hyperbolic',
             topStator: ['GP_L', 'GP_P', 'GP_CH', 'GP_A'],
             slide: ['GP_B', 'GP691_T1', 'GP691_ST', 'GP691_S', 'GP_C'],

@@ -8,7 +8,7 @@ export const historicalPresets = {
         density: "faber",
         showFormulas: true,
         description: "Novo-Duplex arrangement with coloured C/CF and A/B/W bands, a W1/W2 root face, inverse scales in red, and self-documenting formula captions.",
-        instrumentNote: "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style.",
+        instrumentNote: "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style. The cursor includes front circle-area and 360 marks; its remaining auxiliary lines are not fully reconstructed.",
         sides: {
             front: {
                 name: "Front · trigonometric / folded",

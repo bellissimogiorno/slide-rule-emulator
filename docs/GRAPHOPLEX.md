@@ -91,7 +91,9 @@ The joined angular rows use the existing paired-angle renderer. Opt-in
 validation requires a paired angular scale with degree units.
 
 Only the main index-to-index intervals are reconstructed. The original rules'
-end extensions, all special gauges, accessory tables, exact typography and
-multiple auxiliary cursor lines are not reproduced. There are no copied
+end extensions, all special gauges, accessory tables and exact typography are
+not reproduced. The cursor implements the manufacturer-documented 690/691
+power, circle-area and folded conversion lines; specimen variants and unresolved
+details are recorded in [the cursor guide](CURSORS_OTHER_MAKERS.md). There are no copied
 manufacturer images or fonts. White paper and grey braces are a visual
 approximation. No change is made to the emulator's calibration of other presets.

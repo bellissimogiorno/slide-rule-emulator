@@ -33,7 +33,12 @@
         "CHEM_P_MMHG_ATM",
         "CHEM_TW",
         "FF_LN_M2"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorWidth": 0.152,
+      "cursorLineTone": "neutral",
+      "cursorMarks": [],
+      "cursorCaptions": []
     },
     "back": {
       "name": "Back - scientific calculation",
@@ -56,7 +61,12 @@
         "FF_LN_1",
         "FF_LN_0",
         "FF_LN_M1"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorWidth": 0.152,
+      "cursorLineTone": "neutral",
+      "cursorMarks": [],
+      "cursorCaptions": []
     }
   }
 }

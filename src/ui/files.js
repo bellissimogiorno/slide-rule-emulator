@@ -4,6 +4,10 @@ export function standaloneHtml(document, programme) {
     clone.removeAttribute('data-app-ready');
     for (const node of clone.querySelectorAll('[data-runtime-only]')) node.remove();
     clone.querySelector('#loupeButton')?.setAttribute('aria-pressed', 'false');
+    // Retain the chosen cursor, but open a saved copy with its controls tucked away.
+    clone.querySelector('#cursorAppearance')?.setAttribute('hidden', '');
+    for (const button of clone.querySelectorAll('[data-cursor-appearance-trigger]'))
+        button.setAttribute('aria-expanded', 'false');
     const seed = clone.querySelector('#embedded-program');
     if (!seed)
         throw new Error('Missing embedded-program block. Rebuild the application.');

@@ -50,12 +50,20 @@ This trades a somewhat larger HTML file for zero build dependencies and real mod
 | New mapping | `core/mappings.js`, `core/scale-types.js` | mathematics + domain validation |
 | Graduation density | `core/ticks/` | coverage + numerical placement + visual matrix |
 | Historical scale order | `catalog/presets/historical.js` | preset references + both-face screenshots |
+| Historical cursor geometry | `catalog/cursors/`, combined in `catalog/presets.js` | manufacturer worked examples, face scopes and complete review matrix |
 | Pickett back-to-back roots | `ui/root-stack.js`, `styles/root-stacks.css` | root-bank structure + branch coordinates + browser geometry |
 | Compact numbering | `ui/labels.js`, `styles/compact.css` | overlap/tick-crossing negative controls |
 | Import/storage/export | `model/`, `ui/programme-editor.js`, `ui/files.js` | invalid atomicity, recovery, repeated export |
 | UI controls | `ui/application.js`, `src/index.html` | keyboard and pointer integration |
 
 The generated catalogue in `docs/CATALOGUE.md` is a navigation aid, not a second source of truth. Regenerate it with `node tools/catalogue.mjs` after changing definitions.
+
+Cursor profiles in `catalog/cursors/` are merged into the public `PRESETS` before
+freezing. Always consume that complete catalogue for loading, defaults and named
+examples. The raw layout modules intentionally contain only their original scale
+arrangements and any locally defined cursor. `docs/data/cursor-review.json`
+records the evidence and limitations for every preset and face; its coverage and
+the examples' cursor metadata are checked by `cursor-review.test.js`.
 
 ## Linked view and chemical modules
 
@@ -184,3 +192,27 @@ paired values. Both ordinary and composite/root-stack rendering pass the same
 policy and displayed magnification. Moving the slide/cursor never regenerates
 these plans. A magnification change does regenerate them even if CSS layout width
 has not changed.
+
+## Cursor presentation preferences
+
+`ui/cursor-appearance-panel.js` binds the toolbar button and compact cursor-box
+button to one floating panel. Its open state and position are transient UI state;
+the application owns the shape and colour choices, reflected by two groups of
+buttons with `aria-pressed` states. Outside focus/pointer interaction and
+Escape dismiss the panel, and application disposal removes its listeners. The
+standalone exporter closes it and resets both buttons' expanded state.
+
+`model/cursor-appearance.js` projects each authored face according to the
+programme's `cursorShape` and `cursorColour`. The controller, static readout
+and retained readout cache consume that projection. Minimal omits auxiliary
+marks from both drawing and numeric readings, while saved side metadata remains
+complete. Instrument restores the authored frame and markings. Colour overrides
+apply only to working hairlines; caption ink has a separate CSS variable.
+
+Shape changes preserve the instrument's implicit line colour as well as explicit
+per-face tones. A plain cursor's implicit red and an advanced cursor's implicit
+neutral tone are resolved from its authored, visible geometry before the shape
+is projected. This keeps the shape and hairline-colour choices independent.
+Choosing Instrument restores the original face; the projection is never stored
+as its replacement. The two top-level choices are validated and exported with
+the programme, and are retained when loading a layout preset.

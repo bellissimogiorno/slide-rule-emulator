@@ -1,6 +1,7 @@
 import { GRADUATION_MODES, ADAPTIVE_SPACING } from "#core/ticks/adaptive.js";
 import { LOG_GRADUATIONS } from "#core/ticks/conventional.js";
 import { MAGNIFICATIONS } from "#model/view.js";
+import { CURSOR_SHAPES, CURSOR_COLOURS } from "#model/cursor-appearance.js";
 /** Untrusted JSON enters through this boundary before live state is changed.
  * Validation is deliberately stronger than JSON Schema: it checks references,
  * mathematical domains, sampled inverses and bounded graduation generation.
@@ -41,17 +42,27 @@ export function parseProgramText(text) {
     if (typeof text !== 'string' || text.length > PROGRAM_LIMITS.characters)
         fail('Programme exceeds the 1,000,000-character limit.');
     const programme = JSON.parse(text);
+    // Accept retired appearance overrides at the JSON boundary so stored and
+    // embedded programmes retain their scales, positions and colour. These
+    // values mean Instrument now; authored per-face cursorFrame is untouched.
+    // Other invalid values still fail validation instead of hiding bad input.
+    if (object(programme) && ['clear', 'ivory', 'metal'].includes(programme.cursorShape))
+        programme.cursorShape = 'instrument';
     validateProgram(programme);
     return programme;
 }
 function validateMetadata(programme) {
+    for (const [key, values] of [['cursorShape', CURSOR_SHAPES], ['cursorColour', CURSOR_COLOURS]]) {
+        if (programme[key] !== undefined && (typeof programme[key] !== 'string' || !Object.hasOwn(values, programme[key])))
+            fail(key + ' must be one of ' + Object.keys(values).join(', ') + '.');
+    }
     if (programme.viewMode !== undefined && !["single", "both"].includes(programme.viewMode))
         fail("viewMode must be single or both.");
     for (const [key, values] of [['theme', THEMES], ['density', DENSITIES]]) {
         if (programme[key] !== undefined && !Object.hasOwn(values, programme[key]))
             fail('Unknown ' + key + ': ' + programme[key]);
     }
-    for (const key of ['showFormulas', 'compactScales']) {
+    for (const key of ['showFormulas', 'compactScales', 'fullPrecision']) {
         if (programme[key] !== undefined && typeof programme[key] !== 'boolean')
             fail(key + ' must be a boolean.');
     }
@@ -98,6 +109,8 @@ function validateTickInputs(definition) {
 }
 function validateScaleFields(definition) {
     const d = definition;
+    if (d.precisionOrigin !== undefined && d.precisionOrigin !== 1)
+        fail('precisionOrigin must be 1 when supplied.');
     if (!SCALE_TYPES.includes(d.type))
         fail('Unknown scale type: ' + d.type);
     for (const key of TEXT_FIELDS)
@@ -349,6 +362,10 @@ function validateCursorMarks(side, library) {
 function validateCursorCaptions(side, library) {
     if (side.cursorLineTone !== undefined && !['neutral', 'red'].includes(side.cursorLineTone))
         fail('cursorLineTone must be neutral or red.');
+    if (side.cursorFrame !== undefined && !['ivory', 'metal', 'clear'].includes(side.cursorFrame))
+        fail('cursorFrame must be ivory, metal or clear.');
+    if (side.cursorWidth !== undefined && (!Number.isFinite(side.cursorWidth) || side.cursorWidth <= 0 || side.cursorWidth > 1))
+        fail('cursorWidth must be a finite track fraction greater than 0 and at most 1.');
     if (side.cursorCaptions === undefined) return;
     if (!Array.isArray(side.cursorCaptions) || side.cursorCaptions.length > PROGRAM_LIMITS.cursorCaptions)
         fail('cursorCaptions must be an array of at most 32 captions.');

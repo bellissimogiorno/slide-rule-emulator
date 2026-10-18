@@ -11,13 +11,13 @@ test('readings share exactly one heading per populated rail, preserving scale or
     assert.equal((html.match(/class="rail-name"/g) || []).length, 3);
     assert.equal((html.match(/class="scale-id"/g) || []).length, 5);
     assert.deepEqual([...html.matchAll(/data-readout-scale="([^"]+)"/g)].map(m => m[1]), ['A', 'K', 'C', 'D', 'DI']);
-    assert.match(html, />3.16228</);
+    assert.match(html, />3\.162</);
 });
 test('compact readings retain all three cube-root branches and both log-log values', () => {
     const html = renderReadout(state(['PICKETT_CBRT', 'PN3LL0']), BUILTIN_SCALES);
     assert.equal((html.match(/class="value multi"/g) || []).length, 2);
-    assert.match(html, /1.4678/); assert.match(html, /3.16228/); assert.match(html, /6.81292/);
-    assert.match(html, /\+: 1.00317/); assert.match(html, /\u2212: 0.996843/);
+    assert.match(html, /: 1\.468</); assert.match(html, /: 3\.162</); assert.match(html, /: 6\.813</);
+    assert.match(html, /\+: 1\.003167</); assert.match(html, /\u2212: 0\.9968</);
 });
 test('empty or unresolved rails do not create empty heading bands', () => {
     const html = renderReadout(state(['no-such-scale']), BUILTIN_SCALES);

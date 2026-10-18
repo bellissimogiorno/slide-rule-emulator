@@ -58,7 +58,9 @@ The preset reproduces the documented row order, main index-to-index mathematical
 relationships, complementary angular numbering and reverse P ink. It is not a
 photographic facsimile. Original end extensions, the full set of special gauge
 marks, physical reference tables and auxiliary cursor hairlines have not all
-been reproduced. The instrument uses the emulator's standard Faber-style finish
+been reproduced. Its measured-width clear cursor housing retains the main
+hairline; the original multiline geometry is unresolved, as documented in
+[the cursor guide](CURSORS_FABER_ARISTO.md). The instrument uses the emulator's standard Faber-style finish
 and adaptive, mathematically positioned graduations.
 
 Tests in `tests/unit/faber282n.test.js` verify the order, independent sine/tangent

@@ -39,8 +39,8 @@
           "id": "mathema-left",
           "label": "1 (Y)",
           "offset": -0.06897838185562015,
-          "labelTone": "red",
           "showLabel": false,
+          "labelTone": "red",
           "scales": [
             "FC284_T",
             "FC284_H",
@@ -58,8 +58,8 @@
           "id": "mathema-right",
           "label": "π/2",
           "offset": 0.06897838185562015,
-          "labelTone": "red",
           "showLabel": false,
+          "labelTone": "red",
           "scales": [
             "FC284_T",
             "FC284_H",
@@ -394,16 +394,19 @@
         "FC284_LL02",
         "FC284_LL01"
       ],
+      "cursorFrame": "ivory",
       "cursorMarks": [
         {
           "id": "mathema-left",
           "label": "Left",
-          "offset": -0.06897838185562015
+          "offset": -0.06897838185562015,
+          "showLabel": false
         },
         {
           "id": "mathema-right",
           "label": "Right",
-          "offset": 0.06897838185562015
+          "offset": 0.06897838185562015,
+          "showLabel": false
         }
       ]
     }

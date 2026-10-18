@@ -108,8 +108,10 @@ manual answers.
 The presets implement the documented physical row arrangement and main
 index-to-index mathematical relationships, using the emulator's neutral
 appearance. They do not reproduce the complete original end extensions,
-cursor auxiliary lines, casing, reference tables, yellow bands or full gauge
-inventory. Generated graduations are mathematically positioned; they are not
+casing, reference tables, yellow bands or full gauge inventory. The documented
+circle, metric-PS and folded 36 cursor marks are included. The 0972 interrupted
+2π marks and finer physical details remain unresolved; see
+[the cursor guide](CURSORS_FABER_ARISTO.md). Generated graduations are mathematically positioned; they are not
 a photographic transcription of every engraved stroke.
 
 The ten `ARISTO_` scale IDs provide model-specific labels, help, paired angular

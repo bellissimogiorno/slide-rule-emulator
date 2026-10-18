@@ -1,4 +1,5 @@
 import { createMarkTooltips } from "#ui/mark-tooltips.js";
+import { bindCursorAppearancePanel } from '#ui/cursor-appearance-panel.js';
 import { createScaleHistory } from "#model/scale-history.js";
 import { moveScale } from "#model/scale-order.js";
 import { railEditorMarkup, refreshEditorPositions } from "#ui/rail-editor.js";
@@ -18,6 +19,7 @@ import { buildLibrary, deepClone, exportableState, mergeState, normalizeState } 
 import { escapeHtml, scaleSort, titleCase, railLabel } from "#ui/html.js";
 import { optimizeScaleLabels } from "#ui/labels.js";
 import { visibleSideKeys } from "#model/view.js";
+import { CURSOR_SHAPES, CURSOR_COLOURS, cursorAppearanceSide } from '#model/cursor-appearance.js';
 import { createReadoutView } from '#ui/readout-view.js';
 import { createProgrammeEditor } from '#ui/programme-editor.js';
 import { renderRailRows } from "#ui/scale-markup.js";
@@ -88,6 +90,9 @@ function createApplication(document) {
         presetDescription: document.getElementById("presetDescription"),
         presetDetailsButton: document.getElementById("presetDetailsButton"),
         themeSelect: document.getElementById("themeSelect"),
+        cursorShapeButtons: [...document.querySelectorAll('[data-cursor-shape]')],
+        cursorColourButtons: [...document.querySelectorAll('[data-cursor-colour]')],
+        cursorAppearanceButtons: [...document.querySelectorAll('[data-cursor-appearance-trigger]')],
         densitySelect: document.getElementById("densitySelect"),
         graduationModeSelect: document.getElementById("graduationModeSelect"),
         adaptiveSpacingSelect: document.getElementById("adaptiveSpacingSelect"),
@@ -96,6 +101,7 @@ function createApplication(document) {
         logGraduationsField: document.getElementById("logGraduationsField"),
         formulaToggle: document.getElementById("formulaToggle"),
         compactScaleToggle: document.getElementById("compactScaleToggle"),
+        fullPrecisionToggle: document.getElementById("fullPrecisionToggle"),
         railEditors: document.getElementById("railEditors"),
         reorderStatus: document.getElementById("reorderStatus"),
         libraryList: document.getElementById("libraryList")
@@ -114,6 +120,7 @@ function createApplication(document) {
             signal: lifetime.signal,
             onStorageFailure: () => showAppStatus("Page theme changed for this session. Browser preferences cannot be saved; a standalone copy retains the chosen page theme.")
         });
+        bindCursorAppearancePanel({ document, signal: lifetime.signal });
         bindEvents();
         railReorder = createRailReorder({
             root: dom.railEditors, status: dom.reorderStatus, onMove: moveEditorScale,
@@ -155,6 +162,7 @@ function createApplication(document) {
         // Form controls outside the motion cards retain their own shortcuts.
         listen(dom.workbench, "keydown", onMotionKeyDown);
         listen(dom.workbench, "focusin", event => {
+            if (event.target.closest?.('[data-cursor-appearance-trigger]')) return;
             const card = event.target.closest?.(".position-control");
             if (card) selectMotionTarget(card.dataset.motion);
             if (card || event.target === dom.ruleCanvas || event.target === dom.ruleViewport)
@@ -248,6 +256,17 @@ function createApplication(document) {
             applyAppearance();
             renderRuleAndReadout(false);
         });
+        for (const [buttons, field] of [[dom.cursorShapeButtons, 'cursorShape'], [dom.cursorColourButtons, 'cursorColour']]) {
+            for (const button of buttons) listen(button, 'click', () => {
+                    if (state[field] === button.dataset[field]) return;
+                    state[field] = button.dataset[field];
+                    saveState();
+                    applyAppearance();
+                    // Rebuild both faces and the loupe; the effective hairlines also
+                    // determine which readings are shown in the numeric panel.
+                    renderRuleAndReadout(false);
+                });
+        }
         for (const [control, field] of [[dom.graduationModeSelect, 'graduationMode'], [dom.adaptiveSpacingSelect, 'adaptiveSpacing']]) {
             listen(control, 'change', () => {
                 state[field] = control.value;
@@ -275,6 +294,12 @@ function createApplication(document) {
         });
         listen(dom.compactScaleToggle, "change", () => {
             state.compactScales = dom.compactScaleToggle.checked;
+            saveState();
+            applyAppearance();
+            renderRuleAndReadout(false);
+        });
+        listen(dom.fullPrecisionToggle, "change", () => {
+            state.fullPrecision = dom.fullPrecisionToggle.checked;
             saveState();
             applyAppearance();
             renderRuleAndReadout(false);
@@ -370,6 +395,9 @@ function createApplication(document) {
     }
     function onMotionKeyDown(event) {
         const target = event.target;
+        // The quiet menu button lives in the cursor card; its keys must not
+        // nudge the cursor, change the motion step or toggle the loupe.
+        if (target.closest?.('[data-cursor-appearance-trigger]')) return;
         const card = target.closest?.(".position-control");
         const onRule = target.closest?.("#ruleViewport");
         if (!card && !onRule) return;
@@ -432,6 +460,12 @@ function createApplication(document) {
         dom.modelBadge.textContent = state.modelLabel || "Programmable scientific duplex";
         dom.themeSelect.innerHTML = Object.entries(THEMES).map(([id, label]) => `<option value="${escapeHtml(id)}">${escapeHtml(label)}</option>`).join("");
         dom.themeSelect.value = state.theme;
+        // Keep the same button nodes so a choice never discards keyboard focus.
+        for (const [buttons, field] of [[dom.cursorShapeButtons, 'cursorShape'], [dom.cursorColourButtons, 'cursorColour']]) {
+            for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset[field] === state[field]));
+        }
+        const cursorDescription = `Cursor appearance: ${CURSOR_SHAPES[state.cursorShape]}; ${CURSOR_COLOURS[state.cursorColour]}`;
+        for (const button of dom.cursorAppearanceButtons) button.title = cursorDescription;
         dom.densitySelect.innerHTML = Object.entries(DENSITIES).map(([id, label]) => `<option value="${escapeHtml(id)}">${escapeHtml(label)}</option>`).join("");
         dom.densitySelect.value = state.density;
         dom.graduationModeSelect.value = state.graduationMode;
@@ -445,6 +479,7 @@ function createApplication(document) {
         dom.logGraduationsSelect.value = state.logGraduations;
         dom.formulaToggle.checked = Boolean(state.showFormulas);
         dom.compactScaleToggle.checked = Boolean(state.compactScales);
+        dom.fullPrecisionToggle.checked = state.fullPrecision;
     }
     function renderSideSelect() {
         const options = Object.entries(state.sides).map(([key, side]) => {
@@ -512,11 +547,12 @@ function createApplication(document) {
         renderedTrackWidth = getScalePixelWidth();
         renderedDisplayScale = state.magnification;
         const context = { library: scaleLibrary, width: renderedTrackWidth,
+            fullPrecision: state.fullPrecision,
             graduationMode: state.graduationMode, adaptiveSpacing: state.adaptiveSpacing,
             logGraduations: state.logGraduations, displayScale: state.magnification,
             minGap: state.density === "comfortable" ? 1.8 : 1.65 };
         dom.ruleCanvas.innerHTML = visibleSideKeys(state).map((key, index) => {
-            const side = state.sides[key];
+            const side = cursorAppearanceSide(state.sides[key], state);
             const heading = state.viewMode === "both"
                 ? `<div class="face-heading"><strong>${escapeHtml(side.name || titleCase(key))}</strong>${side.note ? `<span>${escapeHtml(side.note)}</span>` : ""}</div>` : "";
             return `<section class="rule-face" data-side="${escapeHtml(key)}" aria-label="${escapeHtml(side.name || key)}">
@@ -568,10 +604,10 @@ function createApplication(document) {
     function updatePositionControls() {
         dom.slideRange.value = String(state.slideOffset * 100);
         dom.cursorRange.value = String(state.cursor * 1000);
-        dom.slideText.textContent = positionText(state.slideOffset, "slideOffset");
-        dom.cursorText.textContent = positionText(state.cursor, "cursor");
-        dom.slideRange.setAttribute("aria-valuetext", positionDescription(state.slideOffset, "slideOffset"));
-        dom.cursorRange.setAttribute("aria-valuetext", positionDescription(state.cursor, "cursor"));
+        dom.slideText.textContent = positionText(state.slideOffset, "slideOffset", state.fullPrecision);
+        dom.cursorText.textContent = positionText(state.cursor, "cursor", state.fullPrecision);
+        dom.slideRange.setAttribute("aria-valuetext", positionDescription(state.slideOffset, "slideOffset", state.fullPrecision));
+        dom.cursorRange.setAttribute("aria-valuetext", positionDescription(state.cursor, "cursor", state.fullPrecision));
         selectMotionTarget(keyboardTarget);
     }
     function renderRailEditors() {

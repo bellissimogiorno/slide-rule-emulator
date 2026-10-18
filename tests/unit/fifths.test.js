@@ -83,9 +83,9 @@ test('back-to-back fifth powers read x^5 and the true x^-5 at 501 positions', ()
         close(value, x ** 5, 1e-14, 0);
         close(pair.pairedProduct / value, x ** -5, 1e-14, 0);
     }
-    assert.deepEqual(scaleReadings(pair, Math.log10(2), scales).texts, ['x\u2075: 32', 'x\u207b\u2075: 0.03125']);
-    assert.deepEqual(scaleReadings(pair, 0, scales).texts, ['x\u2075: 1', 'x\u207b\u2075: 1']);
-    assert.deepEqual(scaleReadings(pair, 1, scales).texts, ['x\u2075: 1e5', 'x\u207b\u2075: 1e-5']);
+    assert.deepEqual(scaleReadings(pair, Math.log10(2), scales, true).texts, ['x\u2075: 32', 'x\u207b\u2075: 0.03125']);
+    assert.deepEqual(scaleReadings(pair, 0, scales, true).texts, ['x\u2075: 1', 'x\u207b\u2075: 1']);
+    assert.deepEqual(scaleReadings(pair, 1, scales, true).texts, ['x\u2075: 1e5', 'x\u207b\u2075: 1e-5']);
 });
 
 test('paired powers have one tick per position, reciprocal secondary labels and one shared baseline', () => {
@@ -114,7 +114,7 @@ test('secondary captions use the exact underlying value, not a rounded printed c
 });
 
 test('both-face readouts retain five branches and both powers at their own local coordinates', () => {
-    const state = { ...deepClone(PRESETS.fifths), activeSide: 'front', viewMode: 'both', customScales: [],
+    const state = { ...deepClone(PRESETS.fifths), activeSide: 'front', viewMode: 'both', customScales: [], fullPrecision: true,
         cursor: Math.log10(3.2), slideOffset: Math.log10(3.2) - Math.log10(2) };
     const html = renderReadout(state, scales);
     assert.match(html, /\u2075\u221a\u2082: 2<\/span>/);

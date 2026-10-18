@@ -1,6 +1,6 @@
 import { adaptiveTicks, usesAdaptiveGraduations, spaceAdaptiveLabels } from "#core/ticks/adaptive.js";
 import { expandedRootTicks } from "#core/ticks/expanded-roots.js";
-import { logLogEngraving } from "#core/format.js";
+import { logLogEngraving, formatTickPrecision } from "#core/format.js";
 import { usesConventionalLog } from "#core/ticks/conventional.js";
 import { anchorDescription, gaugeDescription } from "#core/mark-descriptions.js";
 import { pairedAngleTicks } from "#core/paired-angles.js";
@@ -56,8 +56,12 @@ function generateTicks(def, rt, width = 1000, minGap = 1.65, options = {}) {
     // gauge. Label collision handling is separate and cannot delete strokes.
     const visible = adaptive || expanded || (usesConventionalLog(def) && ['log', 'folded'].includes(mode))
         ? inDomain : thinTicksForPixels(inDomain, width, minGap);
-    if (def.pairedProduct !== undefined) return pairedProductTicks(visible, def);
-    return def.pairedSum === undefined ? visible : pairedAngleTicks(visible, def);
+    const paired = def.pairedProduct !== undefined ? pairedProductTicks(visible, def)
+        : def.pairedSum === undefined ? visible : pairedAngleTicks(visible, def);
+    // Raw generator consumers retain detailed captions; the UI always supplies
+    // its explicit precision preference. This never changes stroke geometry.
+    return typeof options.fullPrecision === 'boolean'
+        ? formatTickPrecision(paired, def, options.fullPrecision) : paired;
 }
 function addGaugeTicks(def, rt, ticks) {
     if (def.anchor) {

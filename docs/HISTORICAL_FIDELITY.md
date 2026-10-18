@@ -4,7 +4,7 @@ These are programmable, formula-driven digital instruments. Their names and appe
 
 | Preset group | Intended scope | Remaining qualification |
 | --- | --- | --- |
-| Faber-Castell 2/83N | Scale-order/layout study, W root arrangement, colour and formula hierarchy | No claim of identical physical engraving; only the mathematical cursor hairline is retained |
+| Faber-Castell 2/83N | Scale-order/layout study, W root arrangement, colour and formula hierarchy | Front circle-area and folded 360 cursor marks are included; additional original lines remain unresolved. See [cursors](CURSORS_FABER_ARISTO.md) |
 | Pickett N3 / N4 | Photographed back-to-back root banks and genuinely shared reciprocal LL graduations | Root branches retain independent tick positions; N3 natural and N4 base-10 LL geometry are distinct. Finite screen engraving is not a scan; see [Pickett roots](PICKETT_ROOTS.md) |
 | Thornton AA010 | Standard arithmetic/trigonometric families and paired presentation | Correction rows are normalised mathematical studies, not fully calibrated historical differential scales |
 | K&E Deci-Lon | Cream/red layout and scale-family study | Explicitly inspired by the instrument, not a calibrated dimensional replica |
@@ -34,3 +34,11 @@ auxiliary cursor line.
 ## Mathema and Aristo hyperbolic presets
 
 See [Mathema 2/84N](MATHEMA.md) and [Aristo 0971 / 0972](ARISTO_HYPERBOLIC.md) for scale-by-scale mathematical conventions, source evidence, and the limits of the reconstruction. These are programmable mathematical instruments with documented scale arrangements. The Mathema includes its calibrated exponent cursor banks, ordinary π conversion hairlines and scale-specific extensions. Their guides distinguish photographed evidence, exact mathematical reconstruction and remaining differences in engraving or hardware.
+
+## Cursor evidence
+
+The [cursor review](CURSORS.md) covers every preset and face. It distinguishes
+manufacturer-calibrated auxiliary marks, documented single-line cursors,
+representative housing proportions and unresolved physical details. The 2/82N
+remains a partial cursor reconstruction; Graphoplex uses the specified manual
+variant, and the F5100 back cursor is a digital reference aid.

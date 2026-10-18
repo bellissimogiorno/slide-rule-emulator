@@ -7,7 +7,7 @@
     "density": "faber",
     "showFormulas": true,
     "description": "Novo-Duplex arrangement with coloured C/CF and A/B/W bands, a W1/W2 root face, inverse scales in red, and self-documenting formula captions.",
-    "instrumentNote": "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style.",
+    "instrumentNote": "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style. The cursor includes front circle-area and 360 marks; its remaining auxiliary lines are not fully reconstructed.",
     "sides": {
       "front": {
         "name": "Front · trigonometric / folded",
@@ -31,6 +31,66 @@
           "S",
           "ST",
           "P"
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.188,
+        "cursorMarks": [
+          {
+            "id": "faber283-area",
+            "label": "q (circle area)",
+            "offset": -0.052455059316914285,
+            "scales": [
+              "A",
+              "B"
+            ],
+            "showLabel": false
+          },
+          {
+            "id": "faber283-360",
+            "label": "360",
+            "offset": 0.059152628073153427,
+            "scales": [
+              "DF",
+              "CF"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": [
+          {
+            "id": "faber283-q-caption",
+            "offset": -0.052455059316914285,
+            "lines": [
+              "q"
+            ],
+            "zone": "row",
+            "scale": "A",
+            "edge": "top",
+            "align": "center"
+          },
+          {
+            "id": "faber283-d-caption",
+            "offset": 0,
+            "lines": [
+              "d"
+            ],
+            "zone": "row",
+            "scale": "D",
+            "edge": "bottom",
+            "align": "end"
+          },
+          {
+            "id": "faber283-360-caption",
+            "offset": 0.059152628073153427,
+            "lines": [
+              "360"
+            ],
+            "zone": "row",
+            "scale": "DF",
+            "edge": "top",
+            "align": "center"
+          }
         ]
       },
       "back": {
@@ -56,7 +116,10 @@
           "LL1",
           "LL2",
           "LL3"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.188
       }
     }
   },
@@ -90,7 +153,12 @@
           "LL3",
           "LL2",
           "LL1"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorWidth": 0.156,
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back · trig / power",
@@ -111,7 +179,12 @@
           "DI",
           "PS",
           "PT"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorWidth": 0.156,
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       }
     }
   },
@@ -145,7 +218,10 @@
           "D",
           "DI",
           "K"
-        ]
+        ],
+        "cursorLineTone": "red",
+        "cursorFrame": "metal",
+        "cursorWidth": 0.14
       },
       "back": {
         "name": "Back · square roots / folded / Lon",
@@ -167,7 +243,10 @@
           "LL1",
           "LL2",
           "LL3"
-        ]
+        ],
+        "cursorLineTone": "red",
+        "cursorFrame": "metal",
+        "cursorWidth": 0.14
       }
     }
   },
@@ -201,7 +280,10 @@
           "D",
           "DI",
           "PICKETT_CBRT"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       },
       "back": {
         "name": "Combined LL+/− log-log face",
@@ -222,7 +304,10 @@
           "D",
           "PN3LL2",
           "PN3LL3"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       }
     }
   },
@@ -256,7 +341,10 @@
           "D",
           "DI",
           "PICKETT_SQRT"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       },
       "back": {
         "name": "Syncro combined LL+/− / hyperbolic face",
@@ -279,7 +367,10 @@
           "D",
           "PLL3",
           "PLL4"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       }
     }
   },
@@ -316,7 +407,10 @@
           "LL2",
           "LL1",
           "LN"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       },
       "back": {
         "name": "Electronics face · layout study only",
@@ -342,7 +436,10 @@
           "DB",
           "COS_THETA",
           "TCP_CP"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       }
     }
   },
@@ -379,7 +476,10 @@
           "BB_NU1_E",
           "BB_NU2_E",
           "BB_NOISE"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       },
       "back": {
         "name": "Photon radiation face",
@@ -403,7 +503,10 @@
           "BB_NU1_Q",
           "BB_NU2_Q",
           "BB_EPEAK"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       }
     }
   },
@@ -437,7 +540,11 @@
           "F5100_C",
           "F5100_B",
           "F5100_A"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back · reverse slide / references",
@@ -455,7 +562,10 @@
         "bottomStator": [
           "F5100_REF_NU",
           "F5100_REF_EV"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       }
     }
   },
@@ -468,7 +578,7 @@
     "name": "Aristo 0971 HyperboLog",
     "modelLabel": "Aristo 0971 HyperboLog",
     "description": "Twenty-five rows: hyperbolic sine and tangent, paired sine/cosine and tangent/cotangent, folded arithmetic and six log-log ranges.",
-    "instrumentNote": "Documented 0971 row order and main mathematical intervals. Sh1 and Th use D as 0.1 to 1; Sh2 uses D as 1 to 10. Red angular readings are complements. Th stops at argument 3. End extensions, auxiliary cursor lines and the complete original gauge inventory are not reproduced.",
+    "instrumentNote": "Documented 0971 row order and main mathematical intervals. Sh1 and Th use D as 0.1 to 1; Sh2 uses D as 1 to 10. Red angular readings are complements. Th stops at argument 3. The cursor includes the documented circle, metric-PS and 36 conversion marks. End extensions and the full original gauge inventory are not reproduced.",
     "sides": {
       "front": {
         "name": "Front - hyperbolic / trigonometric",
@@ -489,6 +599,65 @@
           "DI",
           "ARISTO_SH2",
           "ARISTO_SH1"
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.152,
+        "cursorMarks": [
+          {
+            "id": "aristo-area",
+            "label": "Circle area (π/4)",
+            "offset": -0.052455059316914285,
+            "scales": [
+              "A",
+              "B"
+            ],
+            "showLabel": false
+          },
+          {
+            "id": "aristo-diameter",
+            "label": "Circle diameter (√(4/π))",
+            "offset": 0.052455059316914285,
+            "scales": [
+              "C",
+              "D"
+            ],
+            "showLabel": false
+          },
+          {
+            "id": "aristo-ps",
+            "label": "PS (metric horsepower)",
+            "offset": 0.06670903051551563,
+            "scales": [
+              "A",
+              "B"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": [
+          {
+            "id": "aristo-kw-caption",
+            "offset": 0,
+            "lines": [
+              "kW"
+            ],
+            "zone": "row",
+            "scale": "A",
+            "edge": "top",
+            "align": "end"
+          },
+          {
+            "id": "aristo-ps-caption",
+            "offset": 0.06670903051551563,
+            "lines": [
+              "PS"
+            ],
+            "zone": "row",
+            "scale": "A",
+            "edge": "top",
+            "align": "start"
+          }
         ]
       },
       "back": {
@@ -511,6 +680,34 @@
           "LL3",
           "LL2",
           "LL1"
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.152,
+        "cursorMarks": [
+          {
+            "id": "aristo-36",
+            "label": "36",
+            "offset": 0.059152628073153427,
+            "scales": [
+              "DF",
+              "CF"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": [
+          {
+            "id": "aristo-36-caption",
+            "offset": 0.059152628073153427,
+            "lines": [
+              "36"
+            ],
+            "zone": "row",
+            "scale": "DF",
+            "edge": "top",
+            "align": "center"
+          }
         ]
       }
     }
@@ -524,7 +721,7 @@
     "name": "Aristo 0972 HyperLog",
     "modelLabel": "Aristo 0972 HyperLog",
     "description": "Thirty-one rows: hyperbolic sine, cosine and tangent, H1/H2 hypotenuse ranges, Pythagorean P, paired trigonometry, folded arithmetic and eight log-log ranges.",
-    "instrumentNote": "Documented 0972 row order and main mathematical intervals. H1/H2 read sqrt(1+x^2) at x on D (0.1 to 1 / 1 to 10). Ch gives the argument of cosh. Red angular readings are complements. Th stops at argument 3. End extensions, auxiliary cursor lines and the complete original gauge inventory are not reproduced.",
+    "instrumentNote": "Documented 0972 row order and main mathematical intervals. H1/H2 read sqrt(1+x^2) at x on D (0.1 to 1 / 1 to 10). Ch gives the argument of cosh. Red angular readings are complements. Th stops at argument 3. The cursor includes the documented circle, metric-PS and 36 conversion marks. End extensions and the full original gauge inventory are not reproduced.",
     "sides": {
       "front": {
         "name": "Front - hyperbolic / Pythagorean",
@@ -549,6 +746,65 @@
           "ARISTO_CH",
           "ARISTO_SH1",
           "ARISTO_H1"
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.24,
+        "cursorMarks": [
+          {
+            "id": "aristo-area",
+            "label": "Circle area (π/4)",
+            "offset": -0.052455059316914285,
+            "scales": [
+              "A",
+              "B"
+            ],
+            "showLabel": false
+          },
+          {
+            "id": "aristo-diameter",
+            "label": "Circle diameter (√(4/π))",
+            "offset": 0.052455059316914285,
+            "scales": [
+              "C",
+              "D"
+            ],
+            "showLabel": false
+          },
+          {
+            "id": "aristo-ps",
+            "label": "PS (metric horsepower)",
+            "offset": 0.06670903051551563,
+            "scales": [
+              "A",
+              "B"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": [
+          {
+            "id": "aristo-kw-caption",
+            "offset": 0,
+            "lines": [
+              "kW"
+            ],
+            "zone": "row",
+            "scale": "A",
+            "edge": "top",
+            "align": "end"
+          },
+          {
+            "id": "aristo-ps-caption",
+            "offset": 0.06670903051551563,
+            "lines": [
+              "PS"
+            ],
+            "zone": "row",
+            "scale": "A",
+            "edge": "top",
+            "align": "start"
+          }
         ]
       },
       "back": {
@@ -573,6 +829,34 @@
           "LL2",
           "LL1",
           "LL0"
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.24,
+        "cursorMarks": [
+          {
+            "id": "aristo-36",
+            "label": "36",
+            "offset": 0.059152628073153427,
+            "scales": [
+              "DF",
+              "CF"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": [
+          {
+            "id": "aristo-36-caption",
+            "offset": 0.059152628073153427,
+            "lines": [
+              "36"
+            ],
+            "zone": "row",
+            "scale": "DF",
+            "edge": "top",
+            "align": "center"
+          }
         ]
       }
     }
@@ -613,8 +897,8 @@
             "id": "mathema-left",
             "label": "1 (Y)",
             "offset": -0.06897838185562015,
-            "labelTone": "red",
             "showLabel": false,
+            "labelTone": "red",
             "scales": [
               "FC284_T",
               "FC284_H",
@@ -632,8 +916,8 @@
             "id": "mathema-right",
             "label": "π/2",
             "offset": 0.06897838185562015,
-            "labelTone": "red",
             "showLabel": false,
+            "labelTone": "red",
             "scales": [
               "FC284_T",
               "FC284_H",
@@ -968,16 +1252,19 @@
           "FC284_LL02",
           "FC284_LL01"
         ],
+        "cursorFrame": "ivory",
         "cursorMarks": [
           {
             "id": "mathema-left",
             "label": "Left",
-            "offset": -0.06897838185562015
+            "offset": -0.06897838185562015,
+            "showLabel": false
           },
           {
             "id": "mathema-right",
             "label": "Right",
-            "offset": 0.06897838185562015
+            "offset": 0.06897838185562015,
+            "showLabel": false
           }
         ]
       }
@@ -1020,7 +1307,10 @@
           "UL_LL2",
           "UL_LL1",
           "UL_LL0"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back - roots / trigonometric",
@@ -1049,7 +1339,10 @@
           "UL_Q1",
           "UL_Q2",
           "UL_Q3"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       }
     }
   },
@@ -1061,7 +1354,7 @@
     "name": "Graphoplex 690A Neperlog",
     "modelLabel": "Graphoplex 690A Neperlog",
     "description": "Degree/minute trigonometry, eight natural log-log ranges, reciprocal and pi-folded arithmetic. Distinct from the hyperbolic 691A.",
-    "instrumentNote": "Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. End extensions, auxiliary cursor hairlines and every original gauge are not reproduced.",
+    "instrumentNote": "Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. The cursor follows the manufacturer-documented power and circle conversions. End extensions and the full original gauge inventory are not reproduced.",
     "sides": {
       "front": {
         "name": "Front - degrees/minutes / near-unity log-log",
@@ -1083,7 +1376,35 @@
           "GP_P",
           "GP_DI",
           "GP_LL0"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.156,
+        "cursorMarks": [
+          {
+            "id": "graphoplex-kw",
+            "label": "kW",
+            "offset": -0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-ps",
+            "label": "PS (metric horsepower)",
+            "offset": 0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-circle",
+            "label": "Circle area (π/4)",
+            "offset": -0.05245505931691428,
+            "scales": [
+              "GP_A",
+              "GP_B"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back - folded / natural log-log",
@@ -1105,7 +1426,34 @@
           "GP_LL3",
           "GP_LL2",
           "GP_LL1"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.156,
+        "cursorMarks": [
+          {
+            "id": "graphoplex-kw",
+            "label": "kW",
+            "offset": -0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-ps",
+            "label": "PS (metric horsepower)",
+            "offset": 0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-360",
+            "label": "3.6 (D to DF)",
+            "offset": -0.059152628073153427,
+            "scales": [
+              "GP_D"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": []
       }
     }
   },
@@ -1117,7 +1465,7 @@
     "name": "Graphoplex 691A Neperlog Hyperbolic",
     "modelLabel": "Graphoplex 691A Neperlog Hyperbolic",
     "description": "Decimal-degree trigonometry and Ch, Th, Sh2, Sh1 hyperbolic rows, with six natural log-log ranges on the reverse.",
-    "instrumentNote": "Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals only; end extensions and auxiliary cursor hairlines are not reproduced.",
+    "instrumentNote": "Follows the supplied 691A specimen: Ch above A; Th, Sh2, Sh1 below D. The catalogue summary omits Ch and reverses Sh1/Sh2, so the photograph takes precedence. Main intervals and the manufacturer-documented cursor conversions; end extensions and specimen-specific extra markings are not reproduced.",
     "sides": {
       "front": {
         "name": "Front - decimal degrees / hyperbolic",
@@ -1139,7 +1487,34 @@
           "GP_TH",
           "GP_SH2",
           "GP_SH1"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorMarks": [
+          {
+            "id": "graphoplex-kw",
+            "label": "kW",
+            "offset": -0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-ps",
+            "label": "PS (metric horsepower)",
+            "offset": 0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-circle",
+            "label": "Circle area (π/4)",
+            "offset": -0.05245505931691428,
+            "scales": [
+              "GP_A",
+              "GP_B"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back - folded / natural log-log",
@@ -1161,7 +1536,33 @@
           "GP_LL3",
           "GP_LL2",
           "GP_LL1"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorMarks": [
+          {
+            "id": "graphoplex-kw",
+            "label": "kW",
+            "offset": -0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-ps",
+            "label": "PS (metric horsepower)",
+            "offset": 0.06656109283125057,
+            "showLabel": false
+          },
+          {
+            "id": "graphoplex-360",
+            "label": "3.6 (D to DF)",
+            "offset": -0.059152628073153427,
+            "scales": [
+              "GP_D"
+            ],
+            "showLabel": false
+          }
+        ],
+        "cursorCaptions": []
       }
     }
   },
@@ -1195,7 +1596,10 @@
           "FC282_S",
           "ST",
           "FC282_P"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.188
       },
       "back": {
         "name": "Back - K-prime / folded / log-log",
@@ -1218,7 +1622,10 @@
           "LL1",
           "LL2",
           "LL3"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorLineTone": "neutral",
+        "cursorWidth": 0.188
       }
     }
   },
@@ -1252,7 +1659,10 @@
           "P14_D",
           "PLL3",
           "PLL4"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       },
       "back": {
         "name": "Back - degrees and mils",
@@ -1271,7 +1681,10 @@
         "bottomStator": [
           "P14_DISTANCE",
           "P14_A"
-        ]
+        ],
+        "cursorLineTone": "neutral",
+        "cursorFrame": "clear",
+        "cursorWidth": 0.115
       }
     }
   },
@@ -1305,7 +1718,12 @@
           "CHEM_P_MMHG_ATM",
           "CHEM_TW",
           "FF_LN_M2"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorWidth": 0.152,
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back - scientific calculation",
@@ -1328,7 +1746,12 @@
           "FF_LN_1",
           "FF_LN_0",
           "FF_LN_M1"
-        ]
+        ],
+        "cursorFrame": "clear",
+        "cursorWidth": 0.152,
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       }
     }
   },
@@ -1360,7 +1783,12 @@
           "LL3",
           "LL2",
           "LL1"
-        ]
+        ],
+        "cursorFrame": "metal",
+        "cursorWidth": 0.12,
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       },
       "back": {
         "name": "Back - chemical engineering",
@@ -1382,7 +1810,12 @@
           "CHEM_P_MMHG_ATM",
           "CHEM_P_VAC_PSI",
           "CHEM_TW"
-        ]
+        ],
+        "cursorFrame": "metal",
+        "cursorWidth": 0.12,
+        "cursorLineTone": "neutral",
+        "cursorMarks": [],
+        "cursorCaptions": []
       }
     }
   },

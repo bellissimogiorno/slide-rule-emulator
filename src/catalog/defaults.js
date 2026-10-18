@@ -10,12 +10,15 @@ const DEFAULT_STATE = deepFreeze({
     instrumentNote: PRESETS.faber283n.instrumentNote,
     showFormulas: PRESETS.faber283n.showFormulas,
     compactScales: true,
+    fullPrecision: false,
     magnification: 1,
     logGraduations: "adaptive",
     graduationMode: "conventional",
     adaptiveSpacing: "balanced",
     slideOffset: 0,
     cursor: 0.5,
+    cursorShape: "instrument",
+    cursorColour: "instrument",
     customScales: [
         {
             id: "X2",

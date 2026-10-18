@@ -165,12 +165,20 @@ def main():
                 settle()
                 assert state()['slideOffset'] > 0.02, 'slide did not move: ' + str(state()['slideOffset'])
                 cursor = page.locator('#cursor').bounding_box()
-                page.mouse.move(cursor['x'] + cursor['width'] / 2, cursor['y'] + cursor['height'] / 2)
+                grab_x = cursor['x'] + cursor['width'] / 2
+                grab_y = cursor['y'] + cursor['height'] / 2
+                before = state()
+                page.mouse.move(grab_x, grab_y)
                 page.mouse.down()
-                page.mouse.move(cursor['x'] + 60, cursor['y'] + cursor['height'] / 2, steps=6)
+                # Measure the requested motion from the actual grab point;
+                # historical cursor housings have different physical widths.
+                page.mouse.move(grab_x + 60, grab_y, steps=6)
                 page.mouse.up()
                 settle()
-                assert state()['cursor'] > 0.52, 'cursor did not move: ' + str(state()['cursor'])
+                after = state()
+                expected = before['cursor'] + 60 / pane['width']
+                assert abs(after['cursor'] - expected) < 0.0001, (before, after, expected)
+                assert after['slideOffset'] == before['slideOffset'], 'cursor drag moved the slide'
             check('pointer slide and cursor dragging', pointer)
 
             def invalid_import():

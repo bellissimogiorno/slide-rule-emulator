@@ -16,9 +16,41 @@ Coverage includes scale/reference consistency, independent mathematical identiti
 
 ### Motion and keyboard controls
 
-`tests/unit/motion.test.js` checks all offered steps and modifiers, endpoint clamping, off-grid precision, key filtering and visible position descriptions. `tests/browser/motion_controls.py` is part of both browser runner modes: it presses actual keys and drags actual grips, rather than assuming that dispatching an input event proves keyboard usability. Checks cover Tab order, one update per key, selecting the last dragged part, S/C, Shift compatibility, six-decimal feedback, nudge buttons, viewport focus, editor isolation, repeated very-fine movement, exports and nine responsive widths. Forced-colour rendering and focus are also exercised. A synthetic event is used only where invoking an operating-system shortcut or composition would be unsafe or misleading.
+`tests/unit/motion.test.js` checks all offered steps and modifiers, endpoint clamping, off-grid precision, key filtering and visible position descriptions. `tests/browser/motion_controls.py` is part of both browser runner modes: it presses actual keys and drags actual grips, rather than assuming that dispatching an input event proves keyboard usability. Checks cover Tab order, one update per key, selecting the last dragged part, S/C, Shift compatibility, position feedback, nudge buttons, viewport focus, editor isolation, repeated very-fine movement, exports and nine responsive widths. Six-decimal feedback requires Extended decimal precision. Forced-colour rendering and focus are also exercised. A synthetic event is used only where invoking an operating-system shortcut or composition would be unsafe or misleading.
 
 The screenshots include the control strip and complete Faber, Pickett and Flying Fish views after keyboard movement. Keyboard increments are tested at more than one magnification. Browser test success is not a screen-reader or touch-device conformance claim.
+
+### Display precision and Cursor selector regression
+
+```sh
+node --test tests/unit/display-precision.test.js tests/unit/precision-preference.test.js tests/unit/motion.test.js
+```
+
+The precision tests cover the requested P, LL0 and LL01 endpoints; four-significant-
+digit ordinary and reciprocal LL values; excess-above-one log-log and hypotenuse
+values; Mathema expression log-log and hypotenuse scales; double-rounding cases;
+independent reciprocal/complementary formatting; units, special values and authored symbols; unchanged graduation geometry; all rails and
+auxiliary cursor readings; chemical masses; and unchanged exact motion/state.
+Preference tests cover the reduced default, legacy programmes, JSON validation,
+browser-storage adapters and configured-copy restoration. These storage tests
+are Node tests and do not establish native browser persistence.
+
+Before browser acceptance, check both precision settings in conventional and
+adaptive graduations, centred and compact numbering, both-face view and the
+loupe. Verify the checkbox sits immediately below Compact scale numbering and
+refreshes visible values without moving the cursor, slide or ticks. Check JSON
+and configured HTML round trips, native reload persistence and retention when
+loading another preset. Exercise the Cursor range with pointer and keyboard at
+narrow and wide widths; its track and grip must stay inside the Cursor box
+between the nudge arrows, with no positioned input across the top of the page.
+
+Native browser verification for the 3.2.33 preparation environment was blocked:
+no Chromium executable was installed, and browser provisioning returned HTTP
+403. No native rendering, pointer interaction, reload or download pass is claimed
+for this change. See the handover's current verification report for executed core
+checks and retained setup evidence; historical browser reports are not evidence
+for this version. Installing Chromium and running the relevant browser suites
+remains necessary for native acceptance.
 
 ### Catalogue snapshots and floating-point portability
 
@@ -61,6 +93,32 @@ the actual browser version and any failure traceback. There is no DOM fallback.
 This is local static-site verification, not a live GitHub Pages deployment.
 
 ## Native browser checks
+
+### All historical cursors
+
+`cursors-faber-aristo.test.js`, `cursors-other-makers.test.js` and
+`cursors-pickett-ke.test.js` check sourced conversions and single-line decisions.
+`cursor-review.test.js` requires evidence coverage for all 25 presets and 50
+faces, checks the default cursor, and rejects stale cursor metadata in named
+examples. Generic cursor tests cover framing, clipping geometry, independent
+captions, validation and retained metadata.
+
+The separate native Node Playwright runner checks every preset's actual browser
+geometry, magnification, dragging, JSON import and configured HTML restoration:
+
+```sh
+npm install --no-save --package-lock=false playwright
+npx playwright install chromium
+npm run test:cursors -- --visual --output qa/historical-cursors
+```
+
+Use `--executable /path/to/chromium` for an installed browser. The runner also
+recognises Playwright in `CODEX_PRIMARY_RUNTIME_NODE_MODULES` when available.
+Its report records the actual toolchain and setup failures. It is independent
+of the Python browser suites below; neither an unexecuted runner nor syntax
+validation establishes browser acceptance.
+
+### Full Python suites
 
 ```sh
 python -m pip install -r requirements-dev.txt
@@ -283,6 +341,17 @@ and magnifications. It checks actual numeral bounds, linked keyboard motion,
 readouts, configured downloads and the loupe. `--mode dom` is a deliberate
 opaque-origin test with a storage substitute, not evidence of native launch
 or persistence. `--executable` selects an installed Chromium executable.
+
+## Cursor appearance menu
+
+For the cursor appearance menu, run `npm run test:cursor-appearance` after building.
+The Node runner uses a local Playwright installation (or the managed runtime's
+module), accepts `--executable` for installed Chromium, and `--output` for reports
+outside the repository.
+It exercises shape/colour buttons, both entry points, viewport fitting, keyboard/outside dismissal,
+unchanged cursor-box dimensions, saved choices, both faces and standalone copies.
+A setup failure means no browser cases ran; consult the handover's current
+verification report for the actual execution result.
 
 ## Mathema and Aristo presets
 

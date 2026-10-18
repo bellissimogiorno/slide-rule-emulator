@@ -32,7 +32,10 @@
         "P14_D",
         "PLL3",
         "PLL4"
-      ]
+      ],
+      "cursorLineTone": "neutral",
+      "cursorFrame": "clear",
+      "cursorWidth": 0.115
     },
     "back": {
       "name": "Back - degrees and mils",
@@ -51,7 +54,10 @@
       "bottomStator": [
         "P14_DISTANCE",
         "P14_A"
-      ]
+      ],
+      "cursorLineTone": "neutral",
+      "cursorFrame": "clear",
+      "cursorWidth": 0.115
     }
   }
 }

@@ -51,20 +51,20 @@ test('motion preserves an off-grid coordinate and does not quantise subpixel nud
     assert.throws(() => movedPosition(0, 'unknown', { delta: 1 }), /Unknown motion target/);
 });
 
-test('motion readouts reveal every offered step including Alt plus Very fine', () => {
+test('full-precision motion readouts reveal every offered step including Alt plus Very fine', () => {
     for (const field of ['cursor', 'slideOffset']) {
         for (const step of MOTION_STEPS) {
-            assert.notEqual(positionText(.5, field), positionText(.5 + step, field));
-            assert.notEqual(positionText(.5, field), positionText(.5 + step / 10, field));
+            assert.notEqual(positionText(.5, field, true), positionText(.5 + step, field, true));
+            assert.notEqual(positionText(.5, field, true), positionText(.5 + step / 10, field, true));
         }
     }
-    assert.equal(positionText(0, 'slideOffset'), '+0.000000');
-    assert.equal(positionText(-.125, 'slideOffset'), '-0.125000');
-    assert.equal(positionText(-1e-9, 'cursor'), '0.000000');
-    assert.match(positionDescription(0, 'slideOffset'), /aligned/);
-    assert.match(positionDescription(-.1, 'slideOffset'), /0.100000.*left/);
-    assert.match(positionDescription(.1, 'slideOffset'), /0.100000.*right/);
-    assert.match(positionDescription(.5, 'cursor'), /0.500000.*left index/);
+    assert.equal(positionText(0, 'slideOffset', true), '+0.000000');
+    assert.equal(positionText(-.125, 'slideOffset', true), '-0.125000');
+    assert.equal(positionText(-1e-9, 'cursor', true), '0.000000');
+    assert.match(positionDescription(0, 'slideOffset', true), /aligned/);
+    assert.match(positionDescription(-.1, 'slideOffset', true), /0.100000.*left/);
+    assert.match(positionDescription(.1, 'slideOffset', true), /0.100000.*right/);
+    assert.match(positionDescription(.5, 'cursor', true), /0.500000.*left index/);
 });
 
 test('motion controls retain labelled native ranges, shared help and nudge buttons', async () => {

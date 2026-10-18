@@ -1,0 +1,252 @@
+{
+  "faber282n": {
+    "status": "partial",
+    "guide": "CURSORS_FABER_ARISTO.md",
+    "basis": "Exact N-model specimen descriptions establish a multiline cursor; available readable instructions do not establish every auxiliary position.",
+    "faces": {
+      "front": "Central hairline with clear screen frame; auxiliary positions remain unresolved.",
+      "back": "Central hairline with clear screen frame; auxiliary positions remain unresolved."
+    },
+    "limits": "The original auxiliary lines are not fully reproduced. Another model's cursor has not been substituted."
+  },
+  "faber283n": {
+    "status": "partial",
+    "guide": "CURSORS_FABER_ARISTO.md",
+    "basis": "Manufacturer cursor instructions establish circle-area and folded 360 relationships.",
+    "faces": {
+      "front": "Circle-area mark on A/B and 360 mark on DF/CF, with a central hairline.",
+      "back": "Central hairline retained; original q/d and horsepower pair positions remain unresolved."
+    },
+    "limits": "Front circle and folded conversions are reconstructed. Additional original marks and exact cap lettering remain unresolved."
+  },
+  "faber284n": {
+    "status": "reconstructed",
+    "guide": "MATHEMA.md",
+    "basis": "Manufacturer relationships and the supplied front close-up and duplex specimen photograph establish the documented banks, captions and ivory cursor caps.",
+    "faces": {
+      "front": "Thirteen auxiliary marks, seventeen captions, reddish lines and ivory caps.",
+      "back": "Three ordinary long hairlines with documented pi conversion spacing and unlettered ivory screen caps."
+    },
+    "limits": "Screen-adapted fittings and type; unresolved reverse logarithmic scale fringes remain as documented in the Mathema guide."
+  },
+  "aristo0971": {
+    "status": "partial",
+    "guide": "CURSORS_FABER_ARISTO.md",
+    "basis": "Manufacturer instructions establish circle-area, metric power and folded 36 relationships.",
+    "faces": {
+      "front": "Circle-area and metric PS conversion marks on the documented arithmetic rows.",
+      "back": "Folded 36 mark across DF/CF with the central hairline."
+    },
+    "limits": "Source-based functional strokes; exact engraved endpoints and cap lettering are not photographically verified."
+  },
+  "aristo0972": {
+    "status": "partial",
+    "guide": "CURSORS_FABER_ARISTO.md",
+    "basis": "Manufacturer instructions establish circle-area, metric power and folded 36 relationships.",
+    "faces": {
+      "front": "Circle-area and metric PS conversion marks on the documented arithmetic rows.",
+      "back": "Folded 36 mark across DF/CF with the central hairline."
+    },
+    "limits": "Source-based functional strokes; exact engraved endpoints and cap lettering are not photographically verified. Additional 0972 interrupted 2pi marks remain unresolved."
+  },
+  "pickettN3": {
+    "status": "single-hairline",
+    "guide": "CURSORS_PICKETT_KE.md",
+    "basis": "Primary specimen-owner descriptions explicitly record single hairlines on both faces.",
+    "faces": {
+      "front": "One neutral hairline and a clear screen representation of the cursor housing.",
+      "back": "One neutral hairline and a clear screen representation of the cursor housing."
+    },
+    "limits": "Clear styling and proportions are screen adaptations. Particular production-year fittings, lens refraction and original line pigment are not reproduced."
+  },
+  "pickettN4": {
+    "status": "single-hairline",
+    "guide": "CURSORS_PICKETT_KE.md",
+    "basis": "Primary specimen-owner descriptions explicitly record single hairlines on both faces.",
+    "faces": {
+      "front": "One neutral hairline and a clear screen representation of the cursor housing.",
+      "back": "One neutral hairline and a clear screen representation of the cursor housing."
+    },
+    "limits": "Clear styling and proportions are screen adaptations. Particular production-year fittings, lens refraction and original line pigment are not reproduced."
+  },
+  "pickettN16": {
+    "status": "single-hairline",
+    "guide": "CURSORS_PICKETT_KE.md",
+    "basis": "Primary specimen-owner descriptions explicitly record single hairlines on both faces.",
+    "faces": {
+      "front": "One neutral hairline and a clear screen representation of the cursor housing.",
+      "back": "One neutral hairline and a clear screen representation of the cursor housing."
+    },
+    "limits": "Clear styling and proportions are screen adaptations. Particular production-year fittings, lens refraction and original line pigment are not reproduced."
+  },
+  "pickett14": {
+    "status": "single-hairline",
+    "guide": "CURSORS_PICKETT_KE.md",
+    "basis": "Primary specimen-owner descriptions explicitly record single hairlines on both faces.",
+    "faces": {
+      "front": "One neutral hairline and a clear screen representation of the cursor housing.",
+      "back": "One neutral hairline and a clear screen representation of the cursor housing."
+    },
+    "limits": "Clear styling and proportions are screen adaptations. Particular production-year fittings, lens refraction and original line pigment are not reproduced."
+  },
+  "blackbody17": {
+    "status": "single-hairline",
+    "guide": "CURSORS_PICKETT_KE.md",
+    "basis": "Primary specimen-owner descriptions explicitly record single hairlines on both faces.",
+    "faces": {
+      "front": "One neutral hairline and a clear screen representation of the cursor housing.",
+      "back": "One neutral hairline and a clear screen representation of the cursor housing."
+    },
+    "limits": "Clear styling and proportions are screen adaptations. Particular production-year fittings, lens refraction and original line pigment are not reproduced."
+  },
+  "keDecilon": {
+    "status": "single-hairline",
+    "guide": "CURSORS_PICKETT_KE.md",
+    "basis": "Specimen descriptions record one line per face and a metal frame; the manufacturer manual specifies red hairlines.",
+    "faces": {
+      "front": "One red hairline with a metal-style cursor housing.",
+      "back": "One red hairline with a metal-style cursor housing."
+    },
+    "limits": "Measured proportions are approximate; exact corner shapes, optical effects and adjustment fittings are not modelled."
+  },
+  "thorntonAA010": {
+    "status": "single-hairline",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "The owner catalogue records a single-line all-plastic duplex AA010 cursor; Thornton's duplex-cursor maintenance instructions describe its black hairline.",
+    "faces": {
+      "front": "One neutral hairline with a clear screen frame.",
+      "back": "One neutral hairline with a clear screen frame."
+    },
+    "limits": "This selects the documented AA010 configuration; every P221 production variant and exact fittings have not been established."
+  },
+  "thorntonF5100": {
+    "status": "partial",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "The owner catalogue records an adjustable plastic cursor on the front only.",
+    "faces": {
+      "front": "One neutral hairline with a clear screen frame.",
+      "back": "Plain virtual line for the emulator's reconstructed reference face."
+    },
+    "limits": "The back cursor is a digital convenience rather than a second physical window on the original instrument."
+  },
+  "hemmi257": {
+    "status": "single-hairline",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "The specimen owner records single hairlines and metal-framed glass with plastic runners.",
+    "faces": {
+      "front": "One neutral hairline with a metal-style frame.",
+      "back": "One neutral hairline with a metal-style frame."
+    },
+    "limits": "Frame materials are represented; precise proportions, adjustment screws, optical effects and original line pigment remain unverified."
+  },
+  "flyingFish1017": {
+    "status": "single-hairline",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "Two specimen-owner catalogues independently identify single hairlines on both faces.",
+    "faces": {
+      "front": "One neutral hairline with a clear plastic-style frame.",
+      "back": "One neutral hairline with a clear plastic-style frame."
+    },
+    "limits": "Exact frame proportions, fittings and original pigment are not verified; no unsupported auxiliary markings are added."
+  },
+  "graphoplex690a": {
+    "status": "reconstructed",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "The manufacturer 690/691 cursor instructions establish long power lines and face-specific short conversion lines.",
+    "faces": {
+      "front": "Three long lines plus a short A/B circle-area mark.",
+      "back": "Three long lines plus a short D mark for conversion against folded DF."
+    },
+    "limits": "Uses the explicit manufacturer-documented configuration. Specimen line counts vary; exact endpoints, captions and additional specimen marks are not claimed reproduced."
+  },
+  "graphoplex691a": {
+    "status": "reconstructed",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "The manufacturer 690/691 cursor instructions establish long power lines and face-specific short conversion lines.",
+    "faces": {
+      "front": "Three long lines plus a short A/B circle-area mark.",
+      "back": "Three long lines plus a short D mark for conversion against folded DF."
+    },
+    "limits": "Uses the explicit manufacturer-documented configuration. Specimen line counts vary; exact endpoints, captions and additional specimen marks are not claimed reproduced."
+  },
+  "ultralog": {
+    "status": "digital-design",
+    "guide": "CURSORS_OTHER_MAKERS.md",
+    "basis": "The author's published design establishes the scale proposal but no verified physical auxiliary cursor specification.",
+    "faces": {
+      "front": "Plain virtual cursor for the digital layout.",
+      "back": "Plain virtual cursor for the digital layout."
+    },
+    "limits": "No material-specific physical housing, auxiliary calibration or factory cursor is asserted."
+  },
+  "fifths": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  },
+  "comprehensive": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  },
+  "classic": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  },
+  "roots": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  },
+  "loglog": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  },
+  "trig": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  },
+  "hyperbolic": {
+    "status": "digital-design",
+    "guide": "CURSORS.md",
+    "basis": "These laboratory layouts are deliberate digital arrangements rather than replicas of identified historical instruments.",
+    "faces": {
+      "front": "Plain virtual cursor for the mathematical laboratory.",
+      "back": "Plain virtual cursor for the mathematical laboratory."
+    },
+    "limits": "There is no original historical cursor to reconstruct; manufacturer-specific conversion marks are not imposed on these layouts."
+  }
+}

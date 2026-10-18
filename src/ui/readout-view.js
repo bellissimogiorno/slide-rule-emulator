@@ -5,13 +5,15 @@ import { RAILS } from '#core/scale-types.js';
 import { renderReadout } from '#ui/readout.js';
 import { cursorScaleReadings } from '#ui/readout-values.js';
 import { marksForScale } from '#ui/cursor-marks.js';
+import { cursorAppearanceSide } from '#model/cursor-appearance.js';
 
 export function createReadoutView(root) {
     let previousKey, previousLibrary, cards = [];
     return {
         update(state, library) {
-            const key = JSON.stringify([state.viewMode, visibleSideKeys(state).map(id => {
-                const side = state.sides[id];
+            const sides = Object.fromEntries(visibleSideKeys(state).map(id =>
+                [id, cursorAppearanceSide(state.sides[id], state)]));
+            const key = JSON.stringify([state.viewMode, Object.entries(sides).map(([id, side]) => {
                 return [id, side.name, side.cursorMarks, ...RAILS.map(rail => side[rail])];
             })]);
             if (key !== previousKey || library !== previousLibrary) {
@@ -19,14 +21,14 @@ export function createReadoutView(root) {
                 cards = [...root.querySelectorAll('.readout-card')].map(node => ({
                     node, value: node.querySelector('.value'), definition: library[node.dataset.readoutScale],
                     moving: node.closest('[data-readout-rail]').dataset.readoutRail === 'slide',
-                    marks: marksForScale(state.sides[node.closest('[data-readout-side]').dataset.readoutSide], node.dataset.readoutScale)
+                    marks: marksForScale(sides[node.closest('[data-readout-side]').dataset.readoutSide], node.dataset.readoutScale)
                 }));
                 previousKey = key;
                 previousLibrary = library;
                 return;
             }
             for (const { node, value, definition, moving, marks } of cards) {
-                const result = cursorScaleReadings(definition, state.cursor - (moving ? state.slideOffset : 0), library, marks, state.cursor);
+                const result = cursorScaleReadings(definition, state.cursor - (moving ? state.slideOffset : 0), library, marks, state.cursor, state.fullPrecision);
                 if (node.classList.contains('outside') !== result.outside)
                     node.classList.toggle('outside', result.outside);
                 if (result.multi) {

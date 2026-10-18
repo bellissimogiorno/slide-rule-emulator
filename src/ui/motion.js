@@ -2,6 +2,7 @@
  * Distances are fractions of the graduated rule length, never screen pixels.
  * Keeping this independent of the DOM makes precision and limits testable.
  */
+import { formatUseful } from '#core/format.js';
 import { clamp } from '#core/numbers.js';
 
 export const DEFAULT_MOTION_STEP = 0.001;
@@ -50,15 +51,15 @@ export function movedPosition(value, field, command) {
     return clamp(value + command.delta, min, max);
 }
 
-export function positionText(value, field) {
-    const text = value.toFixed(6);
+export function positionText(value, field, fullPrecision = false) {
+    const text = fullPrecision ? value.toFixed(6) : formatUseful(value);
     // Suppress a rounded negative zero without changing the stored coordinate.
     const unsignedZero = text === '-0.000000' ? '0.000000' : text;
     return field === 'slideOffset' && value >= 0 ? '+' + unsignedZero : unsignedZero;
 }
 
-export function positionDescription(value, field) {
-    if (field === 'cursor') return positionText(value, field) + ' scale lengths from the left index';
-    if (value === 0) return 'Slide indices aligned; offset 0.000000 scale lengths';
-    return Math.abs(value).toFixed(6) + ' scale lengths to the ' + (value < 0 ? 'left' : 'right');
+export function positionDescription(value, field, fullPrecision = false) {
+    if (field === 'cursor') return positionText(value, field, fullPrecision) + ' scale lengths from the left index';
+    if (value === 0) return 'Slide indices aligned; offset ' + positionText(0, 'cursor', fullPrecision) + ' scale lengths';
+    return positionText(Math.abs(value), 'cursor', fullPrecision) + ' scale lengths to the ' + (value < 0 ? 'left' : 'right');
 }

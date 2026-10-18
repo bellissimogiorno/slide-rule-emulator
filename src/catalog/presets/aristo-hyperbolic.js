@@ -11,7 +11,7 @@ export const aristoHyperbolicPresets = {
         ...common,
         name: 'Aristo 0971 HyperboLog', modelLabel: 'Aristo 0971 HyperboLog',
         description: 'Twenty-five rows: hyperbolic sine and tangent, paired sine/cosine and tangent/cotangent, folded arithmetic and six log-log ranges.',
-        instrumentNote: 'Documented 0971 row order and main mathematical intervals. Sh1 and Th use D as 0.1 to 1; Sh2 uses D as 1 to 10. Red angular readings are complements. Th stops at argument 3. End extensions, auxiliary cursor lines and the complete original gauge inventory are not reproduced.',
+        instrumentNote: 'Documented 0971 row order and main mathematical intervals. Sh1 and Th use D as 0.1 to 1; Sh2 uses D as 1 to 10. Red angular readings are complements. Th stops at argument 3. The cursor includes the documented circle, metric-PS and 36 conversion marks. End extensions and the full original gauge inventory are not reproduced.',
         sides: {
             front: {
                 name: 'Front - hyperbolic / trigonometric',
@@ -31,7 +31,7 @@ export const aristoHyperbolicPresets = {
         ...common,
         name: 'Aristo 0972 HyperLog', modelLabel: 'Aristo 0972 HyperLog',
         description: 'Thirty-one rows: hyperbolic sine, cosine and tangent, H1/H2 hypotenuse ranges, Pythagorean P, paired trigonometry, folded arithmetic and eight log-log ranges.',
-        instrumentNote: 'Documented 0972 row order and main mathematical intervals. H1/H2 read sqrt(1+x^2) at x on D (0.1 to 1 / 1 to 10). Ch gives the argument of cosh. Red angular readings are complements. Th stops at argument 3. End extensions, auxiliary cursor lines and the complete original gauge inventory are not reproduced.',
+        instrumentNote: 'Documented 0972 row order and main mathematical intervals. H1/H2 read sqrt(1+x^2) at x on D (0.1 to 1 / 1 to 10). Ch gives the argument of cosh. Red angular readings are complements. Th stops at argument 3. The cursor includes the documented circle, metric-PS and 36 conversion marks. End extensions and the full original gauge inventory are not reproduced.',
         sides: {
             front: {
                 name: 'Front - hyperbolic / Pythagorean',

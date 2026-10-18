@@ -10,10 +10,10 @@ const pi4Offset = Math.log10(Math.PI / 4) / (2 * MATHEMA_SPAN);
 const ordinaryScales = ['FC284_T', 'FC284_H', 'FC284_A', 'FC284_B', 'FC284_BI',
     'FC284_I', 'FC284_y', 'FC284_Y', 'FC284_P', 'FC284_S'];
 const ordinaryMarks = (front = false) => [
-    { id: 'mathema-left', label: front ? '1 (Y)' : 'Left', offset: -ordinaryOffset,
-        ...(front ? { labelTone: 'red', showLabel: false, scales: [...ordinaryScales] } : {}) },
-    { id: 'mathema-right', label: front ? 'π/2' : 'Right', offset: ordinaryOffset,
-        ...(front ? { labelTone: 'red', showLabel: false, scales: [...ordinaryScales] } : {}) }
+    { id: 'mathema-left', label: front ? '1 (Y)' : 'Left', offset: -ordinaryOffset, showLabel: false,
+        ...(front ? { labelTone: 'red', scales: [...ordinaryScales] } : {}) },
+    { id: 'mathema-right', label: front ? 'π/2' : 'Right', offset: ordinaryOffset, showLabel: false,
+        ...(front ? { labelTone: 'red', scales: [...ordinaryScales] } : {}) }
 ];
 const multipliers = ['10', '10²', '10³', '10⁴', '10⁵'];
 function exponentMarks(gon = false) {
@@ -95,6 +95,7 @@ export const mathemaPresets = {
                 topStator: ['FC284_LL1', 'FC284_LL2', 'FC284_LL3', 'FC284_Y'],
                 slide: ['FC284_y', 'FC284_CH', 'FC284_SH2', 'FC284_SH1'],
                 bottomStator: ['FC284_TH', 'FC284_LL03', 'FC284_LL02', 'FC284_LL01'],
+                cursorFrame: 'ivory',
                 cursorMarks: ordinaryMarks()
             }
         }

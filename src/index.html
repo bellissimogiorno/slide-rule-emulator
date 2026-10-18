@@ -60,8 +60,11 @@
             </div>
           </div>
           <div class="position-control" data-motion="cursor">
-            <div class="position-heading">
-              <label for="cursorRange">Cursor</label>
+            <div class="position-heading cursor-position-heading">
+              <span class="position-caption">
+                <label for="cursorRange">Cursor</label>
+                <button id="cursorAppearanceCompactButton" class="cursor-appearance-compact" type="button" data-cursor-appearance-trigger aria-label="Cursor appearance" aria-haspopup="dialog" aria-expanded="false" aria-controls="cursorAppearance" title="Cursor appearance">&#x25BE;</button>
+              </span>
               <output id="cursorText" for="cursorRange" title="Cursor position in scale lengths from the left index">0.500000</output>
             </div>
             <div class="position-track">
@@ -98,8 +101,33 @@
           <select id="magnificationSelect" aria-label="Magnification"><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
         </label>
         <button id="loupeButton" type="button" aria-pressed="false" aria-describedby="loupeHelp" title="Magnify the rule and cursor beneath the pointer (M); Escape switches off">2.5&times; loupe</button>
-        <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
+        <div class="layout-actions">
+          <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
+          <button id="cursorAppearanceButton" type="button" data-cursor-appearance-trigger aria-haspopup="dialog" aria-expanded="false" aria-controls="cursorAppearance">Cursor appearance <span aria-hidden="true">&#x25BE;</span></button>
+        </div>
         <span class="hint">Scroll sideways on narrow screens.</span>
+      </div>
+      <div id="cursorAppearance" class="cursor-appearance" role="dialog" aria-label="Cursor appearance" hidden>
+        <div class="cursor-appearance-options">
+          <div class="cursor-appearance-row">
+            <span id="cursorShapeLabel" class="field">Cursor shape</span>
+            <div id="cursorShapeOptions" class="cursor-choice-buttons" role="group" aria-labelledby="cursorShapeLabel" aria-describedby="cursorAppearanceHelp">
+              <button class="cursor-choice" type="button" data-cursor-shape="instrument" aria-pressed="true">Instrument</button>
+              <button class="cursor-choice" type="button" data-cursor-shape="minimal" aria-pressed="false">Minimal</button>
+            </div>
+          </div>
+          <div class="cursor-appearance-row">
+            <span id="cursorColourLabel" class="field">Hairline colour</span>
+            <div id="cursorColourOptions" class="cursor-choice-buttons" role="group" aria-labelledby="cursorColourLabel" aria-describedby="cursorAppearanceHelp">
+              <button class="cursor-choice" type="button" data-cursor-colour="instrument" aria-pressed="true">Instrument</button>
+              <button class="cursor-choice cursor-colour" type="button" data-cursor-colour="red" aria-pressed="false">Red</button>
+              <button class="cursor-choice cursor-colour" type="button" data-cursor-colour="black" aria-pressed="false">Black</button>
+              <button class="cursor-choice cursor-colour" type="button" data-cursor-colour="blue" aria-pressed="false">Blue</button>
+              <button class="cursor-choice cursor-colour" type="button" data-cursor-colour="green" aria-pressed="false">Green</button>
+            </div>
+          </div>
+        </div>
+        <p id="cursorAppearanceHelp" class="hint">Applies to both faces. Minimal shows only the main hairline.</p>
       </div>
       <span id="loupeHelp" class="visually-hidden">Switch on, then hover over the rule or cursor for a live 2.5 times magnified view in a 480-pixel square lens, reduced only to fit the screen. The lens fades after four seconds of inactivity; pointer movement or a keypress restores it immediately. Dragging and keyboard movement remain available. M toggles the loupe when a motion control or the rule has focus; Escape switches it off.</span>
       <div id="appStatus" class="app-status" role="status" hidden></div>
@@ -142,6 +170,7 @@
           </div>
           <label class="check-field"><input id="formulaToggle" type="checkbox" /> Show self-documenting formula captions</label>
           <label class="check-field" title="Pack numerals beside major ticks, or split suitable multi-digit numerals around a tick, in the manner of compact Pickett and Versalog engraving."><input id="compactScaleToggle" type="checkbox" /> Compact scale numbering (right / split)</label>
+          <label class="check-field" title="Restore detailed decimal labels and readouts. By default, numbers use four useful significant digits. Log-log and hypotenuse values between one and two preserve four digits of their excess above one; values below one use ordinary significant digits."><input id="fullPrecisionToggle" type="checkbox" aria-describedby="precisionHelp" /> Extended decimal precision</label>
         </div>
         <p id="graduationHelp" class="hint">Only the active options are shown; both settings are remembered. Fully adaptive fits whole round-number subdivisions to each continuous scale; Balanced is a good starting point. Conventional applies the shared choice to C/D and W; W uses twice the effective length. The 10-inch choice retains the documented W pattern. Calculations and chemical reference marks are unchanged; custom tick lists require an explicit opt-in.</p>
         <label id="editSideField" class="field" hidden>Edit face
@@ -176,7 +205,7 @@
         <summary>Keyboard and fine positioning</summary>
         <p class="hint">Tab or click into the Slide or Cursor grip, then use Left/Right (or Down/Up) to move that control. Choose a <strong>Keyboard step</strong> slider stop without losing motion focus. Keys <strong>1</strong>, <strong>2</strong>, <strong>3</strong> and <strong>4</strong> select Faster (0.005), Normal (0.001), Fine (0.0005) and Very fine (0.0001) while the rule or a grip is focused. Tab and Enter/Space also activate each button and return you to your last motion control. Alt divides the selected step by ten; Page Up/Down uses ten steps. Home/End selects the limits. The small arrow buttons use the same step.</p>
         <p class="hint">With the instrument focused, <strong>S</strong> selects the slide and <strong>C</strong> selects the cursor. Arrows then move the selected part; clicking or dragging a part selects it too. Shift plus an arrow on the rule temporarily moves the slide. On a focused grip, arrows always control that grip. Keyboard shortcuts leave the JSON editor and menus alone.</p>
-        <p class="hint">Faster, Normal, Fine and Very fine mean 0.005, 0.001, 0.0005 and 0.0001 of the graduated length. Alt plus Very fine reaches 0.00001. The six-decimal position displays show these changes even when movement is less than a screen pixel. These are positional fractions, not scale readings. Exact positions are saved without display rounding; the step setting is session-only.</p>
+        <p class="hint">Faster, Normal, Fine and Very fine mean 0.005, 0.001, 0.0005 and 0.0001 of the graduated length. Alt plus Very fine reaches 0.00001. Position displays normally use four significant digits; Extended decimal precision shows these finer changes with six decimal places, even when movement is less than a screen pixel. These are positional fractions, not scale readings. Exact positions are saved without display rounding; the step setting is session-only.</p>
       </details>
 
       <details>
@@ -234,6 +263,7 @@
         <p class="hint"><strong>Expanded roots:</strong> write the radicand as <span class="kbd">N = m × 10^k</span>, with 1 &le; m &lt; 10. For an n-th root, choose branch <span class="kbd">(k mod n) + 1</span>, put the cursor at m on D, and read the root mantissa on that branch. Example: 32 = 3.2 × 10^1, so 5R2 reads 2 over D = 3.2. A, K, and x⁵ provide the corresponding power scales.</p>
         <p class="hint"><strong>Log-log:</strong> LL0 through LL4 cover values above 1; LL00 through LL04 cover values below 1. Pickett paired and Syncro LL± rows use one shared graduation: the black number is above one and the red number immediately below it is its exact reciprocal. The N3 rows are natural-exponential; the N4 rows use Pickett's base-10 geometry.</p>
         <p class="hint"><strong>Compact scale numbering:</strong> primary numerals are tucked beside their long ticks. When a label cannot fit cleanly to the right, suitable multi-digit labels are divided around the tick. Turn the option off to restore centred-above-tick numbering. A custom scale can opt out with <span class="kbd">"compactLabels": false</span>.</p>
+        <p id="precisionHelp" class="hint"><strong>Decimal precision:</strong> labels and readouts normally show four useful significant digits, with trailing decimal zeros omitted: P's 0.994987… becomes 0.995, and LL01's 0.990049833… becomes 0.99. Values below one use ordinary significant digits, including reciprocal log-log values. On log-log and hypotenuse scales between one and two, useful digits describe the excess above one, so LL0's 1.001000500… becomes 1.001001. Extended decimal precision restores the detailed display. This changes only displayed numbers; calculations, tick positions and saved settings retain their precision.</p>
         <p class="hint"><strong>Trig and hyperbolic:</strong> S, COS, T1, T2, ST, and P cover circular functions. SH1, SH2, TH, H1, H2, and CH provide split hyperbolic-function ranges. Load the Trigonometric or Hyperbolic preset for a less crowded working face.</p>
       </details>
       </div>

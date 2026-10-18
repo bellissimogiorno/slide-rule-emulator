@@ -31,7 +31,10 @@
         "D",
         "DI",
         "PICKETT_SQRT"
-      ]
+      ],
+      "cursorLineTone": "neutral",
+      "cursorFrame": "clear",
+      "cursorWidth": 0.115
     },
     "back": {
       "name": "Syncro combined LL+/− / hyperbolic face",
@@ -54,7 +57,10 @@
         "D",
         "PLL3",
         "PLL4"
-      ]
+      ],
+      "cursorLineTone": "neutral",
+      "cursorFrame": "clear",
+      "cursorWidth": 0.115
     }
   }
 }

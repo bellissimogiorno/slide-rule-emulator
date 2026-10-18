@@ -45,7 +45,12 @@
         "LL3",
         "LL2",
         "LL1"
-      ]
+      ],
+      "cursorFrame": "metal",
+      "cursorWidth": 0.12,
+      "cursorLineTone": "neutral",
+      "cursorMarks": [],
+      "cursorCaptions": []
     },
     "back": {
       "name": "Back - chemical engineering",
@@ -67,7 +72,12 @@
         "CHEM_P_MMHG_ATM",
         "CHEM_P_VAC_PSI",
         "CHEM_TW"
-      ]
+      ],
+      "cursorFrame": "metal",
+      "cursorWidth": 0.12,
+      "cursorLineTone": "neutral",
+      "cursorMarks": [],
+      "cursorCaptions": []
     }
   }
 }

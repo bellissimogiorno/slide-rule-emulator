@@ -1545,6 +1545,7 @@
     "formula": "√(1+Y²)",
     "description": "Hypotenuse row: engraved X = sqrt(1+Y^2), extended from 1.0022 to 1.8.",
     "tickMode": "mapped",
+    "precisionOrigin": 1,
     "pMin": 0.018349028933593105,
     "pMax": 0.9702027166314211,
     "ticks": [

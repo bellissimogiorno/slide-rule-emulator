@@ -124,6 +124,116 @@ summary {
     font-weight: 650;
 }
 
+/* Both cursor buttons open one floating panel, so the motion card and toolbar
+   keep their height. Group the two layout controls even when the row wraps. */
+.layout-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+}
+.layout-actions > * { white-space: nowrap; }
+.cursor-position-heading { align-items: center; }
+.position-caption {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 21px;
+    min-width: 0;
+}
+.cursor-appearance-compact {
+    width: 22px;
+    height: 21px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--ui-muted);
+    font-size: 12px;
+    line-height: 1;
+    flex: none;
+}
+.cursor-appearance-compact[aria-expanded="true"] {
+    background: var(--ui-hover);
+    color: var(--ui-ink);
+}
+.cursor-appearance {
+    position: fixed;
+    z-index: 2100;
+    width: 360px;
+    max-width: calc(100vw - 16px);
+    overflow: auto;
+    padding: 12px;
+    border: 1px solid var(--ui-border);
+    border-radius: 9px;
+    background: var(--ui-panel);
+    color: var(--ui-ink);
+    box-shadow: 0 6px 20px var(--ui-shadow);
+}
+.cursor-appearance-options {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+}
+.cursor-appearance-row {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+.cursor-appearance-row > .field {
+    font-size: 13px;
+}
+.cursor-choice-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.cursor-choice {
+    min-height: 30px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+}
+/* The four colour buttons use the actual working-hairline colours. Instrument
+   stays neutral because its colour is chosen separately by each authored face. */
+.cursor-colour[data-cursor-colour="red"] { --cursor-choice-colour: #b11b27; }
+.cursor-colour[data-cursor-colour="black"] { --cursor-choice-colour: #28251f; }
+.cursor-colour[data-cursor-colour="blue"] { --cursor-choice-colour: #1a5598; }
+.cursor-colour[data-cursor-colour="green"] { --cursor-choice-colour: #146044; }
+.cursor-colour, .cursor-colour:hover {
+    background: var(--cursor-choice-colour);
+    color: #fff;
+    border-color: var(--cursor-choice-colour);
+}
+.cursor-choice[aria-pressed="true"] {
+    box-shadow: inset 0 -3px currentColor;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.cursor-choice:focus-visible {
+    outline: 2px solid var(--ui-focus);
+    outline-offset: 3px;
+}
+@media (forced-colors: active) {
+    .cursor-colour, .cursor-colour:hover {
+        background: ButtonFace;
+        color: ButtonText;
+        border-color: ButtonText;
+    }
+    .cursor-choice[aria-pressed="true"] {
+        outline: 2px solid Highlight;
+        outline-offset: 0;
+    }
+    .cursor-choice:focus-visible {
+        outline: 2px solid Highlight;
+        outline-offset: 3px;
+    }
+}
+.cursor-appearance > .hint { margin: 6px 0 0; }
+
 textarea {
     width: 100%;
     min-height: 290px;

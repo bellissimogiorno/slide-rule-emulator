@@ -5,7 +5,7 @@
   "theme": "graphoplex",
   "density": "classic",
   "modelLabel": "Graphoplex 690A Neperlog",
-  "instrumentNote": "Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. End extensions, auxiliary cursor hairlines and every original gauge are not reproduced.",
+  "instrumentNote": "Main index intervals from the supplied 690A photograph and Graphoplex manual. Angular captions use degrees/minutes/seconds, not decimal minutes. Conventional tick intervals are a mathematical reconstruction, not a tracing. The cursor follows the manufacturer-documented power and circle conversions. End extensions and the full original gauge inventory are not reproduced.",
   "showFormulas": true,
   "compactScales": true,
   "magnification": 1,
@@ -36,7 +36,35 @@
         "GP_P",
         "GP_DI",
         "GP_LL0"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorWidth": 0.156,
+      "cursorMarks": [
+        {
+          "id": "graphoplex-kw",
+          "label": "kW",
+          "offset": -0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-ps",
+          "label": "PS (metric horsepower)",
+          "offset": 0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-circle",
+          "label": "Circle area (π/4)",
+          "offset": -0.05245505931691428,
+          "scales": [
+            "GP_A",
+            "GP_B"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": []
     },
     "back": {
       "name": "Back - folded / natural log-log",
@@ -58,7 +86,34 @@
         "GP_LL3",
         "GP_LL2",
         "GP_LL1"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorWidth": 0.156,
+      "cursorMarks": [
+        {
+          "id": "graphoplex-kw",
+          "label": "kW",
+          "offset": -0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-ps",
+          "label": "PS (metric horsepower)",
+          "offset": 0.06656109283125057,
+          "showLabel": false
+        },
+        {
+          "id": "graphoplex-360",
+          "label": "3.6 (D to DF)",
+          "offset": -0.059152628073153427,
+          "scales": [
+            "GP_D"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": []
     }
   }
 }

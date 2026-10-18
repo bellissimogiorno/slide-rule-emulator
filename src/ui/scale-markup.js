@@ -48,9 +48,9 @@ function renderScaleLegend(def, label, compactLabel) {
 function renderProductCaptions(def) {
     return `<span>${escapeHtml(def.positiveCaption || "Primary")}</span><span class="negative">${escapeHtml(def.negativeCaption || "Secondary")}</span>`;
 }
-function renderScaleRow(scaleId, isSlide, rail, index, total, { library: scaleLibrary, width, minGap, logGraduations = "adaptive", displayScale = 1, graduationMode = "conventional", adaptiveSpacing = "balanced" }) {
+function renderScaleRow(scaleId, isSlide, rail, index, total, { library: scaleLibrary, width, minGap, logGraduations = "adaptive", displayScale = 1, graduationMode = "conventional", adaptiveSpacing = "balanced", fullPrecision = false }) {
     const def = scaleLibrary[scaleId];
-    const tickOptions = { logGraduations, displayScale, graduationMode, adaptiveSpacing };
+    const tickOptions = { logGraduations, displayScale, graduationMode, adaptiveSpacing, fullPrecision };
     const label = def ? (def.label || def.id) : scaleId;
     if (!def) {
         return `<div class="scale-row axis-bottom missing"><div class="scale-name">${escapeHtml(scaleId)}</div><div class="tick-pane"><div class="baseline"></div><span class="hint" style="position:absolute;left:12px;top:6px">Missing scale definition</span></div><div class="scale-legend"><span class="legend-name">?</span></div></div>`;

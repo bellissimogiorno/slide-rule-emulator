@@ -5,7 +5,7 @@
   "theme": "faber",
   "density": "faber",
   "modelLabel": "A.W. Faber-Castell 2/83N Novo-Duplex",
-  "instrumentNote": "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style.",
+  "instrumentNote": "W₁/W₁′ cover the first square-root branch; W₂/W₂′ cover the second. Formula captions echo the 2/83N self-documenting style. The cursor includes front circle-area and 360 marks; its remaining auxiliary lines are not fully reconstructed.",
   "showFormulas": true,
   "compactScales": true,
   "magnification": 1,
@@ -52,6 +52,66 @@
         "S",
         "ST",
         "P"
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorWidth": 0.188,
+      "cursorMarks": [
+        {
+          "id": "faber283-area",
+          "label": "q (circle area)",
+          "offset": -0.052455059316914285,
+          "scales": [
+            "A",
+            "B"
+          ],
+          "showLabel": false
+        },
+        {
+          "id": "faber283-360",
+          "label": "360",
+          "offset": 0.059152628073153427,
+          "scales": [
+            "DF",
+            "CF"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": [
+        {
+          "id": "faber283-q-caption",
+          "offset": -0.052455059316914285,
+          "lines": [
+            "q"
+          ],
+          "zone": "row",
+          "scale": "A",
+          "edge": "top",
+          "align": "center"
+        },
+        {
+          "id": "faber283-d-caption",
+          "offset": 0,
+          "lines": [
+            "d"
+          ],
+          "zone": "row",
+          "scale": "D",
+          "edge": "bottom",
+          "align": "end"
+        },
+        {
+          "id": "faber283-360-caption",
+          "offset": 0.059152628073153427,
+          "lines": [
+            "360"
+          ],
+          "zone": "row",
+          "scale": "DF",
+          "edge": "top",
+          "align": "center"
+        }
       ]
     },
     "back": {
@@ -77,7 +137,10 @@
         "LL1",
         "LL2",
         "LL3"
-      ]
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorWidth": 0.188
     }
   }
 }

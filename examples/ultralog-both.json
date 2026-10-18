@@ -43,7 +43,10 @@
         "UL_LL2",
         "UL_LL1",
         "UL_LL0"
-      ]
+      ],
+      "cursorLineTone": "neutral",
+      "cursorMarks": [],
+      "cursorCaptions": []
     },
     "back": {
       "name": "Back - roots / trigonometric",
@@ -72,7 +75,10 @@
         "UL_Q1",
         "UL_Q2",
         "UL_Q3"
-      ]
+      ],
+      "cursorLineTone": "neutral",
+      "cursorMarks": [],
+      "cursorCaptions": []
     }
   }
 }

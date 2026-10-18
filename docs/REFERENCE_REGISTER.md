@@ -109,3 +109,12 @@ independent numerical checks and identifies omitted physical details.
 ## Faber-Castell Mathema 2/84N and Aristo hyperbolic instruments
 
 The [Mathema guide](MATHEMA.md) records its gradian and function-scale conventions, source links and mathematical scope. The [Aristo guide](ARISTO_HYPERBOLIC.md) records the manufacturer manual, specimen scale order and the distinctions between the 0971 HyperboLog and 0972 HyperLog.
+
+## Model-specific cursor evidence
+
+The [complete cursor review](CURSORS.md) links the manufacturer instructions and
+primary specimen descriptions used for each face. Detailed source pointers and
+equations are in [Faber-Castell/Aristo](CURSORS_FABER_ARISTO.md),
+[Pickett/K&E](CURSORS_PICKETT_KE.md) and [the other makers](CURSORS_OTHER_MAKERS.md).
+Source text, measured specimen dimensions and directly inspected photographs
+are distinguished; unavailable image pixels do not establish fine engraving.

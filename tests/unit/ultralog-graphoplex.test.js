@@ -33,7 +33,10 @@ test('Graphoplex 691A preserves photographed Ch and Sh2-before-Sh1, not the cata
     assert.deepEqual(p.sides.front.topStator,['GP_L','GP_P','GP_CH','GP_A']);
     assert.deepEqual(p.sides.front.slide,['GP_B','GP691_T1','GP691_ST','GP691_S','GP_C']);
     assert.deepEqual(p.sides.front.bottomStator,['GP_D','GP_TH','GP_SH2','GP_SH1']);
-    assert.deepEqual(p.sides.back, PRESETS.graphoplex690a.sides.back);
+    // The scale arrangement is shared; a sourced housing width for one model
+    // is not evidence for imposing that measurement on the other cursor.
+    for (const key of ['name', 'topStator', 'slide', 'bottomStator'])
+        assert.deepEqual(p.sides.back[key], PRESETS.graphoplex690a.sides.back[key]);
     assert.ok(!rows(p.sides.front).some(x=>['GP_LL0','GP_LL00','GP690_T2','GP_DI'].includes(x)));
 });
 for (const id of ['ultralog','graphoplex690a','graphoplex691a']) test(`${id}: full programme and independent custom-scale export validate`, () => {

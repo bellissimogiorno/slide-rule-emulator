@@ -162,14 +162,35 @@ export/import and Undo. They are not scale ticks or additional movable cursors.
 
 ## Separate cursor inscriptions and end caps
 
+Optional side-level `cursorFrame` is `ivory`, `metal` or `clear`. It gives the
+cursor real upper and lower frame bars, including when the original bars bear
+no inscriptions. It creates no additional hairline or digital reading; the
+centre grip and both bars drag the same cursor. `clear` represents uncoloured
+plastic without simulating optical magnification. The unlettered bars use a
+screen-adapted height of 10 CSS pixels, not a claimed physical measurement.
+Cap inscriptions reserve 32 CSS pixels on the corresponding edge. Omit
+`cursorFrame` to retain the default rendering, including
+the Mathema's existing ivory inscription caps. The setting is retained by
+export/import, face customization and Undo.
+
+Optional `cursorWidth` is the requested full housing width as a fraction of the
+engraved track, finite and strictly greater than 0 and at most 1. Use a documented
+cursor width divided by that instrument's documented scale length; this is a
+screen proportion, not a claim to exact millimetre reproduction. For example,
+29 mm divided by a nominal 254 mm track gives about 0.1142. Resizing preserves
+that proportion. A 34 CSS pixel interaction minimum and room for all calibrated
+marks/captions take priority when wider. The housing width never changes the
+position of a hairline, its offset from the main line, or its digital reading.
+The property works with or without a frame and survives the same state operations.
+
 A side may include up to 32 `cursorCaptions`. These are printed text only: they
 create no hairline, reading or independent movement. Each has a unique `id`,
 a finite `offset` in [−1, 1], one or two nonempty `lines`, and a `zone`:
 
 | Zone | Placement |
 |---|---|
-| `topCap` | On an ivory cap above the engraved face |
-| `bottomCap` | On an ivory cap below the engraved face |
+| `topCap` | On the cap above the engraved face; ivory unless `cursorFrame` selects another material |
+| `bottomCap` | On the cap below the engraved face; ivory unless `cursorFrame` selects another material |
 | `row` | At the `top` or `bottom` `edge` of the named `scale` |
 
 Row captions require `scale` and `edge`; cap captions omit both. Optional `tone`
@@ -198,3 +219,25 @@ follows every occurrence of its named scale and disappears when that row is
 absent. End caps reserve vertical space inside the face; only the caps are
 opaque. The cursor glass remains transparent. Captions, scopes and line tone
 are side data, retained by export/import and Undo, independently of preset ID.
+
+## Programme cursor appearance
+
+Optional top-level `cursorShape` accepts `instrument` or `minimal`;
+`cursorColour` accepts `instrument`, `red`, `black`, `blue`
+or `green`. Both default to `instrument`. They are included in Programme JSON,
+persisted state and the embedded programme of a standalone export.
+
+`src/model/cursor-appearance.js` projects a face for presentation without
+mutating its authored cursor metadata. Minimal omits the displayed frame,
+width, auxiliary marks and captions. Readouts consume the same projection, so
+hidden auxiliary marks do not produce invisible readings. The full side data
+remains in the programme, including when Minimal is exported. Explicit colours
+are transient display overrides; they do not rewrite per-face `cursorLineTone`
+or caption tones. Preset loading replaces the profiles and retains the two
+global appearance choices. Programme imports use their own fields or defaults.
+
+The JSON reader accepts stored top-level `cursorShape` values `clear`, `ivory`
+and `metal` as compatibility inputs and converts them to `instrument` before
+validation. Exported programmes and the current schema use only `instrument`
+and `minimal`. The per-face `cursorFrame` field still describes the instrument's
+authored housing; it is preserved with all scale and cursor metadata.

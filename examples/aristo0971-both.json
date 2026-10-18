@@ -5,7 +5,7 @@
   "theme": "neutral",
   "density": "classic",
   "modelLabel": "Aristo 0971 HyperboLog",
-  "instrumentNote": "Documented 0971 row order and main mathematical intervals. Sh1 and Th use D as 0.1 to 1; Sh2 uses D as 1 to 10. Red angular readings are complements. Th stops at argument 3. End extensions, auxiliary cursor lines and the complete original gauge inventory are not reproduced.",
+  "instrumentNote": "Documented 0971 row order and main mathematical intervals. Sh1 and Th use D as 0.1 to 1; Sh2 uses D as 1 to 10. Red angular readings are complements. Th stops at argument 3. The cursor includes the documented circle, metric-PS and 36 conversion marks. End extensions and the full original gauge inventory are not reproduced.",
   "showFormulas": true,
   "compactScales": true,
   "magnification": 1,
@@ -32,6 +32,65 @@
         "DI",
         "ARISTO_SH2",
         "ARISTO_SH1"
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorWidth": 0.152,
+      "cursorMarks": [
+        {
+          "id": "aristo-area",
+          "label": "Circle area (π/4)",
+          "offset": -0.052455059316914285,
+          "scales": [
+            "A",
+            "B"
+          ],
+          "showLabel": false
+        },
+        {
+          "id": "aristo-diameter",
+          "label": "Circle diameter (√(4/π))",
+          "offset": 0.052455059316914285,
+          "scales": [
+            "C",
+            "D"
+          ],
+          "showLabel": false
+        },
+        {
+          "id": "aristo-ps",
+          "label": "PS (metric horsepower)",
+          "offset": 0.06670903051551563,
+          "scales": [
+            "A",
+            "B"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": [
+        {
+          "id": "aristo-kw-caption",
+          "offset": 0,
+          "lines": [
+            "kW"
+          ],
+          "zone": "row",
+          "scale": "A",
+          "edge": "top",
+          "align": "end"
+        },
+        {
+          "id": "aristo-ps-caption",
+          "offset": 0.06670903051551563,
+          "lines": [
+            "PS"
+          ],
+          "zone": "row",
+          "scale": "A",
+          "edge": "top",
+          "align": "start"
+        }
       ]
     },
     "back": {
@@ -54,6 +113,34 @@
         "LL3",
         "LL2",
         "LL1"
+      ],
+      "cursorFrame": "clear",
+      "cursorLineTone": "neutral",
+      "cursorWidth": 0.152,
+      "cursorMarks": [
+        {
+          "id": "aristo-36",
+          "label": "36",
+          "offset": 0.059152628073153427,
+          "scales": [
+            "DF",
+            "CF"
+          ],
+          "showLabel": false
+        }
+      ],
+      "cursorCaptions": [
+        {
+          "id": "aristo-36-caption",
+          "offset": 0.059152628073153427,
+          "lines": [
+            "36"
+          ],
+          "zone": "row",
+          "scale": "DF",
+          "edge": "top",
+          "align": "center"
+        }
       ]
     }
   }

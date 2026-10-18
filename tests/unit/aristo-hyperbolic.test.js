@@ -38,13 +38,18 @@ test('Aristo 0972 has the 31-row arrangement, with ST above S and movable P', ()
 
 for (const [id, rule] of Object.entries(aristoHyperbolicPresets)) {
     test(`${id}: registered preset and importable both-face example agree`, () => {
-        assert.deepEqual(PRESETS[id], rule);
-        validateProgram({ ...rule, customScales: [] });
+        const registered = PRESETS[id];
+        // The public preset also includes its separately researched cursor.
+        // Every authored scale-layout and top-level field must still match.
+        assert.deepEqual({ ...registered, sides: rule.sides }, rule);
+        for (const [face, side] of Object.entries(rule.sides))
+            for (const [key, value] of Object.entries(side)) assert.deepEqual(registered.sides[face][key], value);
+        validateProgram({ ...registered, customScales: [] });
         const example = JSON.parse(readFileSync(new URL(`../../examples/${id}-both.json`, import.meta.url), 'utf8'));
         validateProgram(example);
         assert.equal(example.presetId, id);
         assert.equal(example.viewMode, 'both');
-        assert.deepEqual(example.sides, rule.sides);
+        assert.deepEqual(example.sides, registered.sides);
         assert.equal(example.instrumentNote, rule.instrumentNote);
     });
 }
