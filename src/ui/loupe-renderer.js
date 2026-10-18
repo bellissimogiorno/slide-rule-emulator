@@ -124,7 +124,7 @@ export function createLoupeDrawing(face) {
         const original = originals[i], node = copies[i], box = boxes.get(original);
         const parent = boxes.get(original.parentElement) || faceBox;
         const style = window.getComputedStyle(original);
-        if (original.matches('.tick, .syncro-tick, .baseline, .syncro-baseline, .root-spine')) {
+        if (original.matches('.tick, .syncro-tick, .baseline, .syncro-baseline, .root-spine, .cursor-mark-line')) {
             freezeStroke(node, box, parent, style);
             continue;
         }

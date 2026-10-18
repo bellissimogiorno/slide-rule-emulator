@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.25**
+**Version 3.2.27**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -61,7 +61,7 @@ The scale library includes aliases and composite rows; its complete generated in
 
 The [Faber-Castell 2/82N](docs/FABER_282N.md) follows the 27-row N-model arrangement, with movable sine and cube scales and paired complementary angular readings. It is distinct from later 2/82 layouts.
 
-The [Faber-Castell Mathema 2/84N](docs/MATHEMA.md) has its own function scales, including gradian trigonometry and hyperbolic functions. The [Aristo 0971 HyperboLog and 0972 HyperLog](docs/ARISTO_HYPERBOLIC.md) provide their documented duplex arrangements. Their guides describe the implemented mathematical intervals and omitted physical details.
+The [Faber-Castell Mathema 2/84N](docs/MATHEMA.md) has its own extended function scales, gon trigonometry and hyperbolic functions, calibrated exponent cursor banks, and π conversion hairlines. The [Aristo 0971 HyperboLog and 0972 HyperLog](docs/ARISTO_HYPERBOLIC.md) provide their documented duplex arrangements. Their guides describe the implemented mathematical intervals and omitted physical details.
 
 The [Pickett Model 14](docs/PICKETT_14.md) includes its general log-log face and degree/6400-mil face, with shared complementary/supplementary angle ticks. It is a mathematical reconstruction, not a fire-control calculator.
 

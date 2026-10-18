@@ -1,14 +1,15 @@
 /** Digital readings use the same mappings and precision as the instrument.
  * Rail headings are shared; compact inline cards never hide or truncate values.
  */
-import { scaleReadings } from '#ui/readout-values.js';
+import { cursorScaleReadings } from '#ui/readout-values.js';
+import { marksForScale } from '#ui/cursor-marks.js';
 import { escapeHtml, railLabel } from "#ui/html.js";
 import { visibleSideKeys } from "#model/view.js";
 
 const RAILS = ["topStator", "slide", "bottomStator"];
 
-function renderCard(id, def, p, library) {
-    const value = scaleReadings(def, p, library);
+function renderCard(id, def, p, library, marks, cursorPosition) {
+    const value = cursorScaleReadings(def, p, library, marks, cursorPosition);
     const label = def.compactLabel || def.label || id;
     const classes = ["readout-card", value.outside ? "outside" : "", def.referenceOnly ? "is-reference" : ""].filter(Boolean).join(" ");
     const text = value.multi
@@ -22,7 +23,8 @@ export function renderReadout(state, library) {
         const side = state.sides[key];
         const groups = RAILS.map(rail => {
             const p = rail === "slide" ? state.cursor - state.slideOffset : state.cursor;
-            const cards = side[rail].filter(id => library[id]).map(id => renderCard(id, library[id], p, library)).join("");
+            const cards = side[rail].filter(id => library[id]).map(id =>
+                renderCard(id, library[id], p, library, marksForScale(side, id), state.cursor)).join("");
             if (!cards) return "";
             return `<section class="readout-rail" data-readout-rail="${rail}" aria-label="${railLabel(rail)}"><h4 class="rail-name">${railLabel(rail)}</h4><div class="readout-cards">${cards}</div></section>`;
         }).join("");

@@ -296,7 +296,8 @@ preset menu; the 24, 25 and 31 rows of the Mathema 2/84N, Aristo 0971 and Aristo
 modes; actual keyboard and pointer movement; JSON-file import; and configured
 HTML downloads reopened in fresh browser contexts. Measured cursor and slide
 positions on each face must agree with the programme after keys and drags; two
-equally stale faces cannot satisfy the motion check. It rejects uncaught page
+equally stale faces cannot satisfy the motion check. The Mathema checks also
+cover the calibrated exponent rows, auxiliary cursor marks and readout geometry. It rejects uncaught page
 exceptions and console errors. `--executable` or `CHROMIUM_EXECUTABLE` selects an
 installed browser. The report records missing prerequisites as a failed setup;
 there is no DOM-mode substitute. `--visual` retains optional screenshots for
@@ -307,6 +308,6 @@ installing Chromium. Its log, JSON results and screenshots are retained in the
 browser evidence artefact, including on failure.
 
 This test was added but could not be executed in the preparation environment:
-Python Playwright and Chromium were unavailable, and the Chromium download was
-blocked. Python syntax checking does not establish browser correctness. Run it
+Python Playwright and a Chromium executable were unavailable. A separate
+Node Playwright launch also failed because its browser executable was absent. Python syntax checking does not establish browser correctness. Run it
 with the documented browser prerequisites before claiming a native-browser pass.

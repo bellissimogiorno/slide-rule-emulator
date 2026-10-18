@@ -3,7 +3,8 @@
 import { visibleSideKeys } from '#model/view.js';
 import { RAILS } from '#core/scale-types.js';
 import { renderReadout } from '#ui/readout.js';
-import { scaleReadings } from '#ui/readout-values.js';
+import { cursorScaleReadings } from '#ui/readout-values.js';
+import { marksForScale } from '#ui/cursor-marks.js';
 
 export function createReadoutView(root) {
     let previousKey, previousLibrary, cards = [];
@@ -11,20 +12,21 @@ export function createReadoutView(root) {
         update(state, library) {
             const key = JSON.stringify([state.viewMode, visibleSideKeys(state).map(id => {
                 const side = state.sides[id];
-                return [id, side.name, ...RAILS.map(rail => side[rail])];
+                return [id, side.name, side.cursorMarks, ...RAILS.map(rail => side[rail])];
             })]);
             if (key !== previousKey || library !== previousLibrary) {
                 root.innerHTML = renderReadout(state, library);
                 cards = [...root.querySelectorAll('.readout-card')].map(node => ({
                     node, value: node.querySelector('.value'), definition: library[node.dataset.readoutScale],
-                    moving: node.closest('[data-readout-rail]').dataset.readoutRail === 'slide'
+                    moving: node.closest('[data-readout-rail]').dataset.readoutRail === 'slide',
+                    marks: marksForScale(state.sides[node.closest('[data-readout-side]').dataset.readoutSide], node.dataset.readoutScale)
                 }));
                 previousKey = key;
                 previousLibrary = library;
                 return;
             }
-            for (const { node, value, definition, moving } of cards) {
-                const result = scaleReadings(definition, state.cursor - (moving ? state.slideOffset : 0), library);
+            for (const { node, value, definition, moving, marks } of cards) {
+                const result = cursorScaleReadings(definition, state.cursor - (moving ? state.slideOffset : 0), library, marks, state.cursor);
                 if (node.classList.contains('outside') !== result.outside)
                     node.classList.toggle('outside', result.outside);
                 if (result.multi) {

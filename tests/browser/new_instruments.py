@@ -139,6 +139,272 @@ def main():
                             assert abs(geometry[0]['cursor'] - geometry[1]['cursor']) < 0.002, geometry
                             assert abs(geometry[0]['slide'] - geometry[1]['slide']) < 0.002, geometry
 
+                        def assert_mathema_cursor(page):
+                            """Measure strokes and decorative caps independently of their renderer."""
+                            programme = state(page)
+                            assert len(programme['sides']['front']['cursorMarks']) == 13
+                            assert len(programme['sides']['back']['cursorMarks']) == 2
+                            assert len(programme['sides']['front']['cursorCaptions']) == 17
+                            actual = page.locator('#ruleCanvas .rule-face').evaluate_all(r'''faces => faces.map(face => {
+                                const pane = face.querySelector('.top-stator .tick-pane').getBoundingClientRect();
+                                const window = face.querySelector('.cursor-window');
+                                const clipping = window.getBoundingClientRect();
+                                const cursor = face.querySelector('.cursor');
+                                const rows = [...face.querySelectorAll('.rail')].flatMap(rail =>
+                                    [...rail.querySelectorAll('.scale-row')].map((row, index) => {
+                                        const box = row.getBoundingClientRect();
+                                        return {rail: rail.dataset.rail, index: String(index), scale: row.dataset.scale,
+                                            top: box.top, bottom: box.bottom};
+                                    }));
+                                const boxOf = node => {
+                                    const box = node.getBoundingClientRect();
+                                    return {left: box.left, right: box.right, top: box.top, bottom: box.bottom};
+                                };
+                                const zoom = face.getBoundingClientRect().width / face.offsetWidth;
+                                const cursorBox = cursor.getBoundingClientRect();
+                                const main = getComputedStyle(cursor, '::after');
+                                const color = getComputedStyle(cursor, '::before').backgroundColor;
+                                const alpha = color.match(/rgba\([^,]+,[^,]+,[^,]+,\s*([\d.]+)\)/);
+                                return {side: face.dataset.side, left: pane.left, width: pane.width, rows,
+                                    trackTop: face.querySelector('.top-stator').getBoundingClientRect().top,
+                                    trackBottom: face.querySelector('.bottom-stator').getBoundingClientRect().bottom,
+                                    zoom, mainTop: cursorBox.top + parseFloat(main.top) * zoom,
+                                    mainBottom: cursorBox.bottom - parseFloat(main.bottom) * zoom,
+                                    glassAlpha: alpha ? Number(alpha[1]) : color === 'transparent' ? 0 : 1,
+                                    mainColor: getComputedStyle(cursor, '::after').borderLeftColor,
+                                    window: {left: clipping.left, width: clipping.width,
+                                             overflow: getComputedStyle(window).overflow},
+                                    caps: [...cursor.querySelectorAll('.cursor-cap')].map(cap => ({
+                                        zone: cap.classList.contains('cursor-top-cap') ? 'topCap' : 'bottomCap', ...boxOf(cap)})),
+                                    captions: [...cursor.querySelectorAll('.cursor-caption')].map(caption => ({
+                                        id: caption.dataset.cursorCaption, offset: Number(caption.dataset.cursorOffset),
+                                        zone: caption.dataset.cursorZone, rail: caption.dataset.cursorRail,
+                                        index: caption.dataset.cursorRow, edge: caption.dataset.cursorEdge,
+                                        lines: [...caption.children].map(child => child.textContent), ...boxOf(caption)})),
+                                    marks: [...cursor.querySelectorAll('.cursor-mark')].map(mark => {
+                                        const stroke = mark.querySelector('.cursor-mark-line').getBoundingClientRect();
+                                        return {id: mark.dataset.cursorMark, offset: Number(mark.dataset.cursorOffset),
+                                            x: stroke.left + stroke.width / 2, rail: mark.dataset.cursorRail,
+                                            index: mark.dataset.cursorRow, endRail: mark.dataset.cursorEndRail,
+                                            endIndex: mark.dataset.cursorEndRow, label: mark.title,
+                                            inlineLabels: mark.querySelectorAll('.cursor-mark-label').length,
+                                            color: getComputedStyle(mark.querySelector('.cursor-mark-line')).borderLeftColor,
+                                            ...boxOf(mark)};
+                                    })};
+                            })''')
+                            for face in actual:
+                                side = programme['sides'][face['side']]
+                                metadata = {mark['id']: mark for mark in side['cursorMarks']}
+                                rows = face['rows']
+                                row_map = {(row['rail'], row['index']): row for row in rows}
+                                expected = []
+                                # Independently collect runs of selected adjacent physical rows. A
+                                # single ordinary stroke spans rails but must stop before E and EG.
+                                for mark in side['cursorMarks']:
+                                    if 'scales' not in mark:
+                                        expected.append((mark['id'], None, None, None, None))
+                                        continue
+                                    run = []
+                                    for row in rows + [None]:
+                                        if row is not None and row['scale'] in mark['scales']:
+                                            run.append(row)
+                                        elif run:
+                                            expected.append((mark['id'], run[0]['rail'], run[0]['index'],
+                                                             run[-1]['rail'], run[-1]['index']))
+                                            run = []
+                                measured = [(mark['id'], mark.get('rail'), mark.get('index'),
+                                             mark.get('endRail'), mark.get('endIndex')) for mark in face['marks']]
+                                assert sorted(measured, key=str) == sorted(expected, key=str), (face['side'], measured, expected)
+                                assert abs(face['window']['left'] - face['left']) < .6, face
+                                assert abs(face['window']['width'] - face['width']) < .6, face
+                                assert face['window']['overflow'] == 'hidden', face
+                                assert 0 <= face['glassAlpha'] < .1, 'Demonstration backing must not become opaque glass'
+                                assert abs(face['mainTop'] - face['trackTop'] - face['zoom']) < .75, face
+                                assert abs(face['mainBottom'] - face['trackBottom'] + face['zoom']) < .75, face
+                                for mark in face['marks']:
+                                    definition = metadata[mark['id']]
+                                    assert mark['offset'] == definition['offset']
+                                    assert mark['label'] == definition['label']
+                                    expected_x = face['left'] + (programme['cursor'] + definition['offset']) * face['width']
+                                    assert abs(mark['x'] - expected_x) < .75, (face['side'], mark, expected_x)
+                                    if mark.get('rail'):
+                                        first = row_map[(mark['rail'], mark['index'])]
+                                        last = row_map[(mark['endRail'], mark['endIndex'])]
+                                        assert abs(mark['top'] - first['top']) < .75, mark
+                                        assert abs(mark['bottom'] - last['bottom']) < .75, mark
+                                    if definition.get('showLabel') is False:
+                                        assert mark['inlineLabels'] == 0, mark
+                                    if face['side'] == 'front':
+                                        assert mark['color'] == face['mainColor'], 'Front marks and main hairline share red ink'
+                                caption_metadata = {caption['id']: caption for caption in side.get('cursorCaptions', [])}
+                                expected_captions = []
+                                for caption in caption_metadata.values():
+                                    if caption['zone'] == 'row':
+                                        expected_captions.extend((caption['id'], row['rail'], row['index'])
+                                                                 for row in rows if row['scale'] == caption['scale'])
+                                    else:
+                                        expected_captions.append((caption['id'], None, None))
+                                assert sorted((c['id'], c.get('rail'), c.get('index')) for c in face['captions']) == sorted(expected_captions)
+                                cap_map = {cap['zone']: cap for cap in face['caps']}
+                                assert sorted(cap_map) == sorted({c['zone'] for c in caption_metadata.values() if c['zone'] != 'row'})
+                                for zone, cap in cap_map.items():
+                                    if zone == 'topCap':
+                                        assert cap['bottom'] <= face['trackTop'] + .75, cap
+                                    else:
+                                        assert cap['top'] >= face['trackBottom'] - .75, cap
+                                for caption in face['captions']:
+                                    definition = caption_metadata[caption['id']]
+                                    assert caption['offset'] == definition['offset']
+                                    assert caption['zone'] == definition['zone']
+                                    assert caption['lines'] == definition['lines']
+                                    anchor = face['left'] + (programme['cursor'] + definition['offset']) * face['width']
+                                    align = definition.get('align', 'center')
+                                    actual_anchor = ((caption['left'] + caption['right']) / 2 if align == 'center'
+                                                     else caption['left'] - 3 * face['zoom'] if align == 'start'
+                                                     else caption['right'] + 3 * face['zoom'])
+                                    assert abs(actual_anchor - anchor) < .75, (caption, anchor)
+                                    if caption['zone'] == 'row':
+                                        row = row_map[(caption['rail'], caption['index'])]
+                                        assert row['scale'] == definition['scale']
+                                        edge = caption['bottom'] if definition['edge'] == 'top' else caption['top']
+                                        expected_edge = row['top'] if definition['edge'] == 'top' else row['bottom']
+                                        assert abs(edge - expected_edge) < .75, caption
+                                    else:
+                                        cap = cap_map[caption['zone']]
+                                        assert caption['top'] >= cap['top'] - .75 and caption['bottom'] <= cap['bottom'] + .75, caption
+
+                        def assert_mathema_calibration(page):
+                            """Use physical Y values, never the obsolete whole-track decade."""
+                            checks = page.evaluate('''async () => {
+                                const {BUILTIN_SCALES: scales} = await import('#catalog/scales.js');
+                                const {makeRuntimeScale} = await import('#core/mappings.js');
+                                const {application} = await import('#main.js');
+                                const program = application.getProgram();
+                                const runtime = id => makeRuntimeScale(scales[id]);
+                                const Y = runtime('FC284_Y'), E = runtime('FC284_E'), EG = runtime('FC284_EG');
+                                const close = (actual, expected) => Math.abs(actual - expected) < 2e-10 * Math.max(1, Math.abs(expected));
+                                const failures = [];
+                                for (const y of [.1, .2, .5, 1]) {
+                                    const q = Y.pos(y);
+                                    if (!close(E.value(q), Math.log(1000 * y) - 4.4)) failures.push(['E', y, E.value(q)]);
+                                    if (!close(EG.value(q), 200 / Math.PI * Math.log(1000 * y) - 280)) failures.push(['EG', y, EG.value(q)]);
+                                }
+                                for (const [gon, value] of [[false, 2], [false, 7], [false, 11], [true, 100], [true, 600]]) {
+                                    const j = gon ? (value === 100 ? 0 : 4) : (value === 2 ? 0 : value === 7 ? 3 : 4);
+                                    const row = gon ? EG : E;
+                                    const constant = j * (gon ? 140 : 2.2);
+                                    const mark = program.sides.front.cursorMarks.find(m => m.id === `mathema-${gon ? 'eg' : 'e'}-${j}`);
+                                    const main = row.pos(value - constant) - mark.offset;
+                                    const actual = Y.value(main) * 10 ** (j + 1);
+                                    const expected = Math.exp(value * (gon ? Math.PI / 200 : 1));
+                                    if (!close(actual, expected)) failures.push(['exponential cursor', gon, value, actual, expected]);
+                                }
+                                return failures;
+                            }''')
+                            assert not checks, checks
+
+                        def assert_mathema_loupe(page):
+                            """The real reading lens retains caps, fractions and partial strokes."""
+                            toggle = page.locator('#loupeButton')
+                            if toggle.get_attribute('aria-pressed') != 'true':
+                                toggle.click()
+                            face = page.locator('#ruleCanvas [data-side="front"] .rule-face-body')
+                            face.locator('.slide-rail').scroll_into_view_if_needed()
+                            point = face.evaluate('''face => {
+                                const slide = face.querySelector('.slide-rail').getBoundingClientRect();
+                                const cursor = face.querySelector('.cursor').getBoundingClientRect();
+                                return {x: cursor.left + cursor.width / 2, y: slide.top + slide.height / 2};
+                            }''')
+                            page.mouse.move(point['x'] + 1, point['y'])
+                            page.mouse.move(point['x'], point['y'])
+                            settle(page)
+                            assert page.locator('.rule-loupe').is_visible()
+                            actual = page.evaluate('''() => {
+                                const face = document.querySelector('#ruleCanvas [data-side="front"] .rule-face-body');
+                                const copy = document.querySelector('.rule-loupe .loupe-copy');
+                                const pairs = [];
+                                for (const selector of ['.cursor-window', '.cursor-cap', '.cursor-caption', '.cursor-mark-line']) {
+                                    const sources = [...face.querySelectorAll(selector)], outputs = [...copy.querySelectorAll(selector)];
+                                    if (sources.length !== outputs.length) throw Error('Loupe count mismatch: ' + selector);
+                                    sources.forEach((source, i) => {
+                                        const a = source.getBoundingClientRect(), b = outputs[i].getBoundingClientRect();
+                                        pairs.push({selector, source: [a.width, a.height], output: [b.width, b.height]});
+                                    });
+                                }
+                                const sourceFractions = [...face.querySelectorAll('.caption-fraction > span:first-child')];
+                                const outputFractions = [...copy.querySelectorAll('.caption-fraction > span:first-child')];
+                                return {pairs, fractionCounts: [sourceFractions.length, outputFractions.length],
+                                    fractions: sourceFractions.map((source, i) => ({
+                                        sourceInk: getComputedStyle(source).borderBottomColor,
+                                        outputPaint: getComputedStyle(outputFractions[i]).boxShadow})),
+                                    clipping: getComputedStyle(copy.querySelector('.cursor-window')).overflow,
+                                    decorations: copy.querySelectorAll('[data-loupe-decoration]').length};
+                            }''')
+                            assert actual['fractionCounts'] == [3, 3], actual
+                            assert actual['clipping'] == 'hidden' and actual['decorations'] == 2, actual
+                            for pair in actual['pairs']:
+                                for source, output in zip(pair['source'], pair['output']):
+                                    assert abs(output - 2.5 * source) < .16, pair
+                            for fraction in actual['fractions']:
+                                assert fraction['outputPaint'] != 'none' and fraction['sourceInk'] in fraction['outputPaint'], fraction
+                            toggle.click()
+                            settle(page)
+
+                        def apply_setup(page, programme):
+                            page.locator('#importJsonFile').set_input_files({'name': 'cursor-check.json',
+                                'mimeType': 'application/json', 'buffer': json.dumps(programme).encode('utf-8')})
+                            page.wait_for_function('''async expected => {
+                                const actual = (await import('#main.js')).application.getProgram();
+                                return document.getElementById('jsonStatus').textContent === 'JSON applied.'
+                                    && actual.cursor === expected.cursor && actual.slideOffset === expected.slideOffset
+                                    && JSON.stringify(actual.sides) === JSON.stringify(expected.sides);
+                            }''', arg=programme)
+                            settle(page)
+
+                        def exercise_mathema_cursor(page):
+                            saved = state(page)
+                            for position in [0, .5, 1]:
+                                setup = dict(saved, cursor=position, slideOffset=0)
+                                apply_setup(page, setup)
+                                assert_linked(page)
+                                assert_mathema_cursor(page)
+                            apply_setup(page, dict(saved, cursor=.5, slideOffset=0))
+                            mark = page.locator('#ruleCanvas [data-side="front"] [data-cursor-mark="mathema-eg-0"]')
+                            mark.scroll_into_view_if_needed()
+                            box = mark.bounding_box()
+                            pane = page.locator('#ruleCanvas [data-side="front"] .top-stator .tick-pane').first.bounding_box()
+                            x, y = box['x'] + box['width'] / 2, box['y'] + box['height'] / 2
+                            before = state(page)
+                            page.mouse.move(x, y)
+                            page.mouse.down()
+                            page.mouse.move(x + 30, y, steps=5)
+                            page.mouse.up()
+                            settle(page)
+                            after = state(page)
+                            assert abs(after['cursor'] - before['cursor'] - 30 / pane['width']) < .0001, (before, after)
+                            assert after['slideOffset'] == before['slideOffset']
+                            assert after['sides'] == before['sides']
+                            assert_linked(page)
+                            assert_mathema_cursor(page)
+                            # The cream cap is a new input surface; grabbing it
+                            # must preserve the cursor's existing grab offset.
+                            cap = page.locator('#ruleCanvas [data-side="front"] .cursor-top-cap')
+                            cap.scroll_into_view_if_needed()
+                            cap_box = cap.bounding_box()
+                            x, y = cap_box['x'] + cap_box['width'] / 2, cap_box['y'] + cap_box['height'] / 2
+                            before = state(page)
+                            page.mouse.move(x, y)
+                            page.mouse.down()
+                            page.mouse.move(x + 20, y, steps=5)
+                            page.mouse.up()
+                            settle(page)
+                            after = state(page)
+                            assert abs(after['cursor'] - before['cursor'] - 20 / pane['width']) < .0001, (before, after)
+                            assert after['slideOffset'] == before['slideOffset'] and after['sides'] == before['sides']
+                            assert_linked(page)
+                            assert_mathema_cursor(page)
+                            apply_setup(page, saved)
+
                         with browser.new_context(viewport={'width': 1800, 'height': 1200},
                                                  accept_downloads=True) as context:
                             page = new_page(context)
@@ -176,6 +442,10 @@ def main():
                                                 page.locator('#compactScaleToggle').set_checked(compact)
                                                 settle(page)
                                                 assert_layout(page, model)
+                                                if model == 'faber284n':
+                                                    assert_mathema_cursor(page)
+                                                else:
+                                                    assert page.locator('#ruleCanvas .cursor-window, #ruleCanvas .cursor-cap, #ruleCanvas .cursor-caption').count() == 0
                                                 geometry = page.evaluate(GEOMETRY)
                                                 for key in ['collisions', 'tickCrossings', 'clipped', 'emptyRows']:
                                                     assert not geometry[key], (model, width, mode, compact, key, geometry[key][:8])
@@ -216,6 +486,12 @@ def main():
                                         assert state(page)[other] == before[other]
                                         assert_linked(page)
                                     passed(f'{model}: actual keys and grip drags move cursor and slide with both faces linked')
+
+                                    if model == 'faber284n':
+                                        assert_mathema_calibration(page)
+                                        exercise_mathema_cursor(page)
+                                        assert_mathema_loupe(page)
+                                        passed('Mathema: calibrated E/EG banks, scoped continuous strokes, transparent glass, separate cap and gauge captions, unclamped edges and actual auxiliary-line dragging')
 
                                     exported = download(page, '#exportJsonButton')
                                     expected = json.loads(exported)

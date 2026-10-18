@@ -21,6 +21,7 @@ import { visibleSideKeys } from "#model/view.js";
 import { createReadoutView } from '#ui/readout-view.js';
 import { createProgrammeEditor } from '#ui/programme-editor.js';
 import { renderRailRows } from "#ui/scale-markup.js";
+import { renderCursor, positionCursorMarks, cursorCapClasses } from '#ui/cursor-marks.js';
 import { APP_VERSION, DEFAULT_LABEL_W, STORAGE_KEY } from "#version.js";
 function createApplication(document) {
     const window = document.defaultView;
@@ -519,11 +520,11 @@ function createApplication(document) {
             const heading = state.viewMode === "both"
                 ? `<div class="face-heading"><strong>${escapeHtml(side.name || titleCase(key))}</strong>${side.note ? `<span>${escapeHtml(side.note)}</span>` : ""}</div>` : "";
             return `<section class="rule-face" data-side="${escapeHtml(key)}" aria-label="${escapeHtml(side.name || key)}">
-                ${heading}<div class="rule-face-body">
+                ${heading}<div class="rule-face-body ${cursorCapClasses(side)}">
                 <div class="rail top-stator" data-rail="topStator">${renderRailRows(side.topStator, "topStator", false, context)}</div>
                 <div class="rail slide-rail" data-rail="slide">${renderRailRows(side.slide, "slide", true, context)}</div>
                 <div class="rail bottom-stator" data-rail="bottomStator">${renderRailRows(side.bottomStator, "bottomStator", false, context)}</div>
-                <div id="${index ? "cursor-" + index : "cursor"}" class="cursor"></div>
+                ${renderCursor(side, index ? 'cursor-' + index : 'cursor')}
                 </div></section>`;
         }).join("");
         updateSlideTransform();
@@ -551,7 +552,16 @@ function createApplication(document) {
     function updateCursorPosition() {
         dom.ruleCanvas.querySelectorAll(".rule-face-body").forEach(face => {
             const geometry = getScaleGeometry(face);
-            face.querySelector(".cursor").style.left = `${(geometry.left + clamp(state.cursor, 0, 1) * geometry.width).toFixed(3)}px`;
+            const cursor = face.querySelector('.cursor');
+            const auxiliary = cursor.classList.contains('has-auxiliary');
+            // Row geometry is stable during motion. Recompute after a new face,
+            // resize or density change, without measuring every mark per frame.
+            const key = `${geometry.left}:${geometry.width}:${face.offsetHeight}`;
+            if (auxiliary && cursor.dataset.geometry !== key) {
+                positionCursorMarks(face, geometry);
+                cursor.dataset.geometry = key;
+            }
+            cursor.style.left = `${((auxiliary ? 0 : geometry.left) + clamp(state.cursor, 0, 1) * geometry.width).toFixed(3)}px`;
         });
         loupe.refresh();
     }

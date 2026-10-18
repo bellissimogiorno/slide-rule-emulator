@@ -126,3 +126,75 @@ Both secondary endpoints must remain positive and finite; nested pairs and
 combining this property with `pairedSum` or `referenceOnly` are rejected. See
 [fifth roots and powers](FIFTH_ROOTS.md) for a complete example and the distinction
 from the legacy decade-scaled `F5I` numbering.
+
+## Calibrated auxiliary cursor marks
+
+Each side may include up to 16 `cursorMarks`. Each mark has a unique `id`, a
+nonempty `label` (at most 80 characters), and a finite `offset` from −1 to 1.
+The offset is a fraction of the displayed scale track, relative to the main
+hairline. An optional `scales` array restricts the mark to named rows; without
+it, the mark spans the face. Referenced scale IDs must exist in the library,
+but need not currently appear on that side. Optional `labelTone` is `neutral`
+or `red`; it colours the caption independently of the calibrated hairline.
+Set side-level `cursorLineTone` to `neutral` or `red` to choose the main and
+auxiliary line colour. A mark may set `showLabel: false` when separate printed
+captions supply its visible inscription; its digital label remains available.
+
+```json
+{
+  "id": "quadratic-pi4",
+  "label": "π/4",
+  "offset": -0.03689850479831808,
+  "scales": ["FC284_A", "FC284_B"],
+  "labelTone": "red"
+}
+```
+
+The example uses the Mathema's display span; calculate offsets from the scale's
+own coordinate span as in [the Mathema guide](MATHEMA.md). A semicolon in a
+caption separates its stacked engraving lines, with upper/lower bank order
+following the row placement. Off-track marks are clipped without changing their
+offsets. Main and auxiliary readouts use the same mapping and independently
+respect each row's valid interval and the slide position. Marks belong to the
+side data, so editing a preset into a custom programme retains them, as do
+export/import and Undo. They are not scale ticks or additional movable cursors.
+
+
+## Separate cursor inscriptions and end caps
+
+A side may include up to 32 `cursorCaptions`. These are printed text only: they
+create no hairline, reading or independent movement. Each has a unique `id`,
+a finite `offset` in [−1, 1], one or two nonempty `lines`, and a `zone`:
+
+| Zone | Placement |
+|---|---|
+| `topCap` | On an ivory cap above the engraved face |
+| `bottomCap` | On an ivory cap below the engraved face |
+| `row` | At the `top` or `bottom` `edge` of the named `scale` |
+
+Row captions require `scale` and `edge`; cap captions omit both. Optional `tone`
+is `neutral` or `red`. Optional `align` is `start`, `center` or `end`: start
+places text to the right of its calibrated anchor and end to the left, with a
+small visual gap. `fraction: true` requires two lines and draws a bar between
+them, as for π over 4. Horizontal anchors remain exact; text alignment does not
+move a hairline. The same offset units apply to captions and marks.
+
+```json
+{
+  "id": "quadratic-unit",
+  "offset": 0,
+  "lines": ["1"],
+  "zone": "row",
+  "scale": "FC284_A",
+  "edge": "top",
+  "align": "end",
+  "tone": "red"
+}
+```
+
+Adjacent rows selected by a mark share one continuous stroke, including across
+a rail boundary. An intervening unselected row breaks that stroke. A row caption
+follows every occurrence of its named scale and disappears when that row is
+absent. End caps reserve vertical space inside the face; only the caps are
+opaque. The cursor glass remains transparent. Captions, scopes and line tone
+are side data, retained by export/import and Undo, independently of preset ID.

@@ -584,8 +584,8 @@
     "theme": "faber",
     "density": "faber",
     "showFormulas": true,
-    "description": "Mathema duplex: decimal y/Y number scales, parabolic and Pythagorean scales, gon trigonometric and hyperbolic functions, six log-log rows and two linear exponential rows.",
-    "instrumentNote": "Mathema 2/84N principal y/Y interval 0.1–1; angles and hyperbolic arguments are in gon (100 gon = 90°). The two starred exponential rows are normalised for the main hairline: exp(x) or exp(πx/200) = 10Y. Original end extensions and auxiliary cursor marks are not reproduced.",
+    "description": "Mathema duplex with extended decimal y/Y scales, calibrated auxiliary cursor marks, parabolic and Pythagorean scales, gon circular and hyperbolic functions, six log-log rows and two linear exponential rows.",
+    "instrumentNote": "Mathema 2/84N: the principal y/Y decade is 0.1–1, with engraved end extensions. Circular and hyperbolic arguments use gon (100 gon = 90°). For an exponential, subtract the chosen cursor mark’s constant from the argument, align that mark with the remainder on the appropriate exponential row, then multiply the main-hairline Y reading by the marked power of ten; the X mark has constant zero. The π/4 mark serves the quadratic rows; the two outer long hairlines provide the π/2 factor on Y. See the Mathema guide for examples and the scope of the reproduction.",
     "sides": {
       "front": {
         "name": "Front - parabolic / trigonometric / exponential",
@@ -606,6 +606,346 @@
           "FC284_P",
           "FC284_S",
           "FC284_E"
+        ],
+        "cursorLineTone": "red",
+        "cursorMarks": [
+          {
+            "id": "mathema-left",
+            "label": "1 (Y)",
+            "offset": -0.06897838185562015,
+            "labelTone": "red",
+            "showLabel": false,
+            "scales": [
+              "FC284_T",
+              "FC284_H",
+              "FC284_A",
+              "FC284_B",
+              "FC284_BI",
+              "FC284_I",
+              "FC284_y",
+              "FC284_Y",
+              "FC284_P",
+              "FC284_S"
+            ]
+          },
+          {
+            "id": "mathema-right",
+            "label": "π/2",
+            "offset": 0.06897838185562015,
+            "labelTone": "red",
+            "showLabel": false,
+            "scales": [
+              "FC284_T",
+              "FC284_H",
+              "FC284_A",
+              "FC284_B",
+              "FC284_BI",
+              "FC284_I",
+              "FC284_y",
+              "FC284_Y",
+              "FC284_P",
+              "FC284_S"
+            ]
+          },
+          {
+            "id": "mathema-eg-0",
+            "label": "Xᵍ; ×10",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": -0.06321951066870646,
+            "scales": [
+              "FC284_EG"
+            ]
+          },
+          {
+            "id": "mathema-eg-1",
+            "label": "140; ×10²",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": -0.03160975533435323,
+            "scales": [
+              "FC284_EG"
+            ]
+          },
+          {
+            "id": "mathema-eg-2",
+            "label": "280; ×10³",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": 0,
+            "scales": [
+              "FC284_EG"
+            ]
+          },
+          {
+            "id": "mathema-eg-3",
+            "label": "420; ×10⁴",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": 0.03160975533435323,
+            "scales": [
+              "FC284_EG"
+            ]
+          },
+          {
+            "id": "mathema-eg-4",
+            "label": "560; ×10⁵",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": 0.06321951066870646,
+            "scales": [
+              "FC284_EG"
+            ]
+          },
+          {
+            "id": "mathema-e-0",
+            "label": "X; ×10",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": -0.06267869548017281,
+            "scales": [
+              "FC284_E"
+            ]
+          },
+          {
+            "id": "mathema-e-1",
+            "label": "2.2; ×10²",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": -0.031339347740086405,
+            "scales": [
+              "FC284_E"
+            ]
+          },
+          {
+            "id": "mathema-e-2",
+            "label": "4.4; ×10³",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": 0,
+            "scales": [
+              "FC284_E"
+            ]
+          },
+          {
+            "id": "mathema-e-3",
+            "label": "6.6; ×10⁴",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": 0.031339347740086405,
+            "scales": [
+              "FC284_E"
+            ]
+          },
+          {
+            "id": "mathema-e-4",
+            "label": "8.8; ×10⁵",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": 0.06267869548017281,
+            "scales": [
+              "FC284_E"
+            ]
+          },
+          {
+            "id": "mathema-pi4",
+            "label": "π/4",
+            "labelTone": "red",
+            "showLabel": false,
+            "offset": -0.03689850479831808,
+            "scales": [
+              "FC284_A",
+              "FC284_B"
+            ]
+          }
+        ],
+        "cursorCaptions": [
+          {
+            "id": "mathema-eg-0-caption",
+            "offset": -0.06321951066870646,
+            "lines": [
+              "10",
+              "X"
+            ],
+            "zone": "topCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-eg-1-caption",
+            "offset": -0.03160975533435323,
+            "lines": [
+              "10²",
+              "140"
+            ],
+            "zone": "topCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-eg-2-caption",
+            "offset": 0,
+            "lines": [
+              "10³",
+              "280"
+            ],
+            "zone": "topCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-eg-3-caption",
+            "offset": 0.03160975533435323,
+            "lines": [
+              "10⁴",
+              "420"
+            ],
+            "zone": "topCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-eg-4-caption",
+            "offset": 0.06321951066870646,
+            "lines": [
+              "10⁵",
+              "560"
+            ],
+            "zone": "topCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-e-0-caption",
+            "offset": -0.06267869548017281,
+            "lines": [
+              "X",
+              "10"
+            ],
+            "zone": "bottomCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-e-1-caption",
+            "offset": -0.031339347740086405,
+            "lines": [
+              "2.2",
+              "10²"
+            ],
+            "zone": "bottomCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-e-2-caption",
+            "offset": 0,
+            "lines": [
+              "4.4",
+              "10³"
+            ],
+            "zone": "bottomCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-e-3-caption",
+            "offset": 0.031339347740086405,
+            "lines": [
+              "6.6",
+              "10⁴"
+            ],
+            "zone": "bottomCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-e-4-caption",
+            "offset": 0.06267869548017281,
+            "lines": [
+              "8.8",
+              "10⁵"
+            ],
+            "zone": "bottomCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-upper-operation",
+            "offset": -0.04741463300152984,
+            "lines": [
+              "y",
+              "+"
+            ],
+            "zone": "topCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-lower-operation",
+            "offset": -0.04700902161012961,
+            "lines": [
+              "+",
+              "y"
+            ],
+            "zone": "bottomCap",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-upper-pi4",
+            "offset": -0.03689850479831808,
+            "lines": [
+              "π",
+              "4"
+            ],
+            "fraction": true,
+            "zone": "row",
+            "scale": "FC284_A",
+            "edge": "top",
+            "align": "center",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-upper-one",
+            "offset": 0,
+            "lines": [
+              "1"
+            ],
+            "zone": "row",
+            "scale": "FC284_A",
+            "edge": "top",
+            "align": "end",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-upper-pi2",
+            "offset": 0.06897838185562015,
+            "lines": [
+              "π",
+              "2"
+            ],
+            "fraction": true,
+            "zone": "row",
+            "scale": "FC284_A",
+            "edge": "top",
+            "align": "end",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-lower-one",
+            "offset": -0.06897838185562015,
+            "lines": [
+              "1"
+            ],
+            "zone": "row",
+            "scale": "FC284_Y",
+            "edge": "bottom",
+            "align": "start",
+            "tone": "red"
+          },
+          {
+            "id": "mathema-lower-pi2",
+            "offset": 0.06897838185562015,
+            "lines": [
+              "π",
+              "2"
+            ],
+            "fraction": true,
+            "zone": "row",
+            "scale": "FC284_Y",
+            "edge": "bottom",
+            "align": "end",
+            "tone": "red"
+          }
         ]
       },
       "back": {
@@ -627,6 +967,18 @@
           "FC284_LL03",
           "FC284_LL02",
           "FC284_LL01"
+        ],
+        "cursorMarks": [
+          {
+            "id": "mathema-left",
+            "label": "Left",
+            "offset": -0.06897838185562015
+          },
+          {
+            "id": "mathema-right",
+            "label": "Right",
+            "offset": 0.06897838185562015
+          }
         ]
       }
     }

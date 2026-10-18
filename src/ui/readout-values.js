@@ -69,3 +69,20 @@ export function scaleReadings(def, p, library) {
     return { outside: reading.outside, texts: [reading.text] };
 }
 
+/** Report exactly the same coordinates as the painted cursor marks. Physical
+ * off-track marks remain off scale even when a translated slide would supply
+ * a mathematical value beyond the visible window. Never clamp an offset. */
+export function cursorScaleReadings(def, p, library, marks = [], cursorPosition = p) {
+    const main = scaleReadings(def, p, library);
+    if (!marks.length) return main;
+    const readings = [{ label: 'Main', result: main }, ...marks.map(mark => {
+        const physical = cursorPosition + mark.offset;
+        const result = physical < -1e-10 || physical > 1 + 1e-10
+            ? { outside: true, texts: ['off scale'] }
+            : scaleReadings(def, p + mark.offset, library);
+        return { label: mark.label, result };
+    })];
+    return { outside: readings.every(({ result }) => result.outside), multi: true,
+        texts: readings.flatMap(({ label, result }) => result.texts.map(text => `${label}: ${text}`)) };
+}
+

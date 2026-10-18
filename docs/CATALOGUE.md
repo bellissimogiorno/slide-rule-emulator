@@ -48,28 +48,28 @@ Aliases and composites are counted as definitions, not distinct mathematical fun
 | `ARISTO_S` | S | sin | Aristo HyperboLog / HyperLog | Sine/cosine row. Black sine and red cosine arguments sum to 90 degrees at each shared graduation. Read the function value on C interpreted as 0.1 to 1. |
 | `ARISTO_ST` | ST | expression | Aristo HyperboLog / HyperLog | Radian-calibrated small-angle row: C/100 equals the black angle in radians. Sine and tangent are approximations to that radian value. Red angles are the complements for cosine/cotangent; black and red sum to 90 degrees. |
 | `ARISTO_P` | P | pythagorean | Aristo HyperboLog / HyperLog | Reverse Pythagorean row: with the slide aligned, set x on D interpreted as 0.1 to 1 and read sqrt(1-x^2) on P. As P is on the slide, it follows C when the slide moves. |
-| `FC284_Y` | Y | log | Faber-Castell Mathema 2/84N | Fixed principal number scale; actual decimal values from 0.1 to 1 on both faces. |
-| `FC284_y` | y | log | Faber-Castell Mathema 2/84N | Movable principal number scale; actual decimal values from 0.1 to 1 on both faces. |
-| `FC284_I` | 1/y | inverseLog | Faber-Castell Mathema 2/84N | Reciprocal principal scale: reads 10 to 1 while y reads 0.1 to 1. |
-| `FC284_A` | √X | log | Faber-Castell Mathema 2/84N | Fixed parabolic row: the engraved X equals Y squared. The left caption means Y = sqrt(X). |
-| `FC284_B` | √x | log | Faber-Castell Mathema 2/84N | Movable parabolic row: the engraved x equals y squared. The left caption means y = sqrt(x). |
-| `FC284_BI` | 1/√x | inverseLog | Faber-Castell Mathema 2/84N | Reciprocal parabolic row: engraved x equals 1/y squared; y = 1/sqrt(x). |
-| `FC284_H` | √(X²−1) | hypotenuseLow | Faber-Castell Mathema 2/84N | Hypotenuse row: the engraved X is sqrt(1+Y^2). The caption specifies Y = sqrt(X^2-1). |
-| `FC284_P` | √(1−X²) | pythagorean | Faber-Castell Mathema 2/84N | Pythagorean row: engraved X = sqrt(1-Y^2). With sine read on Y, this gives the cosine. |
-| `FC284_S` | sin Xᵍ | expression | Faber-Castell Mathema 2/84N | Sine in gon: Y = sin(pi X/200). There is no complementary-angle overprint; use the Pythagorean row for cosine. |
-| `FC284_T` | tan Xᵍ | expression | Faber-Castell Mathema 2/84N | Tangent in gon: Y = tan(pi X/200). The principal interval stops at 50 gon (45 degrees). |
-| `FC284_CH` | 0.1 cosh xᵍ | expression | Faber-Castell Mathema 2/84N | Hyperbolic cosine in gon: y = 0.1 cosh(pi x/200). Multiply the y reading by 10 to obtain cosh. |
-| `FC284_SH2` | 0.1 sinh xᵍ | expression | Faber-Castell Mathema 2/84N | Upper hyperbolic sine in gon: y = 0.1 sinh(pi x/200). Multiply the y reading by 10 to obtain sinh. |
-| `FC284_SH1` | sinh xᵍ | expression | Faber-Castell Mathema 2/84N | Lower hyperbolic sine in gon: y = sinh(pi x/200). |
-| `FC284_TH` | tanh Xᵍ | expression | Faber-Castell Mathema 2/84N | Fixed hyperbolic tangent in gon: Y = tanh(pi X/200). Stops at 200 gon before the infinite-argument endpoint. |
-| `FC284_E` | (eˣ)* | linear | Faber-Castell Mathema 2/84N | Normalised exponential row for the main hairline: x = ln(10Y), so exp(x) = 10Y. The original displaced auxiliary cursor marks are not reproduced; * marks this adaptation. |
-| `FC284_EG` | (eˣᵍ)* | linear | Faber-Castell Mathema 2/84N | Normalised gon exponential row for the main hairline: x = 200 ln(10Y)/pi, so exp(pi x/200) = 10Y. * marks the adaptation from the original auxiliary cursor system. |
-| `FC284_LL1` | 10ln X | loglog | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = 10ln X; the engraved number X is exp(0.1Y). |
-| `FC284_LL01` | −10ln X | loglog | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = −10ln X; the engraved number X is exp(−0.1Y). |
-| `FC284_LL2` | ln X | loglog | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = ln X; the engraved number X is exp(Y). |
-| `FC284_LL02` | −ln X | loglog | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = −ln X; the engraved number X is exp(−Y). |
-| `FC284_LL3` | 0.1ln X | loglog | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = 0.1ln X; the engraved number X is exp(10Y). |
-| `FC284_LL03` | −0.1ln X | loglog | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = −0.1ln X; the engraved number X is exp(−10Y). |
+| `FC284_Y` | Y | expression | Faber-Castell Mathema 2/84N | Fixed principal number scale, extended from 0.065 to 1.5 on both faces. |
+| `FC284_y` | y | expression | Faber-Castell Mathema 2/84N | Movable principal number scale, extended from 0.065 to 1.5 on both faces. |
+| `FC284_I` | 1/y | expression | Faber-Castell Mathema 2/84N | Reciprocal principal scale, reading from 15 down to 0.65. |
+| `FC284_A` | √X | expression | Faber-Castell Mathema 2/84N | Fixed parabolic row: engraved X = Y squared. The left caption means Y = sqrt(X). |
+| `FC284_B` | √x | expression | Faber-Castell Mathema 2/84N | Movable parabolic row: engraved x = y squared. The left caption means y = sqrt(x). |
+| `FC284_BI` | 1/√x | expression | Faber-Castell Mathema 2/84N | Reciprocal parabolic row: engraved x = 1/y squared, from 230 down to 0.44. |
+| `FC284_H` | √(X²−1) | expression | Faber-Castell Mathema 2/84N | Hypotenuse row: engraved X = sqrt(1+Y^2), extended from 1.0022 to 1.8. |
+| `FC284_P` | √(1−X²) | expression | Faber-Castell Mathema 2/84N | Pythagorean row: engraved X = sqrt(1-Y^2), from 0.9978 down to zero. With sine on Y it gives cosine. |
+| `FC284_S` | sin Xᵍ | expression | Faber-Castell Mathema 2/84N | Sine in gon: Y = sin(pi X/200), from 4.2 to 100 gon. Use the Pythagorean row for cosine. |
+| `FC284_T` | tan Xᵍ | expression | Faber-Castell Mathema 2/84N | Tangent in gon: Y = tan(pi X/200), extended from 4.2 to 62 gon. |
+| `FC284_CH` | 0.1 cosh xᵍ | expression | Faber-Castell Mathema 2/84N | Hyperbolic cosine in gon: y = 0.1 cosh(pi x/200), from 0 to 220 gon. Multiply y by 10 for cosh. |
+| `FC284_SH2` | 0.1 sinh xᵍ | expression | Faber-Castell Mathema 2/84N | Upper hyperbolic sine in gon: y = 0.1 sinh(pi x/200), from 40 to 220 gon. Multiply y by 10 for sinh. |
+| `FC284_SH1` | sinh xᵍ | expression | Faber-Castell Mathema 2/84N | Lower hyperbolic sine in gon: y = sinh(pi x/200), extended from 4 to 80 gon. |
+| `FC284_TH` | tanh Xᵍ | expression | Faber-Castell Mathema 2/84N | Fixed hyperbolic tangent in gon: Y = tanh(pi X/200). Finite graduations extend from 4 to 200 gon; infinity is at Y = 1. |
+| `FC284_E` | (eˣ) | expression | Faber-Castell Mathema 2/84N | Original displaced exponential row. At the main hairline the reading is ln(1000Y)-4.4; select one of the five lower cursor marks to apply its additive constant and power-of-ten multiplier. |
+| `FC284_EG` | (eˣᵍ) | expression | Faber-Castell Mathema 2/84N | Original displaced exponential row in gon. At the main hairline the reading is (200/pi)ln(1000Y)-280; use the five upper cursor marks and their printed constants and powers of ten. |
+| `FC284_LL1` | 10ln X | expression | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = 10ln X; the engraved number X is exp(0.1Y). |
+| `FC284_LL01` | −10ln X | expression | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = −10ln X; the engraved number X is exp(−0.1Y). |
+| `FC284_LL2` | ln X | expression | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = ln X; the engraved number X is exp(Y). |
+| `FC284_LL02` | −ln X | expression | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = −ln X; the engraved number X is exp(−Y). |
+| `FC284_LL3` | 0.1ln X | expression | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = 0.1ln X; the engraved number X is exp(10Y). |
+| `FC284_LL03` | −0.1ln X | expression | Faber-Castell Mathema 2/84N | Mathema logarithmic function row: Y = −0.1ln X; the engraved number X is exp(−10Y). |
 | `UL_LL00` | LL/0 | loglog | UltraLog | e^-x for x from 0.001 to 0.01. |
 | `UL_LL01` | LL/1 | loglog | UltraLog | e^-x for x from 0.01 to 0.1. |
 | `UL_LL02` | LL/2 | loglog | UltraLog | e^-x for x from 0.1 to 1. |

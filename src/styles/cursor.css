@@ -1,5 +1,5 @@
-/* The single hairline is calibrated to the scale coordinate. The old fixed-
-   pixel auxiliary lines were decorative, not valid conversion hairlines. */
+/* The main hairline and optional face-specific auxiliary marks share one
+   calibrated cursor. Auxiliary spacing scales with the engraved track. */
 .cursor {
     position: absolute;
     top: 0;
@@ -26,8 +26,110 @@
     left: 50%;
     top: 1px;
     bottom: 1px;
-    border-left: 1px solid #b11b27;
+    border-left: 1px solid var(--cursor-line-color, #b11b27);
     transform: translateX(-.5px);
+}
+
+/* Only actual grips intercept input. Broad calibrated glass remains visible
+   while the slide underneath its empty areas can still be dragged. */
+.cursor-window {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 10;
+    pointer-events: none;
+}
+.cursor.has-auxiliary { pointer-events: none; }
+.rule-face-body { --cursor-top-cap: 0px; --cursor-bottom-cap: 0px; }
+.rule-face-body.cursor-cap-top { --cursor-top-cap: 32px; padding-top: var(--cursor-top-cap); }
+.rule-face-body.cursor-cap-bottom { --cursor-bottom-cap: 32px; padding-bottom: var(--cursor-bottom-cap); }
+.cursor.has-auxiliary::before, .cursor.has-auxiliary::after {
+    top: calc(var(--cursor-top-cap) + 1px);
+    bottom: calc(var(--cursor-bottom-cap) + 1px);
+}
+.cursor.has-auxiliary::after { border-left-color: var(--cursor-line-color, #28251f); }
+.cursor-lines-red { --cursor-line-color: #9b3325; }
+.cursor-lines-neutral { --cursor-line-color: #28251f; }
+.cursor-cap {
+    position: absolute;
+    left: 1px;
+    right: 1px;
+    background: #f8f5df;
+    border: 1px solid #8b88725c;
+    box-shadow: inset 0 0 2px #807d6633;
+    pointer-events: auto;
+    z-index: 2;
+}
+.cursor-top-cap { top: 0; height: var(--cursor-top-cap); border-radius: 13px 13px 0 0; }
+.cursor-bottom-cap { bottom: 0; height: var(--cursor-bottom-cap); border-radius: 0 0 13px 13px; }
+.cursor-grip {
+    position: absolute;
+    inset: 0 auto 0 50%;
+    width: 24px;
+    transform: translateX(-50%);
+    pointer-events: auto;
+}
+.cursor-mark {
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    width: 10px;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    color: var(--cursor-line-color, #28251f);
+}
+.cursor-mark.long-mark { top: calc(var(--cursor-top-cap) + 1px); bottom: calc(var(--cursor-bottom-cap) + 1px); }
+.cursor-mark-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid currentColor;
+    transform: translateX(-.5px);
+}
+.cursor-mark-label {
+    position: absolute;
+    left: 50%;
+    top: 1px;
+    transform: translateX(-50%);
+    padding: 0 2px;
+    background: #f9f8efed;
+    border-radius: 2px;
+    color: inherit;
+    font: 600 8px/1.1 var(--engraving-font);
+    white-space: nowrap;
+    text-align: center;
+}
+.cursor-mark-label > span { display: block; }
+.cursor-mark.long-mark .cursor-mark-label { top: 50%; transform: translate(-50%, -50%); }
+.cursor-mark.red-caption .cursor-mark-label { color: #9b1923; }
+.cursor-mark.label-at-bottom .cursor-mark-label { top: auto; bottom: 1px; }
+.cursor-caption {
+    --caption-x: -50%;
+    --caption-y: 0%;
+    position: absolute;
+    transform: translate(var(--caption-x), var(--caption-y));
+    color: #28251f;
+    font: 600 10px/1.1 var(--engraving-font);
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 3;
+}
+.cursor-caption > span { display: block; }
+.cursor-caption.red-caption { color: #9b3325; }
+.cursor-caption.caption-topCap { top: 5px; }
+.cursor-caption.caption-bottomCap { bottom: 5px; }
+.cursor-caption.caption-before-row { --caption-y: -100%; }
+.cursor-caption.caption-align-start { --caption-x: 0%; margin-left: 3px; }
+.cursor-caption.caption-align-end { --caption-x: -100%; margin-left: -3px; }
+.cursor-caption.caption-fraction > span:first-child { border-bottom: 1px solid currentColor; }
+@media (forced-colors: active) {
+    .cursor-mark { color: CanvasText; }
+    .cursor-mark-label { color: CanvasText; background: Canvas; }
+    .cursor-cap { color: CanvasText; background: Canvas; }
+    .cursor-caption, .cursor-caption.red-caption { color: CanvasText; }
 }
 
 .empty-scale {

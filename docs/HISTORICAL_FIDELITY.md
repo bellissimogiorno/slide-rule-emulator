@@ -33,4 +33,4 @@ auxiliary cursor line.
 
 ## Mathema and Aristo hyperbolic presets
 
-See [Mathema 2/84N](MATHEMA.md) and [Aristo 0971 / 0972](ARISTO_HYPERBOLIC.md) for scale-by-scale mathematical conventions, source evidence, and the limits of the reconstruction. These are programmable mathematical instruments with documented scale arrangements; the emulator does not reproduce their entire physical engraving or auxiliary cursor hardware.
+See [Mathema 2/84N](MATHEMA.md) and [Aristo 0971 / 0972](ARISTO_HYPERBOLIC.md) for scale-by-scale mathematical conventions, source evidence, and the limits of the reconstruction. These are programmable mathematical instruments with documented scale arrangements. The Mathema includes its calibrated exponent cursor banks, ordinary π conversion hairlines and scale-specific extensions. Their guides distinguish photographed evidence, exact mathematical reconstruction and remaining differences in engraving or hardware.

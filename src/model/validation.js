@@ -13,7 +13,7 @@ import { MathExpressions } from '#core/expressions.js';
 import { makeRuntimeScale } from '#core/mappings.js';
 import { generateTicks } from '#core/ticks/index.js';
 import { SCALE_TYPES, TICK_MODES, TICK_KINDS, INK_TONES, RAILS, assertTickStrategy } from '#core/scale-types.js';
-export const PROGRAM_LIMITS = Object.freeze({ characters: 1000000, nodes: 30000, depth: 12, sides: 8, customScales: 128, rowsPerRail: 40, rows: 320, manualTicks: 2000 });
+export const PROGRAM_LIMITS = Object.freeze({ characters: 1000000, nodes: 30000, depth: 12, sides: 8, customScales: 128, rowsPerRail: 40, rows: 320, manualTicks: 2000, cursorMarks: 16, cursorCaptions: 32 });
 const RESERVED = new Set(['__proto__', 'prototype', 'constructor']);
 const TEXT_FIELDS = ['label', 'unit', 'formula', 'description', 'family', 'anchor', 'anchorTitle', 'endLabel', 'compactLabel', 'startLabel', 'foldLabel', 'positiveCaption', 'negativeCaption'];
 const NUMBER_FIELDS = ['pairedSum', 'pairedProduct', 'min', 'max', 'pMin', 'pMax', 'order', 'branch', 'decade', 'sign', 'power', 'coeff', 'fold', 'majorStep', 'minorDivisions', 'anchorPos', 'u0', 'minTemperature', 'maxTemperature', 'origin'];
@@ -318,6 +318,70 @@ function validateComposites(library) {
         }
     }
 }
+function validateCursorMarks(side, library) {
+    if (side.cursorMarks === undefined) return;
+    if (!Array.isArray(side.cursorMarks) || side.cursorMarks.length > PROGRAM_LIMITS.cursorMarks)
+        fail('cursorMarks must be an array of at most 16 marks.');
+    const ids = new Set();
+    for (const mark of side.cursorMarks) {
+        if (!object(mark) || !identifier(mark.id) || ids.has(mark.id))
+            fail('Each cursor mark needs a unique, non-reserved ID of at most 64 characters.');
+        ids.add(mark.id);
+        if (Object.keys(mark).some(key => !['id', 'label', 'offset', 'scales', 'labelTone', 'showLabel'].includes(key)))
+            fail('Unknown cursor mark field.');
+        if (typeof mark.label !== 'string' || !mark.label.trim() || mark.label.length > 80)
+            fail('A cursor mark label must contain 1-80 characters.');
+        if (!Number.isFinite(mark.offset) || mark.offset < -1 || mark.offset > 1)
+            fail('A cursor mark offset must be a finite fraction between -1 and 1.');
+        if (mark.labelTone !== undefined && !['neutral', 'red'].includes(mark.labelTone))
+            fail('Cursor labelTone must be neutral or red.');
+        if (mark.showLabel !== undefined && typeof mark.showLabel !== 'boolean')
+            fail('Cursor showLabel must be a boolean.');
+        if (mark.scales !== undefined && (!Array.isArray(mark.scales) || !mark.scales.length ||
+            mark.scales.length > PROGRAM_LIMITS.rows || new Set(mark.scales).size !== mark.scales.length ||
+            mark.scales.some(id => typeof id !== 'string' || !Object.hasOwn(library, id))))
+            fail('Cursor mark scales must name 1-320 distinct existing scales.');
+    }
+}
+
+/** Printed cap/gauge annotations do not define cursor readings. Their position
+ * remains explicit JSON data so it survives exports and face customization. */
+function validateCursorCaptions(side, library) {
+    if (side.cursorLineTone !== undefined && !['neutral', 'red'].includes(side.cursorLineTone))
+        fail('cursorLineTone must be neutral or red.');
+    if (side.cursorCaptions === undefined) return;
+    if (!Array.isArray(side.cursorCaptions) || side.cursorCaptions.length > PROGRAM_LIMITS.cursorCaptions)
+        fail('cursorCaptions must be an array of at most 32 captions.');
+    const ids = new Set();
+    for (const caption of side.cursorCaptions) {
+        if (!object(caption) || !identifier(caption.id) || ids.has(caption.id))
+            fail('Each cursor caption needs a unique, non-reserved ID of at most 64 characters.');
+        ids.add(caption.id);
+        if (Object.keys(caption).some(key => !['id', 'offset', 'lines', 'zone', 'tone', 'scale', 'edge', 'align', 'fraction'].includes(key)))
+            fail('Unknown cursor caption field.');
+        if (!Number.isFinite(caption.offset) || caption.offset < -1 || caption.offset > 1)
+            fail('A cursor caption offset must be a finite fraction between -1 and 1.');
+        if (!Array.isArray(caption.lines) || caption.lines.length < 1 || caption.lines.length > 2 ||
+            caption.lines.some(line => typeof line !== 'string' || !line.trim() || line.length > 40))
+            fail('Cursor caption lines must contain one or two strings of 1-40 characters.');
+        if (!['topCap', 'bottomCap', 'row'].includes(caption.zone))
+            fail('Cursor caption zone must be topCap, bottomCap or row.');
+        if (caption.tone !== undefined && !['neutral', 'red'].includes(caption.tone))
+            fail('Cursor caption tone must be neutral or red.');
+        if (caption.align !== undefined && !['start', 'center', 'end'].includes(caption.align))
+            fail('Cursor caption align must be start, center or end.');
+        if (caption.fraction !== undefined && typeof caption.fraction !== 'boolean' ||
+            caption.fraction && caption.lines.length !== 2)
+            fail('A fraction caption needs fraction:true and exactly two lines.');
+        if (caption.zone === 'row') {
+            if (typeof caption.scale !== 'string' || !Object.hasOwn(library, caption.scale) || !['top', 'bottom'].includes(caption.edge))
+                fail('A row caption needs an existing scale and a top or bottom edge.');
+        } else if (caption.scale !== undefined || caption.edge !== undefined) {
+            fail('A cap caption cannot also specify a row scale or edge.');
+        }
+    }
+}
+
 export function validateProgram(programme) {
     inspectData(programme);
     if (!object(programme))
@@ -357,6 +421,8 @@ export function validateProgram(programme) {
         for (const field of ['name', 'note'])
             if (side[field] !== undefined && typeof side[field] !== 'string')
                 fail(key + ': ' + field + ' must be text.');
+        validateCursorMarks(side, library);
+        validateCursorCaptions(side, library);
         for (const rail of RAILS) {
             if (!Array.isArray(side[rail]) || side[rail].length > PROGRAM_LIMITS.rowsPerRail)
                 fail(key + ': ' + rail + ' must be an array of at most 40 scale IDs.');

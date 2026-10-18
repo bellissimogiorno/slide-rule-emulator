@@ -8,7 +8,8 @@ import { validateProgram } from '#model/validation.js';
 import { close, programme } from './helpers.js';
 
 const runtime = id => makeRuntimeScale(scales[`FC284_${id}`]);
-const atY = (id, y) => runtime(id).value(Math.log10(y) + 1);
+const positionAtY = y => (Math.log10(10 * y) - Math.log10(.625)) / Math.log10(26.4);
+const atY = (id, y) => runtime(id).value(positionAtY(y));
 
 test('Mathema duplex keeps all 24 rows on the documented rails', () => {
     const { front, back } = mathemaPresets.faber284n.sides;
@@ -25,7 +26,7 @@ test('Mathema duplex keeps all 24 rows on the documented rails', () => {
 });
 
 test('principal, reciprocal and parabolic readings retain decimal places', () => {
-    for (const y of [.1, .125, .2, .5, .8, 1]) {
+    for (const y of [.07, .1, .125, .2, .5, .8, 1, 1.4]) {
         close(atY('Y', y), y);
         close(atY('y', y), y);
         close(atY('I', y), 1 / y);
@@ -80,16 +81,17 @@ test('six logarithmic rows retain their historical multiplier and reciprocal pai
     }
 });
 
-test('starred exponential rows have explicit direct-hairline normalisation', () => {
-    close(runtime('Y').value(runtime('E').pos(.5)) * 10, Math.exp(.5));
-    close(runtime('Y').value(runtime('EG').pos(100)) * 10, Math.exp(Math.PI / 2));
+test('exponential rows preserve the specimen calibration at the central cursor line', () => {
+    close(runtime('Y').value(runtime('E').pos(.5)) * 1000, Math.exp(4.9));
+    close(runtime('Y').value(runtime('EG').pos(100)) * 1000, Math.exp(380 * Math.PI / 200));
     for (const y of [.1, .25, .5, 1]) {
-        close(atY('E', y), Math.log(10 * y));
-        close(atY('EG', y), Math.log(10 * y) * 200 / Math.PI);
+        close(atY('E', y), Math.log(1000 * y) - 4.4);
+        close(atY('EG', y), Math.log(1000 * y) * 200 / Math.PI - 280);
     }
-    assert.match(scales.FC284_E.label, /\*/);
-    assert.match(scales.FC284_EG.label, /\*/);
-    assert.match(mathemaPresets.faber284n.instrumentNote, /normalised/);
+    assert.doesNotMatch(scales.FC284_E.label, /\*/);
+    assert.doesNotMatch(scales.FC284_EG.label, /\*/);
+    assert.equal(scales.FC284_E.tone, 'neutral');
+    assert.equal(scales.FC284_EG.tone, 'neutral');
 });
 
 test('each Mathema row validates, inverts and graduates its complete supported interval', () => {
@@ -106,6 +108,20 @@ test('each Mathema row validates, inverts and graduates its complete supported i
             for (const tick of ticks) {
                 assert.ok(Number.isFinite(tick.value) && Number.isFinite(tick.pos), def.id);
                 assert.ok(tick.pos >= rt.pMin - 1e-10 && tick.pos <= rt.pMax + 1e-10, def.id);
+            }
+        }
+    }
+});
+
+test('engraved numeric captions stay on their own values at high magnification', () => {
+    for (const def of Object.values(scales)) {
+        const rt = makeRuntimeScale(def);
+        for (const graduationMode of ['conventional', 'adaptive']) {
+            const width = 8000;
+            for (const tick of generateTicks(def, rt, width, 1.65, { graduationMode })) {
+                if (!tick.label || !Number.isFinite(Number(tick.label))) continue;
+                const error = Math.abs(rt.pos(Number(tick.label)) - tick.pos) * width;
+                assert.ok(error < .1, `${def.id} ${graduationMode}: ${tick.label} is ${error}px from its value`);
             }
         }
     }
