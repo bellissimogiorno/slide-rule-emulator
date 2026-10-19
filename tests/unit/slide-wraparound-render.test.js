@@ -10,6 +10,7 @@ class Element {
     constructor(classes = '', children = []) {
         this.classes = new Set(classes.split(' ').filter(Boolean));
         this.attributes = new Map(); this.dataset = {}; this.parentNode = null;
+        this.ownerDocument = { createElement: () => new Element() };
         this.style = { setProperty(name, value) { this[name] = value; } };
         this.children = []; this.textContent = '';
         this.classList = {
@@ -38,6 +39,12 @@ class Element {
         this.children.splice(index, 0, child); child.parentNode = this;
     }
     get nextSibling() { return this.parentNode?.children[this.parentNode.children.indexOf(this) + 1] || null; }
+    append(child) { this.insertBefore(child, null); }
+    closest(selector) {
+        for (let node = this; node; node = node.parentNode)
+            if (node.classes.has(selector.slice(1))) return node;
+        return null;
+    }
     remove() {
         if (!this.parentNode) return;
         this.parentNode.children.splice(this.parentNode.children.indexOf(this), 1); this.parentNode = null;
@@ -62,6 +69,7 @@ test('default-off motion leaves one original slide and does not move fixed conte
     updateSlideWraparound(canvas, .35);
     assert.equal(source.style.transform, 'translateX(35.0000%)');
     assert.equal(canvas.querySelectorAll('.slide-wraparound-copy').length, 0);
+    assert.equal(canvas.querySelectorAll('.slide-wraparound-seam').length, 0);
     assert.equal(stator.style.transform, undefined); assert.equal(gutter.style.transform, undefined);
     assert.equal(source.classList.contains('slide-wraparound-tile'), false);
 });
@@ -113,6 +121,7 @@ test('disabling removes repetitions and clipping while preserving the current di
     updateSlideWraparound(canvas, -.9, false);
     refreshSlideWraparound(canvas);
     assert.equal(canvas.querySelectorAll('.slide-wraparound-copy').length, 0);
+    assert.equal(canvas.querySelectorAll('.slide-wraparound-seam').length, 0);
     assert.equal(source.classList.contains('slide-wraparound-tile'), false);
     assert.equal(source.style.transform, 'translateX(-90.0000%)');
     updateSlideWraparound(canvas, -.9, true);
@@ -128,9 +137,39 @@ test('replacing faces releases old copies and wraps every mover on both new face
     originals.forEach(item => canvas.insertBefore(item.pane, null));
     updateSlideWraparound(canvas, -.3, true);
     assert.equal(pane.querySelectorAll('.slide-wraparound-copy').length, 0);
+    assert.equal(pane.querySelectorAll('.slide-wraparound-seam').length, 0);
     assert.equal(source.classList.contains('slide-wraparound-tile'), false);
     assert.equal(canvas.querySelectorAll('.slide-wraparound-copy').length, 2 * originals.length);
     for (const item of originals) assert.equal(item.pane.querySelectorAll('.slide-wraparound-copy').length, 2);
+    assert.equal(canvas.querySelectorAll('.slide-wraparound-seam').length, originals.length);
+});
+
+test('composite rows share one seam above both layers without accumulating repeated highlights', () => {
+    const upper = new Element('tick-mover slide-mover', [new Element('tick-label')]);
+    const lower = new Element('tick-mover slide-mover', [new Element('tick-label')]);
+    const pane = new Element('tick-pane', [new Element('tick-layer upper', [upper]), new Element('tick-layer lower', [lower])]);
+    const canvas = new Element('', [pane]);
+    updateSlideWraparound(canvas, .3, true);
+    const [seam] = canvas.querySelectorAll('.slide-wraparound-seam');
+    assert.equal(canvas.querySelectorAll('.slide-wraparound-seam').length, 1, 'one shared overlay, not one per mover or copy');
+    assert.equal(seam.parentNode, pane, 'overlay sits outside all engraving layers');
+    assert.equal(pane.children.at(-1), seam);
+    assert.equal(seam.getAttribute('aria-hidden'), 'true');
+    assert.match(seam.getAttribute('data-mark-tip'), /where the slide repeats/);
+    assert.match(seam.getAttribute('data-mark-tip'), /Scale layout and tick or untick Wraparound slide/);
+    assert.equal(seam.getAttribute('title'), seam.getAttribute('data-mark-tip'));
+    for (const [offset, left] of [[.3, '30.0000%'], [-.3, '70.0000%'], [0, '0.0000%'], [-.9, '10.0000%'], [.9, '90.0000%']]) {
+        updateSlideWraparound(canvas, offset, true);
+        assert.equal(canvas.querySelectorAll('.slide-wraparound-seam')[0], seam, 'motion reuses one overlay');
+        assert.equal(seam.style.left, left);
+    }
+    refreshSlideWraparound(canvas);
+    assert.equal(seam.parentNode, null);
+    assert.equal(canvas.querySelectorAll('.slide-wraparound-seam').length, 1, 'label polishing cannot duplicate opacity');
+    for (const copy of canvas.querySelectorAll('.slide-wraparound-copy'))
+        assert.equal(copy.querySelectorAll('.slide-wraparound-seam').length, 0, 'copies cannot carry another overlay');
+    updateSlideWraparound(canvas, .9, false);
+    assert.equal(canvas.querySelectorAll('.slide-wraparound-seam').length, 0);
 });
 
 test('label polishing visits original tracks and branches without measuring or changing repetitions', () => {

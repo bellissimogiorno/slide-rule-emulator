@@ -44,7 +44,7 @@ loading another preset. Exercise the Cursor range with pointer and keyboard at
 narrow and wide widths; its track and grip must stay inside the Cursor box
 between the nudge arrows, with no positioned input across the top of the page.
 
-Native browser verification for the 3.2.35 preparation environment was blocked:
+Native browser verification for the 3.2.37 preparation environment was blocked:
 no Chromium executable was installed, and browser provisioning returned HTTP
 403. No native rendering, pointer interaction, reload or download pass is claimed
 for this change. See the handover's current verification report for executed core

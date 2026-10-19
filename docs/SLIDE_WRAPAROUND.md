@@ -12,9 +12,15 @@ width between the instrument's left and right indices. Stators and scale-name
 and legend gutters remain fixed.
 
 A yellow highlight with a dark amber edge marks the join between copies. It
-moves with the slide and appears in the loupe. The highlight sits behind the
-graduations, leaving their positions and labels unchanged. When the slide is
-aligned, the join is at the left index.
+moves with the slide and appears in the loupe. One overlay at **50% opacity**
+sits above all the graduations in each row, including both layers of a composite
+scale such as **Hλ/Hλm**. Ticks and labels remain visible through it. When the slide is aligned,
+the join is at the left index.
+
+Hover over the yellow line for an explanation, using the same tooltip as the
+constants. It also reminds you to tick or untick **Wraparound slide** in
+**Scale layout**, below **Extended decimal precision**, to switch the option
+on or off. The tooltip dismisses during dragging.
 
 The Slide grip, dragging, nudge buttons and keyboard shortcuts work as usual.
 The motion limits remain −0.9 and +0.9 graduated lengths. Turning wraparound off
@@ -60,6 +66,14 @@ including its ticks and inscriptions, at one track width. Keep fixed rail conten
 and gutters outside that repetition. Main and auxiliary hairlines need separate
 copy selection, and scale-domain bounds must still apply after selection.
 Retained and freshly rendered readouts must agree throughout movement.
+The seam belongs to the shared graduation pane, not to individual moving layers:
+painting it more than once would compound its opacity and obscure layers unequally.
+The loupe must update this overlay's position alongside the moving slide.
+The shared mark-tooltip controller hit-tests the seam without intercepting drag
+events. Inside the yellow bar, its explanation takes priority over any constant
+underneath; adjacent constants keep their own tooltips.
+The native regression fixture includes the actual `BB_H_SPEC` (Hλ/Hλm) and
+`F5100_I` radiation rows, alongside ordinary and other composite scales.
 
 After building, the focused native browser runner is:
 

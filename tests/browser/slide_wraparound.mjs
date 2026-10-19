@@ -116,7 +116,11 @@ try {
         assert.equal(after.slideWraparound, enabled);
         assert.deepEqual(withoutWrap(after), withoutWrap(before), 'Toggle preserves exact positions and all other programme data');
         assert.deepEqual(await stators(page), fixed, 'Toggle does not change stator engraving');
-        if (!enabled) assert.equal(await copyCount(page), 0, 'Disabled restores a single unwrapped slide');
+        if (!enabled) {
+            assert.equal(await copyCount(page), 0, 'Disabled restores a single unwrapped slide');
+            assert.equal(await page.locator('#ruleCanvas .slide-wraparound-seam').count(), 0,
+                'Disabling wraparound removes the highlight as well as repeated imagery');
+        }
     };
     const copies = async page => {
         const result = await page.locator('#ruleCanvas .slide-mover:not(.slide-wraparound-copy)').evaluateAll(sources => sources.map(source => {
@@ -153,6 +157,52 @@ try {
             }
         }
         assert.equal(await page.locator('#ruleCanvas .top-stator .slide-wraparound-copy, #ruleCanvas .bottom-stator .slide-wraparound-copy').count(), 0);
+    };
+    const seams = async (page, offset, selector = '#ruleCanvas', requireComposite = false) => {
+        const result = await page.locator(`${selector} .slide-rail .tick-pane`).evaluateAll(panes => panes.map(pane => {
+            const box = pane.getBoundingClientRect();
+            const overlays = [...pane.querySelectorAll('.slide-wraparound-seam')];
+            const marker = overlays[0], rect = marker?.getBoundingClientRect(), style = marker && getComputedStyle(marker);
+            const children = [...pane.children].filter(child => child !== marker);
+            const cursor = pane.closest('.rule-face-body').querySelector('.cursor');
+            return { count: overlays.length, direct: marker?.parentElement === pane,
+                scale: pane.closest('.scale-row').dataset.scale,
+                composite: pane.closest('.scale-row').classList.contains('dual-scale'),
+                layers: children.filter(child => child.classList.contains('tick-layer'))
+                    .map(layer => layer.classList.contains('upper') ? 'upper' : layer.classList.contains('lower') ? 'lower' : 'unknown'),
+                width: box.width, height: box.height, x: rect && rect.left - box.left,
+                y: rect && rect.top - box.top, markerHeight: rect?.height,
+                opacity: style?.opacity, pointerEvents: style?.pointerEvents,
+                z: Number(style?.zIndex), cursorZ: Number(getComputedStyle(cursor).zIndex),
+                engravingZ: children.map(child => Number(getComputedStyle(child).zIndex) || 0),
+                tileSeams: pane.querySelectorAll('.slide-mover .slide-wraparound-seam').length };
+        }));
+        assert(result.length > 0, 'Moving rows are present for the seam checks');
+        if (requireComposite) {
+            assert(result.some(pane => pane.composite), 'The fixture exercises a composite row');
+            // Exercise the reported Hλ/Hλm row itself and its F5100 equivalent,
+            // whose two coloured branches must share the same highlight.
+            for (const id of ['BB_H_SPEC', 'F5100_I']) {
+                const pane = result.find(pane => pane.scale === id);
+                assert(pane?.composite, `${id} is present as a composite radiation row`);
+                assert.deepEqual(pane.layers.sort(), ['lower', 'upper'], `${id} renders both spectral branches`);
+            }
+        }
+        const position = offset < 0 ? 1 + offset : offset;
+        for (const pane of result) {
+            assert.equal(pane.count, 1, 'Each pane has one highlight, including both layers of a composite row');
+            assert.equal(pane.direct, true, 'The highlight is outside all engraving layers and repeated tiles');
+            assert.equal(pane.tileSeams, 0, 'Repeated tiles cannot compound the highlight opacity');
+            assert.equal(pane.opacity, '0.5', 'The whole highlight has 50% opacity');
+            assert.equal(pane.pointerEvents, 'none', 'The highlight cannot intercept slide dragging');
+            assert(pane.engravingZ.every(z => pane.z > z), 'The highlight consistently overlays every engraving layer');
+            assert(pane.z < pane.cursorZ, 'The cursor remains above the slide highlight');
+            assert(pane.width > 0 && pane.height > 0, 'The pane has native browser geometry');
+            assert(Math.abs(pane.x - position * pane.width) < .3,
+                'Highlight position follows the visible period boundary');
+            assert(Math.abs(pane.y) < .3 && Math.abs(pane.markerHeight - pane.height) < .3,
+                'The highlight spans the full pane height');
+        }
     };
     const visibleCopy = async (page, offset) => {
         const period = offset > 0 ? -1 : 1;
@@ -201,6 +251,26 @@ try {
         await page.locator(selector).click();
         return readFile(await (await event).path());
     };
+    const hoverSeam = async (page, scale) => {
+        const seam = page.locator(`#ruleCanvas [data-side="front"] [data-scale="${scale}"] .slide-wraparound-seam`);
+        await seam.scrollIntoViewIfNeeded();
+        const box = await seam.boundingBox();
+        assert(box && box.width > 0 && box.height > 0);
+        const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+        const before = await state(page), focus = await page.evaluate(() => document.activeElement.id);
+        await page.mouse.move(point.x, point.y);
+        await settle(page);
+        assert.equal(await page.locator('#markTooltip').isVisible(), true);
+        const text = await page.locator('#markTooltip').innerText();
+        for (const phrase of ['Wraparound slide', 'Scale layout', 'Extended decimal precision'])
+            assert(text.includes(phrase), `Seam help includes ${phrase}`);
+        assert.match(text, /repeat|reappear/i, 'The tooltip explains why the slide imagery wraps');
+        assert.match(text, /on.*off/i, 'The tooltip explains how to switch the option on and off');
+        assert.equal(await seam.getAttribute('aria-describedby'), 'markTooltip');
+        assert.deepEqual(await state(page), before, 'Hover leaves the instrument unchanged');
+        assert.equal(await page.evaluate(() => document.activeElement.id), focus, 'Hover does not steal focus');
+        return point;
+    };
     report.stage = 'Native slide wraparound checks';
     const context = await browser.newContext({ viewport: { width: 1800, height: 1400 }, acceptDownloads: true });
     try {
@@ -221,7 +291,7 @@ try {
         const fixture = { ...await state(page), presetId: 'custom', viewMode: 'both', activeSide: 'front',
             cursorShape: 'minimal', cursor: .1, slideOffset: .4, magnification: 1,
             sides: {
-                front: { name: 'Front', topStator: ['A'], slide: ['B', 'C'], bottomStator: ['D'] },
+                front: { name: 'Front', topStator: ['A'], slide: ['B', 'ISD_ITD', 'BB_H_SPEC', 'F5100_I', 'C'], bottomStator: ['D'] },
                 back: { name: 'Back', topStator: ['A'], slide: ['CI'], bottomStator: ['DI'] }
             } };
         await apply(page, fixture);
@@ -230,6 +300,7 @@ try {
         const dBefore = await read(page, 'front', 'bottomStator', 'D');
         await toggle(page, true);
         await copies(page);
+        await seams(page, .4, '#ruleCanvas', true);
         await visibleCopy(page, .4);
         assert.equal(await read(page, 'front', 'slide', 'C'), '5.012');
         assert.equal(await read(page, 'back', 'slide', 'CI'), '1.995');
@@ -240,6 +311,7 @@ try {
 
         await move(page, -.4, .9);
         await copies(page);
+        await seams(page, -.4, '#ruleCanvas', true);
         await visibleCopy(page, -.4);
         assert.equal(await read(page, 'front', 'slide', 'C'), '1.995');
         assert.equal(await read(page, 'back', 'slide', 'CI'), '5.012');
@@ -251,10 +323,89 @@ try {
         assert.equal(await read(page, 'back', 'slide', 'CI'), 'off scale');
         await toggle(page, true);
         await move(page, 0, 0);
+        await seams(page, 0, '#ruleCanvas', true);
         assert.equal(await read(page, 'front', 'slide', 'C'), '1');
         await move(page, 0, 1);
         assert.equal(await read(page, 'front', 'slide', 'C'), '10', 'Original right endpoint retains its own value');
         await passed('Sliding left fills the right gap; disabling restores blank space and off-scale readings; original endpoints remain distinct');
+
+        await move(page, -.4, .9);
+        await page.locator('#loupeButton').click();
+        const compositePane = page.locator('#ruleCanvas [data-side="front"] [data-scale="BB_H_SPEC"] .tick-pane');
+        await compositePane.scrollIntoViewIfNeeded();
+        const hover = await compositePane.boundingBox();
+        assert(hover && hover.width > 0 && hover.height > 0);
+        await page.mouse.move(hover.x + hover.width * .4, hover.y + hover.height * .5);
+        await settle(page);
+        assert.equal(await page.locator('.rule-loupe').isVisible(), true);
+        await seams(page, -.4, '.loupe-copy', true);
+        await page.evaluate(() => { window.wrapSeamLoupeDrawing = document.querySelector('.loupe-copy'); });
+        await move(page, .4, .9);
+        assert.equal(await page.evaluate(() => window.wrapSeamLoupeDrawing === document.querySelector('.loupe-copy')), true,
+            'Ordinary slide motion retains the loupe drawing');
+        await seams(page, .4, '.loupe-copy', true);
+        await page.locator('#loupeButton').click();
+        await settle(page);
+        await passed('One 50%-transparent highlight covers both branches of Hλ/Hλm and F5100 i consistently, tracks either direction and zero, and stays aligned in the Hλ live loupe');
+
+        await move(page, .4, .4);
+        for (const scale of ['C', 'BB_H_SPEC', 'F5100_I']) {
+            const point = await hoverSeam(page, scale);
+            assert.equal(await page.evaluate(({ x, y }) =>
+                !!document.elementFromPoint(x, y)?.closest('.cursor'), point), true,
+            'Seam help remains available through the cursor glass');
+        }
+        await move(page, .4, .9);
+        const seamPoint = await hoverSeam(page, 'C');
+        const cPane = await page.locator('#ruleCanvas [data-side="front"] [data-scale="C"] .tick-pane').boundingBox();
+        const beforeSeamDrag = await state(page), seamDrag = cPane.width * .05;
+        await page.mouse.down();
+        await settle(page);
+        assert.equal(await page.locator('#markTooltip').isVisible(), false, 'Starting a slide drag dismisses seam help');
+        await page.mouse.move(seamPoint.x + seamDrag, seamPoint.y, { steps: 5 });
+        await settle(page);
+        assert.equal(await page.locator('#markTooltip').isVisible(), false, 'Help stays hidden while dragging');
+        await page.mouse.up();
+        await settle(page);
+        assert(Math.abs((await state(page)).slideOffset - beforeSeamDrag.slideOffset - .05) < .002,
+            'Dragging directly on the highlighted boundary still moves the slide');
+        assert.equal((await state(page)).cursor, beforeSeamDrag.cursor);
+
+        // An annotated endpoint puts a real constant tick below the highlight.
+        // Both have zero hit-test distance, so DOM order must not win the tie.
+        const beforeTooltipFixture = await state(page);
+        await apply(page, { ...beforeTooltipFixture, slideOffset: .4,
+            customScales: [...beforeTooltipFixture.customScales, { id: 'WRAP_TIP', label: 'TIP', type: 'log', min: 1, max: 10,
+                gauges: [{ value: 1, label: 'reference', title: 'Endpoint reference for tooltip overlap' }] }],
+            sides: { ...beforeTooltipFixture.sides,
+                front: { ...beforeTooltipFixture.sides.front, slide: ['WRAP_TIP', 'C'] } } });
+        await hoverSeam(page, 'WRAP_TIP');
+        const overlap = await page.locator('#ruleCanvas [data-side="front"] [data-scale="WRAP_TIP"] .tick-pane').evaluate(pane => {
+            const seam = pane.querySelector('.slide-wraparound-seam').getBoundingClientRect();
+            const mark = pane.querySelector('.slide-mover:not(.slide-wraparound-copy) .tick[data-mark-tip]').getBoundingClientRect();
+            const left = Math.max(seam.left, mark.left), right = Math.min(seam.right, mark.right);
+            const top = Math.max(seam.top, mark.top), bottom = Math.min(seam.bottom, mark.bottom);
+            return { x: (left + right) / 2, y: (top + bottom) / 2, width: right - left, height: bottom - top };
+        });
+        assert(overlap.width > 0 && overlap.height > 0, 'The fixture has a genuine constant/highlight intersection');
+        await page.mouse.move(overlap.x, overlap.y);
+        await settle(page);
+        assert.match(await page.locator('#markTooltip').innerText(), /Wraparound slide/,
+            'The highlight tooltip wins when a constant lies underneath it');
+        const euler = page.locator('#ruleCanvas [data-side="front"] [data-scale="C"] .slide-mover:not(.slide-wraparound-copy) .tick[data-mark-tip*="Euler"]');
+        await euler.scrollIntoViewIfNeeded();
+        const eulerBox = await euler.boundingBox();
+        await page.mouse.move(eulerBox.x + eulerBox.width / 2, eulerBox.y + eulerBox.height / 2);
+        await settle(page);
+        assert.match(await page.locator('#markTooltip').innerText(), /Euler/, 'Constants retain their own help away from the seam');
+        await hoverSeam(page, 'WRAP_TIP');
+        await page.locator('#slideWraparoundToggle').evaluate(input => {
+            input.checked = false; input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+        await settle(page);
+        assert.equal(await page.locator('#markTooltip').isVisible(), false, 'Removing a hovered seam dismisses its tooltip');
+        await apply(page, beforeTooltipFixture);
+        await passed('Wraparound help explains the effect and toggle, works through cursor glass on ordinary and Hλ rows, wins over overlapping constants, and preserves slide dragging');
 
         await page.locator('#slidePresetButton').click();
         await page.selectOption('#slidePresetSelect', 'faber283n');

@@ -8,6 +8,7 @@
 const layouts = new WeakMap();
 const SOURCE_MOVERS = '.slide-mover:not(.slide-wraparound-copy)';
 const REMOVED_ATTRIBUTES = ['id', 'tabindex', 'aria-describedby', 'aria-labelledby'];
+const SEAM_TOOLTIP = 'Wraparound slide: this yellow line marks where the slide repeats. Parts that move past one end reappear at the other. To turn this on or off, open Scale layout and tick or untick Wraparound slide, below Extended decimal precision.';
 
 function clearCopies(layout) {
     for (const { source, copies } of layout.records) {
@@ -15,6 +16,8 @@ function clearCopies(layout) {
         copies.forEach(copy => copy.remove());
     }
     layout.records = [];
+    layout.seams.forEach(seam => seam.remove());
+    layout.seams = [];
 }
 
 function copyPeriod(source, period) {
@@ -39,6 +42,18 @@ function rebuildCopies(layout, sources) {
         source.classList.add('slide-wraparound-tile');
         return { source, copies: [-1, 1].map(period => copyPeriod(source, period)) };
     });
+    // Composite rows have several full-height movers in the same pane. Paint
+    // their seam only once, above all layers, so translucency cannot accumulate
+    // or put the highlight between one layer's ticks and another's numbers.
+    layout.seams = [...new Set(sources.map(source => source.closest('.tick-pane')))].filter(Boolean).map(pane => {
+        const seam = pane.ownerDocument.createElement('span');
+        seam.classList.add('slide-wraparound-seam');
+        seam.setAttribute('aria-hidden', 'true');
+        seam.setAttribute('data-mark-tip', SEAM_TOOLTIP);
+        seam.setAttribute('title', SEAM_TOOLTIP);
+        pane.append(seam);
+        return seam;
+    });
 }
 
 function positionMover(mover, offset) {
@@ -50,6 +65,8 @@ function positionCopies(layout) {
         positionMover(source, layout.offset);
         copies.forEach(copy => positionMover(copy, layout.offset + Number(copy.dataset.wrapPeriod)));
     }
+    const seamPosition = layout.offset < 0 ? 1 + layout.offset : layout.offset;
+    layout.seams.forEach(seam => { seam.style.left = `${(seamPosition * 100).toFixed(4)}%`; });
 }
 
 /** Update motion without rebuilding the engraving. Off is the ordinary slide.
@@ -59,7 +76,7 @@ function positionCopies(layout) {
 export function updateSlideWraparound(ruleCanvas, offset, enabled = false) {
     let layout = layouts.get(ruleCanvas);
     if (!layout) {
-        layout = { records: [], offset, enabled: false };
+        layout = { records: [], seams: [], offset, enabled: false };
         layouts.set(ruleCanvas, layout);
     }
     layout.offset = offset;

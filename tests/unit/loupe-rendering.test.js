@@ -40,7 +40,7 @@ test('native-size text cannot make hidden, collision-suppressed numbers visible 
 test('copy removes focus and native popup hooks, and updates only motion containers', async () => {
     const source = await read('ui/loupe-renderer.js');
     assert.match(source, /\['id', 'tabindex', 'title', 'aria-describedby', 'aria-labelledby'\]/);
-    assert.match(source, /original\.matches\('\.slide-mover, \.cursor'\)/);
+    assert.match(source, /original\.matches\('\.slide-mover, \.slide-wraparound-seam, \.cursor'\)/);
     assert.match(source, /const positions = movers\.map/);
 });
 

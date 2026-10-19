@@ -150,7 +150,7 @@ export function createLoupeDrawing(face) {
             placeBox(text, textBox, box);
             node.appendChild(text);
         }
-        if (original.matches('.slide-mover, .cursor')) movers.push([original, node]);
+        if (original.matches('.slide-mover, .slide-wraparound-seam, .cursor')) movers.push([original, node]);
         if (original.matches('.cursor')) for (const pseudo of ['::before', '::after'])
             cursorDecoration(window, original, node, pseudo, box, sourceZoom, sizeFactor);
     }

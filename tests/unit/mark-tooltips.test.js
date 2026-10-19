@@ -6,6 +6,7 @@ import { dedupeTicks } from '#core/ticks/common.js';
 import { makeRuntimeScale } from '#core/mappings.js';
 import { gaugeDescription, foldedIndexDescription } from '#core/mark-descriptions.js';
 import { renderTick, renderSyncroTick } from '#ui/tick-markup.js';
+import { createMarkTooltips } from '#ui/mark-tooltips.js';
 import { close } from './helpers.js';
 const ticks = id => generateTicks(scales[id], makeRuntimeScale(scales[id]), 1600);
 
@@ -78,4 +79,103 @@ test('manual descriptions cannot inject HTML into ordinary or shared tick markup
         const text = render(mark);
         assert.ok(!text.includes('<img')); assert.match(text, /data-mark-tip="&quot;&gt;&lt;img/);
     }
+});
+
+// The tooltip controller uses geometry even when cursor glass receives the
+// pointer. Supply only the browser surfaces it needs, with explicit frame and
+// mutation delivery so these interaction checks do not require Chromium.
+function tooltipHarness() {
+    const frames = new Map(), marks = [];
+    let nextFrame = 0, notifyMutation;
+    const pane = { getBoundingClientRect: () => ({ left: 0, right: 200, top: 0, bottom: 80 }) };
+    const node = () => {
+        const attributes = new Map();
+        return Object.assign(new EventTarget(), {
+            dataset: {}, style: {}, offsetWidth: 240, offsetHeight: 48, isConnected: true,
+            setAttribute: (name, value) => attributes.set(name, value),
+            getAttribute: name => attributes.get(name) ?? null,
+            removeAttribute: name => attributes.delete(name),
+            remove() { this.isConnected = false; }
+        });
+    };
+    const window = Object.assign(new EventTarget(), {
+        innerWidth: 800, innerHeight: 600,
+        requestAnimationFrame(callback) { frames.set(++nextFrame, callback); return nextFrame; },
+        cancelAnimationFrame: id => frames.delete(id),
+        getComputedStyle: () => ({ display: 'block' }),
+        MutationObserver: class {
+            constructor(callback) { notifyMutation = callback; }
+            observe() {}
+            disconnect() { notifyMutation = null; }
+        }
+    });
+    let tooltip;
+    const document = Object.assign(new EventTarget(), {
+        defaultView: window, createElement: node, body: { append(element) { tooltip = element; } }
+    });
+    const canvas = Object.assign(new EventTarget(), { querySelectorAll: () => marks });
+    const controller = new AbortController();
+    createMarkTooltips({ document, canvas, signal: controller.signal });
+    return {
+        tooltip,
+        addMark(text, bounds, classes = []) {
+            const mark = node();
+            mark.dataset.markTip = text;
+            mark.setAttribute('title', text);
+            mark.classList = { contains: name => classes.includes(name) };
+            mark.getBoundingClientRect = () => bounds;
+            mark.closest = selector => selector === '.tick-pane' ? pane : null;
+            marks.push(mark); notifyMutation();
+            return mark;
+        },
+        pointer(type, x, buttons = 0) {
+            canvas.dispatchEvent(Object.assign(new Event(type), { clientX: x, clientY: 30, buttons }));
+            for (const [id, callback] of frames) { frames.delete(id); callback(); }
+        },
+        remove(mark) {
+            marks.splice(marks.indexOf(mark), 1); mark.remove(); notifyMutation();
+        },
+        destroy: () => controller.abort()
+    };
+}
+
+test('hover explains the yellow seam over a constant and preserves nearby constant help', t => {
+    const ui = tooltipHarness(); t.after(ui.destroy);
+    const constant = ui.addMark('Pi: circumference divided by diameter.', { left: 90, right: 120, top: 20, bottom: 40 });
+    const seam = ui.addMark('Wraparound slide: repeated slide boundary.', { left: 100, right: 105, top: 0, bottom: 80 }, ['slide-wraparound-seam']);
+
+    ui.pointer('pointermove', 102);
+    assert.equal(ui.tooltip.hidden, false);
+    assert.equal(ui.tooltip.textContent, seam.dataset.markTip);
+    assert.equal(seam.getAttribute('aria-describedby'), 'markTooltip');
+    assert.equal(seam.getAttribute('title'), '');
+    assert.equal(constant.getAttribute('aria-describedby'), null);
+
+    // Two pixels outside the bar is still within its hover tolerance, but the
+    // pointer is visibly on the constant, whose explanation should win here.
+    ui.pointer('pointermove', 107);
+    assert.equal(ui.tooltip.textContent, constant.dataset.markTip);
+    assert.equal(constant.getAttribute('aria-describedby'), 'markTooltip');
+    assert.equal(seam.getAttribute('aria-describedby'), null);
+    assert.equal(seam.getAttribute('title'), seam.dataset.markTip);
+});
+
+test('wraparound help dismisses during dragging and when the highlight is removed', t => {
+    const ui = tooltipHarness(); t.after(ui.destroy);
+    const seam = ui.addMark('Wraparound slide: use Scale layout to switch it on or off.', { left: 100, right: 105, top: 0, bottom: 80 }, ['slide-wraparound-seam']);
+    ui.pointer('pointermove', 102);
+    assert.equal(ui.tooltip.hidden, false);
+    ui.pointer('pointerdown', 102, 1);
+    assert.equal(ui.tooltip.hidden, true);
+    assert.equal(seam.getAttribute('aria-describedby'), null);
+    ui.pointer('pointermove', 102, 1);
+    assert.equal(ui.tooltip.hidden, true);
+    ui.pointer('pointerup', 102);
+    assert.equal(ui.tooltip.hidden, false);
+
+    ui.remove(seam);
+    assert.equal(ui.tooltip.hidden, true);
+    assert.equal(seam.getAttribute('aria-describedby'), null);
+    ui.pointer('pointermove', 102);
+    assert.equal(ui.tooltip.hidden, true);
 });

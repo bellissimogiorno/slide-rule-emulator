@@ -54,7 +54,12 @@ export function createMarkTooltips({ document, canvas, signal }) {
             const dx = Math.max(rect.left - x, 0, x - rect.right);
             const dy = Math.max(rect.top - y, 0, y - rect.bottom);
             const gap = Math.hypot(dx, dy);
-            if (gap <= 4 && gap < distance && window.getComputedStyle(mark).display !== 'none') { best = mark; distance = gap; }
+            if (gap > 4 || window.getComputedStyle(mark).display === 'none') continue;
+            // The yellow overlay is above the engraving. While the pointer is
+            // inside it, explain the seam even if an annotated constant lies
+            // underneath; outside the bar retain the usual nearest-mark help.
+            if (gap === 0 && mark.classList.contains('slide-wraparound-seam')) { best = mark; break; }
+            if (gap < distance) { best = mark; distance = gap; }
         }
         if (!best) { hide(); return; }
         if (best !== current) {
