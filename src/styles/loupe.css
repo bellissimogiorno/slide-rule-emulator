@@ -2,6 +2,8 @@
    never become a mouse/touch target or receive focus, including its children. */
 .rule-loupe {
     position: fixed;
+    left: 0;
+    top: 0;
     z-index: 1000;
     overflow: hidden;
     border-radius: 12px;
@@ -11,6 +13,8 @@
     box-shadow: 0 0 0 2px var(--ui-border), 0 0 0 5px var(--ui-panel), 0 8px 24px #0005;
     pointer-events: none;
     user-select: none;
+    contain: layout paint;
+    will-change: transform;
     opacity: 1;
     transition: none; /* Wake immediately, including halfway through a fade. */
 }

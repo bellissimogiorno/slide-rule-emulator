@@ -46,16 +46,35 @@ forced-colour borders become fills.
 
 ## Lifetime and performance
 
-Snapshot once for the hovered face; reuse it for pointer and keyboard movement.
-Motion reads the moving containers first, then writes their new positions.
-Engraving, layout, font loading and forced-colour changes invalidate the snapshot.
-Only one face drawing is retained. Disabling the lens or disposing the application
-releases it. Idle lenses schedule no drawing work.
+Retain at most two face drawings so crossing between the visible faces does not
+rebuild either one. Engraving, layout, font loading and forced-colour changes
+invalidate both snapshots. Disabling the lens or disposing the application
+releases them. Idle lenses schedule no drawing work.
+
+The controller distinguishes pointer movement from instrument movement. Hover
+and scrolling reposition the existing drawing without measuring its movers or
+reading computed styles again. Application `refresh()` marks a new motion
+revision; a cached face measures its slide, seam and cursor containers only when
+it next needs that revision. `refresh({ structure: true })` invalidates drawings.
+Keep those calls after the source instrument has been updated.
+
+`measureMotion()` completes all source geometry reads, sharing parent rectangles,
+before `place()` or the controller writes to any attached loupe DOM. `place()`
+performs no source reads and skips unchanged properties. Overlay and drawing
+translation move already full-size text without changing its scale. The small
+overlay uses layout/paint containment; only its transform is a compositing hint.
+Individual ticks and labels do not receive their own compositing layers.
+
+During construction, each detached node receives its complete frozen style in
+one CSS assignment. The painter still measures every source box and text run;
+it keeps suppressed labels, clipping and wraparound copies exactly as authored.
 
 Snapshot creation has a cost proportional to the number of face elements. This
 trades one-off layout/style measurements for predictable output-size painting.
 Do not rebuild the full drawing on every pointer event, or scale a cached raster
-to reduce that cost. Assess end-to-end frame times before changing caching policy.
+to reduce that cost. Deterministic operation counts show DOM work, not native
+frame latency. Assess end-to-end frame times on target hardware before claiming
+a measured responsiveness multiplier.
 
 ## Extending face markup
 

@@ -17,8 +17,9 @@ for (const [value, factor, expected] of [
 const read = name => readFile(new URL('../../src/' + name, import.meta.url), 'utf8');
 test('loupe has a separate native-size painter, not a bitmap or CSS-scale path', async () => {
     const [controller, renderer] = await Promise.all([read('ui/loupe.js'), read('ui/loupe-renderer.js')]);
-    assert.match(controller, /createLoupeDrawing\(face\)/);
-    assert.match(controller, /drawing\.place\(g\.x, g\.y\)/);
+    assert.match(controller, /createDrawing = createLoupeDrawing/);
+    assert.match(controller, /createDrawing\(face\)/);
+    assert.match(controller, /drawing\.place\(g\.x, g\.y, positions\)/);
     assert.doesNotMatch(controller, /scale\(|style\.zoom|cloneNode/);
     assert.doesNotMatch(renderer, /drawImage|toDataURL|createImageBitmap|scale\(/);
     assert.match(renderer, /transform: 'none', zoom: '1'/);

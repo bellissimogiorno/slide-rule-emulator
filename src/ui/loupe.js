@@ -6,7 +6,8 @@ import { createInactivityTimer } from '#ui/inactivity.js';
 import { loupeGeometry } from '#ui/loupe-geometry.js';
 import { createLoupeDrawing } from '#ui/loupe-renderer.js';
 
-export function createLoupe({ document, canvas, button, signal, returnTarget }) {
+export function createLoupe({ document, canvas, button, signal, returnTarget,
+    createDrawing = createLoupeDrawing }) {
     const window = document.defaultView;
     const lifetime = new window.AbortController();
     const heldKeys = new Set();
@@ -19,27 +20,22 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
     document.body.appendChild(lens);
     let enabled = false;
     let pointer = null;
-    let source = null;
-    let drawing = null;
-    let dirty = true;
+    // At most the two visible faces. Release detached drawings on structural
+    // changes or disable; ordinary face changes can reuse their native paint.
+    const drawings = new Map();
+    let motionRevision = 0;
     let frame = 0;
     let destroyed = false;
     const listen = (target, name, handler, options = {}) =>
         target.addEventListener(name, handler, { ...options, signal: lifetime.signal });
     const inactivity = createInactivityTimer({ clock: window, onChange: idle => {
         lens.classList.toggle('is-idle', idle);
-        if (!idle) refresh();
+        if (!idle) schedulePaint();
     } });
 
     function discardCopy() {
         lens.replaceChildren();
-        source = drawing = null;
-    }
-    function rebuild(face) {
-        source = face;
-        drawing = createLoupeDrawing(face);
-        lens.replaceChildren(drawing.element);
-        dirty = false;
+        drawings.clear();
     }
     function paint() {
         frame = 0;
@@ -49,28 +45,48 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
         // The lens and all its descendants have pointer-events:none.
         const face = document.elementFromPoint(pointer.x, pointer.y)?.closest('.rule-face-body');
         if (!face || !canvas.contains(face)) { lens.hidden = true; return; }
-        if (dirty || source !== face) rebuild(face);
         const rect = face.getBoundingClientRect();
-        const computed = window.getComputedStyle(face);
-        const width = parseFloat(computed.width), height = parseFloat(computed.height);
+        let entry = drawings.get(face);
+        if (!entry) {
+            const drawing = createDrawing(face);
+            entry = { drawing, revision: motionRevision };
+            if (drawings.size === 2) drawings.delete(drawings.keys().next().value);
+            drawings.set(face, entry);
+        }
+        const { drawing } = entry;
+        const { width, height } = drawing.size;
         if (!(width > 0 && height > 0 && rect.width > 0 && rect.height > 0)) { lens.hidden = true; return; }
         const visual = window.visualViewport;
         const viewport = visual ? { left: visual.offsetLeft, top: visual.offsetTop, width: visual.width, height: visual.height }
             : { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
         const g = loupeGeometry(pointer, rect, { width, height }, viewport);
-        for (const key of ['left', 'top', 'width', 'height']) lens.style[key] = g[key] + 'px';
-        drawing.place(g.x, g.y);
-        lens.hidden = false;
+        // Complete source reads before any attached DOM write. Hover/scroll
+        // alone needs no mover measurement; the application marks real motion.
+        const positions = entry.revision !== motionRevision ? drawing.measureMotion() : [];
+        entry.revision = motionRevision;
+        if (lens.firstElementChild !== drawing.element) lens.replaceChildren(drawing.element);
+        for (const key of ['width', 'height']) {
+            const value = g[key] + 'px';
+            if (lens.style[key] !== value) lens.style[key] = value;
+        }
+        const translation = `translate(${g.left}px, ${g.top}px)`;
+        if (lens.style.transform !== translation) lens.style.transform = translation;
+        drawing.place(g.x, g.y, positions);
+        if (lens.hidden) lens.hidden = false;
+    }
+    function schedulePaint() {
+        if (!destroyed && enabled && pointer && !inactivity.idle && !frame) frame = window.requestAnimationFrame(paint);
     }
     function refresh({ structure = false } = {}) {
-        dirty ||= structure;
-        if (!destroyed && enabled && pointer && !inactivity.idle && !frame) frame = window.requestAnimationFrame(paint);
+        if (structure) drawings.clear();
+        motionRevision++;
+        schedulePaint();
     }
     function setEnabled(value) {
         enabled = Boolean(value) && !destroyed;
         button.setAttribute('aria-pressed', String(enabled));
         inactivity.setActive(enabled && pointer !== null);
-        if (enabled) refresh();
+        if (enabled) schedulePaint();
         else {
             heldKeys.clear();
             inactivity.setHeld(false);
@@ -101,7 +117,7 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
         pointer = { x: event.clientX, y: event.clientY };
         if (first) inactivity.setActive(enabled);
         else if (moved) inactivity.activity();
-        refresh();
+        schedulePaint();
     }, { passive: true });
     listen(window, 'pointerdown', event => {
         if (event.pointerType === 'touch') clearPointer();
@@ -125,13 +141,13 @@ export function createLoupe({ document, canvas, button, signal, returnTarget }) 
     listen(window, 'blur', loseFocus);
     listen(document, 'visibilitychange', () => { if (document.hidden) loseFocus(); });
     // Capture sees page scrolling and the horizontally scrollable rule alike.
-    listen(window, 'scroll', () => refresh(), { capture: true, passive: true });
+    listen(window, 'scroll', schedulePaint, { capture: true, passive: true });
     listen(window, 'resize', () => refresh({ structure: true }));
     listen(window.matchMedia('(forced-colors: active)'), 'change', () => refresh({ structure: true }));
     listen(document.fonts, 'loadingdone', () => refresh({ structure: true }));
     if (window.visualViewport) {
         listen(window.visualViewport, 'resize', () => refresh({ structure: true }));
-        listen(window.visualViewport, 'scroll', () => refresh());
+        listen(window.visualViewport, 'scroll', schedulePaint);
     }
     function destroy() {
         if (destroyed) return;

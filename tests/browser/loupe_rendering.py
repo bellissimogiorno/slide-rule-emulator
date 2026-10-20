@@ -62,10 +62,15 @@ def run_loupe_rendering(get_page, state, apply, settle, check, load, download,
             }
             const hidden=[...copy.querySelectorAll('.label-hidden [data-loupe-text]')]
                 .filter(e=>getComputedStyle(e).visibility!=='hidden').length;
+            // Translation only repositions text already painted at its final
+            // size. A scale/rotation would invalidate native-size rendering.
+            const rootMatrix=new DOMMatrixReadOnly(getComputedStyle(copy).transform);
             return {pairs,counts,fonts,visibility,hidden,lens:rect(lens),
                 transforms:[...copy.querySelectorAll('.slide-mover,.cursor,.tick-label')].slice(0,50)
                     .map(e=>getComputedStyle(e).transform),
-                rootTransform:getComputedStyle(copy).transform,zoom:getComputedStyle(copy).zoom,
+                unscaled:rootMatrix.is2D && rootMatrix.a===1 && rootMatrix.b===0 &&
+                    rootMatrix.c===0 && rootMatrix.d===1,
+                zoom:getComputedStyle(copy).zoom,
                 ids:copy.querySelectorAll('[id],[tabindex],[title]').length,
                 sourceText:face.textContent.replace(/\\s+/g,' ').trim(),
                 bodyOverflow:document.documentElement.scrollWidth-innerWidth};
@@ -73,7 +78,7 @@ def run_loupe_rendering(get_page, state, apply, settle, check, load, download,
         assert all(a == b for _, a, b in result['counts']), result['counts']
         assert result['ids'] == 0 and result['hidden'] == 0
         assert all(result['visibility']), 'native copy changed label visibility'
-        assert result['rootTransform'] == 'none' and result['zoom'] == '1'
+        assert result['unscaled'] and result['zoom'] == '1'
         assert all(t == 'none' for t in result['transforms']), result['transforms']
         for expected, actual in result['fonts']:
             assert abs(expected-actual) < .001, (expected, actual)
@@ -195,12 +200,13 @@ def run_loupe_rendering(get_page, state, apply, settle, check, load, download,
         p=get_page();p.set_viewport_size({'width':1600,'height':1100})
         pos=enable_hover();inspect(pos)
         # Prove the native-size guard rejects the old rendering strategy.
+        original_transform=p.locator('.loupe-copy').evaluate('e=>e.style.transform')
         p.locator('.loupe-copy').evaluate("e=>e.style.setProperty('transform','scale(2.5)','important')")
         rejected=False
         try:inspect(pos)
         except AssertionError:rejected=True
         assert rejected,'test did not detect a scale-transformed drawing'
-        p.locator('.loupe-copy').evaluate("e=>e.style.setProperty('transform','none','important')")
+        p.locator('.loupe-copy').evaluate("(e,value)=>e.style.setProperty('transform',value,'important')", original_transform)
         inspect(pos)
         text=download('#saveHtmlButton')
         assert 'class="rule-loupe"' not in text and 'data-loupe-text=' not in text

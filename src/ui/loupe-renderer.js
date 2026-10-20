@@ -29,8 +29,20 @@ export function multiplyPixels(value, factor) {
 }
 
 function setStyles(node, properties) {
-    for (const [name, value] of Object.entries(properties))
-        node.style.setProperty(name, String(value), 'important');
+    for (const [name, value] of Object.entries(properties)) {
+        const text = String(value);
+        if (node.style.getPropertyValue(name) !== text)
+            node.style.setProperty(name, text, 'important');
+    }
+}
+
+/** The copy is detached while being painted. Set its complete frozen style in
+ * one mutation per node instead of making a DOM call for every declaration.
+ * Values come from CSSOM, so quoted strings and functions retain CSS escaping.
+ */
+function paintNode(node, properties) {
+    node.style.cssText = 'all: initial !important;' + Object.entries(properties)
+        .map(([name, value]) => `${name}:${value} !important;`).join('');
 }
 
 function paintStyles(style, sizeFactor) {
@@ -55,35 +67,32 @@ function edges(style, sizeFactor) {
     return shadows.join(', ') || 'none';
 }
 
-function placeBox(node, box, parent) {
-    setStyles(node, { left: `${(box.left - parent.left) * LOUPE_FACTOR}px`,
+function boxStyles(box, parent) {
+    return { left: `${(box.left - parent.left) * LOUPE_FACTOR}px`,
         top: `${(box.top - parent.top) * LOUPE_FACTOR}px`,
-        width: `${box.width * LOUPE_FACTOR}px`, height: `${box.height * LOUPE_FACTOR}px` });
+        width: `${box.width * LOUPE_FACTOR}px`, height: `${box.height * LOUPE_FACTOR}px` };
 }
 
 function freezeStroke(node, box, parent, style) {
     // Most face nodes are plain graduation strokes. Do not copy font/background
     // machinery or allocate a shadow for each of these filled rectangles.
-    node.style.cssText = 'all: initial !important;';
-    setStyles(node, { position: 'absolute', display: 'block', transform: 'none',
+    paintNode(node, { position: 'absolute', display: 'block', transform: 'none',
         visibility: style.visibility, opacity: style.opacity,
         'forced-color-adjust': 'none',
-        'background-color': parseFloat(style.borderLeftWidth) > 0 ? style.borderLeftColor : style.borderTopColor });
-    placeBox(node, box, parent);
+        'background-color': parseFloat(style.borderLeftWidth) > 0 ? style.borderLeftColor : style.borderTopColor,
+        ...boxStyles(box, parent) });
     for (const name of STRIPPED_ATTRIBUTES) node.removeAttribute(name);
 }
 
 function freezeBox(node, box, parent, style, sizeFactor) {
     // Explicitly override the original flex/grid/pseudo-class layout, including
     // compact-label !important transforms. Descendants keep their own clipping.
-    node.style.cssText = 'all: initial !important;';
-    setStyles(node, { ...paintStyles(style, sizeFactor), position: 'absolute',
+    paintNode(node, { ...paintStyles(style, sizeFactor), position: 'absolute',
         display: style.display === 'none' ? 'none' : 'block', 'box-sizing': 'border-box',
         margin: '0', padding: '0', border: '0', transform: 'none', zoom: '1',
         'pointer-events': 'none', 'user-select': 'none', 'will-change': 'auto',
         'forced-color-adjust': 'none',
-        'box-shadow': edges(style, sizeFactor) });
-    placeBox(node, box, parent);
+        'box-shadow': edges(style, sizeFactor), ...boxStyles(box, parent) });
     for (const name of STRIPPED_ATTRIBUTES) node.removeAttribute(name);
 }
 
@@ -111,7 +120,9 @@ function cursorDecoration(window, cursor, copy, pseudo, parent, sourceZoom, size
 export function createLoupeDrawing(face) {
     const document = face.ownerDocument, window = document.defaultView;
     const faceBox = face.getBoundingClientRect();
-    const sourceZoom = faceBox.width / parseFloat(window.getComputedStyle(face).width);
+    const faceStyle = window.getComputedStyle(face);
+    const size = { width: parseFloat(faceStyle.width), height: parseFloat(faceStyle.height) };
+    const sourceZoom = faceBox.width / size.width;
     const sizeFactor = sourceZoom * LOUPE_FACTOR;
     const copy = face.cloneNode(true);
     const originals = [face, ...face.querySelectorAll('*')];
@@ -139,15 +150,13 @@ export function createLoupeDrawing(face) {
             const text = document.createElement('span');
             text.dataset.loupeText = '';
             text.textContent = child.textContent;
-            text.style.cssText = 'all: initial !important;';
-            setStyles(text, { ...Object.fromEntries(FONT_PROPERTIES.map(name =>
+            paintNode(text, { ...Object.fromEntries(FONT_PROPERTIES.map(name =>
                 [name, multiplyPixels(style.getPropertyValue(name), sizeFactor)])),
                 position: 'absolute', display: 'block', 'white-space': 'pre', visibility: 'inherit',
                 'line-height': `${textBox.height * LOUPE_FACTOR}px`,
                 'text-decoration': multiplyPixels(style.textDecoration, sizeFactor),
                 'text-underline-offset': multiplyPixels(style.textUnderlineOffset, sizeFactor),
-                'pointer-events': 'none', 'forced-color-adjust': 'none' });
-            placeBox(text, textBox, box);
+                'pointer-events': 'none', 'forced-color-adjust': 'none', ...boxStyles(textBox, box) });
             node.appendChild(text);
         }
         if (original.matches('.slide-mover, .slide-wraparound-seam, .cursor')) movers.push([original, node]);
@@ -157,12 +166,23 @@ export function createLoupeDrawing(face) {
     copy.classList.add('loupe-copy');
     return {
         element: copy,
-        place(x, y) {
-            setStyles(copy, { left: `${x}px`, top: `${y}px` });
-            // Read first, write second: avoid repeated layout flushes per rail.
-            const positions = movers.map(([source, node]) =>
-                [node, source.getBoundingClientRect(), source.parentElement.getBoundingClientRect()]);
-            for (const [node, box, parent] of positions) placeBox(node, box, parent);
+        size,
+        measureMotion() {
+            // Share parent measurements between composite/wraparound movers.
+            // The controller calls this before attaching or moving any copy.
+            const parents = new Map();
+            const positions = movers.map(([source, node]) => {
+                const parent = source.parentElement;
+                if (!parents.has(parent)) parents.set(parent, parent.getBoundingClientRect());
+                return [node, source.getBoundingClientRect(), parents.get(parent)];
+            });
+            return positions;
+        },
+        place(x, y, positions = []) {
+            // Translation moves already full-size text; it never enlarges a
+            // raster layer. Pointer-only motion changes just this one property.
+            setStyles(copy, { left: '0px', top: '0px', transform: `translate(${x}px, ${y}px)` });
+            for (const [node, box, parent] of positions) setStyles(node, boxStyles(box, parent));
         }
     };
 }

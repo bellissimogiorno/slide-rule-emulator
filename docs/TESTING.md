@@ -307,6 +307,14 @@ forced colours and live appearance changes. The suite runs in native mode unless
 `tests/unit/loupe-rendering.test.js` tests pixel-length conversion without altering
 percentages or colour components, renderer separation, disposal-related attributes
 and the non-interactive final-size path. Geometry tests remain in `loupe.test.js`.
+`loupe-controller.test.js` executes the real controller with explicit events,
+clocks and animation frames. It checks coalescing, latest-pointer geometry,
+two-face reuse, motion revisions, invalidation, read-before-write ordering,
+idle/wake, focus and cleanup. `loupe-renderer-behaviour.test.js` executes the real
+painter with measured DOM fixtures and counts source reads and CSS mutations.
+These fixtures test scheduling, paint data and DOM work; they do not measure
+native layout, font rasterisation, compositing or end-to-end latency. The native
+guard permits pure translation while still rejecting scaling and rotation.
 See [the rendering contract](LOUPE_RENDERING.md) before extending face markup.
 
 The fifth-root/power extension has a targeted browser suite:
