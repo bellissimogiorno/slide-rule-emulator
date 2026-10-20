@@ -1,12 +1,12 @@
 /* One rail heading, then compact name/value fields. Content determines width;
    there are no ellipses, hidden readings or smaller numerals at narrow widths. */
-.readout { margin-top: 10px; display: grid; gap: 12px; }
+.readout { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--ui-divider); display: grid; gap: 14px; }
 .readout-face { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px 18px; min-width: 0; }
 .readout-side-heading { flex: 0 0 100%; margin: 0 0 2px; font-size: 14px; font-weight: 650; }
-.readout-rail { width: max-content; max-width: 100%; min-width: 0; display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px; align-items: start; }
-.readout-rail .rail-name { margin: 0; padding-top: 7px; font-size: 13px; line-height: 1.4; font-weight: 600; color: var(--ui-muted); }
+.readout-rail { width: max-content; max-width: 100%; min-width: 0; display: grid; grid-template-columns: 8.5em minmax(0, 1fr); gap: 8px; align-items: start; }
+.readout-rail .rail-name { margin: 0; padding-top: 7px; font-size: var(--ui-text-size); line-height: 1.4; font-weight: 600; color: var(--ui-muted); }
 .readout-cards { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px 6px; min-width: 0; }
-.readout-card { display: flex; align-items: baseline; gap: 8px; min-width: 0; max-width: 100%; padding: 4px 7px; border: 1px solid var(--ui-divider); border-radius: 5px; background: var(--ui-card); line-height: 1.4; overflow-wrap: anywhere; }
+.readout-card { display: flex; align-items: baseline; gap: 8px; min-width: 0; max-width: 100%; padding: 4px 7px; border: 1px solid var(--ui-divider); border-radius: var(--ui-radius); background: var(--ui-card); line-height: 1.4; overflow-wrap: anywhere; }
 .readout-card .scale-id { font-size: 14px; font-weight: 650; flex: 0 1 auto; min-width: 0; }
 .readout-card .value { min-width: 0; font-size: 16px; font-variant-numeric: tabular-nums; }
 .readout-card:not(.is-reference) .value:not(.multi) { min-width: 7.5ch; }

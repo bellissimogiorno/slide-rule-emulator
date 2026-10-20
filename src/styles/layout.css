@@ -38,7 +38,9 @@ main {
 }
 
 a.button-like {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
 }
 
@@ -65,7 +67,14 @@ body.focus-mode a[href="#scaleLayout"] {
     .header-actions {
         justify-content: flex-start;
     }
-    .subtitle { max-width: none; }
+}
+
+/* Stack the editor before its selectors and JSON tools become cramped. The
+   instrument continues to occupy the full page width at every breakpoint. */
+@media (max-width: 1040px) {
+    .side-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
 }
 
 @media (max-width: 760px) {
@@ -78,12 +87,6 @@ body.focus-mode a[href="#scaleLayout"] {
     }
     .workbench, .side-panel {
         padding: 10px;
-    }
-    .side-panel {
-        display: block;
-    }
-    .panel-tools {
-        margin-top: 18px;
     }
     .toolbar {
         gap: 9px;

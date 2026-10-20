@@ -5,11 +5,11 @@
     max-width: min(360px, calc(100vw - 16px));
     padding: 10px 12px;
     border: 1px solid var(--ui-border);
-    border-radius: 7px;
+    border-radius: var(--ui-radius);
     background: var(--ui-panel);
     color: var(--ui-ink);
     font: 14px/1.45 system-ui, sans-serif;
-    box-shadow: 0 3px 12px #0003;
+    box-shadow: 0 8px 24px var(--ui-shadow);
     overflow-wrap: anywhere;
     pointer-events: none;
 }

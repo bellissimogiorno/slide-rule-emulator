@@ -1,6 +1,6 @@
 # User guide
 
-Use the prominent **Layout preset** bar above the motion controls: choose an instrument, then press **Load preset**. The **About** button reveals its description without changing the current layout. Selecting a name in this bar alone does not load it.
+Use the prominent **Layout preset** bar above the motion controls: choose an instrument, then press **Load preset**. The **About preset** button reveals its description without changing the current layout. Selecting a name in this bar alone does not load it.
 
 For immediate loading, open the small arrow beside **Slide** in its position box. It matches the arrow beside Cursor and opens a popup containing the same complete, grouped menu of 25 presets. Choosing a preset applies it immediately and updates the main Layout preset selector. The popup shows the currently applied layout, even when a different choice is waiting in the main selector. A custom layout is shown as a disabled status item; choose any listed preset to replace it. Selection closes the popup and returns focus to its arrow. Escape, a click outside or moving keyboard focus outside also closes it.
 

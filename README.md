@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.37**
+**Version 3.2.40**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -77,7 +77,7 @@ Use **Both sides**, next to **Flip side**, to toggle linked front and back faces
 
 **Graduations** in Scale layout offers **Conventional** and **Fully adaptive**. Fully adaptive uses the displayed length of every automatically graduated continuous scale, including powers, expanded roots and nonlinear scales, with Clear/Balanced/Fine detail. It never shrinks the numeral font or changes calculations. Conventional applies one subdivision choice to C/D and W, accounting for W's doubled effective length; the 10-inch choice retains the documented Faber W pattern. Only the active options menu is shown beside Graduations: C/D + W or Adaptive detail. Both choices are remembered when switching modes. Chemical references and explicit custom tick lists remain authored rather than inventing intermediate values. See [graduation design](docs/GRADUATIONS.md).
 
-The prominent **Layout preset** bar above the instrument selects a ready-made layout. Within each instrument section, manufacturers are grouped alphabetically and model numbers are ordered numerically (for example, Faber-Castell 2/82N, 2/83N, 2/84N). Press **Load preset** to apply it; **About** reveals its description. The Magnification menu offers **75%, 100%, 125%, 150% and 200%**, independently of the page controls.
+The prominent **Layout preset** bar above the instrument selects a ready-made layout. Within each instrument section, manufacturers are grouped alphabetically and model numbers are ordered numerically (for example, Faber-Castell 2/82N, 2/83N, 2/84N). Press **Load preset** to apply it; **About preset** reveals its description. The Magnification menu offers **75%, 100%, 125%, 150% and 200%**, independently of the page controls.
 
 For immediate loading, use the small arrow beside **Slide**, styled like the arrow beside Cursor. Its popup contains the same complete grouped Layout preset menu. Choosing an instrument applies it immediately and updates the main selector. Loading by either route replaces both faces and resets the slide and cursor positions, while preserving display precision, slide wraparound, cursor appearance and custom scale definitions. The popup reflects the applied layout; a custom layout appears as a disabled status item. Escape, clicking outside or moving focus outside closes it, and choosing a preset returns focus to the arrow.
 

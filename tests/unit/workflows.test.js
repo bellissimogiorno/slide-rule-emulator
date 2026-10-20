@@ -126,3 +126,31 @@ test('Mathema and Aristo native checks are available locally and required by bro
     assert.match(ci, /new_instruments\.py --mode native --visual --output qa\/ci\/new-instruments 2>&1 \| tee qa\/ci\/new-instruments\.log/);
     assert.match(ci.slice(upload), /if: always\(\)[\s\S]*path: qa\/ci\//);
 });
+
+
+test('focused Node native suites use the browser revision installed by Python Playwright', () => {
+    const install = ci.indexOf('python -m playwright install --with-deps chromium');
+    const selection = ci.indexOf('- name: Select the matching Node Playwright client');
+    const upload = ci.indexOf('- name: Preserve actual results, including failures');
+    assert.ok(install >= 0 && selection > install && upload > selection);
+    const setup = ci.slice(selection, ci.indexOf('- name: Check JSON programme schemas', selection));
+    assert.match(setup, /import playwright/);
+    assert.match(setup, /Path\(playwright\.__file__\)\.resolve\(\)\.parent \/ 'driver' \/ 'package'/);
+    assert.match(setup, /os\.environ\['GITHUB_ENV'\]/);
+    assert.match(setup, /PLAYWRIGHT_NODE_MODULE=/);
+    assert.doesNotMatch(ci, /npm install|npx playwright install/);
+    for (const [runner, output, visual] of [
+        ['historical_cursors', 'historical-cursors', ' --visual'],
+        ['cursor_appearance', 'cursor-appearance', ''],
+        ['display_precision', 'display-precision', ''],
+        ['slide_preset', 'slide-preset', ''],
+        ['slide_wraparound', 'slide-wraparound', '']
+    ]) {
+        const command = `node tests/browser/${runner}.mjs${visual} --output qa/ci/${output} 2>&1 | tee qa/ci/${output}.log`;
+        const start = ci.indexOf(command);
+        assert.ok(start > selection && start < upload, runner + ': native check absent from retained CI scope');
+        const step = ci.slice(ci.lastIndexOf('      - name:', start), start);
+        assert.match(step, /if: \$\{\{ !cancelled\(\) && steps\.node_playwright\.outcome == 'success' \}\}/,
+            runner + ': each native suite must still run after another suite fails');
+    }
+});

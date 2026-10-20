@@ -44,13 +44,12 @@ loading another preset. Exercise the Cursor range with pointer and keyboard at
 narrow and wide widths; its track and grip must stay inside the Cursor box
 between the nudge arrows, with no positioned input across the top of the page.
 
-Native browser verification for the 3.2.37 preparation environment was blocked:
-no Chromium executable was installed, and browser provisioning returned HTTP
-403. No native rendering, pointer interaction, reload or download pass is claimed
-for this change. See the handover's current verification report for executed core
-checks and retained setup evidence; historical browser reports are not evidence
-for this version. Installing Chromium and running the relevant browser suites
-remains necessary for native acceptance.
+Native browser verification in the current preparation environment stopped at
+Chromium launch: no executable was installed. No native rendering, pointer,
+reload or download pass is claimed. See the handover's current verification
+report for the actual prerequisite failure and completed core checks. Installing
+Chromium and running the relevant browser suites remains necessary for native
+acceptance. Hosted CI has not been executed during this audit.
 
 ### Catalogue snapshots and floating-point portability
 
@@ -93,6 +92,36 @@ the actual browser version and any failure traceback. There is no DOM fallback.
 This is local static-site verification, not a live GitHub Pages deployment.
 
 ## Native browser checks
+
+### Shared Playwright setup for Node checks
+
+The five focused Node runners cover historical cursors, cursor appearance,
+display precision, the Slide preset menu and slide wraparound. They share one
+dependency loader and record its package version and selected path in their
+reports. An explicit `PLAYWRIGHT_NODE_MODULE` absolute package-directory path takes
+priority; otherwise they use locally installed `playwright`, then the managed
+`CODEX_PRIMARY_RUNTIME_NODE_MODULES` fallback when available. A bad explicit
+selection fails rather than silently switching versions. No runner installs tools
+or substitutes DOM execution for native acceptance.
+
+If the Python requirements above are installed, their bundled Node client can be
+used without an additional npm installation. In Bash:
+
+```sh
+export PLAYWRIGHT_NODE_MODULE="$(python -c 'from pathlib import Path; import playwright; print(Path(playwright.__file__).resolve().parent / "driver" / "package")')"
+npm run test:cursors -- --visual --output qa/historical-cursors
+npm run test:cursor-appearance
+npm run test:display-precision
+npm run test:slide-preset
+npm run test:slide-wraparound
+```
+
+Install Chromium using that same Python environment before these commands. The
+browser CI selects this bundled client after installing its pinned Python
+requirements and browser, then runs all five focused suites as separate steps.
+Each focused suite still executes if a preceding suite fails; all results and logs
+remain under `qa/ci/` for the existing evidence upload. Workflow text tests check
+this wiring locally; they do not establish a successful hosted CI run.
 
 ### All historical cursors
 
@@ -256,7 +285,7 @@ DOM-loading test mode.
 ## Workspace presentation
 
 `python tests/browser/run.py --suite workspace --visual` checks the promoted
-preset chooser, explicit loading and About disclosure, focus-preserving compact
+preset chooser, explicit loading and About preset disclosure, focus-preserving compact
 detents, equal-height controls in all three themes at 13 widths, 75% scaling and
 exports, all presets on both faces at 75%, and the 480px square loupe at ordinary,
 reduced and enlarged views. These are live DOM geometry and interaction checks;

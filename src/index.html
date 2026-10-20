@@ -12,16 +12,16 @@
   <header>
     <div>
       <h1>Programmable classic duplex slide rule</h1>
-      <div class="subtitle">Historically inspired duplex instruments with programmable scale order, back-to-back Pickett root banks, true shared-tick Pickett log-log graduations, and optional Versalog/Pickett-style right-and-split numeral packing.</div>
+      <div class="subtitle">Historically inspired duplex instruments with programmable scale order. Includes back-to-back Pickett root banks, shared-tick Pickett log-log graduations, and optional Versalog/Pickett-style numerals to the right of or split around ticks.</div>
     </div>
     <div class="header-tools">
     <div class="header-actions">
       <div class="face-actions" role="group" aria-label="Face display">
-        <button id="flipButton" type="button" class="primary">Flip side</button>
+        <button id="flipButton" type="button">Flip side</button>
         <button id="bothSidesButton" type="button" aria-pressed="false" aria-controls="ruleCanvas">Both sides</button>
       </div>
       <button id="focusButton" aria-pressed="false">Focus rule</button>
-      <button id="resetButton">Reset view</button>
+      <button id="resetButton" title="Return the slide to zero offset and the cursor to the centre">Reset positions</button>
       <button id="saveHtmlButton">Save standalone copy</button>
     </div>
     <div id="pageThemes" class="page-themes" role="group" aria-label="Page theme">
@@ -42,7 +42,7 @@
           <label id="presetLabel" for="presetSelect">Layout preset</label>
           <select id="presetSelect" aria-label="Layout preset" aria-describedby="presetDescription"></select>
           <button id="loadPresetButton" type="button" class="primary" title="Load the selected layout, replacing the scales on both faces">Load preset</button>
-          <button id="presetDetailsButton" type="button" aria-expanded="false" aria-controls="presetDescription">About</button>
+          <button id="presetDetailsButton" type="button" aria-expanded="false" aria-controls="presetDescription">About preset</button>
         </div>
         <div id="presetDescription" class="hint" hidden></div>
       </div>
@@ -95,7 +95,7 @@
           </div>
         </div>
       </div>
-      <p id="motionHelp" class="hint motion-help"><span class="motion-instructions">Tab to either grip, then use &larr; / &rarr;. Click a step stop or drag its grip without losing control, or press 1&ndash;4. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects slide; C selects cursor. Positions and steps are in scale lengths.</span> <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span></p>
+      <p id="motionHelp" class="hint motion-help"><span class="motion-instructions">Tab to either position grip, then use &larr; / &rarr;. Choose a keyboard step by clicking a number, dragging the step grip or pressing 1&ndash;4; motion focus stays in place. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects the slide; C selects the cursor. Positions and steps are in scale lengths.</span> <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span></p>
       <div class="view-controls">
         <label class="field">Side
           <select id="sideSelect" aria-label="Visible side or both sides"></select>
@@ -157,7 +157,7 @@
           <h2 id="scaleLayout" tabindex="-1">Scale layout</h2>
           <a class="button-like" href="#workbench">Back to rule &uarr;</a>
         </div>
-        <div class="hint">Choose an instrument with <a href="#presetPicker">Layout preset above the rule</a>, or use the controls below for quick changes. Use the JSON editor for programmable custom scales and saved layouts.</div>
+        <div class="hint">Choose an instrument using <a href="#presetPicker">Layout preset above the rule</a>, then adjust its appearance and scale order here. Use Programme JSON for custom scales and saved layouts.</div>
         <div class="appearance-grid">
           <label class="field">Instrument style
             <select id="themeSelect" aria-label="Instrument style"></select>
@@ -176,16 +176,16 @@
               <select id="adaptiveSpacingSelect" aria-label="Adaptive detail" disabled><option value="clear">Clear</option><option value="balanced">Balanced</option><option value="fine">Fine</option></select>
             </label>
           </div>
-          <label class="check-field"><input id="formulaToggle" type="checkbox" /> Show self-documenting formula captions</label>
-          <label class="check-field" title="Pack numerals beside major ticks, or split suitable multi-digit numerals around a tick, in the manner of compact Pickett and Versalog engraving."><input id="compactScaleToggle" type="checkbox" /> Compact scale numbering (right / split)</label>
+          <label class="check-field"><input id="formulaToggle" type="checkbox" /> Show formula captions</label>
+          <label class="check-field" title="Pack numerals beside major ticks, or split suitable multi-digit numerals around a tick, in the manner of compact Pickett and Versalog engraving."><input id="compactScaleToggle" type="checkbox" /> Compact scale numbering (right of tick / split)</label>
           <label class="check-field" title="Restore detailed decimal labels and readouts. By default, numbers use four useful significant digits. Log-log and hypotenuse values between one and two preserve four digits of their excess above one; values below one use ordinary significant digits."><input id="fullPrecisionToggle" type="checkbox" aria-describedby="precisionHelp" /> Extended decimal precision</label>
           <label class="check-field" title="Parts of the moving slide that leave one end reappear at the other. Cursor readings follow the repeated scales; dragging and position controls work as usual."><input id="slideWraparoundToggle" type="checkbox" /> Wraparound slide</label>
         </div>
-        <p id="graduationHelp" class="hint">Only the active options are shown; both settings are remembered. Fully adaptive fits whole round-number subdivisions to each continuous scale; Balanced is a good starting point. Conventional applies the shared choice to C/D and W; W uses twice the effective length. The 10-inch choice retains the documented W pattern. Calculations and chemical reference marks are unchanged; custom tick lists require an explicit opt-in.</p>
+        <p id="graduationHelp" class="hint">Each graduation mode shows its own options; settings for both modes are remembered. Fully adaptive chooses complete, round-number subdivisions for each continuous scale; Balanced is a good starting point. Conventional applies the shared choice to C/D and W; W uses twice the effective length. The 10-inch choice retains the documented W pattern. Calculations and chemical reference marks are unchanged; custom tick lists require an explicit opt-in.</p>
         <label id="editSideField" class="field" hidden>Edit face
           <select id="editSideSelect" aria-label="Face to edit"></select>
         </label>
-        <p id="reorderHelp" class="hint">Drag a scale by its dotted grip to reorder it or move it to another rail. The stacked arrows and grip up/down keys move one place, crossing to the adjacent rail at its end. Left/right changes rail; Home/End goes to an end; Escape cancels a drag. Undo beside Add scale reverses up to 100 scale edits, including removals, until a preset/programme is loaded or the page is reloaded. Ctrl/Command+Z works on editor grips and buttons.</p>
+        <p id="reorderHelp" class="hint">Drag a scale by its dotted grip to reorder it or move it to another rail. The stacked arrows, or Up/Down on a focused grip, move one place and cross to the adjacent rail at an end. Left/Right moves between rails; Home/End moves to the first/last row; Escape cancels a drag. Undo beside Add scale reverses up to 100 scale edits, including removals. Loading a preset or programme, or reloading the page, clears this history. Ctrl/Command+Z works while an editor grip or button has focus.</p>
         <div id="railEditors"></div>
         <div id="reorderStatus" class="visually-hidden" role="status" aria-live="polite"></div>
       </div>
@@ -197,7 +197,7 @@
         <textarea id="jsonEditor" spellcheck="false" aria-label="Slide rule programme JSON"></textarea>
         <div class="mini-actions">
           <button id="applyJsonButton" class="primary">Apply JSON</button>
-          <button id="syncJsonButton">Sync from current layout</button>
+          <button id="syncJsonButton" title="Replace the JSON editor with a snapshot of the current programme">Use current programme</button>
           <button id="exportJsonButton">Export JSON</button>
           <button id="importJsonButton" type="button">Import JSON</button>
           <input id="importJsonFile" type="file" accept="application/json,.json" hidden />
@@ -207,7 +207,7 @@
 
       <details>
         <summary>Pointer magnifying loupe</summary>
-        <p class="hint">Enable <strong>2.5&times; loupe</strong> above the rule, then move the mouse or hovering pen over either face. The lens renders the actual graduations and cursor at the larger size using fresh text and strokes, not enlarged screen pixels, including during a drag or keyboard nudge. It does not change the scale coordinates, the page magnification or the keyboard step. After four seconds without pointer movement or a keypress, the lens fades out; move the pointer or press a key to restore it immediately. Holding a key keeps it visible. The lens also hides when the pointer leaves the rule. Press <strong>M</strong> over a focused motion control or rule to toggle it; <strong>Escape</strong> switches it off. Touch devices without hover can use the ordinary Magnification selector instead.</p>
+        <p class="hint">Enable <strong>2.5&times; loupe</strong> above the rule, then move the mouse or hovering pen over either face. The lens renders the actual graduations and cursor at the larger size using fresh text and strokes, not enlarged screen pixels, including during a drag or keyboard nudge. It does not change the scale coordinates, the instrument magnification or the keyboard step. After four seconds without pointer movement or a keypress, the lens fades out; move the pointer or press a key to restore it immediately. Holding a key keeps it visible. The lens also hides when the pointer leaves the rule. Press <strong>M</strong> over a focused motion control or rule to toggle it; <strong>Escape</strong> switches it off. Touch devices without hover can use the ordinary Magnification selector instead.</p>
       </details>
 
       <details>
@@ -265,10 +265,10 @@
       </details>
 
       <details>
-        <summary>How to use it</summary>
+        <summary>Using the slide rule</summary>
         <p class="hint">Drag the middle slide to set the alignment. Drag the glass cursor to read all scales at the hairline. On a classic multiplication setup, align C 1 over a D number, then read products by moving the cursor to another C number and reading D.</p>
         <p class="hint">Use the Both sides button next to Flip side, or the Side menu, to see the faces together. The highlighted Both sides button returns to the selected editing face when clicked again. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored.</p>
-        <p class="hint"><strong>Full-width workspace:</strong> the Layout preset chooser is above the instrument, which uses the available page width. About reveals the selected preset description; Load preset applies the choice to both faces. Magnification includes 75% for a smaller view. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
+        <p class="hint"><strong>Full-width workspace:</strong> the Layout preset chooser is above the instrument, which uses the available page width. About preset reveals the selected preset description; Load preset applies the choice to both faces. Magnification includes 75% for a smaller view. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
         <p class="hint"><strong>Expanded roots:</strong> write the radicand as <span class="kbd">N = m × 10^k</span>, with 1 &le; m &lt; 10. For an n-th root, choose branch <span class="kbd">(k mod n) + 1</span>, put the cursor at m on D, and read the root mantissa on that branch. Example: 32 = 3.2 × 10^1, so 5R2 reads 2 over D = 3.2. A, K, and x⁵ provide the corresponding power scales.</p>
         <p class="hint"><strong>Log-log:</strong> LL0 through LL4 cover values above 1; LL00 through LL04 cover values below 1. Pickett paired and Syncro LL± rows use one shared graduation: the black number is above one and the red number immediately below it is its exact reciprocal. The N3 rows are natural-exponential; the N4 rows use Pickett's base-10 geometry.</p>
         <p class="hint"><strong>Compact scale numbering:</strong> primary numerals are tucked beside their long ticks. When a label cannot fit cleanly to the right, suitable multi-digit labels are divided around the tick. Turn the option off to restore centred-above-tick numbering. A custom scale can opt out with <span class="kbd">"compactLabels": false</span>.</p>

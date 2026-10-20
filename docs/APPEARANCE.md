@@ -20,7 +20,7 @@ Minimal hides auxiliary lines, their inscriptions and their digital readings.
 Their calibration remains saved, and selecting Instrument restores them. Frames,
 corners and proportions are adapted for the screen.
 
-The choices apply to both sides and survive **Load preset**, **Reset view**,
+The choices apply to both sides and survive **Load preset**, **Reset positions**,
 reloads when storage is available, Programme JSON export/import, and saved
 standalone copies. Loading a programme uses that programme's choices; if it
 omits these optional fields, both choices default to Instrument. Changing cursor
@@ -32,13 +32,13 @@ its own high-contrast colours.
 
 The header offers **Light**, **Dark** and **Solarised** on the right of its action row where space permits. Controls wrap on narrower screens rather than shrinking their text. The adjacent Flip side and Both sides buttons remain together. They style the page background, panels, form controls, keyboard-step selector, motion-control rails, digital readouts, editor and help. The physical instrument keeps its own colours, typography, bands and cursor. Changing a page theme does not rebuild graduations or change calculations, positions, magnification or the selected instrument.
 
-Light uses cool neutral paper and blue accents. Dark uses a charcoal background with light text and blue accents. Solarised uses warm paper and teal, based on [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/). This adaptation uses darker neutrals for small text and adjusts some status/focus colours for contrast; it is not a verbatim editor colour scheme. No external stylesheet, font or network request is required.
+Light uses cool neutral paper and restrained teal accents. Dark uses a charcoal background with light text and pale teal accents. Solarised uses warm paper and teal, based on [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/). This adaptation uses darker neutrals for small text and adjusts some status/focus colours for contrast; it is not a verbatim editor colour scheme. No external stylesheet, font or network request is required.
 
 The preference is independent of Programme JSON. A valid saved browser preference takes precedence over a standalone file's initial `data-page-theme`. On a fresh browser, an exported standalone copy opens with the theme it was saved with. When browser storage is denied, changing theme still works and a notice explains that the preference is session-only. Preset changes and programme imports do not reset it.
 
 ## Layout preset
 
-The accented **Layout preset** bar is at the top of the workbench, above the motion controls, and remains available in Focus rule mode. The full-width selector and primary Load preset button use the existing page palette. About expands the selected preset's description in place; changing the selection or opening About does not replace either face. Loading a preset still requires pressing Load preset. A link in the editor returns to this chooser.
+The accented **Layout preset** bar is at the top of the workbench, above the motion controls, and remains available in Focus rule mode. The full-width selector and primary Load preset button use the existing page palette. About preset expands the selected preset's description in place; changing the selection or opening About preset does not replace either face. Loading a preset still requires pressing Load preset. A link in the editor returns to this chooser.
 
 ## Four-position step slider and focus
 
@@ -49,7 +49,7 @@ The accented **Layout preset** bar is at the top of the workbench, above the mot
 | Fine | 3 | 0.0005 |
 | Very fine | 4 | 0.0001 |
 
-The selector uses a continuous recessed rail and a shared ridged grip, matching the Slide and Cursor controls. The numeric values sit above the rail, and the heading displays the selected shortcut and name. Full names and shortcuts remain in accessible labels and hover hints. The panel has the same height as each position control without shrinking the 13px numeric labels, and every detent retains a 40px-high hit area. Four equal-width detents remain four native buttons: there are no intermediate values. Dragging the grip snaps to those detents; clicking either a label or its track position selects it directly. A cancelled pointer gesture restores the starting step.
+The selector uses a continuous recessed rail and a shared ridged grip, matching the Slide and Cursor controls. The numeric values sit above the rail, and the heading displays the selected shortcut and name. Full names and shortcuts remain in accessible labels and hover hints. The panel has the same height as each position control with readable 14px numeric labels, and every detent retains a 40px-high hit area. Four equal-width detents remain four native buttons: there are no intermediate values. Dragging the grip snaps to those detents; clicking either a label or its track position selects it directly. A cancelled pointer gesture restores the starting step.
 
 Primary-pointer clicks and drags preserve the currently focused grip or rule focus stop. When reached by Tab, Enter/Space activates a step and returns to the last motion focus stop. A user who has not yet selected a motion control is taken to the rule, with the cursor selected. Choosing a step never moves anything by itself. The next arrow moves the selected component immediately. This focus policy is deliberate: the button completes a setting operation and resumes instrument control. Native button semantics and `aria-pressed` expose the selection; the [WAI button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) describes the underlying activation and focus conventions.
 
@@ -71,6 +71,38 @@ The loupe starts off on a fresh page. It is session-only, not a programme field;
 
 ## Sizing
 
-The paired motion controls have a maximum combined width of 1,020 CSS pixels (excluding the step panel) and yield on narrower screens. At small widths they stack. They never create a sidebar or reduce the instrument's horizontal allocation. Small interface labels and help use 12-14 pixels rather than 10-13; ordinary digital readings use 16 pixels and the JSON editor 13. Instrument engraving sizes and graduation geometry are unchanged.
+The paired motion controls have a maximum combined width of 1,020 CSS pixels (excluding the step panel) and yield on narrower screens. At small widths they stack. They never create a sidebar or reduce the instrument's horizontal allocation. Ordinary interface text and help use a consistent 14 pixels; ordinary digital readings use 16 pixels and the JSON editor 13. Instrument engraving sizes and graduation geometry are unchanged.
 
 Forced-colour mode retains visible controls, focus and a selected-button border. Tests cover keyboard and pointer behaviour, real element sizes and configured-copy defaults; assistive technologies and additional browser engines need their own testing.
+
+## Presentation boundaries
+
+Page-only type, spacing and radii use shared `--ui-*` tokens. Text metrics are
+scoped to the surrounding controls, panels, help and readouts; they are not put
+on `body`, `:root` or the whole workbench, where they would alter the instrument's
+inherited metrics. The Light/Dark palettes and motion grips use the same page
+tokens. Solarised retains its warm palette. Physical paper, ink, engraving,
+cursor and loupe CSS remain separate.
+
+The page title and section headings provide hierarchy; ordinary controls use
+14px text, digital values remain 16px and code remains 13px. Help and digital
+readings wrap without ellipses or line clamps. Panel shadows and corner radii
+are restrained, and selected controls retain visible marks in addition to colour.
+
+Ordinary buttons and selectors align at 38px; the compact motion and joined
+scale-row controls retain their existing dimensions. Readout label columns use
+8.5em, with stacked headings at phone widths. The programme editor changes to
+one column at 1040px and below, and appearance fields stack at 480px and below.
+The instrument remains full width. Narrow-screen theme controls align left;
+Focus rule shows its selected state using the same treatment as Both sides.
+
+Help headings retain their native disclosure markers and initial open states.
+Each summary has a padded target, a hover surface and an expanded divider;
+paragraphs keep a readable line length without clipping. Long validation
+messages wrap, including unbroken identifiers from a custom programme.
+
+**Reset positions** restores zero slide offset and centres the cursor. It does
+not change magnification or layout. **Use current programme** replaces the JSON
+editor text with a snapshot of the current programme, confirming an unapplied
+draft before replacement. **About preset** displays the selected description
+without loading it. These are clearer labels for the existing actions.

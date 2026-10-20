@@ -7,19 +7,22 @@
 
 h2 {
     margin: 0 0 8px;
-    font-size: 17px;
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 650;
 }
 
 .hint, .status {
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: var(--ui-text-size);
+    line-height: var(--ui-text-leading);
     color: var(--ui-muted);
 }
 
 .status {
-    min-height: 18px;
+    min-height: 1.55em;
     margin-top: 8px;
     color: var(--ui-success);
+    overflow-wrap: anywhere;
 }
 
 .status.error {
@@ -32,8 +35,8 @@ h2 {
     margin-bottom: 12px;
     padding: 10px 12px;
     border: 1px solid var(--ui-border);
-    border-inline-start: 4px solid var(--ui-accent);
-    border-radius: 9px;
+    border-inline-start: 3px solid var(--ui-accent);
+    border-radius: var(--ui-radius);
     background: var(--ui-motion-top);
     scroll-margin-top: 16px;
 }
@@ -43,8 +46,8 @@ h2 {
     gap: 8px 12px;
     align-items: center;
 }
-.preset-row label { font-size: 15px; font-weight: 700; }
-.preset-row select { min-width: 0; width: 100%; font-size: 15px; }
+.preset-row label { font-size: var(--ui-text-size); font-weight: 650; }
+.preset-row select { min-width: 0; width: 100%; font-size: var(--ui-text-size); }
 .preset-row button { white-space: nowrap; }
 #presetDescription { margin-top: 8px; }
 .appearance-grid .field { display: grid; gap: 5px; }
@@ -63,9 +66,9 @@ h2 {
 
 .appearance-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
 }
 
 .check-field {
@@ -73,28 +76,30 @@ h2 {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: var(--ui-text-size);
+    line-height: var(--ui-text-leading);
     color: var(--ui-muted);
 }
 
 .check-field input {
     accent-color: var(--ui-accent);
+    flex: none;
+    margin: 4px 0 0;
 }
 
 .rail-editor {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .rail-editor-title {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    font-size: 12px;
-    color: var(--ui-muted);
+    font-size: var(--ui-text-size);
+    color: var(--ui-ink);
     font-weight: 650;
-    text-transform: uppercase;
     margin-bottom: 6px;
 }
 
@@ -107,21 +112,50 @@ h2 {
 
 .scale-control-row select {
     min-width: 0;
+    min-height: 36px;
     width: 100%;
-    font-size: 13px;
+    font-size: var(--ui-text-size);
 }
 
 details {
     margin-top: 14px;
     border: 1px solid var(--ui-divider);
-    border-radius: 10px;
-    padding: 11px;
+    border-radius: var(--ui-radius);
+    padding: 12px;
 }
 
 summary {
     cursor: pointer;
     font-size: 14px;
     font-weight: 650;
+}
+
+/* Keep native disclosure markers and open states; make each heading a clear,
+   full-width target and separate expanded content without another nested box. */
+.panel-tools > details > summary {
+    margin: -12px;
+    padding: 12px;
+    border-radius: var(--ui-radius);
+}
+
+.panel-tools > details > summary:hover {
+    background: var(--ui-hover);
+}
+
+.panel-tools > details[open] > summary {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--ui-divider);
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+}
+
+.panel-tools > details > .hint {
+    margin: 12px 0;
+    max-width: 80ch;
+}
+
+@media (max-width: 480px) {
+    .appearance-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Both cursor buttons open one floating panel, so the motion card and toolbar
@@ -167,10 +201,10 @@ summary {
     overflow: auto;
     padding: 12px;
     border: 1px solid var(--ui-border);
-    border-radius: 9px;
+    border-radius: var(--ui-radius);
     background: var(--ui-panel);
     color: var(--ui-ink);
-    box-shadow: 0 6px 20px var(--ui-shadow);
+    box-shadow: 0 8px 24px var(--ui-shadow);
 }
 .cursor-appearance-options {
     display: grid;
@@ -183,7 +217,7 @@ summary {
     min-width: 0;
 }
 .cursor-appearance-row > .field {
-    font-size: 13px;
+    font-size: var(--ui-text-size);
 }
 .cursor-choice-buttons {
     display: flex;
@@ -191,10 +225,10 @@ summary {
     gap: 6px;
 }
 .cursor-choice {
-    min-height: 30px;
-    padding: 5px 8px;
-    border-radius: 5px;
-    font-size: 12px;
+    min-height: 34px;
+    padding: 6px 9px;
+    border-radius: var(--ui-radius);
+    font-size: var(--ui-text-size);
     font-weight: 600;
 }
 /* The four colour buttons use the actual working-hairline colours. Instrument
@@ -209,7 +243,7 @@ summary {
     border-color: var(--cursor-choice-colour);
 }
 .cursor-choice[aria-pressed="true"] {
-    box-shadow: inset 0 -3px currentColor;
+    box-shadow: inset 0 -2px currentColor;
     text-decoration: underline;
     text-underline-offset: 2px;
 }
@@ -242,7 +276,7 @@ textarea {
     min-height: 290px;
     resize: vertical;
     border: 1px solid var(--ui-border);
-    border-radius: 7px;
+    border-radius: var(--ui-radius);
     padding: 10px;
     color: var(--ui-ink);
     background: var(--ui-code);
@@ -263,12 +297,12 @@ textarea {
 
 .library-item {
     display: grid;
-    grid-template-columns: 78px 1fr;
+    grid-template-columns: 78px minmax(0, 1fr);
     gap: 8px;
     padding: 8px;
     border: 1px solid var(--ui-divider);
     border-radius: 6px;
-    font-size: 13px;
+    font-size: var(--ui-text-size);
     overflow-wrap: anywhere;
 }
 
@@ -276,13 +310,12 @@ textarea {
     display: block;
     margin-top: 3px;
     font-style: normal;
-    font-size: 12px;
-    text-transform: uppercase;
+    font-size: 13px;
     color: var(--ui-muted);
 }
 
 .kbd {
-    font: 12px ui-monospace, monospace;
+    font: 13px ui-monospace, monospace;
     background: var(--ui-code);
     border-radius: 4px;
     padding: 2px 4px;
@@ -290,8 +323,10 @@ textarea {
 
 .footer-note {
     padding: 8px 28px 26px;
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: var(--ui-text-size);
+    line-height: var(--ui-text-leading);
+    max-width: 110ch;
+    margin: 0 auto;
     text-align: center;
     color: var(--ui-muted);
 }

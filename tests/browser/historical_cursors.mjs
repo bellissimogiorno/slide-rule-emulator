@@ -4,14 +4,14 @@
  * Run after `npm run build`:
  *   node tests/browser/historical_cursors.mjs --output qa/historical-cursors
  * Optional: --executable /path/to/chromium --visual
- * Requires Playwright installed in node_modules, or CODEX_PRIMARY_RUNTIME_NODE_MODULES.
+ * Uses the shared Playwright loader; see docs/TESTING.md for toolchain selection.
  * Browser/dependency setup failures are recorded as failed checks. No simulated
  * DOM fallback can substitute for this native rendering/input/download test.
  */
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { createRequire } from 'node:module';
+import { loadPlaywright } from './playwright.mjs';
 import { dirname, resolve, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -35,15 +35,9 @@ const passed = async message => { report.functional.push(message); await record(
 let browser, server, staging;
 try {
     report.stage = 'Playwright dependency';
-    const require = createRequire(import.meta.url);
-    let playwright;
-    try { playwright = require('playwright'); report.playwright = require('playwright/package.json').version; }
-    catch (error) {
-        if (!process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES) throw error;
-        const modulePath = join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright');
-        playwright = require(modulePath);
-        report.playwright = require(join(modulePath, 'package.json')).version;
-    }
+    const { playwright, version, modulePath } = loadPlaywright();
+    report.playwright = version;
+    report.playwrightModule = modulePath;
     report.browserExecutable = executablePath || 'Playwright-managed Chromium headless shell';
     report.stage = 'Chromium launch';
     browser = await playwright.chromium.launch({ ...(executablePath ? { executablePath } : {}), args: ['--no-sandbox'] });

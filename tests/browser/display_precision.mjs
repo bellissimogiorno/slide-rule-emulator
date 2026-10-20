@@ -3,13 +3,13 @@
  * Run: node tests/browser/display_precision.mjs
  * Options: --output /writable/path --executable /path/to/chromium
  * Serves a fresh self-contained build over local HTTP without changing dist/.
- * Requires local Playwright or CODEX_PRIMARY_RUNTIME_NODE_MODULES. Missing native
+ * Uses the shared Playwright loader (docs/TESTING.md). Missing native
  * browser prerequisites produce a nonzero exit and a failed-prerequisite report.
  */
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { createRequire } from 'node:module';
+import { loadPlaywright } from './playwright.mjs';
 import { dirname, resolve, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildHtml } from '../../tools/build.mjs';
@@ -37,13 +37,9 @@ const passed = async message => {
 let browser, server, staging;
 try {
     report.stage = 'Playwright dependency';
-    const require = createRequire(import.meta.url);
-    let playwright;
-    try { playwright = require('playwright'); }
-    catch (error) {
-        if (!process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES) throw error;
-        playwright = require(join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright'));
-    }
+    const { playwright, version, modulePath } = loadPlaywright();
+    report.playwright = version;
+    report.playwrightModule = modulePath;
     report.stage = 'Chromium launch';
     report.browserExecutable = executablePath || 'Playwright-managed Chromium headless shell';
     browser = await playwright.chromium.launch({ ...(executablePath ? { executablePath } : {}), args: ['--no-sandbox'] });

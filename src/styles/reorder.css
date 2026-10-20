@@ -15,7 +15,7 @@
 .scale-control-row > button[data-action="remove"] { border-left: 0; border-radius: 0 5px 5px 0; }
 .scale-control-row button:focus-visible, .scale-control-row select:focus-visible { position: relative; z-index: 1; }
 .rail-editor-actions { display: flex; align-items: center; gap: 6px; }
-.rail-editor-actions button { font-size: 12px; padding: 5px 8px; }
+.rail-editor-actions button { font-size: var(--ui-text-size); padding: 5px 8px; }
 .rail-editor-actions .scale-undo { display: inline-flex; align-items: center; gap: 4px; }
 .rail-editor-actions .scale-undo:not(:disabled) { background: var(--ui-selected); color: var(--ui-selected-ink); border-color: var(--ui-accent); }
 @media (pointer: coarse) {

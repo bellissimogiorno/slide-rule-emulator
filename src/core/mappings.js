@@ -2,7 +2,8 @@ import { chemicalRuntime } from "#core/chemistry.js";
 import { correctionMetric } from "#core/corrections.js";
 import { MathExpressions } from "#core/expressions.js";
 import { clamp, invertMonotonic, positiveModulo, toDeg, toRad } from "#core/numbers.js";
-import { blackbodyCurveValue } from "#core/physics.js";
+import { transcendentalMapping } from "#core/mappings/transcendental.js";
+import { radiationMapping } from "#core/mappings/radiation.js";
 const runtimeCache = new WeakMap();
 /** Runtime mappings may be cached only when their definition cannot change. */
 function makeRuntimeScale(def) {
@@ -16,6 +17,8 @@ function makeRuntimeScale(def) {
     runtimeCache.set(def, runtime);
     return runtime;
 }
+/** Coordinate bounds, custom expressions and elementary mappings.
+ * Specialised families live beside this module; all use this same bounds policy. */
 function createRuntimeScale(def) {
     const chemical = chemicalRuntime(def);
     if (chemical) return chemical;
@@ -112,68 +115,8 @@ function createRuntimeScale(def) {
             value: p => Math.sqrt(Math.max(0, 1 - Math.pow(10, 2 * (p - 1))))
         });
     }
-    if (def.type === "sinhLow") {
-        return bounded({
-            pos: u => Math.log10(10 * Math.sinh(u)),
-            value: p => Math.asinh(Math.pow(10, p - 1))
-        });
-    }
-    if (def.type === "sinhHigh") {
-        return bounded({
-            pos: u => Math.log10(Math.sinh(u)),
-            value: p => Math.asinh(Math.pow(10, p))
-        });
-    }
-    if (def.type === "tanh") {
-        const pMax = Math.log10(10 * Math.tanh(safeMax));
-        return bounded({
-            pos: u => Math.log10(10 * Math.tanh(u)),
-            value: p => Math.atanh(Math.min(1 - 1e-15, Math.pow(10, p - 1)))
-        }, 0, pMax);
-    }
-    if (def.type === "hypotenuseLow") {
-        return bounded({
-            pos: y => Math.log10(10 * Math.sqrt(Math.max(0, (y - 1) * (y + 1)))),
-            value: p => Math.sqrt(1 + Math.pow(10, 2 * (p - 1)))
-        });
-    }
-    if (def.type === "hypotenuseHigh") {
-        return bounded({
-            pos: y => Math.log10(Math.sqrt(Math.max(0, (y - 1) * (y + 1)))),
-            value: p => Math.sqrt(1 + Math.pow(10, 2 * p))
-        });
-    }
-    if (def.type === "acosh") {
-        return bounded({
-            pos: u => Math.log10(Math.cosh(u)),
-            value: p => Math.acosh(Math.pow(10, p))
-        });
-    }
-    if (def.type === "syncroLogLog" && Number.isFinite(Number(def.decade))) {
-        const decade = Number(def.decade);
-        const base = String(def.logBase).toLowerCase() === "e" ? Math.E : 10;
-        const logarithm = x => Math.log(x) / Math.log(base);
-        return bounded({
-            pos: x => Math.log10(Math.abs(logarithm(x))) - decade,
-            value: p => Math.pow(base, Math.pow(10, decade + p))
-        });
-    }
-    if (def.type === "loglog" && Number.isFinite(Number(def.decade))) {
-        const decade = Number(def.decade);
-        const sign = Number(def.sign) < 0 ? -1 : 1;
-        return bounded({
-            pos: x => Math.log10(Math.abs(Math.log(x))) - decade,
-            value: p => Math.exp(sign * Math.pow(10, decade + p))
-        });
-    }
-    if (def.type === "loglog10" && Number.isFinite(Number(def.decade))) {
-        const decade = Number(def.decade);
-        const sign = Number(def.sign) < 0 ? -1 : 1;
-        return bounded({
-            pos: x => Math.log10(Math.abs(Math.log10(x))) - decade,
-            value: p => Math.pow(10, sign * Math.pow(10, decade + p))
-        });
-    }
+    const transcendental = transcendentalMapping(def, safeMin, safeMax, bounded);
+    if (transcendental) return transcendental;
     if (def.type === "reverseLinear") {
         const span = safeMax - safeMin || 1;
         return bounded({
@@ -193,67 +136,8 @@ function createRuntimeScale(def) {
             value: p => invertMonotonic(v => metric(v), m0 + p * span, safeMin, safeMax, increasing)
         });
     }
-    if (def.type === "temperature") {
-        return bounded({
-            pos: x => (Math.log10(x) - 2) / 2,
-            value: p => 100 * Math.pow(10, 2 * p)
-        });
-    }
-    if (def.type === "temperatureC") {
-        return bounded({
-            pos: x => (Math.log10(x + 273.15) - 2) / 2,
-            value: p => 100 * Math.pow(10, 2 * p) - 273.15
-        });
-    }
-    if (def.type === "temperatureF") {
-        return bounded({
-            pos: x => (Math.log10((x + 459.67) * 5 / 9) - 2) / 2,
-            value: p => 1.8 * (100 * Math.pow(10, 2 * p)) - 459.67
-        });
-    }
-    if (def.type === "tempDerived") {
-        const coeff = Number(def.coeff) || 1;
-        const power = Number(def.power) || 1;
-        const relation = def.relation || "power";
-        const valueAtTemperature = T => relation === "sqrt" ? coeff * Math.sqrt(T) : relation === "linear" ? coeff * T : relation === "inverse" ? coeff / T : coeff * Math.pow(T, power);
-        const temperatureAtValue = x => relation === "sqrt" ? Math.pow(x / coeff, 2) : relation === "linear" ? x / coeff : relation === "inverse" ? coeff / x : Math.pow(x / coeff, 1 / power);
-        return bounded({
-            pos: x => (Math.log10(temperatureAtValue(x)) - 2) / 2,
-            value: p => valueAtTemperature(100 * Math.pow(10, 2 * p))
-        });
-    }
-    if (def.type === "bbWavenumber") {
-        const l0 = Math.log10(safeMin);
-        const span = Math.log10(safeMax) - l0 || 1;
-        return bounded({
-            pos: x => (Math.log10(x) - l0) / span,
-            value: p => Math.pow(10, l0 + p * span)
-        });
-    }
-    if (def.type === "bbWavelength") {
-        const lMin = Math.log10(safeMin);
-        const lMax = Math.log10(safeMax);
-        const span = lMax - lMin || 1;
-        return bounded({
-            pos: x => (lMax - Math.log10(x)) / span,
-            value: p => Math.pow(10, lMax - p * span)
-        });
-    }
-    if (def.type === "bbCurve") {
-        return bounded({
-            pos: () => NaN,
-            value: p => blackbodyCurveValue(def.curve, (Number(def.u0) || 0.01) * Math.pow(10, 2 * p))
-        });
-    }
-    if (def.type === "loglog") {
-        const l0 = Math.log10(Math.abs(Math.log(safeMin)));
-        const span = Math.log10(Math.abs(Math.log(safeMax))) - l0;
-        const sign = safeMin < 1 ? -1 : 1;
-        return bounded({
-            pos: x => (Math.log10(Math.abs(Math.log(x))) - l0) / span,
-            value: p => Math.exp(sign * Math.pow(10, l0 + p * span))
-        });
-    }
+    const radiation = radiationMapping(def, safeMin, safeMax, bounded);
+    if (radiation) return radiation;
     if (def.type !== "log")
         throw new Error("Unknown scale mapping: " + def.type);
     const l0 = Math.log10(safeMin);

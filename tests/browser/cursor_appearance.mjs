@@ -2,13 +2,13 @@
 /** Native Chromium checks for the programme-wide cursor appearance controls.
  * Run after `npm run build`: node tests/browser/cursor_appearance.mjs
  * Optional: --output /writable/path --executable /path/to/chromium
- * Requires Playwright locally or in CODEX_PRIMARY_RUNTIME_NODE_MODULES.
+ * Uses the shared Playwright loader; see docs/TESTING.md for toolchain selection.
  * A missing browser is an explicit failed prerequisite, never a simulated pass.
  */
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { createRequire } from 'node:module';
+import { loadPlaywright } from './playwright.mjs';
 import { dirname, resolve, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -36,13 +36,9 @@ const passed = async message => {
 let browser, server, staging;
 try {
     report.stage = 'Playwright dependency';
-    const require = createRequire(import.meta.url);
-    let playwright;
-    try { playwright = require('playwright'); }
-    catch (error) {
-        if (!process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES) throw error;
-        playwright = require(join(process.env.CODEX_PRIMARY_RUNTIME_NODE_MODULES, 'playwright'));
-    }
+    const { playwright, version, modulePath } = loadPlaywright();
+    report.playwright = version;
+    report.playwrightModule = modulePath;
     report.stage = 'Chromium launch';
     report.browserExecutable = executablePath || 'Playwright-managed Chromium headless shell';
     browser = await playwright.chromium.launch({ ...(executablePath ? { executablePath } : {}), args: ['--no-sandbox'] });

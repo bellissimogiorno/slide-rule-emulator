@@ -23,6 +23,29 @@ A **programme** holds sides and their three rails (`topStator`, `slide`, `bottom
 
 The single controller is `createApplication(document)` in `ui/application.js`. It owns the applied programme, orchestration and lifecycle; focused helpers own draft editing, readout reconciliation and individual interactions. Rendering helpers receive their inputs rather than finding global application state. `getProgram()` exposes a snapshot; `destroy()` removes listeners, observers, frames and timers. Helpers do not own competing copies of the applied programme. The controller accepts a validated programme through one transactional apply callback.
 
+## Focused coordinators
+
+`core/mappings.js` remains the public mapping entry point and owns the immutable
+runtime cache and explicit position bounds. `core/mappings/transcendental.js`
+contains hyperbolic and log-log formulae; `core/mappings/radiation.js` maps
+temperature, wavelength and blackbody quantities. Both return `null` for another
+family, and receive the coordinator's existing bounds function. Keep numerical
+operation order and fallback semantics when maintaining these families.
+
+`model/validation.js` retains the public `parseProgramText`, `validateProgram`
+and `PROGRAM_LIMITS` API. `validation-data.js` owns JSON inspection, limits and
+shared guards; `validation-scales.js` owns definition checks, sampled mathematics
+and composite references; `validation-cursors.js` owns face marks and captions.
+Validation order determines the first reported error and is part of the import
+contract. Do not combine validation with normalisation or mutate caller data.
+
+`ui/programme-controls.js` projects current settings onto existing DOM controls;
+it never owns state or registers events. `ui/scale-geometry.js` distinguishes
+local engraving coordinates from measured screen coordinates and supplies the
+empty-face fallback. It reads magnification through a callback because applying
+a programme replaces the controller's state object. The application retains
+all orchestration, state mutation, persistence, event registration and cleanup.
+
 ## Data flow
 
 1. Startup reads the optional `embedded-program` block and tries storage through `model/storage.js`.
