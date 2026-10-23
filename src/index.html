@@ -16,12 +16,8 @@
     </div>
     <div class="header-tools">
     <div class="header-actions">
-      <div class="face-actions" role="group" aria-label="Face display">
-        <button id="flipButton" type="button">Flip side</button>
-        <button id="bothSidesButton" type="button" aria-pressed="false" aria-controls="ruleCanvas">Both sides</button>
-      </div>
+      <button id="tutorialButton" class="learn-action" type="button" aria-expanded="false" aria-controls="tutorialPanel">Learn the slide rule</button>
       <button id="focusButton" aria-pressed="false">Focus rule</button>
-      <button id="resetButton" title="Return the slide to zero offset and the cursor to the centre">Reset positions</button>
       <button id="saveHtmlButton">Save standalone copy</button>
     </div>
     <div id="pageThemes" class="page-themes" role="group" aria-label="Page theme">
@@ -37,6 +33,58 @@
 
   <main>
     <section id="workbench" class="workbench" aria-label="Slide rule emulator">
+      <section id="tutorialPanel" class="tutorial-panel" aria-labelledby="tutorialHeading" hidden>
+        <div class="tutorial-heading">
+          <h2 id="tutorialHeading" tabindex="-1" aria-describedby="tutorialProblem">Learn the slide rule</h2>
+          <button id="tutorialCloseButton" type="button">Close tutorial</button>
+        </div>
+        <p class="tutorial-note">Explore the course at your own pace. Watch the slide and cursor move on the rule below, then try the method yourself. Your original layout and positions return when you close the tutorial.</p>
+        <div class="tutorial-chooser">
+          <div class="tutorial-choice">
+            <label class="field" for="tutorialSectionSelect">Section</label>
+            <select id="tutorialSectionSelect" aria-describedby="tutorialSectionSummary"></select>
+          </div>
+          <div class="tutorial-choice tutorial-lesson-choice">
+            <label class="field" for="tutorialLessonSelect">Lesson</label>
+            <select id="tutorialLessonSelect"></select>
+          </div>
+        </div>
+        <p id="tutorialSectionSummary" class="tutorial-section-summary hint"></p>
+        <div class="tutorial-course-progress hint">
+          <span id="tutorialProgress"></span>
+          <span id="tutorialSessionProgress"></span>
+        </div>
+        <div class="tutorial-problem" role="group" aria-labelledby="tutorialProblemLabel">
+          <span id="tutorialProblemLabel" class="tutorial-problem-label">Problem</span>
+          <p id="tutorialProblem"></p>
+        </div>
+        <div id="tutorialIntro" class="tutorial-intro">
+          <p id="tutorialSummary"></p>
+          <button id="tutorialWatchButton" type="button" class="primary" aria-describedby="tutorialProblem tutorialSummary">Watch demonstration</button>
+        </div>
+        <div id="tutorialPlayer" class="tutorial-player" hidden>
+          <div class="tutorial-step-header">
+            <span id="tutorialPhase" class="tutorial-phase"></span>
+            <span id="tutorialReading" class="hint"></span>
+          </div>
+          <h3 id="tutorialStepHeading" tabindex="-1" aria-describedby="tutorialProblem tutorialInstruction"></h3>
+          <p id="tutorialInstruction" class="tutorial-instruction"></p>
+          <p id="tutorialPracticeHelp" class="hint" hidden></p>
+          <div class="tutorial-actions">
+            <button id="tutorialPauseButton" type="button" hidden>Pause movement</button>
+            <button id="tutorialReplayButton" type="button" hidden>Replay movement</button>
+            <button id="tutorialNextButton" type="button" class="primary" hidden>Next movement</button>
+            <button id="tutorialTryButton" type="button" class="primary" hidden>Try it yourself</button>
+            <button id="tutorialCheckButton" type="button" class="primary" hidden>Check alignment</button>
+            <button id="tutorialPracticeNextButton" type="button" class="primary" hidden>Next practice step</button>
+            <button id="tutorialWatchAgainButton" type="button" hidden>Watch again</button>
+            <button id="tutorialNextLessonButton" type="button" class="primary" hidden>Next lesson</button>
+            <button id="tutorialFinishButton" type="button" hidden>Finish tutorial</button>
+          </div>
+        </div>
+        <p id="tutorialFeedback" class="tutorial-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+        <p id="tutorialMotionNotice" class="hint tutorial-motion-notice" hidden>Reduced motion is on: each movement is shown as a single step.</p>
+      </section>
       <div id="presetPicker" class="preset-picker" role="group" aria-labelledby="presetLabel">
         <div class="preset-row">
           <label id="presetLabel" for="presetSelect">Layout preset</label>
@@ -95,18 +143,27 @@
           </div>
         </div>
       </div>
-      <p id="motionHelp" class="hint motion-help"><span class="motion-instructions">Tab to either position grip, then use &larr; / &rarr;. Choose a keyboard step by clicking a number, dragging the step grip or pressing 1&ndash;4; motion focus stays in place. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects the slide; C selects the cursor. Positions and steps are in scale lengths.</span> <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span></p>
+      <p id="motionHelp" class="hint motion-help"><span class="motion-instructions">Tab to either position grip, then use &larr; / &rarr;. Choose a keyboard step by clicking a number, dragging the step grip or pressing 1&ndash;4; motion focus stays in place. Alt: 10&times; finer. Page Up / Down: 10&times; larger. On the rule, S selects the slide; C selects the cursor. F flips sides while the rule or a position grip has focus. Positions and steps are in scale lengths.</span> <span id="motionTarget" class="motion-target" role="status">On rule: cursor selected</span></p>
       <div class="view-controls">
-        <label class="field">Side
-          <select id="sideSelect" aria-label="Visible side or both sides"></select>
-        </label>
+        <div class="side-controls">
+          <label class="field">Side
+            <select id="sideSelect" aria-label="Visible side or both sides"></select>
+          </label>
+          <div class="face-actions" role="group" aria-label="Face display">
+            <button id="flipButton" type="button" aria-keyshortcuts="F" title="Flip side (F when the rule or a position grip has focus)">Flip side</button>
+            <button id="bothSidesButton" type="button" aria-pressed="false" aria-controls="ruleCanvas">Both sides</button>
+          </div>
+        </div>
         <label class="field">Magnification
           <select id="magnificationSelect" aria-label="Magnification"><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="2">200%</option></select>
         </label>
         <button id="loupeButton" type="button" aria-pressed="false" aria-describedby="loupeHelp" title="Magnify the rule and cursor beneath the pointer (M); Escape switches off">2.5&times; loupe</button>
-        <div class="layout-actions">
-          <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
-          <button id="cursorAppearanceButton" type="button" data-cursor-appearance-trigger aria-haspopup="dialog" aria-expanded="false" aria-controls="cursorAppearance">Cursor appearance <span aria-hidden="true">&#x25BE;</span></button>
+        <div class="rule-actions">
+          <div class="layout-actions">
+            <a class="button-like" href="#scaleLayout">Scale layout &darr;</a>
+            <button id="cursorAppearanceButton" type="button" data-cursor-appearance-trigger aria-haspopup="dialog" aria-expanded="false" aria-controls="cursorAppearance">Cursor appearance <span aria-hidden="true">&#x25BE;</span></button>
+          </div>
+          <button id="resetButton" title="Return the slide to zero offset and the cursor to the centre">Reset positions</button>
         </div>
         <span class="hint">Scroll sideways on narrow screens.</span>
       </div>
@@ -142,6 +199,8 @@
       <button id="recoveryButton" hidden>Download recovered programme</button>
       <div id="ruleViewport" class="rule-viewport" tabindex="0" aria-label="Scrollable slide rule" aria-describedby="motionHelp">
       <div class="rule-shell">
+        <button class="rule-flip rule-flip-left" type="button" data-rule-flip="left" aria-label="Flip side" aria-keyshortcuts="F" title="Flip side (F when the rule or a position grip has focus)"><span class="rule-flip-label" aria-hidden="true">Flip</span></button>
+        <button class="rule-flip rule-flip-right" type="button" data-rule-flip="right" aria-label="Flip side" aria-keyshortcuts="F" title="Flip side (F when the rule or a position grip has focus)"><span class="rule-flip-label" aria-hidden="true">Flip</span></button>
         <div id="modelBadge" class="model-badge">Scientific duplex</div>
         <div id="ruleTopNote" class="rule-top-note">front</div>
         <div id="ruleCanvas" class="rule-canvas" tabindex="0" aria-label="Interactive slide rule canvas" aria-describedby="motionHelp"></div>
@@ -267,7 +326,7 @@
       <details>
         <summary>Using the slide rule</summary>
         <p class="hint">Drag the middle slide to set the alignment. Drag the glass cursor to read all scales at the hairline. On a classic multiplication setup, align C 1 over a D number, then read products by moving the cursor to another C number and reading D.</p>
-        <p class="hint">Use the Both sides button next to Flip side, or the Side menu, to see the faces together. The highlighted Both sides button returns to the selected editing face when clicked again. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored.</p>
+        <p class="hint">Side, Flip side and Both sides are grouped above the rule, before Magnification. Flip with the button, either labelled end border, or F while the rule or a position grip has focus. Flip is unavailable when both faces are visible or the programme has only one face. The highlighted Both sides button returns to the selected editing face when clicked again. Their slide and cursor positions stay linked. In that view, Edit face selects which layout you are changing. The two faces are shown upright, not mirrored. Reset positions, beside Cursor appearance, centres the cursor and aligns the slide indexes.</p>
         <p class="hint"><strong>Full-width workspace:</strong> the Layout preset chooser is above the instrument, which uses the available page width. About preset reveals the selected preset description; Load preset applies the choice to both faces. Magnification includes 75% for a smaller view. Scale layout and JSON controls are below it; their own columns adapt to the screen. The Scale layout and Back to rule links jump between the two, and Focus rule hides the editor without changing the graduation width.</p>
         <p class="hint"><strong>Expanded roots:</strong> write the radicand as <span class="kbd">N = m × 10^k</span>, with 1 &le; m &lt; 10. For an n-th root, choose branch <span class="kbd">(k mod n) + 1</span>, put the cursor at m on D, and read the root mantissa on that branch. Example: 32 = 3.2 × 10^1, so 5R2 reads 2 over D = 3.2. A, K, and x⁵ provide the corresponding power scales.</p>
         <p class="hint"><strong>Log-log:</strong> LL0 through LL4 cover values above 1; LL00 through LL04 cover values below 1. Pickett paired and Syncro LL± rows use one shared graduation: the black number is above one and the red number immediately below it is its exact reciprocal. The N3 rows are natural-exponential; the N4 rows use Pickett's base-10 geometry.</p>

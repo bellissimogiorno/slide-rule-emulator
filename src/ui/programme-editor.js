@@ -10,13 +10,15 @@ export function createProgrammeEditor({ document, getProgramme, applyProgramme, 
     const editor = element('jsonEditor'), message = element('jsonStatus');
     const fileInput = element('importJsonFile');
     const listen = (target, name, handler) => target.addEventListener(name, handler, { signal });
-    let dirty = false, revision = 0, timer = 0, reader = null;
+    let dirty = false, revision = 0, timer = 0, reader = null, suspended = signal.aborted;
 
     function status(text, error = false) {
+        if (suspended) return;
         message.textContent = text;
         message.classList.toggle('error', error);
     }
     function sync(force = false) {
+        if (suspended) return;
         if (dirty && !force) return;
         const text = JSON.stringify(getProgramme(), null, 2);
         if (text !== editor.value || force) revision++;
@@ -24,10 +26,11 @@ export function createProgrammeEditor({ document, getProgramme, applyProgramme, 
         dirty = false;
     }
     function scheduleSync() {
-        if (timer) return;
+        if (suspended || timer) return;
         timer = window.setTimeout(() => { timer = 0; sync(); }, 160);
     }
     function apply() {
+        if (suspended) return;
         try {
             const programme = parseProgramText(editor.value);
             applyProgramme(programme);
@@ -44,6 +47,7 @@ export function createProgrammeEditor({ document, getProgramme, applyProgramme, 
         if (previous?.readyState === 1) previous.abort();
     }
     function importFile() {
+        if (suspended) return;
         const file = fileInput.files?.[0];
         fileInput.value = '';
         if (!file) return;
@@ -57,7 +61,7 @@ export function createProgrammeEditor({ document, getProgramme, applyProgramme, 
         const expectedProgramme = JSON.stringify(getProgramme());
         const request = reader = new window.FileReader();
         request.onload = () => {
-            if (signal.aborted || reader !== request) return;
+            if (suspended || signal.aborted || reader !== request) return;
             reader = null;
             if (revision !== expectedRevision || editor.value !== expectedText ||
                 JSON.stringify(getProgramme()) !== expectedProgramme) {
@@ -70,29 +74,40 @@ export function createProgrammeEditor({ document, getProgramme, applyProgramme, 
             apply();
         };
         request.onerror = () => {
-            if (reader !== request || signal.aborted) return;
+            if (suspended || reader !== request || signal.aborted) return;
             reader = null;
             status('Could not read that file.', true);
         };
         request.readAsText(file);
     }
-    listen(editor, 'input', () => { dirty = true; revision++; });
+    function suspend() {
+        suspended = true;
+        window.clearTimeout(timer);
+        timer = 0;
+        cancelImport();
+    }
+    function resume() {
+        if (!signal.aborted) suspended = false;
+    }
+    listen(editor, 'input', () => { if (!suspended) { dirty = true; revision++; } });
     listen(element('applyJsonButton'), 'click', apply);
     listen(element('syncJsonButton'), 'click', () => {
+        if (suspended) return;
         if (dirty && !window.confirm('Replace the unapplied JSON draft with the current layout?')) return;
         sync(true);
         status('JSON synced from current layout.');
     });
     listen(element('exportJsonButton'), 'click', () => {
+        if (suspended) return;
         const blob = new window.Blob([JSON.stringify(getProgramme(), null, 2)], { type: 'application/json' });
         downloadBlob(document, blob, 'slide-rule-program.json');
         status('JSON exported.');
     });
     listen(fileInput, 'change', importFile);
-    listen(element('importJsonButton'), 'click', () => fileInput.click());
+    listen(element('importJsonButton'), 'click', () => { if (!suspended) fileInput.click(); });
     signal.addEventListener('abort', () => {
-        window.clearTimeout(timer);
-        cancelImport();
+        suspend();
     }, { once: true });
-    return { get dirty() { return dirty; }, sync, scheduleSync, status };
+    return { get dirty() { return dirty; }, get suspended() { return suspended; },
+        sync, scheduleSync, status, suspend, resume };
 }

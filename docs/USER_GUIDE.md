@@ -6,6 +6,18 @@ For immediate loading, open the small arrow beside **Slide** in its position box
 
 Loading through either route replaces both faces and resets the slide and cursor positions. Display precision, slide wraparound, cursor appearance and custom scale definitions are retained. Use the face selector or Flip side to see the reverse, or the neighbouring Both sides button to show both faces together. Drag the slide to move the middle rails and drag the cursor hairline to read aligned values. The neighbouring position grips and nudge buttons provide another input method, with keyboard operation described below. Reset centres the cursor and aligns the slide; it does not erase the programme.
 
+**Side**, **Flip side** and **Both sides** sit together above the rule, before
+**Magnification**. Flip with the toolbar button or the labelled **Flip** control
+on either end border of the instrument. These border controls are buttons: Tab
+to one and use Enter or Space, or click it directly. Flipping preserves both
+positions. Flip is unavailable for a single-face programme, while both faces are
+visible, or during a tutorial.
+
+**Reset positions** sits immediately to the right of **Cursor appearance**. It
+aligns the slide indexes and centres the cursor, retaining the layout and
+magnification. **Learn the slide rule** remains in the header, with a subtle
+theme-matched tint and semibold text.
+
 The digital readout shows underlying scale values at the hairline, with paired readings where applicable. With wraparound off, off-scale slide coordinates are not clamped into a misleading endpoint value. With wraparound on, slide readings use the visible repeated scale under each hairline. Ordinary slide-rule arithmetic still requires tracking the decimal exponent yourself unless a scale is explicitly absolute.
 
 Historical presets carry their own cursor markings where the sources establish
@@ -80,6 +92,7 @@ Click or Tab to either grip. Its focus outline identifies the control being adju
 | Keyboard step: Fine | 0.0005 scale lengths per arrow press |
 | Keyboard step: Very fine | 0.0001 scale lengths per arrow press |
 | 1 / 2 / 3 / 4 (rule or grip focused) | Select Faster / Normal / Fine / Very fine without changing focus |
+| F (rule or grip focused) | Flip to the next face, preserving both positions |
 | M (rule or grip focused) | Toggle the 2.5× pointer loupe |
 | Escape (rule or grip focused) | Switch the loupe off |
 
@@ -91,7 +104,7 @@ Positions are fractions of the graduated scale length, not numerical scale readi
 
 **On the instrument itself:** clicking or dragging a part selects it for keyboard movement. Press **S** to select the slide or **C** to select the cursor, then use the same arrows and precision setting. Both the rule canvas and its surrounding scrollable viewport accept these shortcuts when focused. **Focus rule** also transfers keyboard focus to the instrument, ready for arrow-key control. The indicator beside the motion instructions names the selected part. Shift plus an arrow on the rule temporarily moves the slide, retaining the earlier shortcut. On a focused position grip, Shift does not switch to the other part.
 
-The shortcuts do not act while typing in Programme JSON or navigating the Side, Magnification or other menus. S/C are instrument-focus shortcuts and 1-4 work only in motion controls or on the instrument; none is a page-wide typing command. Standard Ctrl/Command combinations and text-composition events are not intercepted. Tab leaves the controls normally.
+The shortcuts do not act while typing in Programme JSON or navigating the Side, Magnification or other menus. S/C are instrument-focus shortcuts; F and 1-4 work only in motion controls or on the instrument. None is a page-wide typing command. F ignores held-key repeats and modified key combinations; it is also inactive during a drag or tutorial. Standard Ctrl/Command combinations and text-composition events are not intercepted. Tab leaves the controls normally.
 
 Both faces share every movement. Magnification does not change a step's fraction of the scale length. Grabbing the cursor glass away from its centre preserves the original hairline position rather than snapping it to the mouse; clicking a fixed scale deliberately places the hairline there.
 
@@ -117,7 +130,7 @@ Specialist historical warnings are part of the instrument, not optional precisio
 
 ## Linked faces and chemical work
 
-The **Both sides** button beside **Flip side** toggles the simultaneous view. Its highlighted state follows the Side menu, which includes the same **Both sides** option. Clicking the highlighted button returns to the currently selected editing face. Faces appear one above the other, upright and at the same scale length; either slide/cursor can be dragged. The **Edit face** selector affects only which rail lists you are editing. Selecting a single face again restores Flip side. Magnification and horizontal scrolling apply to the whole linked instrument. JSON and standalone exports retain the view.
+The **Both sides** button beside **Flip side** and the **Side** menu toggles the simultaneous view. Its highlighted state follows the Side menu, which includes the same **Both sides** option. Clicking the highlighted button returns to the currently selected editing face. Faces appear one above the other, upright and at the same scale length; either slide/cursor can be dragged. The **Edit face** selector affects only which rail lists you are editing. Selecting a single face again restores Flip side. Magnification and horizontal scrolling apply to the whole linked instrument. JSON and standalone exports retain the view.
 
 Load **Hemmi 257 - Chemical engineering** for the Hemmi chemical face, and expand **Chemical scales (Hemmi 257)** in the application for operating instructions. The [chemical guide](CHEMICAL_SCALES.md) gives the actual units, working examples and modern-calibration limitations. Import `examples/hemmi257-both-sides.json` to open the preset directly in the linked view.
 

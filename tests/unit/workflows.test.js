@@ -144,7 +144,8 @@ test('focused Node native suites use the browser revision installed by Python Pl
         ['cursor_appearance', 'cursor-appearance', ''],
         ['display_precision', 'display-precision', ''],
         ['slide_preset', 'slide-preset', ''],
-        ['slide_wraparound', 'slide-wraparound', '']
+        ['slide_wraparound', 'slide-wraparound', ''],
+        ['tutorial', 'tutorial', '']
     ]) {
         const command = `node tests/browser/${runner}.mjs${visual} --output qa/ci/${output} 2>&1 | tee qa/ci/${output}.log`;
         const start = ci.indexOf(command);

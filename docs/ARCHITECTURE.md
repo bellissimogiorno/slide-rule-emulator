@@ -78,6 +78,7 @@ This trades a somewhat larger HTML file for zero build dependencies and real mod
 | Compact numbering | `ui/labels.js`, `styles/compact.css` | overlap/tick-crossing negative controls |
 | Import/storage/export | `model/`, `ui/programme-editor.js`, `ui/files.js` | invalid atomicity, recovery, repeated export |
 | UI controls | `ui/application.js`, `src/index.html` | keyboard and pointer integration |
+| Face navigation | `ui/face-navigation.js`, controller binding, `styles/controls.css` | guarded local F, static end buttons, state/focus and tutorial isolation |
 
 The generated catalogue in `docs/CATALOGUE.md` is a navigation aid, not a second source of truth. Regenerate it with `node tools/catalogue.mjs` after changing definitions.
 
@@ -155,7 +156,27 @@ The application registers its motion handler before the loupe handler so a frame
 
 ## Header state, scale undo and inactivity
 
-The Both sides shortcut uses the existing `viewMode` and `activeSide` fields; it introduces no parallel view state or programme-schema changes. `renderSideSelect` refreshes the button's pressed/disabled state alongside the menus. The header's flex layout puts page themes beside the actions when their intrinsic widths fit and lets them wrap otherwise.
+The Side selector, Flip side and Both sides are one wrapping group before
+Magnification. Reset positions follows Cursor appearance outside the temporary
+layout-action lock, so it remains usable during teaching. The header retains
+Focus rule, the subtly emphasised tutorial entry and page themes. These are
+presentation changes; `viewMode` and `activeSide` remain the view state.
+
+`ui/face-navigation.js` binds the toolbar, two static end-border buttons and the
+local F shortcut to one guarded action. It does not own or clone programme
+state. The application supplies current state and the tutorial/drag lock, then
+changes only `activeSide`, persists and renders. The static end buttons sit
+outside the regenerated canvas, so keyboard activation keeps their focus. The
+existing end strips supply their hit regions; scale rows and graduation
+coordinates are unchanged.
+
+The shortcut rejects handled, repeated, composed or modified keys and targets
+outside the instrument/position controls. Text fields, select menus and popup
+triggers retain their own keys. One-face programmes, both-face view, active
+drags and tutorials cannot flip through any entry point. `refresh()` projects
+the same availability and explanation to every flip button. Abort-driven
+listener cleanup follows the application lifetime. Both sides still uses the
+existing `viewMode` toggle and the Side menu’s pressed/disabled projection.
 
 `model/scale-order.js:adjacentScalePosition` supplies the same boundary-crossing destination to arrow buttons and grip up/down keys. It enters an adjacent empty rail rather than skipping it; `moveScale` still enforces the row limit. `rail-editor.js` uses that same destination logic to label/disable boundary buttons.
 
@@ -283,3 +304,18 @@ after locating the copy, so a short scale's blank area remains blank. Static and
 retained readouts must agree. Do not apply the slide's coordinate transform to
 stators, wrap by a composite child's numerical range, or feed a wrapped display
 coordinate back into saved motion. See [the wraparound contract](SLIDE_WRAPAROUND.md).
+
+## Interactive teaching
+
+The optional tutorial uses the real instrument through the application motion
+paths. `tutorial/course.js` assembles subject data modules into 13 thematic sections;
+`tutorial/lessons.js` exposes frozen demonstrations and explicit practice
+targets; `animation.js` handles frame timing and cancellation; `programme.js`
+creates a private layout from one of 35 named teaching profiles; `workspace.js` retains the original
+applied state across profile changes. `ui/tutorial.js` owns section navigation,
+persistent symbolic problems, narration, step controls, alignment checks and
+session-only activity counts. Each lesson is assigned to a reviewed expected-answer
+fixture; the scope contract names the 50 principal scales.
+The temporary state is never the persistence/export source, and the JSON editor
+is suspended until the original workspace returns. Original scale Undo ownership
+is retained. See [the tutorial guide](TUTORIAL.md).

@@ -30,11 +30,26 @@ its own high-contrast colours.
 
 ## Page themes
 
-The header offers **Light**, **Dark** and **Solarised** on the right of its action row where space permits. Controls wrap on narrower screens rather than shrinking their text. The adjacent Flip side and Both sides buttons remain together. They style the page background, panels, form controls, keyboard-step selector, motion-control rails, digital readouts, editor and help. The physical instrument keeps its own colours, typography, bands and cursor. Changing a page theme does not rebuild graduations or change calculations, positions, magnification or the selected instrument.
+The header offers **Light**, **Dark** and **Solarised** on the right of its action row where space permits. Controls wrap on narrower screens rather than shrinking their text. These themes style the page background, panels, form controls, keyboard-step selector, motion-control rails, digital readouts, editor and help. The physical instrument keeps its own colours, typography, bands and cursor. Changing a page theme does not rebuild graduations or change calculations, positions, magnification or the selected instrument.
 
 Light uses cool neutral paper and restrained teal accents. Dark uses a charcoal background with light text and pale teal accents. Solarised uses warm paper and teal, based on [Ethan Schoonover's Solarized palette](https://ethanschoonover.com/solarized/). This adaptation uses darker neutrals for small text and adjusts some status/focus colours for contrast; it is not a verbatim editor colour scheme. No external stylesheet, font or network request is required.
 
 The preference is independent of Programme JSON. A valid saved browser preference takes precedence over a standalone file's initial `data-page-theme`. On a fresh browser, an exported standalone copy opens with the theme it was saved with. When browser storage is denied, changing theme still works and a notice explains that the preference is session-only. Preset changes and programme imports do not reset it.
+
+## Related controls
+
+The **Side** menu, **Flip side** and **Both sides** form one wrapping group
+before **Magnification**. **Reset positions** follows **Cursor appearance** in
+the layout-action row. These groups keep the controls together without taking
+width from the graduated instrument.
+
+**Learn the slide rule** uses the page theme’s existing selected colours and a
+semibold weight. Its text and position remain familiar, with emphasis that also
+works in Dark and Solarised themes. The labelled **Flip** buttons occupy only
+the instrument’s end borders, leaving scale names, formula captions and
+graduations unobscured. Their focus outlines and native button activation remain
+available. Unavailable end actions are hidden; the toolbar retains the disabled
+Flip side control and its explanation.
 
 ## Layout preset
 
@@ -101,7 +116,7 @@ Each summary has a padded target, a hover surface and an expanded divider;
 paragraphs keep a readable line length without clipping. Long validation
 messages wrap, including unbroken identifiers from a custom programme.
 
-**Reset positions** restores zero slide offset and centres the cursor. It does
+**Reset positions**, beside **Cursor appearance**, restores zero slide offset and centres the cursor. It does
 not change magnification or layout. **Use current programme** replaces the JSON
 editor text with a snapshot of the current programme, confirming an unapplied
 draft before replacement. **About preset** displays the selected description

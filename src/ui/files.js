@@ -4,6 +4,20 @@ export function standaloneHtml(document, programme) {
     clone.removeAttribute('data-app-ready');
     for (const node of clone.querySelectorAll('[data-runtime-only]')) node.remove();
     clone.querySelector('#loupeButton')?.setAttribute('aria-pressed', 'false');
+    clone.querySelector('#tutorialPanel')?.setAttribute('hidden', '');
+    clone.querySelector('#tutorialButton')?.setAttribute('aria-expanded', 'false');
+    // A configured copy opens on the saved programme, with its controls
+    // available. Tutorial locks are temporary and preserve pre-existing inert.
+    for (const node of clone.querySelectorAll('[data-tutorial-lock]')) {
+        if (node.getAttribute('data-tutorial-lock') === 'remove') node.removeAttribute('inert');
+        node.removeAttribute('data-tutorial-lock');
+    }
+    for (const node of clone.querySelectorAll('[data-tutorial-live]')) {
+        const live = node.getAttribute('data-tutorial-live');
+        if (live === 'none') node.removeAttribute('aria-live');
+        else node.setAttribute('aria-live', live);
+        node.removeAttribute('data-tutorial-live');
+    }
     // Retain the chosen cursor, but open a saved copy with its controls tucked away.
     clone.querySelector('#cursorAppearance')?.setAttribute('hidden', '');
     clone.querySelector('#slidePresetPanel')?.setAttribute('hidden', '');
@@ -19,6 +33,8 @@ export function standaloneHtml(document, programme) {
     }
     clone.querySelector('#railEditors').classList.remove('is-reordering');
     clone.querySelector('body').classList.remove('focus-mode');
+    clone.querySelector('body').classList.remove('tutorial-active');
+    clone.querySelector('body').removeAttribute('data-tutorial-focus');
     clone.querySelector('#focusButton').textContent = 'Focus rule';
     clone.querySelector('#focusButton').setAttribute('aria-pressed', 'false');
     return '<!doctype html>\n' + clone.outerHTML;

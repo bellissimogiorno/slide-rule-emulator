@@ -6,6 +6,7 @@ Sources for instrument layouts, mathematical relationships and implementation de
 
 - Faber-Castell, *Instructions: Precision Slide Rule No. 2/83N, 62/83N* — https://www.sliderules.info/pdf/fc-283n-eng.pdf
 - International Slide Rule Museum manual copy — https://sliderulemuseum.org/Manuals/Faber-Castell_2-83N_Manual_English.pdf
+- Manufacturer-manual transcription — https://udel.edu/~mm/sliderule/manuals/2-83N/manual/ — printed pp. 20–22 describe the W/W′ arithmetic, endpoint/dividing indexes and square/root transfers. The course uses the emulator’s √10 label (3.162); it does not claim to reproduce the original coloured index engraving.
 
 ## Pickett N3 and N4
 
@@ -13,6 +14,8 @@ Sources for instrument layouts, mathematical relationships and implementation de
 - Pickett N4-T model notes and scale photographs — https://www.sliderules.info/collection/10inch/070/1070-pickett-n4.htm
 - Smithsonian, *Pickett Manual for Dual Base Log Log Slide Rules* — https://www.si.edu/object/pickett-manual-dual-base-log-log-slide-rules%3Anmah_904697
 - Pickett 1968 catalogue scan — https://sliderulemuseum.com/Manuals/Pickett_1968_SlideRuleCatalog_ScanDonatedByStevenDecker.pdf
+- Pickett, *How to Use the Ln–L Scale Slide Rule* — https://www.sliderulemuseum.com/Manuals/Pickett_HowToUse_Ln-L_ScaleSR.pdf — printed pp. 4–5 cover linear logarithms/antilogarithms; pp. 8–9 cover characteristics and extended ranges; p. 10 describes the ln(10) shortcut using DF/M.
+- Maurice L. Hartung / Pickett, *How to Use Dual Base Log Log Slide Rules*, manufacturer-manual transcription by Mike Markowski — https://copland.udel.edu/~mm/sliderule/manuals/loglog.pdf — printed pp. 17–18, “The CF/M and DF/M Scales”, identify the fold as 1/M = ln(10), with M = log₁₀(e), and show ordinary folded arithmetic. A transcription is not an independently authenticated scan of every engraving.
 
 The exact back-to-back root construction, manual page pointers and primary specimen photographs are documented in [PICKETT_ROOTS.md](PICKETT_ROOTS.md). The root branches retain independent numerical tick coordinates, unlike reciprocal log-log pairs.
 
@@ -20,6 +23,7 @@ The exact back-to-back root construction, manual page pointers and primary speci
 
 - AA010/P221 instruction scan — https://www.rekeninstrumenten.nl/Sliderule-Simulator-or-Emulator/react_resources/PIC_Thornton/AA010_full.pdf
 - Model details and scale order — https://www.steves-sliderules.info/rule%20code/Thornton%20AA010.html
+- Thornton/PIC manufacturer instructions for Nos. 221/271, alternate original scan — https://www.sliderulemuseum.com/Manuals/Thornton_PIC_221-271_Instructions.pdf — printed pp. 13–15 discuss calibrated differential trigonometric scales; p. 20 discusses Ps/Pt vector relationships (with the booklet’s erratum). This source establishes the distinction between the historical Pt input scale and the emulator’s H₁/H₂ result-scale study. The course does not use the normalised Sd/Td/ISd/ITd drawings as calibrated historical correction factors.
 
 ## K&E Deci-Lon 68-1100
 

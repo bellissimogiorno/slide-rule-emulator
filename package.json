@@ -1,6 +1,6 @@
 {
   "name": "programmable-slide-rule",
-  "version": "3.2.41",
+  "version": "3.2.46",
   "private": true,
   "type": "module",
   "description": "Programmable duplex slide-rule emulator with mathematical scales and compact engraving.",
@@ -29,6 +29,8 @@
     "test:cursor-appearance": "node tests/browser/cursor_appearance.mjs",
     "test:display-precision": "node tests/browser/display_precision.mjs",
     "test:slide-preset": "node tests/browser/slide_preset.mjs",
-    "test:slide-wraparound": "node tests/browser/slide_wraparound.mjs"
+    "test:slide-wraparound": "node tests/browser/slide_wraparound.mjs",
+    "test:tutorial": "node tests/browser/tutorial.mjs",
+    "test:face-navigation": "node tests/browser/face_navigation.mjs"
   }
 }

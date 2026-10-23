@@ -20,6 +20,33 @@ Coverage includes scale/reference consistency, independent mathematical identiti
 
 The screenshots include the control strip and complete Faber, Pickett and Flying Fish views after keyboard movement. Keyboard increments are tested at more than one magnification. Browser test success is not a screen-reader or touch-device conformance claim.
 
+### Face navigation and control grouping
+
+`tests/unit/face-navigation.test.js` checks the shared next-face action, one-face
+and both-face guards, tutorial/drag locks, local shortcut scope, modifiers,
+composition, repeats, handled keys and listener lifetime. The explicit event
+fixtures establish these contracts without native browser focus or geometry.
+`tests/unit/view-controls.test.js` checks the requested DOM order, Reset outside
+the layout-action lock, real labelled end buttons, scoped styles and the
+tutorial button’s existing theme colours.
+
+After building, run the focused native suite:
+
+```sh
+npm run test:face-navigation -- --output qa/face-navigation
+```
+
+`tests/browser/face_navigation.mjs` exercises actual toolbar/end-button/F
+activation, retained focus, isolated arrow keys, unchanged positions and draft,
+ordinary drags and blocked flip routes, single/both-face views, tutorial locking
+with Reset still available, and a configured download reopened in a fresh
+context. Its viewport checks measure grouping, overflow and end-strip geometry,
+including separation from scale names, formula captions and graduations. The
+suite is a separate required browser CI step. A missing Chromium executable is
+a failed prerequisite with zero native cases; source/unit checks do not replace
+that acceptance result. Use the handover’s current report for the executed
+outcome, rather than treating the runner’s presence as a browser pass.
+
 ### Display precision and Cursor selector regression
 
 ```sh
@@ -95,8 +122,8 @@ This is local static-site verification, not a live GitHub Pages deployment.
 
 ### Shared Playwright setup for Node checks
 
-The five focused Node runners cover historical cursors, cursor appearance,
-display precision, the Slide preset menu and slide wraparound. They share one
+The six focused Node runners cover historical cursors, cursor appearance,
+display precision, the Slide preset menu, slide wraparound and the course. They share one
 dependency loader and record its package version and selected path in their
 reports. An explicit `PLAYWRIGHT_NODE_MODULE` absolute package-directory path takes
 priority; otherwise they use locally installed `playwright`, then the managed
@@ -114,11 +141,12 @@ npm run test:cursor-appearance
 npm run test:display-precision
 npm run test:slide-preset
 npm run test:slide-wraparound
+npm run test:tutorial
 ```
 
 Install Chromium using that same Python environment before these commands. The
 browser CI selects this bundled client after installing its pinned Python
-requirements and browser, then runs all five focused suites as separate steps.
+requirements and browser, then runs all six focused suites as separate steps.
 Each focused suite still executes if a preceding suite fails; all results and logs
 remain under `qa/ci/` for the existing evidence upload. Workflow text tests check
 this wiring locally; they do not establish a successful hosted CI run.
@@ -459,3 +487,18 @@ HTML, plus retention across preset loading and position resets.
 A missing Chromium executable is a setup failure, not a passed browser test.
 Use the handover's current verification record for actual execution results;
 unit or syntax checks alone do not establish browser rendering correctness.
+
+## Animated tutorial
+
+`node --test tests/unit/tutorial-*.test.js` executes lesson mathematics against
+actual arithmetic, inverse/folded, root, LL, trigonometric and hyperbolic mappings, controlled animation frames, workspace ownership, editor
+suspension/import races, all 89 tutorial/practice flows across 35 teaching profiles, phase-specific symbolic problems, section navigation/progress and configured export
+cleanup. Every lesson has per-stage independent numerical/readout oracles; tiny
+values use relative errors and near-one LL functions check their excess above one. Fake DOM/clock inputs establish these contracts without native layout.
+
+`npm run test:tutorial -- --output qa/tutorial` is the dedicated native acceptance
+runner on the real built page. It checks intermediate physical movement and
+exact target geometry/readouts, explicit wrong/correct practice, pause, replay,
+reduced motion, original applied programme/storage/draft/history restoration and
+configured copies in a clean browser context. Missing native prerequisites exit
+nonzero and record zero cases. The same suite is required by browser CI.

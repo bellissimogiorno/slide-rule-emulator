@@ -6,7 +6,7 @@ These are programmable, formula-driven digital instruments. Their names and appe
 | --- | --- | --- |
 | Faber-Castell 2/83N | Scale-order/layout study, W root arrangement, colour and formula hierarchy | Front circle-area and folded 360 cursor marks are included; additional original lines remain unresolved. See [cursors](CURSORS_FABER_ARISTO.md) |
 | Pickett N3 / N4 | Photographed back-to-back root banks and genuinely shared reciprocal LL graduations | Root branches retain independent tick positions; N3 natural and N4 base-10 LL geometry are distinct. Finite screen engraving is not a scan; see [Pickett roots](PICKETT_ROOTS.md) |
-| Thornton AA010 | Standard arithmetic/trigonometric families and paired presentation | Correction rows are normalised mathematical studies, not fully calibrated historical differential scales |
+| Thornton AA010 | Standard arithmetic/trigonometric families and paired presentation | Correction rows are normalised mathematical studies, not historical differential calibration; the Pt model uses H1/H2 result scales with a different input direction from original Pt |
 | K&E Deci-Lon | Cream/red layout and scale-family study | Explicitly inspired by the instrument, not a calibrated dimensional replica |
 | Pickett Model 14 | General log-log and degree/6400-mil faces, with shared angle ticks | Main-index mathematical reconstruction; no original end extensions or firing tables. See [Pickett 14](PICKETT_14.md) |
 | Pickett N16 | Standard scientific front, illustrative electronics reverse | Electronics reverse uses normalised relationships, without the full original decimal-point/unit system |

@@ -1,0 +1,129 @@
+/* Tutorial controls belong to the page palette. Only an active lesson gives
+   its teaching instrument larger engraving and focus cues. */
+.tutorial-panel {
+    margin-bottom: 16px;
+    padding: 16px;
+    border: 1px solid var(--ui-border);
+    border-inline-start: 3px solid var(--ui-accent);
+    border-radius: var(--ui-panel-radius);
+    background: var(--ui-card);
+    color: var(--ui-ink);
+    font-size: var(--ui-text-size);
+    line-height: var(--ui-text-leading);
+    scroll-margin-top: 16px;
+}
+
+.tutorial-heading, .tutorial-chooser, .tutorial-step-header, .tutorial-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+}
+
+.tutorial-heading { justify-content: space-between; }
+.tutorial-heading h2 { margin: 0; }
+.tutorial-note { max-width: 95ch; margin: 10px 0 14px; color: var(--ui-muted); }
+.tutorial-chooser { align-items: flex-end; }
+.tutorial-choice { flex: 1 1 220px; max-width: 360px; min-width: 0; }
+.tutorial-lesson-choice { flex-basis: 300px; max-width: 560px; }
+.tutorial-choice label { display: block; margin-bottom: 5px; }
+.tutorial-choice select { width: 100%; min-width: 0; }
+.tutorial-chooser .field { color: var(--ui-ink); font-weight: 650; }
+.tutorial-section-summary { max-width: 100ch; margin: 8px 0; }
+.tutorial-course-progress { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.tutorial-course-progress > :last-child { margin-inline-start: auto; }
+.tutorial-problem {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--ui-divider);
+    border-radius: var(--ui-radius);
+    background: var(--ui-panel);
+}
+.tutorial-problem-label { color: var(--ui-muted); font-weight: 600; }
+.tutorial-problem p {
+    flex: 1 1 240px;
+    min-width: 0;
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+.tutorial-intro p { max-width: 85ch; margin: 14px 0 10px; }
+.tutorial-player { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--ui-divider); }
+.tutorial-step-header { justify-content: space-between; align-items: baseline; }
+.tutorial-phase { font-weight: 650; color: var(--ui-accent); }
+.tutorial-player h3 { margin: 8px 0 6px; font-size: 17px; line-height: 1.35; font-weight: 650; }
+.tutorial-instruction { max-width: 100ch; margin: 0 0 10px; }
+.tutorial-player > .hint { max-width: 100ch; margin: 8px 0 12px; }
+.tutorial-actions { margin-top: 12px; }
+.tutorial-feedback { min-height: 1.55em; max-width: 100ch; margin: 10px 0 0; overflow-wrap: anywhere; }
+.tutorial-feedback[data-result="success"] { color: var(--ui-success); }
+.tutorial-feedback[data-result="retry"] { color: var(--ui-ink); }
+.tutorial-motion-notice { margin: 12px 0 0; }
+
+body.tutorial-active #ruleCanvas {
+    --row-h: 48px;
+    --compact-row-h: 48px;
+    --number-size: 14px;
+    --name-size: 14px;
+}
+body.tutorial-active #ruleCanvas .top-stator { padding-top: 0; }
+body.tutorial-active #ruleCanvas .top-stator > .empty-scale { display: none; }
+/* Keep a demonstration and its instrument together in the viewport. These
+   normal controls and explanations return immediately when the lesson closes. */
+body.tutorial-active .preset-picker,
+body.tutorial-active .motion-help,
+body.tutorial-active .side-panel,
+body.tutorial-active .subtitle,
+body.tutorial-active .view-controls .side-controls,
+body.tutorial-active .view-controls .layout-actions,
+body.tutorial-active header [data-tutorial-lock],
+body.tutorial-active .position-caption [data-tutorial-lock],
+body.tutorial-active .tutorial-note { display: none; }
+body.tutorial-active header { padding: 12px 28px; gap: 10px; }
+body.tutorial-active h1 { font-size: 24px; }
+body.tutorial-active .tutorial-panel { padding: 12px; margin-bottom: 12px; }
+body.tutorial-active .tutorial-player { margin-top: 10px; padding-top: 10px; }
+body.tutorial-active .view-controls { margin-bottom: 10px; }
+body[data-tutorial-focus="cursor"] #ruleCanvas .cursor {
+    outline: 2px solid #00758a;
+    outline-offset: 1px;
+}
+body[data-tutorial-focus="slide"] #ruleCanvas .slide-rail,
+body[data-tutorial-focus="scales"] #ruleCanvas .slide-rail,
+body[data-tutorial-focus="scales"] #ruleCanvas .top-stator,
+body[data-tutorial-focus="scales"] #ruleCanvas .bottom-stator {
+    box-shadow: inset 0 0 0 2px #00758a;
+}
+body[data-tutorial-focus="cursor"] .position-control[data-motion="cursor"],
+body[data-tutorial-focus="slide"] .position-control[data-motion="slideOffset"] {
+    outline: 2px solid var(--ui-focus);
+    outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+    .tutorial-panel { padding: 12px; }
+    .tutorial-choice { max-width: none; }
+    .tutorial-course-progress > :last-child { margin-inline-start: 0; }
+    .tutorial-step-header { justify-content: flex-start; }
+    body.tutorial-active header { padding: 12px; }
+}
+@media (forced-colors: active) {
+    .tutorial-panel { border-color: ButtonText; border-inline-start-color: Highlight; }
+    body[data-tutorial-focus="cursor"] #ruleCanvas .cursor {
+        outline-color: Highlight;
+    }
+    body[data-tutorial-focus="slide"] #ruleCanvas .slide-rail,
+    body[data-tutorial-focus="scales"] #ruleCanvas .slide-rail,
+    body[data-tutorial-focus="scales"] #ruleCanvas .top-stator,
+    body[data-tutorial-focus="scales"] #ruleCanvas .bottom-stator {
+        outline: 2px solid Highlight;
+        outline-offset: -2px;
+    }
+}

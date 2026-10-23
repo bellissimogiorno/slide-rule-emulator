@@ -7,6 +7,7 @@ import { railEditorMarkup, refreshEditorPositions } from "#ui/rail-editor.js";
 import { createRailReorder } from "#ui/rail-reorder.js";
 import { createLoupe } from "#ui/loupe.js";
 import { createStepControls } from "#ui/step-controls.js";
+import { bindFaceNavigation } from '#ui/face-navigation.js';
 import { bindPageThemes } from "#ui/page-theme.js";
 import { motionStep, motionStepShortcut, motionKeyCommand, movedPosition, positionText, positionDescription } from "#ui/motion.js";
 import { loadProgramme, saveProgramme } from "#model/storage.js";
@@ -27,10 +28,19 @@ import { renderCursor, positionCursorMarks, cursorCapClasses } from '#ui/cursor-
 import { APP_VERSION, STORAGE_KEY } from "#version.js";
 import { renderAppearanceControls, renderFaceControls, renderPresetControls } from '#ui/programme-controls.js';
 import { createScaleGeometry } from '#ui/scale-geometry.js';
+import { createTutorial } from '#ui/tutorial.js';
+import { createTutorialWorkspace } from '#tutorial/workspace.js';
+import { createTutorialProgramme } from '#tutorial/programme.js';
 function createApplication(document) {
     const window = document.defaultView;
     const lifetime = new window.AbortController();
-    const listen = (target, type, listener) => target.addEventListener(type, listener, { signal: lifetime.signal });
+    const listen = (target, type, listener) => target.addEventListener(type, event => {
+        if (tutorialWorkspace.active && event.target.closest?.('[data-tutorial-lock]')) {
+            event.preventDefault();
+            return;
+        }
+        listener(event);
+    }, { signal: lifetime.signal });
     let resizeObserver;
     let destroyed = false;
     let startupMessage = "";
@@ -56,8 +66,15 @@ function createApplication(document) {
     let keyboardTarget = "cursor";
     let lastMotionFocus = null;
     let stepControls;
+    let faceNavigation;
     let slidePresetPanel;
     let loupe;
+    let tutorial;
+    let tutorialView = null;
+    const tutorialWorkspace = createTutorialWorkspace({
+        getState: () => state, setState: value => { state = value; },
+        beforeEnter: prepareTutorialWorkspace
+    });
     let railReorder;
     const scaleHistory = createScaleHistory();
     let dragPointerId = null;
@@ -118,7 +135,7 @@ function createApplication(document) {
         normalizeState(state);
         readoutView = createReadoutView(dom.readout);
         programmeEditor = createProgrammeEditor({ document, signal: lifetime.signal,
-            getProgramme: () => exportableState(state), applyProgramme: applyProgramme });
+            getProgramme: () => exportableState(tutorialWorkspace.getPersistentState()), applyProgramme: applyProgramme });
         stepControls = createStepControls({
             element: dom.motionStep, signal: lifetime.signal,
             returnTarget: () => lastMotionFocus?.isConnected ? lastMotionFocus : dom.ruleCanvas,
@@ -135,6 +152,15 @@ function createApplication(document) {
             initialFocus: () => dom.slidePresetSelect
         });
         bindEvents();
+        faceNavigation = bindFaceNavigation({ document, root: dom.workbench,
+            button: dom.flipButton, signal: lifetime.signal,
+            getState: () => state, isLocked: () => tutorialWorkspace.active || Boolean(dragMode),
+            onFlip: side => {
+                state.activeSide = side;
+                saveState();
+                render();
+            }
+        });
         railReorder = createRailReorder({
             root: dom.railEditors, status: dom.reorderStatus, onMove: moveEditorScale,
             refresh: () => refreshEditorPositions(dom.railEditors), signal: lifetime.signal
@@ -145,6 +171,20 @@ function createApplication(document) {
             returnTarget: () => lastMotionFocus?.isConnected ? lastMotionFocus : dom.ruleCanvas
         });
         createMarkTooltips({ document, canvas: dom.ruleCanvas, signal: lifetime.signal });
+        tutorial = createTutorial({ document, signal: lifetime.signal,
+            onBegin: beginTutorial, onPosition: setTutorialPosition, onEnd: endTutorial,
+            getPosition: () => ({ slideOffset: state.slideOffset, cursor: state.cursor }),
+            getTolerance: () => {
+                const width = getScaleGeometry().screenWidth;
+                return Number.isFinite(width) && width > 0
+                    ? Math.min(.004, Math.max(.0015, 3 / width)) : .004;
+            },
+            onFocus: focus => {
+                if (!tutorialWorkspace.active || !focus) return;
+                selectMotionTarget(focus === 'slide' ? 'slideOffset' : 'cursor');
+                panTutorial();
+            }
+        });
         render();
         if (startupMessage)
             showAppStatus(startupMessage);
@@ -217,13 +257,6 @@ function createApplication(document) {
             saveState();
             render();
         });
-        listen(dom.flipButton, "click", () => {
-            const keys = Object.keys(state.sides);
-            const idx = Math.max(0, keys.indexOf(state.activeSide));
-            state.activeSide = keys[(idx + 1) % keys.length];
-            saveState();
-            render();
-        });
         listen(dom.focusButton, "click", () => {
             const focused = document.body.classList.toggle("focus-mode");
             dom.focusButton.textContent = focused ? "Show controls" : "Focus rule";
@@ -232,6 +265,7 @@ function createApplication(document) {
             scheduleResize();
         });
         listen(dom.resetButton, "click", () => {
+            tutorial.interrupt();
             state.slideOffset = 0;
             state.cursor = 0.5;
             saveState();
@@ -344,6 +378,125 @@ function createApplication(document) {
         });
 
     }
+    function prepareTutorialWorkspace() {
+        // Finish real edits before swapping in a temporary learning programme.
+        endDrag();
+        flushState();
+        window.cancelAnimationFrame(motionFrame);
+        motionFrame = 0;
+        railReorder.cancel(false);
+        tutorialView = {
+            step: stepControls.value, loupe: loupe.enabled, keyboardTarget, lastMotionFocus,
+            scrollLeft: dom.ruleViewport.scrollLeft, scrollX: window.scrollX, scrollY: window.scrollY,
+            preset: dom.presetSelect.value, description: dom.presetDescription.textContent,
+            descriptionHidden: dom.presetDescription.hidden,
+            detailsExpanded: dom.presetDetailsButton.getAttribute('aria-expanded'),
+            readoutLive: dom.readout.getAttribute('aria-live'), locked: []
+        };
+        programmeEditor.suspend();
+        loupe.setEnabled(false);
+        // Narration and explicit practice feedback announce once per step.
+        // Rapidly changing animated readings remain available to inspect.
+        dom.readout.setAttribute('data-tutorial-live', tutorialView.readoutLive ?? 'none');
+        dom.readout.setAttribute('aria-live', 'off');
+    }
+    function beginTutorial(start, layout = 'cd') {
+        const first = !tutorialWorkspace.active;
+        endDrag();
+        window.cancelAnimationFrame(motionFrame);
+        motionFrame = 0;
+        try {
+            // Each demonstration/practice may introduce different physical
+            // scales. The workspace retains its first original reference while
+            // every entry replaces only the temporary learning programme.
+            tutorialWorkspace.enter(createTutorialProgramme(start, layout));
+            render({ preserveEditor: true });
+            if (first) {
+                // Inert preserves controls and their own disabled states. The
+                // marker also lets standalone export undo this temporary lock.
+                const selectors = '.side-panel, .preset-picker, .face-actions, #sideSelect, #focusButton, '
+                    + '.layout-actions, [data-slide-preset-trigger], [data-cursor-appearance-trigger], '
+                    + '#slidePresetPanel, #cursorAppearance';
+                for (const node of new Set(document.querySelectorAll(selectors))) {
+                    const previous = node.getAttribute('inert');
+                    tutorialView.locked.push([node, previous]);
+                    node.setAttribute('data-tutorial-lock', previous === null ? 'remove' : 'keep');
+                    node.setAttribute('inert', '');
+                }
+                stepControls.select(.001);
+            }
+            setTutorialPosition(start);
+            document.getElementById('tutorialPanel').scrollIntoView({ block: 'start', behavior: 'auto' });
+        } catch (error) {
+            document.body.classList.remove('tutorial-active');
+            delete document.body.dataset.tutorialFocus;
+            if (tutorialWorkspace.active) endTutorial();
+            else if (tutorialView) {
+                programmeEditor.resume();
+                loupe.setEnabled(tutorialView.loupe);
+                restoreReadoutAnnouncements();
+                tutorialView = null;
+            }
+            throw error;
+        }
+    }
+    function setTutorialPosition(position) {
+        if (!tutorialWorkspace.active || destroyed) return;
+        state.slideOffset = position.slideOffset;
+        state.cursor = position.cursor;
+        // Animation already runs in a frame: paint the real instrument now,
+        // rather than adding another frame of delay through scheduleMotion().
+        updateSlideTransform();
+        updateCursorPosition();
+        readoutView.update(state, scaleLibrary);
+        updatePositionControls();
+        panTutorial();
+    }
+    function panTutorial() {
+        if (!tutorialWorkspace.active || dom.ruleViewport.scrollWidth <= dom.ruleViewport.clientWidth) return;
+        const geometry = getScaleGeometry();
+        const x = geometry.screenLeft + state.cursor * geometry.screenWidth;
+        const viewport = dom.ruleViewport.getBoundingClientRect();
+        const margin = Math.min(80, viewport.width / 4);
+        if (x < viewport.left + margin) dom.ruleViewport.scrollLeft += x - viewport.left - margin;
+        else if (x > viewport.right - margin) dom.ruleViewport.scrollLeft += x - viewport.right + margin;
+    }
+    function endTutorial() {
+        if (!tutorialWorkspace.active) return;
+        // endDrag must run before leaving the isolated workspace: it flushes
+        // storage and schedules editor sync in ordinary use.
+        endDrag();
+        window.cancelAnimationFrame(motionFrame);
+        motionFrame = 0;
+        const previous = tutorialView;
+        tutorialWorkspace.leave();
+        programmeEditor.resume();
+        restoreReadoutAnnouncements();
+        for (const [node, inert] of previous.locked) {
+            if (inert === null) node.removeAttribute('inert');
+            else node.setAttribute('inert', inert);
+            node.removeAttribute('data-tutorial-lock');
+        }
+        tutorialView = null;
+        if (destroyed) return;
+        render({ preserveEditor: true });
+        dom.presetSelect.value = previous.preset;
+        dom.presetDescription.textContent = previous.description;
+        dom.presetDescription.hidden = previous.descriptionHidden;
+        if (previous.detailsExpanded === null) dom.presetDetailsButton.removeAttribute('aria-expanded');
+        else dom.presetDetailsButton.setAttribute('aria-expanded', previous.detailsExpanded);
+        stepControls.select(previous.step);
+        selectMotionTarget(previous.keyboardTarget);
+        lastMotionFocus = previous.lastMotionFocus;
+        loupe.setEnabled(previous.loupe);
+        dom.ruleViewport.scrollLeft = previous.scrollLeft;
+        window.scrollTo(previous.scrollX, previous.scrollY);
+    }
+    function restoreReadoutAnnouncements() {
+        if (tutorialView.readoutLive === null) dom.readout.removeAttribute('aria-live');
+        else dom.readout.setAttribute('aria-live', tutorialView.readoutLive);
+        dom.readout.removeAttribute('data-tutorial-live');
+    }
     function loadState() {
         const result = loadProgramme({
             seed: document.getElementById("embedded-program")?.textContent.trim(),
@@ -355,17 +508,20 @@ function createApplication(document) {
         return result.programme;
     }
     function saveState() {
+        if (tutorialWorkspace.active) return;
         stateDirty = true;
         clearTimeout(saveTimer);
         saveTimer = setTimeout(flushState, 200);
     }
     function flushState() {
+        if (tutorialWorkspace.active) return;
         clearTimeout(saveTimer);
         saveTimer = 0;
         if (!stateDirty)
             return;
         try {
-            saveProgramme({ getStorage: () => window.localStorage, key: activeStorageKey, programme: exportableState(state), recovery: recoveryData });
+            saveProgramme({ getStorage: () => window.localStorage, key: activeStorageKey,
+                programme: exportableState(tutorialWorkspace.getPersistentState()), recovery: recoveryData });
             stateDirty = false;
         }
         catch (error) {
@@ -388,6 +544,7 @@ function createApplication(document) {
             updateCursorPosition();
             readoutView.update(state, scaleLibrary);
             updatePositionControls();
+            if (tutorialWorkspace.active && !dragMode) panTutorial();
         });
     }
     function scheduleResize() {
@@ -413,6 +570,7 @@ function createApplication(document) {
         if (dom.motionTarget.textContent !== description) dom.motionTarget.textContent = description;
     }
     function movePosition(field, command) {
+        tutorial?.interrupt();
         state[field] = movedPosition(state[field], field, command);
         scheduleMotion();
         saveState();
@@ -422,7 +580,7 @@ function createApplication(document) {
         const target = event.target;
         // The menu buttons live in the motion cards; their keys must not
         // move either part, change the motion step or toggle the loupe.
-        if (target.closest?.('[data-cursor-appearance-trigger], [data-slide-preset-trigger]')) return;
+        if (target.closest?.('[data-cursor-appearance-trigger], [data-slide-preset-trigger], [data-rule-flip]')) return;
         const card = target.closest?.(".position-control");
         const onRule = target.closest?.("#ruleViewport");
         if (!card && !onRule) return;
@@ -458,7 +616,7 @@ function createApplication(document) {
         movePosition(field, command);
         event.preventDefault(); // prevent a second, browser-native range step
     }
-    function render() {
+    function render({ preserveEditor = false } = {}) {
         normalizeState(state);
         if (state.customScales !== libraryDefinitions) {
             libraryDefinitions = state.customScales;
@@ -471,20 +629,23 @@ function createApplication(document) {
         renderRailEditors();
         renderLibraryList();
         updatePositionControls();
-        programmeEditor.sync();
-        if (!programmeEditor.dirty)
-            programmeEditor.status("");
+        if (!preserveEditor) {
+            programmeEditor.sync();
+            if (!programmeEditor.dirty) programmeEditor.status("");
+        }
     }
     function applyAppearance() {
         renderAppearanceControls(document, dom, state);
     }
     function renderSideSelect() {
         renderFaceControls(dom, state);
+        faceNavigation.refresh();
     }
     function renderPresetSelect() {
         renderPresetControls(dom, state);
     }
     function applyPreset(id) {
+        if (tutorialWorkspace.active) return;
         const preset = PRESETS[id];
         if (!preset)
             return;
@@ -593,6 +754,7 @@ function createApplication(document) {
         }
     }
     function undoScaleEdit(buttonRail = null) {
+        if (tutorialWorkspace.active) return;
         railReorder.cancel(false);
         const restored = scaleHistory.undo(state);
         if (!restored) return;
@@ -611,6 +773,7 @@ function createApplication(document) {
         dom.reorderStatus.textContent = `Undone: ${restored.description}. ${scaleHistory.size ? "Undo is available for earlier scale edits." : "No more scale edits to undo."}`;
     }
     function moveEditorScale(from, to) {
+        if (tutorialWorkspace.active) return false;
         try {
             const side = state.sides[state.activeSide];
             const next = moveScale(side, from, to);
@@ -639,6 +802,7 @@ function createApplication(document) {
         dom.libraryList.innerHTML = items;
     }
     function onRailEditorChange(event) {
+        if (tutorialWorkspace.active) return;
         const row = event.target.closest(".scale-control-row");
         if (!row || event.target.tagName !== "SELECT")
             return;
@@ -658,6 +822,7 @@ function createApplication(document) {
         dom.reorderStatus.textContent = `${old} replaced with ${event.target.value}. Undo is available.`;
     }
     function onRailEditorClick(event) {
+        if (tutorialWorkspace.active) return;
         const button = event.target.closest("button[data-action]");
         if (!button || button.disabled) return;
         const action = button.dataset.action;
@@ -709,6 +874,7 @@ function createApplication(document) {
     function onPointerDown(event) {
         if (dragMode || event.isPrimary === false || (event.button !== undefined && event.button !== 0))
             return;
+        tutorial?.interrupt();
         dom.ruleCanvas.focus({ preventScroll: true });
         const target = event.target;
         dragFace = target.closest?.(".rule-face-body");
@@ -780,6 +946,7 @@ function createApplication(document) {
             slideRail.classList.remove("dragging");
         dragFace = null;
         programmeEditor.scheduleSync();
+        if (tutorialWorkspace.active) panTutorial();
     }
     function updateCursorFromClientX(clientX) {
         const geometry = getScaleGeometry(dragFace);
@@ -788,6 +955,7 @@ function createApplication(document) {
         scheduleMotion();
     }
     function applyProgramme(parsed) {
+        if (tutorialWorkspace.active) throw new Error('Close the tutorial before loading a programme.');
         const candidate = mergeState(deepClone(DEFAULT_STATE), parsed);
         if (!parsed.presetId) candidate.presetId = "custom";
         normalizeState(candidate);
@@ -810,7 +978,7 @@ function createApplication(document) {
             programmeEditor.status("Use the built dist HTML to save a self-contained copy.", true);
             return;
         }
-        const html = standaloneHtml(document, exportableState(state));
+        const html = standaloneHtml(document, exportableState(tutorialWorkspace.getPersistentState()));
         downloadBlob(new Blob([html], { type: "text/html" }), "slide-rule-v" + APP_VERSION + "-configured.html");
         programmeEditor.status("Standalone copy saved with the current applied programme.");
     }
@@ -819,11 +987,12 @@ function createApplication(document) {
     }
     init();
     return {
-        getProgram: () => exportableState(state),
+        getProgram: () => exportableState(tutorialWorkspace.getPersistentState()),
         destroy() {
             if (destroyed)
                 return;
             destroyed = true;
+            tutorial.destroy();
             endDrag();
             flushState();
             lifetime.abort();
