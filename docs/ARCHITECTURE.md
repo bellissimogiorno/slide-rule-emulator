@@ -154,11 +154,14 @@ The application registers its motion handler before the loupe handler so a frame
 `ui/rail-editor.js` owns markup and accessible position labels. `ui/rail-reorder.js` handles grip gestures, filled-arrow activation, keyboard moves, scrolling and focus. A drag creates an inert, runtime-only visual copy and insertion marker; it does not reorder the DOM rows or touch the programme until drop. This keeps empty-rail targets stable and makes cancellation genuinely non-mutating. Committed moves keep the same editor nodes, animate their changed positions for 180 ms and refresh all indices, accessible names and endpoint buttons. Reduced-motion preferences suppress the animation. All listeners, pointer capture, visual copies and animation frames are removed on cancellation or destruction. Unapplied JSON drafts are never overwritten by these edits.
 
 
-## Header state, scale undo and inactivity
+## Face controls, scale Undo and inactivity
 
 The Side selector, Flip side and Both sides are one wrapping group before
 Magnification. Reset positions follows Cursor appearance outside the temporary
-layout-action lock, so it remains usable during teaching. The header retains
+layout-action lock, so it remains usable during teaching. Reset ends an active
+drag and reuses scheduled motion updates, retaining the graduation tree and
+readout nodes. The guarded editor sync updates clean JSON without replacing an
+unapplied draft. The header retains
 Focus rule, the subtly emphasised tutorial entry and page themes. These are
 presentation changes; `viewMode` and `activeSide` remain the view state.
 
@@ -174,7 +177,9 @@ The shortcut rejects handled, repeated, composed or modified keys and targets
 outside the instrument/position controls. Text fields, select menus and popup
 triggers retain their own keys. One-face programmes, both-face view, active
 drags and tutorials cannot flip through any entry point. `refresh()` projects
-the same availability and explanation to every flip button. Abort-driven
+the same availability and explanation to every flip button. Ending a drag
+refreshes this projection, including when a structural render occurred before
+capture was released. Abort-driven
 listener cleanup follows the application lifetime. Both sides still uses the
 existing `viewMode` toggle and the Side menu’s pressed/disabled projection.
 
@@ -312,7 +317,9 @@ paths. `tutorial/course.js` assembles subject data modules into 13 thematic sect
 `tutorial/lessons.js` exposes frozen demonstrations and explicit practice
 targets; `animation.js` handles frame timing and cancellation; `programme.js`
 creates a private layout from one of 35 named teaching profiles; `workspace.js` retains the original
-applied state across profile changes. `ui/tutorial.js` owns section navigation,
+applied state across profile changes. On exit, a guarded editor sync completes
+any clean update cancelled at entry while preserving a dirty draft.
+`ui/tutorial.js` owns section navigation,
 persistent symbolic problems, narration, step controls, alignment checks and
 session-only activity counts. Each lesson is assigned to a reviewed expected-answer
 fixture; the scope contract names the 50 principal scales.

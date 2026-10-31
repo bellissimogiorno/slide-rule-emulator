@@ -6,7 +6,7 @@ Sources for instrument layouts, mathematical relationships and implementation de
 
 - Faber-Castell, *Instructions: Precision Slide Rule No. 2/83N, 62/83N* — https://www.sliderules.info/pdf/fc-283n-eng.pdf
 - International Slide Rule Museum manual copy — https://sliderulemuseum.org/Manuals/Faber-Castell_2-83N_Manual_English.pdf
-- Manufacturer-manual transcription — https://udel.edu/~mm/sliderule/manuals/2-83N/manual/ — printed pp. 20–22 describe the W/W′ arithmetic, endpoint/dividing indexes and square/root transfers. The course uses the emulator’s √10 label (3.162); it does not claim to reproduce the original coloured index engraving.
+- Manufacturer-manual transcription — https://udel.edu/~mm/sliderule/manuals/2-83N/manual/ — printed pp. 20–22 describe the W/W′ arithmetic, endpoint and red boundary indexes and square/root transfers. The course uses the emulator’s √10 label (3.162); it does not claim to reproduce the original coloured index engraving.
 
 ## Pickett N3 and N4
 

@@ -66,6 +66,11 @@ try {
             }, value);
         await settle(page);
     };
+    const expectCleanJson = async (page, expected) => {
+        await page.waitForFunction(expected => document.getElementById('jsonEditor').value
+            === JSON.stringify(expected, null, 2), expected);
+        assert.deepEqual(JSON.parse(await page.locator('#jsonEditor').inputValue()), expected);
+    };
     const open = async (context, name = 'index.html') => {
         const page = await context.newPage(); page.setDefaultTimeout(15000);
         page.on('pageerror', error => report.errors.push(String(error)));
@@ -119,6 +124,26 @@ try {
             assert.equal(button.overlapsContent, false, 'End actions do not cover scales or captions');
         }
         await passed('Side controls keep their requested order; end actions do not cover labels, captions or graduations');
+
+        await move(page, { slideOffset: .246, cursor: .753 });
+        await expectCleanJson(page, await programme(page));
+        const tick = await page.locator('#ruleCanvas .tick').first().elementHandle();
+        assert(tick, 'The reset regression requires an existing graduation node');
+        await page.locator('#resetButton').click(); await settle(page);
+        assert.deepEqual(await position(page), { slideOffset: 0, cursor: .5 });
+        assert.equal(await page.locator('#ruleCanvas .tick').first().evaluate((node, original) => node === original, tick), true,
+            'Reset updates motion without rebuilding the graduation tree');
+        await expectCleanJson(page, await programme(page));
+        const resetDraft = '{"unapplied":"retain this draft when resetting positions"}';
+        await page.locator('#jsonEditor').fill(resetDraft);
+        await move(page, { slideOffset: .135, cursor: .642 });
+        await page.locator('#resetButton').click(); await settle(page);
+        await page.waitForTimeout(200);
+        assert.deepEqual(await position(page), { slideOffset: 0, cursor: .5 });
+        assert.equal(await page.locator('#jsonEditor').inputValue(), resetDraft,
+            'The reset sync must not overwrite an unapplied draft');
+        await tick.dispose();
+        await passed('Reset retains graduation nodes, updates clean JSON after motion and preserves an unapplied draft');
 
         await move(page, { slideOffset: .123, cursor: .789 });
         const draft = '{"unapplied":"retain this draft across face changes"}';
@@ -175,6 +200,25 @@ try {
         await page.mouse.move(pane.x + pane.width * .5 + 25, pane.y + pane.height / 2, { steps: 4 });
         await page.mouse.up(); await settle(page);
         assert.equal((await programme(page)).activeSide, activeSide, 'An ordinary slide drag does not flip');
+
+        await page.selectOption('#presetSelect', 'faber283n');
+        const capturedPane = await page.locator('#ruleCanvas .slide-rail .tick-pane').first().boundingBox();
+        await page.mouse.move(capturedPane.x + capturedPane.width * .5, capturedPane.y + capturedPane.height / 2);
+        await page.mouse.down();
+        assert(await page.locator('#ruleCanvas').evaluate(node => node.classList.contains('is-dragging')));
+        await page.locator('#loadPresetButton').focus();
+        await page.keyboard.press('Enter'); await settle(page);
+        assert.equal(await page.locator('#ruleCanvas').evaluate(node => node.classList.contains('is-dragging')), false);
+        assert(await page.locator('#flipButton').isEnabled());
+        for (const side of ['left', 'right']) assert(await end(page, side).isEnabled());
+        const replacedPosition = await position(page);
+        await page.mouse.move(capturedPane.x + capturedPane.width * .5 + 30, capturedPane.y + capturedPane.height / 2);
+        await settle(page);
+        assert.deepEqual(await position(page), replacedPosition,
+            'Keyboard preset replacement ends the old drag before later pointer movement');
+        await page.mouse.up(); await settle(page);
+        await passed('Keyboard preset replacement during a drag releases the old motion and refreshes every face action');
+
         await page.locator('#bothSidesButton').click(); await settle(page);
         assert.equal(await page.locator('#ruleCanvas .rule-face').count(), 2);
         assert(await page.locator('#flipButton').isDisabled());
@@ -201,6 +245,38 @@ try {
 
         await page.selectOption('#presetSelect', 'faber283n');
         await page.locator('#loadPresetButton').click(); await settle(page);
+        // This scenario starts from an explicitly clean editor rather than
+        // relying on whether the preceding preset had one face or two.
+        await page.locator('#jsonEditor').fill(JSON.stringify(await programme(page), null, 2));
+        await page.locator('#applyJsonButton').click(); await settle(page);
+        await expectCleanJson(page, await programme(page));
+        const beforeQuickLesson = await programme(page);
+        await page.evaluate(() => {
+            // One task guarantees that tutorial suspension precedes the
+            // normal 160ms editor timer; real browser timers resume afterwards.
+            const input = document.getElementById('slideRange');
+            input.value = '32.1'; input.dispatchEvent(new Event('input', { bubbles: true }));
+            document.getElementById('tutorialButton').click();
+            document.getElementById('tutorialWatchButton').click();
+            document.getElementById('tutorialCloseButton').click();
+        });
+        const afterQuickLesson = { ...beforeQuickLesson, slideOffset: .321 };
+        assert.deepEqual(await programme(page), afterQuickLesson);
+        await expectCleanJson(page, afterQuickLesson);
+        const pendingDraft = '{"unapplied":"retain this draft through a quick lesson"}';
+        await page.locator('#jsonEditor').fill(pendingDraft);
+        await page.evaluate(() => {
+            const input = document.getElementById('cursorRange');
+            input.value = '654'; input.dispatchEvent(new Event('input', { bubbles: true }));
+            document.getElementById('tutorialButton').click();
+            document.getElementById('tutorialWatchButton').click();
+            document.getElementById('tutorialCloseButton').click();
+        });
+        await page.waitForTimeout(200);
+        assert.equal(await page.locator('#jsonEditor').inputValue(), pendingDraft);
+        assert.deepEqual(await programme(page), { ...afterQuickLesson, cursor: .654 });
+        await passed('Quick lesson entry/exit resumes pending clean JSON sync and leaves an unapplied draft intact');
+
         await move(page, { slideOffset: -.234, cursor: .678 });
         const original = await programme(page);
         await page.locator('#tutorialButton').click(); await page.locator('#tutorialWatchButton').click(); await settle(page);
@@ -224,6 +300,7 @@ try {
         } finally { await fresh.close(); }
         await page.locator('#tutorialCloseButton').click(); await settle(page);
         assert.deepEqual(await programme(page), original);
+        assert.equal(await page.locator('#jsonEditor').inputValue(), pendingDraft);
         await passed('Tutorial locking protects every flip route, leaves Reset usable, and configured copies restore working face actions');
 
         for (const width of [390, 760, 1600]) {

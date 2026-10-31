@@ -81,7 +81,7 @@ export const FABER_W_LESSONS = sectionLessons('faber-w', [
                 position(0, lower(1.8)), 'cursor', ['W1']),
             move('See the limit of the ordinary index', 'Put W₁′ 1 under the hairline. At this setting, W₂′ 7.5 would lie beyond the fixed rule’s right-hand end. We need a different index before setting that factor.',
                 position(lower(1.8), lower(1.8)), 'slide', ['W1P', 'W1']),
-            move('Use W₁′’s right-hand √10 index', 'Hold the cursor still and bring W₁′’s right-hand end, √10, under it. The endpoint is displayed as 3.162. The manufacturer calls this the dividing index. With this index, read the result on the opposite fixed W row rather than the row adjacent to the second factor.',
+            move('Use W₁′’s right-hand √10 index', 'Hold the cursor still and bring W₁′’s right-hand end, √10, under it. The endpoint is displayed as 3.162. The manufacturer marks this boundary in red; here it is identified by value. With this index, read the result on the opposite fixed W row rather than the row adjacent to the second factor.',
                 position(lower(1.8) - 1, lower(1.8)), 'slide', ['W1P', 'W1']),
             move('Read W₁ opposite W₂′ 7.5', 'Move to 7.5 on W₂′. Read the opposite fixed row W₁, which shows 1.35. Your estimate places the decimal: 1.8 × 7.5 = 13.5. Reading adjacent W₂ here would introduce an incorrect factor of √10.',
                 position(lower(1.8) - 1, lower(1.35)), 'cursor', ['W2P', 'W1'])

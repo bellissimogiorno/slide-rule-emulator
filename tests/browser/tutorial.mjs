@@ -10,6 +10,7 @@ import { createServer } from 'node:http';
 import { dirname, resolve, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadPlaywright } from './playwright.mjs';
+import { assertReadoutValue } from './readout-assertions.mjs';
 import { buildHtml } from '../../tools/build.mjs';
 import { TUTORIAL_LESSONS } from '#tutorial/lessons.js';
 import { TUTORIAL_SECTIONS } from '#tutorial/course.js';
@@ -133,7 +134,10 @@ try {
             const value = text.match(/^(?:Main:\s*)?(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)/i);
             assert(value, `${id} has a numeric readout: ${text}`);
             const expected = scale.value(local);
-            close(Number(value[1]), expected, .002 * Math.max(1, Math.abs(expected)));
+            const def = BUILTIN_SCALES[id];
+            const nearUnity = ['loglog', 'loglog10', 'syncroLogLog', 'hypotenuseLow', 'hypotenuseHigh'].includes(def.type)
+                || (def.type === 'expression' && Number.isFinite(def.decade)) || def.precisionOrigin === 1;
+            assertReadoutValue(Number(value[1]), expected, { nearUnity, label: id });
         }
     };
     const finishMovement = async (page, step, lesson) => {

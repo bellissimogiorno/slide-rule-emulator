@@ -266,11 +266,14 @@ function createApplication(document) {
         });
         listen(dom.resetButton, "click", () => {
             tutorial.interrupt();
+            endDrag();
             state.slideOffset = 0;
             state.cursor = 0.5;
+            // Reset changes only positions. Reuse the motion path so the
+            // graduation tree and any unapplied JSON draft stay intact.
+            scheduleMotion();
             saveState();
-            renderRuleAndReadout();
-            updatePositionControls();
+            programmeEditor.scheduleSync();
         });
         listen(dom.saveHtmlButton, "click", saveStandaloneCopy);
         listen(dom.slideRange, "input", () => {
@@ -491,6 +494,9 @@ function createApplication(document) {
         loupe.setEnabled(previous.loupe);
         dom.ruleViewport.scrollLeft = previous.scrollLeft;
         window.scrollTo(previous.scrollX, previous.scrollY);
+        // Entry cancelled any pending clean sync. Complete it on the restored
+        // programme; the editor's dirty guard still preserves an actual draft.
+        programmeEditor.scheduleSync();
     }
     function restoreReadoutAnnouncements() {
         if (tutorialView.readoutLive === null) dom.readout.removeAttribute('aria-live');
@@ -945,6 +951,9 @@ function createApplication(document) {
         if (slideRail)
             slideRail.classList.remove("dragging");
         dragFace = null;
+        // A structural render can project controls before releasing capture.
+        // Re-enable face actions once that temporary drag lock is gone.
+        faceNavigation?.refresh();
         programmeEditor.scheduleSync();
         if (tutorialWorkspace.active) panTutorial();
     }

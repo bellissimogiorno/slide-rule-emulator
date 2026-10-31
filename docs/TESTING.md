@@ -18,7 +18,7 @@ Coverage includes scale/reference consistency, independent mathematical identiti
 
 `tests/unit/motion.test.js` checks all offered steps and modifiers, endpoint clamping, off-grid precision, key filtering and visible position descriptions. `tests/browser/motion_controls.py` is part of both browser runner modes: it presses actual keys and drags actual grips, rather than assuming that dispatching an input event proves keyboard usability. Checks cover Tab order, one update per key, selecting the last dragged part, S/C, Shift compatibility, position feedback, nudge buttons, viewport focus, editor isolation, repeated very-fine movement, exports and nine responsive widths. Six-decimal feedback requires Extended decimal precision. Forced-colour rendering and focus are also exercised. A synthetic event is used only where invoking an operating-system shortcut or composition would be unsafe or misleading.
 
-The screenshots include the control strip and complete Faber, Pickett and Flying Fish views after keyboard movement. Keyboard increments are tested at more than one magnification. Browser test success is not a screen-reader or touch-device conformance claim.
+The runners can capture the control strip and complete Faber, Pickett and Flying Fish views after keyboard movement. Keyboard increments are tested at more than one magnification. Consult the actual report for executed cases; browser test success is not a screen-reader or touch-device conformance claim.
 
 ### Face navigation and control grouping
 
@@ -27,8 +27,8 @@ and both-face guards, tutorial/drag locks, local shortcut scope, modifiers,
 composition, repeats, handled keys and listener lifetime. The explicit event
 fixtures establish these contracts without native browser focus or geometry.
 `tests/unit/view-controls.test.js` checks the requested DOM order, Reset outside
-the layout-action lock, real labelled end buttons, scoped styles and the
-tutorial button’s existing theme colours.
+the layout-action lock, real labelled end buttons outside the regenerated canvas, retained control
+attributes and the tutorial entry’s header placement.
 
 After building, run the focused native suite:
 
@@ -71,12 +71,11 @@ loading another preset. Exercise the Cursor range with pointer and keyboard at
 narrow and wide widths; its track and grip must stay inside the Cursor box
 between the nudge arrows, with no positioned input across the top of the page.
 
-Native browser verification in the current preparation environment stopped at
-Chromium launch: no executable was installed. No native rendering, pointer,
-reload or download pass is claimed. See the handover's current verification
-report for the actual prerequisite failure and completed core checks. Installing
-Chromium and running the relevant browser suites remains necessary for native
-acceptance. Hosted CI has not been executed during this audit.
+The handover's current verification report records the actual browser outcome.
+A missing executable is a failed prerequisite, not a native rendering, pointer,
+reload or download pass. Install the browser matching the selected Playwright
+package before claiming native acceptance. Hosted CI must be verified through
+its actual run, separately from local checks.
 
 ### Catalogue snapshots and floating-point portability
 
@@ -122,8 +121,9 @@ This is local static-site verification, not a live GitHub Pages deployment.
 
 ### Shared Playwright setup for Node checks
 
-The six focused Node runners cover historical cursors, cursor appearance,
-display precision, the Slide preset menu, slide wraparound and the course. They share one
+The seven focused Node runners cover historical cursors, cursor appearance,
+display precision, the Slide preset menu, slide wraparound, the course and face
+navigation. They share one
 dependency loader and record its package version and selected path in their
 reports. An explicit `PLAYWRIGHT_NODE_MODULE` absolute package-directory path takes
 priority; otherwise they use locally installed `playwright`, then the managed
@@ -142,11 +142,12 @@ npm run test:display-precision
 npm run test:slide-preset
 npm run test:slide-wraparound
 npm run test:tutorial
+npm run test:face-navigation
 ```
 
 Install Chromium using that same Python environment before these commands. The
 browser CI selects this bundled client after installing its pinned Python
-requirements and browser, then runs all six focused suites as separate steps.
+requirements and browser, then runs all seven focused suites as separate steps.
 Each focused suite still executes if a preceding suite fails; all results and logs
 remain under `qa/ci/` for the existing evidence upload. Workflow text tests check
 this wiring locally; they do not establish a successful hosted CI run.
@@ -462,10 +463,10 @@ The browser CI job runs this suite as a separate required native step after
 installing Chromium. Its log, JSON results and screenshots are retained in the
 browser evidence artefact, including on failure.
 
-This test was added but could not be executed in the preparation environment:
-Python Playwright and a Chromium executable were unavailable. A separate
-Node Playwright launch also failed because its browser executable was absent. Python syntax checking does not establish browser correctness. Run it
-with the documented browser prerequisites before claiming a native-browser pass.
+Consult the current verification report for the executed result and selected
+Playwright/browser versions. Syntax checking alone does not establish browser
+correctness; run the native suite with its documented prerequisites before
+claiming acceptance.
 
 
 ## Slide wraparound

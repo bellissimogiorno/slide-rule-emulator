@@ -14,7 +14,7 @@ Nothing in this disclaimer excludes or limits liability that cannot lawfully be 
 
 ---
 
-**Version 3.2.46**
+**Version 3.2.47**
 
 An offline, two-sided scientific slide rule with configurable scales, classic instrument layouts and compact, readable engraving. Arrange the scales on either face, move the slide and cursor, and save your own instrument as a single HTML file. There is no account, backend, telemetry or runtime package dependency.
 
@@ -124,7 +124,9 @@ npm run build -- --check # Check all three applications and .nojekyll markers
 npm run verify           # All three checks
 ```
 
-Optional browser tests require Python and the development dependencies:
+The full browser matrix uses Python and the development requirements. Focused
+Node runners can also use a local Node Playwright package as described in
+[testing](docs/TESTING.md). Install the matching browser before running them:
 
 ```sh
 python -m venv .venv
@@ -137,7 +139,7 @@ npm run test:new-instruments # Native Mathema and Aristo layout, motion and expo
 npm run test:visual
 ```
 
-See [testing](docs/TESTING.md) for prerequisites, native and diagnostic modes, and visual review. Test reports are generated locally, not included in the release archive.
+See [testing](docs/TESTING.md) for prerequisites, native and diagnostic modes, and visual review. Local QA is excluded from the application repository archive; an accompanying handover may retain selected text reports separately.
 
 ## Publish and contribute
 
